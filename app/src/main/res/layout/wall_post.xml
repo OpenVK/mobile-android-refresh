@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidUnknownAttribute -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    android:checkable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
+            app:srcCompat="@drawable/circular_avatar" />
+
+        <TextView
+            android:id="@+id/post_author_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Post author"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/profile_avatar"
+            app:layout_constraintTop_toTopOf="@+id/profile_avatar"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/post_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="today/yesterday/etc"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_avatar"
+            app:layout_constraintStart_toEndOf="@+id/profile_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/post_author_label"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="HardcodedText,TextContrastCheck" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/post_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/buttons_ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_info">
+
+            <TextView
+                android:id="@+id/post_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post text"
+                android:textColor="@color/primaryTextColor"
+                tools:ignore="HardcodedText" />
+
+            <FrameLayout
+                android:id="@+id/attachment_frame"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1">
+
+            </FrameLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/buttons_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/post_view">
+
+            <TextView
+                android:id="@+id/like_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingEnd="12dp"
+                android:text="12"
+                android:textSize="12sp"
+                app:iconSize="16dp"
+                app:drawableLeftCompat="@drawable/ic_favorite_16"
+                app:drawableStartCompat="@drawable/ic_favorite_16"
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/comment_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:text="8"
+                app:drawableLeftCompat="@drawable/ic_comment_16"
+                app:drawableStartCompat="@drawable/ic_comment_16"
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/repost_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:text="2"
+                app:drawableLeftCompat="@drawable/ic_campaign_16"
+                app:drawableStartCompat="@drawable/ic_campaign_16"
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

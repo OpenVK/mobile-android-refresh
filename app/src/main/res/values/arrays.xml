@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="avaliable_instances">
+        <item>openvk.su</item>
+        <item>openvk.uk</item>
+        <item>openvk.co</item>
+        <item>social.fetbuk.ru</item>
+        <item>vepurovk.xyz</item>
+        <item>vepurovk.fun</item>
+    </string-array>
+</resources>

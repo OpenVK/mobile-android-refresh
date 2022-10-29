@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenVK</string>
+    <string name="title_activity_auth">Экран авторзации</string>
+    <string name="prompt_email">Электронная почта</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти или зарегистрироваться</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="invalid_username">Неверное имя пользователя</string>
+    <string name="invalid_password">Неверный пароль</string>
+    <string name="login_failed">Не удалось войти</string>
+    <string name="auth_instance">Инстанция</string>
+    <string name="auth_email">Электронная почта</string>
+    <string name="invalid_email_or_password">Неверный адрес электронной почты или пароль.</string>
+    <string name="auth_error_not_openvk_instance">Указанный сервер не является OpenVK-совместимой инстанцией.</string>
+    <string name="auth_error_network">Нет подключения к Интернету</string>
+    <string name="auth_unknown_error">Не удалось подключиться к инстанции по неизвестным причинам.</string>
+    <string name="twofactor_text">У вас включена двухфакторная аутентификация.</string>
+    <string name="auth_twofactor_code">Код 2FA</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_sign_in">Вход</string>
+    <string name="auth_register">Регистрация</string>
+    <string name="auth_forgot_btn">Забыли пароль?</string>
+    <string name="auth_wait">Подождите</string>
+    <string name="retry_btn">Повторить</string>
+    <string name="bottom_nav_home">Главная</string>
+    <string name="bottom_nav_messages">Сообщения</string>
+    <string name="bottom_nav_profile">Профиль</string>
+</resources>

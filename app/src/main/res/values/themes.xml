@@ -1,0 +1,49 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="ApplicationTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryColor</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+    </style>
+
+    <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryColor</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+    </style>
+
+    <style name="ApplicationTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="rippleColor">@color/primaryLightColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="ApplicationTheme.Button.Borderless" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="rippleColor">@color/primaryLightColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+    </style>
+
+    <style name="ApplicationTheme.Button.Borderless.NoCaps" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="rippleColor">@color/primaryLightColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ApplicationTheme.SplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#ffffff</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_openvk_splash_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1280</item>
+        <item name="postSplashScreenTheme">@style/ApplicationTheme</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Circle" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+</resources>
