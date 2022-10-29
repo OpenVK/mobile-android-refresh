@@ -24,21 +24,18 @@ public class WallPost implements Parcelable {
     public int post_id;
     public PostCounters counters;
     public int author_id;
+    public int dt_sec;
     public ArrayList<Attachment> attachments;
 
     public WallPost(String author, int dt_sec, RepostInfo repostInfo, String post_text, PostCounters nICI, String avatar_url, ArrayList<Attachment> attachments, int o_id, int p_id, Context ctx) {
         name = author;
-        Date dt = new Date(TimeUnit.SECONDS.toMillis(dt_sec));
-        Date dt_midnight = new Date(System.currentTimeMillis() + 86400000);
-        dt_midnight.setHours(0);
-        dt_midnight.setMinutes(0);
-        dt_midnight.setSeconds(0);
         repost = repostInfo;
         counters = nICI;
         text = post_text;
         this.avatar_url = avatar_url;
         owner_id = o_id;
         post_id = p_id;
+        this.dt_sec = dt_sec;
         this.attachments = attachments;
     }
 

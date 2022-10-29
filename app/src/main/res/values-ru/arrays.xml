@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="date_differences">
+        <item>только что</item>
+        <item>сегодня в %s</item>
+        <item>вчера в %s</item>
+        <item>%s в %s</item>
+    </string-array>
+</resources>

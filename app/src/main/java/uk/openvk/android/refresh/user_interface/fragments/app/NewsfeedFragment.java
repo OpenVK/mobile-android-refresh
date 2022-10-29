@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +59,7 @@ public class NewsfeedFragment extends Fragment {
         this.wallPosts = wallPosts;
         newsfeedView = (RecyclerView) view.findViewById(R.id.newsfeed_rv);
         if(newsfeedAdapter == null) {
-            newsfeedAdapter = new NewsfeedAdapter(ctx, this.wallPosts);
+            newsfeedAdapter = new NewsfeedAdapter(getContext(), this.wallPosts);
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             newsfeedView.setLayoutManager(llm);

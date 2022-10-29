@@ -26,4 +26,13 @@
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_messages">Messages</string>
     <string name="bottom_nav_profile">Profile</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_friends">Friends</string>
+    <string name="nav_messages">Messages</string>
+    <string name="nav_groups">Groups</string>
+    <string name="nav_news">News</string>
+    <string name="nav_settings">Settings</string>
+    <string name="on_wall">%s on %s\'s wall</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

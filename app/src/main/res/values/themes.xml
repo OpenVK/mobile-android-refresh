@@ -8,6 +8,7 @@
         <item name="rippleColor">@color/primaryLightColor</item>
         <item name="colorAccent">@color/primaryColor</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
     </style>
 
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -45,5 +46,8 @@
 
     <style name="ShapeAppearanceOverlay.Circle" parent="">
         <item name="cornerSize">50%</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.Round16" parent="">
+        <item name="cornerSize">16dp</item>
     </style>
 </resources>

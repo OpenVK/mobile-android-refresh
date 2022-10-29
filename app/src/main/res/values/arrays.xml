@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="avaliable_instances">
+    <string-array name="avaliable_instances" translatable="false">
         <item>openvk.su</item>
         <item>openvk.uk</item>
         <item>openvk.co</item>
         <item>social.fetbuk.ru</item>
         <item>vepurovk.xyz</item>
         <item>vepurovk.fun</item>
+    </string-array>
+    <string-array name="date_differences">
+        <item>just now</item>
+        <item>today at %s</item>
+        <item>yesterday at %s</item>
+        <item>%s at %s</item>
     </string-array>
 </resources>

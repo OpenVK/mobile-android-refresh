@@ -7,12 +7,25 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
+
+import java.util.Objects;
 
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
@@ -29,7 +42,7 @@ import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.fragments.app.NewsfeedFragment;
 
-public class AppActivity extends AppCompatActivity {
+public class AppActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public Handler handler;
     private OvkAPIWrapper ovk_api;
     private SharedPreferences instance_prefs;
@@ -45,6 +58,8 @@ public class AppActivity extends AppCompatActivity {
     private Groups groups;
     private Wall wall;
     private NewsfeedFragment newsfeedFragment;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +72,44 @@ public class AppActivity extends AppCompatActivity {
         }
         setNavView();
         setAPIWrapper();
+        setNavDrawer();
+        setAppBar();
+    }
+
+    private void setAppBar() {
+        MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.open();
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setNavDrawer() {
+        BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_screen);
+        NavController navController = Objects.requireNonNull(navHostFragment).getNavController();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(
+                ((DrawerLayout) findViewById(R.id.drawer_layout))).build();
+        NavigationUI.setupWithNavController(navView, navController);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, android.R.string.ok, android.R.string.cancel);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     private void setNavView() {
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -106,6 +155,8 @@ public class AppActivity extends AppCompatActivity {
             if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
                 account.parse(data.getString("response"), ovk_api);
                 String profile_name = String.format("%s %s", account.first_name, account.last_name);
+                ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name))
+                        .setText(profile_name);
                 newsfeed.get(ovk_api, 25);
             } else if (message == HandlerMessages.NEWSFEED_GET) {
                 newsfeed.parse(this, downloadManager, data.getString("response"), "original", true);
@@ -121,5 +172,10 @@ public class AppActivity extends AppCompatActivity {
         if(account != null) {
             newsfeed.get(ovk_api, 25);
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        return false;
     }
 }

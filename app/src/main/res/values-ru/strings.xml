@@ -27,4 +27,11 @@
     <string name="bottom_nav_home">Главная</string>
     <string name="bottom_nav_messages">Сообщения</string>
     <string name="bottom_nav_profile">Профиль</string>
+    <string name="nav_profile">Профиль</string>
+    <string name="nav_friends">Друзья</string>
+    <string name="nav_messages">Сообщения</string>
+    <string name="nav_groups">Группы</string>
+    <string name="nav_news">Новости</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="on_wall">%s на стене %s</string>
 </resources>

@@ -6,6 +6,7 @@
         <item name="rippleColor">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/primaryColor</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
     </style>
 
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
