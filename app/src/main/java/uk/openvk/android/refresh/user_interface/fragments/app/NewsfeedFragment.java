@@ -18,10 +18,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
+import uk.openvk.android.refresh.user_interface.layouts.ProgressLayout;
 import uk.openvk.android.refresh.user_interface.list_adapters.NewsfeedAdapter;
 
 public class NewsfeedFragment extends Fragment {
@@ -37,7 +39,17 @@ public class NewsfeedFragment extends Fragment {
         view = inflater.inflate(R.layout.newsfeed, container, false);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
+        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeResources(R.color.primaryColor);
+        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                    ((AppActivity) requireActivity()).refreshNewsfeed();
+                }
+            }
+        });
+        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         return view;
     }
 
@@ -55,5 +67,11 @@ public class NewsfeedFragment extends Fragment {
             //newsfeedAdapter.setArray(wallPosts);
             newsfeedAdapter.notifyDataSetChanged();
         }
+        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
+        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.VISIBLE);
+    }
+
+    public void disableUpdateState() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setRefreshing(false);
     }
 }

@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.Friends;
@@ -50,7 +49,7 @@ public class AppActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_layout);
+        setContentView(R.layout.app);
         instance_prefs = getSharedPreferences("instance", 0);
         newsfeedFragment = new NewsfeedFragment();
         if (newsfeedFragment != null) {
@@ -111,9 +110,16 @@ public class AppActivity extends AppCompatActivity {
             } else if (message == HandlerMessages.NEWSFEED_GET) {
                 newsfeed.parse(this, downloadManager, data.getString("response"), "original", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
+                newsfeedFragment.disableUpdateState();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void refreshNewsfeed() {
+        if(account != null) {
+            newsfeed.get(ovk_api, 25);
         }
     }
 }
