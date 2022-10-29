@@ -4,14 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:checkable="true"
     android:clickable="true"
-    android:focusable="true"
-    android:checkable="true">
+    android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_avatar"
@@ -53,7 +55,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/post_view"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
@@ -75,9 +77,8 @@
             <FrameLayout
                 android:id="@+id/attachment_frame"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
             </FrameLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -106,9 +107,9 @@
                 android:paddingEnd="12dp"
                 android:text="12"
                 android:textSize="12sp"
-                app:iconSize="16dp"
                 app:drawableLeftCompat="@drawable/ic_favorite_16"
                 app:drawableStartCompat="@drawable/ic_favorite_16"
+                app:iconSize="16dp"
                 tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
             <TextView

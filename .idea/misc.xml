@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Stuff/GitHub/openvk-refresh/app/src/main/res/layout/app_layout.xml" value="0.35597826086956524" />
+        <entry key="..\:/Stuff/GitHub/openvk-refresh/app/src/main/res/layout/newsfeed.xml" value="0.35597826086956524" />
+        <entry key="..\:/Stuff/GitHub/openvk-refresh/app/src/main/res/layout/wall_post.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/Dmitry/AndroidStudioProjects/OpenVK/app/src/main/res/drawable-night/ic_openvk_full_logo.xml" value="0.1935" />
         <entry key="..\:/Users/Dmitry/AndroidStudioProjects/OpenVK/app/src/main/res/drawable-night/ic_openvk_splash_logo.xml" value="0.1935" />
         <entry key="..\:/Users/Dmitry/AndroidStudioProjects/OpenVK/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1935" />
