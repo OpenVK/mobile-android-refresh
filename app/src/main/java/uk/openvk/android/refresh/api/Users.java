@@ -83,11 +83,11 @@ public class Users implements Parcelable {
     }
 
     public void getUser(OvkAPIWrapper ovk, int user_id) {
-        ovk.sendAPIMethod("Users.get", String.format("user_ids=%d&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", user_id));
+        ovk.sendAPIMethod("Users.get", String.format("user_ids=%s&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", user_id));
     }
 
     public void getAccountUser(OvkAPIWrapper ovk, int user_id) {
-        ovk.sendAPIMethod("Users.get", String.format("user_ids=%d&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", user_id), "account_user");
+        ovk.sendAPIMethod("Users.get", String.format("user_ids=%s&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", user_id), "account_user");
     }
 
     public void getPeerUsers(OvkAPIWrapper ovk, ArrayList<Conversation> conversations) {

@@ -188,6 +188,11 @@ public class User implements Parcelable {
                 } else {
                     online = false;
                 }
+                if(user.has("screen_name")) {
+                    if(!user.isNull("screen_name")) {
+                        screen_name = user.getString("screen_name");
+                    }
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

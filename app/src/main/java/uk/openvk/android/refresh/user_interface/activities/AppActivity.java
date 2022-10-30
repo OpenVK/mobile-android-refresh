@@ -154,14 +154,26 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
         try {
             if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
                 account.parse(data.getString("response"), ovk_api);
-                String profile_name = String.format("%s %s", account.first_name, account.last_name);
-                ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name))
-                        .setText(profile_name);
                 newsfeed.get(ovk_api, 25);
+                users.getAccountUser(ovk_api, account.id);
             } else if (message == HandlerMessages.NEWSFEED_GET) {
                 newsfeed.parse(this, downloadManager, data.getString("response"), "original", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.disableUpdateState();
+            } else if (message == HandlerMessages.USERS_GET_ALT) {
+                users.parse(data.getString("response"));
+                account.user = users.getList().get(0);
+                account.user.downloadAvatar(downloadManager, "high", "account_avatar");
+                String profile_name = String.format("%s %s", account.first_name, account.last_name);
+                ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name))
+                        .setText(profile_name);
+                if(account.user.screen_name.length() > 0) {
+                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
+                            .setText(String.format("@%s", account.user.screen_name));
+                } else {
+                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
+                            .setVisibility(View.GONE);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
