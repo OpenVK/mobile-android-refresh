@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.droidparts.util.Strings;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +18,7 @@ import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.attachments.PollAttachment;
 import uk.openvk.android.refresh.api.models.Comment;
 import uk.openvk.android.refresh.api.models.PollAnswer;
+import uk.openvk.android.refresh.api.models.WallPostSource;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.JSONParser;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
@@ -77,10 +79,10 @@ public class Wall implements Parcelable {
                     JSONObject likes = post.getJSONObject("likes");
                     JSONObject reposts = post.getJSONObject("reposts");
                     JSONArray attachments = post.getJSONArray("attachments");
-                    int owner_id = post.getInt("owner_id");
-                    int post_id = post.getInt("id");
-                    int author_id = post.getInt("from_id");
-                    int dt_sec = post.getInt("date");
+                    long owner_id = post.getLong("owner_id");
+                    long post_id = post.getLong("id");
+                    long author_id = post.getLong("from_id");
+                    long dt_sec = post.getLong("date");
                     String original_author_name = "";
                     String original_author_avatar_url = "";
                     String author_name = "";
@@ -99,7 +101,14 @@ public class Wall implements Parcelable {
 
                     ArrayList<Attachment> attachments_list = createAttachmentsList(owner_id, post_id, quality, attachments);
 
-                    WallPost item = new WallPost(String.format("(Unknown author: %d)", author_id), dt_sec, null, content, counters, "", attachments_list, owner_id, post_id, ctx);
+                    WallPost item = new WallPost(String.format("(Unknown author: %s)", author_id), dt_sec, null, content, counters, "", attachments_list, owner_id, post_id, ctx);
+                    if(post.has("post_source") && !post.isNull("post_source")) {
+                        if(post.getJSONObject("post_source").getString("type").equals("api")) {
+                            item.post_source = new WallPostSource(post.getJSONObject("post_source").getString("type"), post.getJSONObject("post_source").getString("platform"));
+                        } else {
+                            item.post_source = new WallPostSource(post.getJSONObject("post_source").getString("type"), null);
+                        }
+                    }
                     if(post.getJSONArray("copy_history").length() > 0) {
                         JSONObject repost = post.getJSONArray("copy_history").getJSONObject(0);
                         WallPost repost_item = new WallPost(String.format("(Unknown author: %d)", repost.getInt("from_id")), repost.getInt("date"), null, repost.getString("text"), null, "",
@@ -143,7 +152,7 @@ public class Wall implements Parcelable {
                         if(author_id == owner_id) {
                             item.name = author_name;
                         } else {
-                            //item.name = ctx.getResources().getString(R.string.on_wall, author_name, owner_name);
+                            item.name = ctx.getResources().getString(R.string.on_wall, author_name, owner_name);
                         }
                     } else {
                         if(newsfeed.has("groups") && newsfeed.has("profiles")) {
@@ -160,7 +169,7 @@ public class Wall implements Parcelable {
                     }
                     PhotoAttachment avatar = new PhotoAttachment();
                     avatar.url = avatar_url;
-                    avatar.filename = String.format("avatar_%d", author_id);
+                    avatar.filename = String.format("avatar_%s", author_id);
                     avatars.add(avatar);
                     this.items.add(item);
                 }
@@ -189,12 +198,14 @@ public class Wall implements Parcelable {
                 for(int i = 0; i < items.length(); i++) {
                     JSONObject item = items.getJSONObject(i);
                     String text = item.getString("text");
-                    int author_id = item.getInt("from_id");
-                    int date = item.getInt("date");
+                    long comment_id = item.getLong("id");
+                    long author_id = item.getLong("from_id");
+                    long date = item.getLong("date");
                     Comment comment = new Comment();
-                    comment.id = author_id;
+                    comment.id = comment_id;
+                    comment.author_id = author_id;
                     comment.text = text;
-                    comment.author = String.format("(Unknown author: %d)", author_id);
+                    comment.author = String.format("(Unknown author: %s)", author_id);
                     comment.date = date;
                     PhotoAttachment photoAttachment = new PhotoAttachment();
                     photoAttachment.url = "";
@@ -204,13 +215,13 @@ public class Wall implements Parcelable {
                             JSONArray profiles = comments.getJSONArray("profiles");
                             for (int profiles_index = 0; profiles_index < profiles.length(); profiles_index++) {
                                 JSONObject profile = profiles.getJSONObject(profiles_index);
-                                if (profile.getInt("id") == author_id) {
+                                if (profile.getLong("id") == author_id) {
                                     comment.author = String.format("%s %s", profile.getString("first_name"), profile.getString("last_name"));
                                     if(profile.has("photo_100")) {
                                         comment.avatar_url = profile.getString("photo_100");
                                     }
                                     photoAttachment.url = comment.avatar_url;
-                                    photoAttachment.filename = String.format("avatar_%d", author_id);
+                                    photoAttachment.filename = String.format("avatar_%s", author_id);
                                 }
                             }
                         }
@@ -219,11 +230,13 @@ public class Wall implements Parcelable {
                             JSONArray groups = comments.getJSONArray("groups");
                             for (int groups_index = 0; groups_index < groups.length(); groups_index++) {
                                 JSONObject group = groups.getJSONObject(groups_index);
-                                if (group.getInt("id") == author_id) {
+                                if (group.getLong("id") == author_id) {
                                     comment.author = group.getString("name");
-                                    comment.avatar_url = group.getString("photo_100");
+                                    if(group.has("photo_100")) {
+                                        comment.avatar_url = group.getString("photo_100");
+                                    }
                                     photoAttachment.url = comment.avatar_url;
-                                    photoAttachment.filename = String.format("avatar_%d", author_id);
+                                    photoAttachment.filename = String.format("avatar_%s", author_id);
                                 }
                             }
                         }
@@ -239,18 +252,19 @@ public class Wall implements Parcelable {
         return comments;
     }
 
-    public ArrayList<Attachment> createAttachmentsList(int owner_id, int post_id, String quality, JSONArray attachments) {
+    public ArrayList<Attachment> createAttachmentsList(long owner_id, long post_id, String quality, JSONArray attachments) {
         ArrayList<Attachment> attachments_list = new ArrayList<>();
         try {
             for (int attachments_index = 0; attachments_index < attachments.length(); attachments_index++) {
-                String photo_medium_size = "";
-                String photo_high_size = "";
-                String photo_original_size = "";
-                String attachment_status = "";
+                String photo_medium_size;
+                String photo_high_size;
+                String photo_original_size;
+                String attachment_status;
                 JSONObject attachment = attachments.getJSONObject(attachments_index);
                 if (attachment.getString("type").equals("photo")) {
                     JSONObject photo = attachment.getJSONObject("photo");
                     PhotoAttachment photoAttachment = new PhotoAttachment();
+                    photoAttachment.id = photo.getLong("id");
                     JSONArray photo_sizes = photo.getJSONArray("sizes");
                     photo_medium_size = photo_sizes.getJSONObject(5).getString("url");
                     photo_high_size = photo_sizes.getJSONObject(8).getString("url");
@@ -262,7 +276,7 @@ public class Wall implements Parcelable {
                     } else if(quality.equals("original")) {
                         photoAttachment.url = photo_original_size;
                     }
-                    photoAttachment.filename = String.format("wall_attachment_o%dp%d", owner_id, post_id);
+                    photoAttachment.filename = String.format("wall_attachment_o%sp%s", owner_id, post_id);
                     photoAttachment.original_url = photo_original_size;
                     if (photo_medium_size.length() > 0 || photo_high_size.length() > 0) {
                         attachment_status = "loading";
@@ -318,24 +332,28 @@ public class Wall implements Parcelable {
         return attachments_list;
     }
 
-    public void get(OvkAPIWrapper ovk, int owner_id, int count) {
-        ovk.sendAPIMethod("Wall.get", String.format("owner_id=%d&count=%d&extended=1", owner_id, count));
+    public void get(OvkAPIWrapper ovk, long owner_id, int count) {
+        ovk.sendAPIMethod("Wall.get", String.format("owner_id=%s&count=%s&extended=1", owner_id, count));
     }
 
     public ArrayList<WallPost> getWallItems() {
         return items;
     }
 
-    public void post(OvkAPIWrapper ovk, int owner_id, String post) {
-        ovk.sendAPIMethod("Wall.post", String.format("owner_id=%d&message=%s", owner_id, URLEncoder.encode(post)));
+    public void post(OvkAPIWrapper ovk, long owner_id, String post) {
+        ovk.sendAPIMethod("Wall.post", String.format("owner_id=%s&message=%s", owner_id, Strings.urlEncode(post)));
     }
 
-    public void getComments(OvkAPIWrapper ovk, int owner_id, int post_id) {
-        ovk.sendAPIMethod("Wall.getComments", String.format("owner_id=%d&post_id=%d&extended=1&count=50", owner_id, post_id));
+    public void getComments(OvkAPIWrapper ovk, long owner_id, long post_id) {
+        ovk.sendAPIMethod("Wall.getComments", String.format("owner_id=%s&post_id=%s&extended=1&count=50", owner_id, post_id));
     }
 
-    public void createComment(OvkAPIWrapper ovk, int owner_id, int post_id, String text) {
-        ovk.sendAPIMethod("Wall.createComment", String.format("owner_id=%d&post_id=%d&message=%s", owner_id, post_id, URLEncoder.encode(text)));
+    public void createComment(OvkAPIWrapper ovk, long owner_id, long post_id, String text) {
+        ovk.sendAPIMethod("Wall.createComment", String.format("owner_id=%s&post_id=%s&message=%s", owner_id, post_id, Strings.urlEncode(text)));
+    }
+
+    public void repost(OvkAPIWrapper ovk, long owner_id, long post_id, String text) {
+        ovk.sendAPIMethod("Wall.repost", String.format("object=wall%s_%s&message=%s", owner_id, post_id, Strings.urlEncode(text)));
     }
 
     @Override

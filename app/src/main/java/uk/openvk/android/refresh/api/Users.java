@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.droidparts.util.Strings;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ public class Users implements Parcelable {
         jsonParser = new JSONParser();
         users = new ArrayList<User>();
     }
+
 
     public Users(String response) {
         jsonParser = new JSONParser();
@@ -82,23 +84,23 @@ public class Users implements Parcelable {
         }
     }
 
-    public void getUser(OvkAPIWrapper ovk, int user_id) {
+    public void getUser(OvkAPIWrapper ovk, long user_id) {
         ovk.sendAPIMethod("Users.get", String.format("user_ids=%s&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", user_id));
     }
 
-    public void getAccountUser(OvkAPIWrapper ovk, int user_id) {
+    public void getAccountUser(OvkAPIWrapper ovk, long user_id) {
         ovk.sendAPIMethod("Users.get", String.format("user_ids=%s&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", user_id), "account_user");
     }
 
     public void getPeerUsers(OvkAPIWrapper ovk, ArrayList<Conversation> conversations) {
-        ArrayList<Integer> user_ids = new ArrayList<>();
+        ArrayList<Long> user_ids = new ArrayList<>();
         for(int i = 0; i < conversations.size(); i++) {
             user_ids.add(conversations.get(i).peer_id);
         }
         StringBuilder ids_list = new StringBuilder();
         for(int i = 0; i < user_ids.size(); i++) {
             if(i < user_ids.size() - 1) {
-                ids_list.append(String.format("%d,", user_ids.get(i)));
+                ids_list.append(String.format("%s,", user_ids.get(i)));
             } else {
                 ids_list.append(user_ids.get(i));
             }
@@ -110,12 +112,12 @@ public class Users implements Parcelable {
         StringBuilder ids_list = new StringBuilder();
         for(int i = 0; i < user_ids.size(); i++) {
             if(i < user_ids.size() - 1) {
-                ids_list.append(String.format("%d,", user_ids.get(i)));
+                ids_list.append(String.format("%s,", user_ids.get(i)));
             } else {
                 ids_list.append(user_ids.get(i));
             }
         }
-        ovk.sendAPIMethod("Users.get", String.format("user_ids=%d&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", ids_list.toString()));
+        ovk.sendAPIMethod("Users.get", String.format("user_ids=%s&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", ids_list.toString()));
     }
 
     public ArrayList<User> getList() {
@@ -123,7 +125,7 @@ public class Users implements Parcelable {
     }
 
     public void search(OvkAPIWrapper ovk, String query) {
-        ovk.sendAPIMethod("Users.search", String.format("q=%s&count=50&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", URLEncoder.encode(query)));
+        ovk.sendAPIMethod("Users.search", String.format("q=%s&count=50&fields=verified,sex,has_photo,photo_200,photo_400,photo_max_orig,status,screen_name,friend_status,last_seen,interests,music,movies,tv,books,city", Strings.urlEncode(query)));
     }
 
     @Override

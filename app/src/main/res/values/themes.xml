@@ -9,6 +9,9 @@
         <item name="colorAccent">@color/primaryColor</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -18,6 +21,8 @@
         <!-- Customize your theme here. -->
         <item name="rippleColor">@color/primaryLightColor</item>
         <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="ApplicationTheme.Button" parent="Widget.AppCompat.Button.Colored">
@@ -49,5 +54,10 @@
     </style>
     <style name="ShapeAppearanceOverlay.Round16" parent="">
         <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="ApplicationTheme.Navigation" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="backgroundTint">@color/navbarColor</item>
+        <item name="elevation">8dp</item>
     </style>
 </resources>

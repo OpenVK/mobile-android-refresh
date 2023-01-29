@@ -143,6 +143,12 @@ public class AuthActivity extends AppCompatActivity {
             Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
+        } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.dynamic_fragment_layout, authFragment);
+            authFragment.setAuthorizationData(instance, username, password);
+            ft.commit();
+            Snackbar.make(auth_layout, R.string.auth_instance_unavailable, Snackbar.LENGTH_LONG).show();
         } else if(message == HandlerMessages.UNKNOWN_ERROR) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);

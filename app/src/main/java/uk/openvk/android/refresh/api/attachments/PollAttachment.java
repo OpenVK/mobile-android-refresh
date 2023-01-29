@@ -6,7 +6,7 @@ import uk.openvk.android.refresh.api.models.PollAnswer;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 
 public class PollAttachment {
-    public int id;
+    public long id;
     public long end_date;
     public String question;
     public boolean can_vote;
@@ -14,8 +14,8 @@ public class PollAttachment {
     public boolean multiple;
     public ArrayList<PollAnswer> answers;
     public int user_votes;
-    public int votes;
-    public PollAttachment(String question, int id, long end_date, boolean multiple, boolean can_vote, boolean anonymous) {
+    public long votes;
+    public PollAttachment(String question, long id, long end_date, boolean multiple, boolean can_vote, boolean anonymous) {
         this.question = question;
         this.id = id;
         this.end_date = end_date;
@@ -30,10 +30,10 @@ public class PollAttachment {
     }
 
     public void vote(OvkAPIWrapper ovk, int answer_id) {
-        ovk.sendAPIMethod("Polls.addVote", String.format("poll_id=%d&answers_ids=%d", id, answer_id));
+        ovk.sendAPIMethod("Polls.addVote", String.format("poll_id=%s&answers_ids=%s", id, answer_id));
     }
 
     public void unvote(OvkAPIWrapper ovk) {
-        ovk.sendAPIMethod("Polls.deleteVote", String.format("poll_id=%d", id));
+        ovk.sendAPIMethod("Polls.deleteVote", String.format("poll_id=%s", id));
     }
 }

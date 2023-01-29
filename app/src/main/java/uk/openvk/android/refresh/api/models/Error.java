@@ -5,6 +5,9 @@ import org.json.JSONObject;
 
 import uk.openvk.android.refresh.api.wrappers.JSONParser;
 
+/**
+ * Created by Dmitry on 27.09.2022.
+ */
 public class Error {
     public String description;
     public int code;

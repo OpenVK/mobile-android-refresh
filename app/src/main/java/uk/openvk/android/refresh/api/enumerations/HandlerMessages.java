@@ -15,16 +15,21 @@ public class HandlerMessages {
 
     // Friends
     public static int FRIENDS_GET                       = 200;
-    public static int FRIENDS_GET_ALT                   = 201;
-    public static int FRIENDS_ADD                       = 202;
-    public static int FRIENDS_DELETE                    = 203;
-    public static int FRIENDS_CHECK                     = 204;
+    public static int FRIENDS_GET_MORE                  = 201;
+    public static int FRIENDS_GET_ALT                   = 202;
+    public static int FRIENDS_ADD                       = 203;
+    public static int FRIENDS_DELETE                    = 204;
+    public static int FRIENDS_CHECK                     = 205;
+    public static int FRIENDS_REQUESTS                  = 206;
 
     // Groups
     public static int GROUPS_GET                        = 300;
-    public static int GROUPS_GET_ALT                    = 301;
-    public static int GROUPS_GET_BY_ID                  = 302;
-    public static int GROUPS_SEARCH                     = 303;
+    public static int GROUPS_GET_MORE                   = 301;
+    public static int GROUPS_GET_ALT                    = 302;
+    public static int GROUPS_GET_BY_ID                  = 303;
+    public static int GROUPS_SEARCH                     = 304;
+    public static int GROUPS_JOIN                       = 305;
+    public static int GROUPS_LEAVE                      = 306;
 
     // Likes
     public static int LIKES_ADD                         = 400;
@@ -61,7 +66,9 @@ public class HandlerMessages {
 
     // Newsfeed
     public static int NEWSFEED_GET                      = 800;
-    public static int NEWSFEED_GET_MORE                 = 801;
+    public static int NEWSFEED_GET_GLOBAL               = 801;
+    public static int NEWSFEED_GET_MORE                 = 802;
+    public static int NEWSFEED_GET_MORE_GLOBAL          = 803;
 
     // OpenVK specific
     public static int OVK_VERSION                       = 900;
@@ -86,9 +93,9 @@ public class HandlerMessages {
     public static int GROUP_AVATARS_ALT                 = 1107;
     public static int FRIEND_AVATARS                    = 1108;
     public static int COMMENT_AVATARS                   = 1109;
-    public static int CONVERSATION_AVATARS              = 1110;
+    public static int CONVERSATIONS_AVATARS             = 1110;
     public static int LONGPOLL                          = 1111;
-    public static int SAVE_PHOTO_TO_STORAGE             = 1112;
+    public static int ORIGINAL_PHOTO                    = 1112;
 
     // Errors
     public static int NO_INTERNET_CONNECTION            =  -1;
@@ -102,6 +109,7 @@ public class HandlerMessages {
     public static int ACCESS_DENIED_MARSHMALLOW         =  -9;
     public static int BROKEN_SSL_CONNECTION             =  -10;
     public static int INTERNAL_ERROR                    =  -11;
-    public static int NOT_OPENVK_INSTANCE               =  -12;
-    public static int UNKNOWN_ERROR                     =  -13;
+    public static int INSTANCE_UNAVAILABLE              =  -12;
+    public static int NOT_OPENVK_INSTANCE               =  -13;
+    public static int UNKNOWN_ERROR                     =  -14;
 }

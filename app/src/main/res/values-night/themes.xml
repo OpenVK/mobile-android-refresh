@@ -7,6 +7,8 @@
         <item name="colorAccent">@color/primaryColor</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -14,6 +16,8 @@
         <item name="colorPrimaryVariant">@color/primaryColor</item>
         <item name="rippleColor">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="ApplicationTheme.Navigation" parent="Widget.MaterialComponents.BottomNavigationView">

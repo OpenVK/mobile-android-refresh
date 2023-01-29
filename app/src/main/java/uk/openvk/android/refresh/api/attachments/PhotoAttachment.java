@@ -6,10 +6,13 @@ import android.os.Parcelable;
 
 
 public class PhotoAttachment implements Parcelable {
+    public long id;
     public String url;
     public String original_url;
     public String filename;
     public Bitmap photo;
+    public String error;
+
     public PhotoAttachment() {
     }
 

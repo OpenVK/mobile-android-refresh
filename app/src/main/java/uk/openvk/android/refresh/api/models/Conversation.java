@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.api.models;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import org.droidparts.util.Strings;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,12 +16,14 @@ import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 
 public class Conversation {
     public String title;
-    public int peer_id;
+    public long peer_id;
     public int online;
     public Bitmap avatar;
     public Bitmap lastMsgAvatar;
+    public long lastMsgAuthorId;
     public String lastMsgText;
-    public int lastMsgTime;
+    public long lastMsgTime;
+    public String avatar_url;
     private ArrayList<Message> history;
     private JSONParser jsonParser;
 
@@ -29,7 +32,7 @@ public class Conversation {
         history = new ArrayList<Message>();
     }
 
-    public void getHistory(OvkAPIWrapper ovk, int peer_id) {
+    public void getHistory(OvkAPIWrapper ovk, long peer_id) {
         this.peer_id = peer_id;
         ovk.sendAPIMethod("Messages.getHistory", String.format("peer_id=%d&count=150&rev=1", peer_id));
     }
@@ -48,7 +51,8 @@ public class Conversation {
                     } else {
                         incoming = true;
                     }
-                    Message message = new Message(incoming, false, item.getInt("date"), item.getString("text"), ctx);
+                    Message message = new Message(item.getLong("id"), incoming, false, item.getLong("date"), item.getString("text"), ctx);
+                    message.author_id = item.getLong("from_id");
                     history.add(message);
                 }
             } catch(JSONException ex) {
@@ -59,6 +63,6 @@ public class Conversation {
     }
 
     public void sendMessage(OvkAPIWrapper ovk, String text) {
-        ovk.sendAPIMethod("Messages.send", String.format("peer_id=%d&message=%s", peer_id, URLEncoder.encode(text)));
+        ovk.sendAPIMethod("Messages.send", String.format("peer_id=%s&message=%s", peer_id, Strings.urlEncode(text)));
     }
 }
