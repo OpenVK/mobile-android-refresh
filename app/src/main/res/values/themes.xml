@@ -11,7 +11,6 @@
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -22,7 +21,6 @@
         <item name="rippleColor">@color/primaryLightColor</item>
         <item name="colorAccent">@color/primaryColor</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="ApplicationTheme.Button" parent="Widget.AppCompat.Button.Colored">

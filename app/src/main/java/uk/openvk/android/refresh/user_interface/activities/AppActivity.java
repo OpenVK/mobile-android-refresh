@@ -1,6 +1,8 @@
 package uk.openvk.android.refresh.user_interface.activities;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,10 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -40,6 +47,7 @@ import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.fragments.app.NewsfeedFragment;
+import uk.openvk.android.refresh.user_interface.fragments.app.ProfileFragment;
 
 public class AppActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public Handler handler;
@@ -59,20 +67,28 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
     private NewsfeedFragment newsfeedFragment;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
+    private ProfileFragment profileFragment;
+    private FragmentTransaction ft;
 
+    @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app);
         instance_prefs = getSharedPreferences("instance", 0);
         newsfeedFragment = new NewsfeedFragment();
-        if (newsfeedFragment != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_screen, newsfeedFragment).commit();
-        }
+        profileFragment = new ProfileFragment();
         setNavView();
         setAPIWrapper();
         setNavDrawer();
         setAppBar();
+        if (newsfeedFragment != null) {
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.fragment_screen, newsfeedFragment, "newsfeed");
+            ft.add(R.id.fragment_screen, profileFragment, "profile");
+            ft.commit();
+            ft.hide(profileFragment);
+        }
     }
 
     private void setAppBar() {
@@ -94,16 +110,29 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint({"CutPasteId", "ObsoleteSdkInt"})
     private void setNavDrawer() {
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_screen);
         NavController navController = Objects.requireNonNull(navHostFragment).getNavController();
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(
+        @SuppressLint("CutPasteId") AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(
                 ((DrawerLayout) findViewById(R.id.drawer_layout))).build();
         NavigationUI.setupWithNavController(navView, navController);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, android.R.string.ok, android.R.string.cancel);
         drawer.addDrawerListener(toggle);
+        drawer.setStatusBarBackground(R.color.navbarColor);
+        if(getResources().getColor(R.color.navbarColor) == getResources().getColor(android.R.color.white)) {
+            try {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    WindowInsetsControllerCompat windowInsetsController =
+                            WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+                    windowInsetsController.setAppearanceLightStatusBars(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         toggle.syncState();
     }
 
@@ -111,18 +140,36 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                Fragment selectedFragment = null;
-                int itemId = item.getItemId();
-                if (itemId == R.id.home) {
-                    selectedFragment = newsfeedFragment;
-                }
-                if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_screen, selectedFragment).commit();
-                }
-                return false;
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return true;
             }
         });
+        for(int i = 0; i < navView.getMenu().size(); i++) {
+            navView.getMenu().getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(@NonNull MenuItem item) {
+                    item.setChecked(true);
+                    switchNavItem(item);
+                    return false;
+                }
+            });
+        }
+    }
+
+    public void switchNavItem(MenuItem item) {
+        Fragment selectedFragment = null;
+        int itemId = item.getItemId();
+        FragmentManager fm = getSupportFragmentManager();
+        ft = getSupportFragmentManager().beginTransaction();
+        if (itemId == R.id.home) {
+            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
+            ft.show(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
+        } else if(itemId == R.id.profile) {
+            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
+            ft.show(Objects.requireNonNull(fm.findFragmentByTag("profile")));
+            profileFragment.setData(account.user);
+        }
+        ft.commit();
     }
 
     private void setAPIWrapper() {
@@ -134,7 +181,7 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
             @Override
             public void handleMessage(Message msg) {
                 Log.d("OpenVK", String.format("Handling API message: %s", msg.what));
-                recieveState(msg.what, msg.getData());
+                receiveState(msg.what, msg.getData());
             }
         };
         account = new Account(this);
@@ -149,7 +196,7 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
         wall = new Wall();
     }
 
-    private void recieveState(int message, Bundle data) {
+    private void receiveState(int message, Bundle data) {
         try {
             if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
                 account.parse(data.getString("response"), ovk_api);
@@ -166,16 +213,30 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
                 String profile_name = String.format("%s %s", account.first_name, account.last_name);
                 ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name))
                         .setText(profile_name);
-                if(account.user.screen_name.length() > 0) {
+                if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
                     ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
                             .setText(String.format("@%s", account.user.screen_name));
                 } else {
                     ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
                             .setVisibility(View.GONE);
                 }
+            } else if(message < 0) {
+                newsfeedFragment.setError(true, message, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        retryConnection();
+                    }
+                });
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void retryConnection() {
+        if(account != null) {
+            newsfeedFragment.setError(false, 0, null);
+            newsfeed.get(ovk_api, 25);
         }
     }
 

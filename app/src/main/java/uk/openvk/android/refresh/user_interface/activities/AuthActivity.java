@@ -73,7 +73,7 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                recieveState(msg.what, msg.getData());
+                receiveState(msg.what, msg.getData());
             }
         };
     }
@@ -103,7 +103,7 @@ public class AuthActivity extends AppCompatActivity {
         ovk_api.authorize(username, password, twofactor_code);
     }
 
-    private void recieveState(int message, Bundle data) {
+    private void receiveState(int message, Bundle data) {
         if (message == HandlerMessages.AUTHORIZED) {
             SharedPreferences.Editor editor = instance_prefs.edit();
             Authorization auth = new Authorization(data.getString("response"));

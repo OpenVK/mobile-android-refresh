@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
     app:startDestination="@id/newsfeedFragment">
 
     <fragment
         android:id="@+id/newsfeedFragment"
-        android:name="uk.openvk.android.refresh.user_interface.fragments.app.NewsfeedFragment"
-        android:label="NewsfeedFragment" />
+        android:name="uk.openvk.android.refresh.user_interface.fragments.app.BlankFragment"
+        android:label="BlankFragment"
+        tools:layout="@layout/blank_fragment" />
 </navigation>

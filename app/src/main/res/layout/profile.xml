@@ -18,11 +18,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:ignore="SpeakableTextPresentCheck">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <uk.openvk.android.refresh.user_interface.layouts.ProfileHeader
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                </uk.openvk.android.refresh.user_interface.layouts.ProfileHeader>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

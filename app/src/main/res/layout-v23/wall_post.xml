@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--suppress AndroidUnknownAttribute -->
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    app:cardCornerRadius="12dp"
-    android:checkable="true"
-    android:clickable="true"
-    android:focusable="true"
-    app:rippleColor="@color/primaryRippleColor">
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp">
+    <!--suppress AndroidUnknownAttribute -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="12dp"
+        app:rippleColor="@color/primaryRippleColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -150,6 +156,5 @@
                 tools:ignore="HardcodedText,TouchTargetSizeCheck" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.appcompat.widget.LinearLayoutCompat>

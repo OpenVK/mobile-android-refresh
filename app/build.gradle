@@ -27,6 +27,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'uk.openvk.android.refresh'
 }
 
 dependencies {

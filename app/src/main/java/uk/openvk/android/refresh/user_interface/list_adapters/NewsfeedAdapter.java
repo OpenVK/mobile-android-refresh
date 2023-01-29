@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -78,9 +79,12 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             poster_name.setText(item.name);
             Date dt = new Date(TimeUnit.SECONDS.toMillis(item.dt_sec));
             Date dt_midnight = new Date(System.currentTimeMillis() + 86400000);
-            dt_midnight.setHours(0);
-            dt_midnight.setMinutes(0);
-            dt_midnight.setSeconds(0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dt_midnight);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
             if((dt_midnight.getTime() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 86400000) {
                 item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[1], new SimpleDateFormat("HH:mm").format(dt));
             } else if((dt_midnight.getTime() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < (86400000 * 2)) {

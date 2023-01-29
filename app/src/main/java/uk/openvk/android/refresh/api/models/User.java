@@ -128,7 +128,11 @@ public class User implements Parcelable {
                 } else {
                     status = "";
                 }
-                //screen_name = user.getString("screen_name");
+                if(user.has("screen_name") && !user.isNull("screen_name")) {
+                    screen_name = user.getString("screen_name");
+                } else {
+                    screen_name = "";
+                }
                 if (user.has("photo_50")) {
                     avatar_msize_url = user.getString("photo_50");
                 } else if (user.has("photo_100")) {
@@ -289,17 +293,17 @@ public class User implements Parcelable {
 
     public void downloadAvatar(DownloadManager downloadManager, String quality) {
         if(quality.equals("medium")) {
-            downloadManager.downloadOnePhotoToCache(avatar_msize_url, String.format("avatar_%d", id), "profile_avatars");
+            downloadManager.downloadOnePhotoToCache(avatar_msize_url, String.format("avatar_%s", id), "profile_avatars");
         } else if(quality.equals("high")) {
             if(avatar_hsize_url.length() == 0) {
                 avatar_hsize_url = avatar_msize_url;
             }
-            downloadManager.downloadOnePhotoToCache(avatar_hsize_url, String.format("avatar_%d", id), "profile_avatars");
+            downloadManager.downloadOnePhotoToCache(avatar_hsize_url, String.format("avatar_%s", id), "profile_avatars");
         } else if(quality.equals("original")) {
             if(avatar_osize_url.length() == 0) {
                 avatar_osize_url = avatar_msize_url;
             }
-            downloadManager.downloadOnePhotoToCache(avatar_osize_url, String.format("avatar_%d", id), "profile_avatars");
+            downloadManager.downloadOnePhotoToCache(avatar_osize_url, String.format("avatar_%s", id), "profile_avatars");
         }
     }
 
@@ -334,17 +338,17 @@ public class User implements Parcelable {
 
     public void downloadAvatar(DownloadManager downloadManager, String quality, String where) {
         if(quality.equals("medium")) {
-            downloadManager.downloadOnePhotoToCache(avatar_msize_url, String.format("avatar_%d", id), where);
+            downloadManager.downloadOnePhotoToCache(avatar_msize_url, String.format("avatar_%s", id), where);
         } else if(quality.equals("high")) {
             if(avatar_hsize_url.length() == 0) {
                 avatar_hsize_url = avatar_msize_url;
             }
-            downloadManager.downloadOnePhotoToCache(avatar_hsize_url, String.format("avatar_%d", id), where);
+            downloadManager.downloadOnePhotoToCache(avatar_hsize_url, String.format("avatar_%s", id), where);
         } else if(quality.equals("original")) {
             if(avatar_osize_url.length() == 0) {
                 avatar_osize_url = avatar_msize_url;
             }
-            downloadManager.downloadOnePhotoToCache(avatar_osize_url, String.format("avatar_%d", id), where);
+            downloadManager.downloadOnePhotoToCache(avatar_osize_url, String.format("avatar_%s", id), where);
         }
     }
 }

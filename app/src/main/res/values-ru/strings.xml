@@ -40,4 +40,15 @@
     <string name="today_at">сегодня в</string>
     <string name="yesterday_at">вчера в</string>
     <string name="date_at">в</string>
+
+    <string name="online">Онлайн</string>
+    <string name="last_seen_profile_m">был в сети %s</string>
+    <string name="last_seen_profile_f">была в сети %s</string>
+    <string name="date_just_now">только что</string>
+    <string name="error_no_internet">Нет подключения к Интернету</string>
+    <string name="error_instance_failure">Сбой инстанции</string>
+    <string name="error_instance">Инстанция недоступна</string>
+    <string name="error_parsing">Невозможно обработать ответ</string>
+    <string name="error_subtitle">Проверьте подключение к сети и повторите попытку.</string>
+    <string name="error_subtitle_instance">Пожалуйста, повторите позже или обратитесь к системному администратору.</string>
 </resources>

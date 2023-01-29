@@ -39,4 +39,16 @@
     <string name="today_at">Today at</string>
     <string name="yesterday_at">Yesterday at</string>
     <string name="date_at">at</string>
+
+    <string name="online">Online</string>
+    <string name="last_seen_profile_m">last seen %s</string>
+    <string name="last_seen_profile_f">last seen %s</string>
+    <string name="date_just_now">just now</string>
+
+    <string name="error_no_internet">No Internet connection</string>
+    <string name="error_parsing">Cannot process response</string>
+    <string name="error_instance_failure">Instance failure</string>
+    <string name="error_instance">Instance unavailable</string>
+    <string name="error_subtitle">Please check your network connection and try again.</string>
+    <string name="error_subtitle_instance">Please try again later or contact system administrator.</string>
 </resources>

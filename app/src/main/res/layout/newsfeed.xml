@@ -5,18 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <uk.openvk.android.refresh.user_interface.layouts.ErrorLayout
+        android:id="@+id/error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></uk.openvk.android.refresh.user_interface.layouts.ErrorLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/newsfeed_swipe_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/newsfeedBackgroundColor"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/newsfeed_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/newsfeed_rv">
+            android:layout_height="match_parent">
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
