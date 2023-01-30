@@ -9,4 +9,6 @@
     <color name="newsfeedBackgroundColor">#000000</color>
     <color name="backgroundColor">#000000</color>
     <color name="statusBarColor">#202020</color>
+    <color name="onPrimaryTextColor">#ffffff</color>
+    <color name="onSecondaryTextColor">#86ffffff</color>
 </resources>

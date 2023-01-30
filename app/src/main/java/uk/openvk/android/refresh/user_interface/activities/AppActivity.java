@@ -10,11 +10,13 @@ import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -31,6 +33,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import uk.openvk.android.refresh.R;
@@ -48,6 +51,8 @@ import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.fragments.app.NewsfeedFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.ProfileFragment;
+import uk.openvk.android.refresh.user_interface.list_adapters.NewsfeedToolbarSpinnerAdapter;
+import uk.openvk.android.refresh.user_interface.list_items.ToolbarSpinnerItem;
 
 public class AppActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public Handler handler;
@@ -69,6 +74,8 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
     private ActionBarDrawerToggle toggle;
     private ProfileFragment profileFragment;
     private FragmentTransaction ft;
+    private ArrayList<ToolbarSpinnerItem> tbSpinnerItems;
+    private NewsfeedToolbarSpinnerAdapter tbSpinnerAdapter;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -99,6 +106,14 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
                 drawer.open();
             }
         });
+        tbSpinnerItems = new ArrayList<>();
+        tbSpinnerItems.add(new ToolbarSpinnerItem(getResources().getString(R.string.nav_news), getResources().getString(R.string.my_news_item), 60));
+        tbSpinnerItems.add(new ToolbarSpinnerItem(getResources().getString(R.string.nav_news), getResources().getString(R.string.all_news_item), 61));
+        tbSpinnerAdapter = new NewsfeedToolbarSpinnerAdapter(this, tbSpinnerItems);
+        ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setAdapter(tbSpinnerAdapter);
+        ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+        ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
     }
 
     @Override
@@ -153,10 +168,16 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
         if (itemId == R.id.home) {
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
             ft.show(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
+            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                    .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
         } else if(itemId == R.id.profile) {
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
             ft.show(Objects.requireNonNull(fm.findFragmentByTag("profile")));
+            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                    .findViewById(R.id.spinner)).setVisibility(View.GONE);
             profileFragment.setData(account.user);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_profile);
         }
         ft.commit();
     }

@@ -51,4 +51,7 @@
     <string name="error_parsing">Невозможно обработать ответ</string>
     <string name="error_subtitle">Проверьте подключение к сети и повторите попытку.</string>
     <string name="error_subtitle_instance">Пожалуйста, повторите позже или обратитесь к системному администратору.</string>
+
+    <string name="my_news_item">Подписки</string>
+    <string name="all_news_item">Все новости</string>
 </resources>

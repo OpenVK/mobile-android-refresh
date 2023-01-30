@@ -51,4 +51,7 @@
     <string name="error_instance">Instance unavailable</string>
     <string name="error_subtitle">Please check your network connection and try again.</string>
     <string name="error_subtitle_instance">Please try again later or contact system administrator.</string>
+
+    <string name="my_news_item">Subscriptions</string>
+    <string name="all_news_item">All news</string>
 </resources>

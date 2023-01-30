@@ -11,12 +11,18 @@
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
     </style>
 
     <style name="ApplicationTheme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="backgroundColor">@color/primaryDarkColor</item>
         <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
     </style>
 
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">

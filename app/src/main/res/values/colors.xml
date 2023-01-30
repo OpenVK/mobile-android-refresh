@@ -8,5 +8,7 @@
     <color name="navbarColor">#ffffff</color>
     <color name="newsfeedBackgroundColor">#dfdfdf</color>
     <color name="backgroundColor">#ffffff</color>
+    <color name="onPrimaryTextColor">#ffffff</color>
+    <color name="onSecondaryTextColor">#b6ffffff</color>
     <color name="statusBarColor">#2b6ebb</color>
 </resources>
