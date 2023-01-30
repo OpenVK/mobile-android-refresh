@@ -8,4 +8,5 @@
     <color name="navbarColor">#202020</color>
     <color name="newsfeedBackgroundColor">#000000</color>
     <color name="backgroundColor">#000000</color>
+    <color name="statusBarColor">#202020</color>
 </resources>

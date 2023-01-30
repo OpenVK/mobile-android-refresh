@@ -17,14 +17,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <com.google.android.material.appbar.MaterialToolbar
-                style="@style/Widget.MaterialComponents.Toolbar.Surface"
                 android:id="@+id/app_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ApplicationTheme.Toolbar"
                 app:menu="@menu/app_main"
                 app:navigationIcon="@drawable/ic_menu"
-                app:title="@string/app_name" />
+                app:title="@string/app_name"
+                app:contentInsetStartWithNavigation="0dp"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.fragment.app.FragmentContainerView

@@ -106,7 +106,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 post_text.setVisibility(View.GONE);
             }
             try {
-                Glide.with(ctx).load(String.format("%s/newsfeed_photo_attachments/newsfeed_attachment_o%sp%s", ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
+                Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_photo_attachments/newsfeed_attachment_o%sp%s", ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
                         .into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
                 ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                 ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {

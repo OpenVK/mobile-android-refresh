@@ -13,6 +13,12 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="ApplicationTheme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="backgroundColor">@color/primaryDarkColor</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+    </style>
+
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>

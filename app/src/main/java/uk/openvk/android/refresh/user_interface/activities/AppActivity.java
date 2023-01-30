@@ -121,18 +121,7 @@ public class AppActivity extends AppCompatActivity implements NavigationView.OnN
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, android.R.string.ok, android.R.string.cancel);
         drawer.addDrawerListener(toggle);
-        drawer.setStatusBarBackground(R.color.navbarColor);
-        if(getResources().getColor(R.color.navbarColor) == getResources().getColor(android.R.color.white)) {
-            try {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    WindowInsetsControllerCompat windowInsetsController =
-                            WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
-                    windowInsetsController.setAppearanceLightStatusBars(true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        drawer.setStatusBarBackground(R.color.statusBarColor);
         toggle.syncState();
     }
 

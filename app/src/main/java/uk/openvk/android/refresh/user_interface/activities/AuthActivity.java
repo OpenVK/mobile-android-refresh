@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.user_interface.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -65,6 +68,17 @@ public class AuthActivity extends AppCompatActivity {
         global_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         instance_prefs = getSharedPreferences("instance", 0);
         setAPIWrapper();
+        if(getResources().getColor(R.color.navbarColor) == getResources().getColor(android.R.color.white)) {
+            try {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    WindowInsetsControllerCompat windowInsetsController =
+                            WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+                    windowInsetsController.setAppearanceLightStatusBars(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setAPIWrapper() {
