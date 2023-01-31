@@ -133,7 +133,7 @@ public class AppActivity extends AppCompatActivity {
             ft.add(R.id.fragment_screen, newsfeedFragment, "newsfeed");
             ft.add(R.id.fragment_screen, messagesFragment, "messages");
             ft.add(R.id.fragment_screen, profileFragment, "profile");
-            ft.add(R.id.fragment_screen, mainSettingsFragment, "main_settings");
+            ft.add(R.id.fragment_screen, mainSettingsFragment, "settings");
             ft.add(R.id.fragment_screen, personalizationFragment, "personalization");
             ft.add(R.id.fragment_screen, aboutAppFragment, "about_app");
             ft.commit();
