@@ -260,6 +260,7 @@ public class AppActivity extends AppCompatActivity {
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("messages")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
+            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
@@ -269,6 +270,7 @@ public class AppActivity extends AppCompatActivity {
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("messages")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
+            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
@@ -278,6 +280,7 @@ public class AppActivity extends AppCompatActivity {
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
+            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
             profileFragment.setData(account.user);
@@ -292,6 +295,7 @@ public class AppActivity extends AppCompatActivity {
             ft.show(Objects.requireNonNull(fm.findFragmentByTag("profile")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
+            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
             profileFragment.setData(account.user);
@@ -302,6 +306,7 @@ public class AppActivity extends AppCompatActivity {
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
             ft.show(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
             ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
+            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
@@ -424,6 +429,7 @@ public class AppActivity extends AppCompatActivity {
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
+        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
         if(tag.equals("personalization")) {
             ft.show(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
