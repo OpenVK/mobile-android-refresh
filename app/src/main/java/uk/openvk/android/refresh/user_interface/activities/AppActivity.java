@@ -408,7 +408,7 @@ public class AppActivity extends AppCompatActivity {
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("messages")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
-        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
+        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("settings")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
         if(tag.equals("personalization")) {
