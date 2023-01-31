@@ -4,24 +4,33 @@
     <group android:id="@+id/main_group">
         <item android:title="@string/nav_news"
             android:icon="@drawable/ic_feed"
-            android:id="@+id/newsfeed_item" />
+            android:id="@+id/newsfeed"
+            android:checked="true"/>
         <item android:title="@string/nav_profile"
             android:icon="@drawable/ic_account"
-            android:id="@+id/profile_item" />
-        <item android:title="@string/nav_friends"
-            android:icon="@drawable/ic_person"
-            android:id="@+id/friends_item" />
+            android:id="@+id/profile" />
+        <!--
+            Not implemented yet.
+
+            <item android:title="@string/nav_friends"
+                android:icon="@drawable/ic_person"
+                android:id="@+id/friends" />
+        !-->
         <item android:title="@string/nav_messages"
             android:icon="@drawable/ic_chat"
-            android:id="@+id/messages_item" />
-        <item android:title="@string/nav_groups"
-            android:icon="@drawable/ic_people"
-            android:id="@+id/people_item" />
+            android:id="@+id/messages" />
+        <!--
+            Not implemented yet.
+
+            <item android:title="@string/nav_groups"
+                android:icon="@drawable/ic_people"
+                android:id="@+id/people" />
+        !-->
     </group>
 
     <group android:id="@+id/additional_group">
         <item android:title="@string/nav_settings"
             android:icon="@drawable/ic_settings"
-            android:id="@+id/settings_item" />
+            android:id="@+id/settings" />
     </group>
 </menu>

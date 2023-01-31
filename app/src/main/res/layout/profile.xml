@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/profile_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/newsfeed_swipe_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,14 +22,23 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <uk.openvk.android.refresh.user_interface.layouts.ProfileHeader
                     android:id="@+id/header"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                 </uk.openvk.android.refresh.user_interface.layouts.ProfileHeader>
+
+                <TextView
+                    android:id="@+id/wall_coming_soon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/wall_coming_soon" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </ScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

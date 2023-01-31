@@ -64,19 +64,19 @@ public class ProfileHeader extends LinearLayoutCompat {
             calendar.set(Calendar.SECOND, 0);
             long dt_sec = (calendar.getTimeInMillis());
             Date dt = new Date(dt_sec);
-            if((dt_midnight.getTime() - dt_sec) < 60000) {
+            if((calendar.getTimeInMillis() - dt_sec) < 60000) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, getResources().getString(R.string.date_just_now)));
                 } else {
                     ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_m, getResources().getString(R.string.date_just_now)));
                 }
-            } else if((dt_midnight.getTime() - dt_sec) < 86400000) {
+            } else if((calendar.getTimeInMillis() - dt_sec) < 86400000) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, new SimpleDateFormat("HH:mm").format(dt)));
                 } else {
                     ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_m, new SimpleDateFormat("HH:mm").format(dt)));
                 }
-            } else if((dt_midnight.getTime() - dt_sec) < (86400000 * 2)) {
+            } else if((calendar.getTimeInMillis() - dt_sec) < (86400000 * 2)) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s",
                             getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt))));
@@ -84,7 +84,7 @@ public class ProfileHeader extends LinearLayoutCompat {
                     ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s",
                             getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt))));
                 }
-            } else if((dt_midnight.getTime() - dt_sec) < 31536000000L) {
+            } else if((calendar.getTimeInMillis() - dt_sec) < 31536000000L) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s %s",
                             new SimpleDateFormat("d MMMM").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));

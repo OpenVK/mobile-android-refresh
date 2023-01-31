@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="primaryColor">#338cea</color>
-    <color name="primaryLightColor">#6fb2ff</color>
-    <color name="primaryDarkColor">#2b6ebb</color>
+    <color name="primaryColor">#202020</color>
     <color name="primaryRippleColor">#12ffffff</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="navbarColor">#202020</color>
@@ -11,4 +9,44 @@
     <color name="statusBarColor">#202020</color>
     <color name="onPrimaryTextColor">#ffffff</color>
     <color name="onSecondaryTextColor">#86ffffff</color>
+
+    <!-- Theme attributes. Default color (blue) !-->
+    <color name="primaryLightColor">#6fb2ff</color>
+    <color name="primaryDarkColor">#2b6ebb</color>
+    <color name="accentColor">#338cea</color>
+
+    <!-- Theme attributes. Default color (green) !-->
+    <color name="primaryLightGreen">#9bd766</color>
+    <color name="primaryDarkColorGreen">#537f2d</color>
+    <color name="accentColorGreen">#689f38</color>
+
+    <!-- Theme attributes. Color #3 (red) !-->
+    <color name="primaryLightRed">#fd8155</color>
+    <color name="primaryDarkColorRed">#943518</color>
+    <color name="accentColorRed">#d84c21</color>
+
+    <!-- Theme attributes. Color #4 (violet) !-->
+    <color name="primaryLightViolet">#b895ff</color>
+    <color name="primaryDarkColorViolet">#412b6e</color>
+    <color name="statusBarColorViolet">#412b6e</color>
+
+    <!-- Theme attributes. Color #5 (orange) !-->
+    <color name="primaryLightOrange">#f08223</color>
+    <color name="primaryDarkColorOrange">#994700</color>
+    <color name="accentColorOrange">#dd6700</color>
+
+    <!-- Theme attributes. Color #6 (teal) !-->
+    <color name="primaryLightTeal">#80cbc4</color>
+    <color name="primaryDarkColorTeal">#14171a</color>
+    <color name="accentColorTeal">#80cbc4</color>
+
+    <!-- Theme attributes. Color #7 (VK 5.x) !-->
+    <color name="primaryLightVK5">#71b1fa</color>
+    <color name="primaryDarkColorVK5">#5181b8</color>
+    <color name="accentColorVK5">#2975cc</color>
+
+    <!-- Theme attributes. Color #8 (gray) !-->
+    <color name="primaryLightGray">#afafaf</color>
+    <color name="primaryDarkColorGray">#6f6f6f</color>
+    <color name="accentColorGray">#8f8f8f</color>
 </resources>

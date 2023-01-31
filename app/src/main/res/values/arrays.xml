@@ -14,4 +14,15 @@
         <item>yesterday at %s</item>
         <item>%s at %s</item>
     </string-array>
+    
+    <string-array name="colors">
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Violet</item>
+        <item>Orange</item>
+        <item>Teal</item>
+        <item>VK 5.x</item>
+        <item>Gray</item>
+    </string-array>
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:enabled="false"
+        app:layout="@layout/pref_notif_layout" />
+
+    <PreferenceCategory
+        app:key="appearance_category"
+        app:title="@string/pref_appearance_category"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="accentColor"
+            app:title="@string/pref_accentcolor"
+            app:iconSpaceReserved="false"/>
+
+        <SwitchPreferenceCompat
+            app:key="darkTheme"
+            app:defaultValue="false"
+            app:title="@string/pref_darktheme"
+            app:summary="@string/pref_darktheme_summary"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>

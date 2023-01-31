@@ -36,13 +36,17 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/post_author_label"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="start"
+                android:singleLine="true"
                 android:text="Post author"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/profile_avatar"
                 app:layout_constraintTop_toTopOf="@+id/profile_avatar"
                 tools:ignore="HardcodedText" />
@@ -53,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:letterSpacing="0.07"
+                android:singleLine="true"
                 android:text="today/yesterday/etc"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/profile_avatar"

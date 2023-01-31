@@ -18,6 +18,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.api.attachments.Attachment;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.user_interface.layouts.PhotoAttachmentLayout;
 
@@ -64,6 +67,9 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         private final TextView poster_name;
         private final TextView post_info;
         private final TextView post_text;
+        private final TextView post_likes;
+        private final TextView post_comments;
+        private final TextView post_repost;
 
         public Holder(View view) {
             super(view);
@@ -71,6 +77,9 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             this.poster_name = (TextView) view.findViewById(R.id.post_author_label);
             this.post_info = (TextView) view.findViewById(R.id.post_info);
             this.post_text = (TextView) view.findViewById(R.id.post_text);
+            this.post_likes = (TextView) view.findViewById(R.id.like_btn);
+            this.post_comments = (TextView) view.findViewById(R.id.comment_btn);
+            this.post_repost = (TextView) view.findViewById(R.id.repost_btn);
         }
 
         @SuppressLint("SimpleDateFormat")
@@ -105,22 +114,45 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             } else {
                 post_text.setVisibility(View.GONE);
             }
+            post_likes.setText(String.format("%s", item.counters.likes));
+            post_comments.setText(String.format("%s", item.counters.comments));
+            post_repost.setText(String.format("%s", item.counters.reposts));
             try {
-                Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_photo_attachments/newsfeed_attachment_o%sp%s", ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
-                        .into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
-
-                Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.owner_id))
-                        .centerCrop().into((ImageView) convertView.findViewById(R.id.profile_avatar));
-                ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
-                ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
+                boolean contains_photos = false;
+                if(item.attachments != null && item.attachments.size() > 0) {
+                    for(int pos = 0; pos < item.attachments.size(); pos++) {
+                        Attachment attachment = item.attachments.get(pos);
+                        if(attachment.type.equals("photo")) {
+                            contains_photos = true;
+                        }
                     }
-                });
+                }
+                Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.owner_id))
+                        .dontAnimate().diskCacheStrategy(DiskCacheStrategy.DATA).centerCrop().error(R.drawable.circular_avatar).into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
+                ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)).setImageTintList(null);
+                if(contains_photos) {
+                    ((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
+                    Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_photo_attachments/newsfeed_attachment_o%sp%s", ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
+                            .dontAnimate().diskCacheStrategy(DiskCacheStrategy.DATA).error(R.drawable.warning).into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
+                    ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
+                    ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
+                } else {
+                    ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.GONE);
+                }
+
             } catch (Exception ignored) {
 
             }
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }

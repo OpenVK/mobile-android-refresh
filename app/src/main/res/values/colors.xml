@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="primaryColor">#338cea</color>
-    <color name="primaryLightColor">#6fb2ff</color>
-    <color name="primaryDarkColor">#2b6ebb</color>
-    <color name="primaryRippleColor">#1267daff</color>
-    <color name="primaryTextColor">#000000</color>
+    <!-- Default color attributes !-->
     <color name="navbarColor">#ffffff</color>
     <color name="newsfeedBackgroundColor">#dfdfdf</color>
     <color name="backgroundColor">#ffffff</color>
     <color name="onPrimaryTextColor">#ffffff</color>
     <color name="onSecondaryTextColor">#b6ffffff</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#b6000000</color>
+    <color name="colorHintBlack">#2f2f2f</color>
+    <color name="colorHint">?attr/colorOnSurface</color>
+
+    <!-- Theme attributes. Default color (blue) !-->
+    <color name="primaryColor">#338cea</color>
+    <color name="primaryLightColor">#6fb2ff</color>
+    <color name="primaryDarkColor">#2b6ebb</color>
+    <color name="primaryRippleColor">#126fb2ff</color>
     <color name="statusBarColor">#2b6ebb</color>
+    <color name="accentColor">#338cea</color>
+
+    <!-- Theme attributes. Color #2 (green) !-->
+    <color name="primaryColorGreen">#689f38</color>
+    <color name="primaryLightGreen">#9bd766</color>
+    <color name="primaryDarkColorGreen">#537f2d</color>
+    <color name="primaryRippleColorGreen">#12b3f17d</color>
+    <color name="statusBarColorGreen">#537f2d</color>
+    <color name="accentColorGreen">#689f38</color>
+
+    <!-- Theme attributes. Color #3 (red) !-->
+    <color name="primaryColorRed">#d84c21</color>
+    <color name="primaryLightRed">#fd8155</color>
+    <color name="primaryDarkColorRed">#943518</color>
+    <color name="primaryRippleColorRed">#12eb987b</color>
+    <color name="statusBarColorRed">#d84c21</color>
+    <color name="accentColorRed">#d84c21</color>
+
+    <!-- Theme attributes. Color #4 (violet) !-->
+    <color name="primaryColorViolet">#6941bb</color>
+    <color name="primaryLightViolet">#b895ff</color>
+    <color name="primaryDarkColorViolet">#412b6e</color>
+    <color name="primaryRippleColorViolet">#12905ef7</color>
+    <color name="statusBarColorViolet">#412b6e</color>
+    <color name="accentColorViolet">#6941bb</color>
+
+    <!-- Theme attributes. Color #5 (orange) !-->
+    <color name="primaryColorOrange">#dd6700</color>
+    <color name="primaryLightOrange">#f08223</color>
+    <color name="primaryDarkColorOrange">#994700</color>
+    <color name="primaryRippleColorOrange">#12e18f47</color>
+    <color name="statusBarColorOrange">#994700</color>
+    <color name="accentColorOrange">#dd6700</color>
+
+    <!-- Theme attributes. Color #6 (teal) !-->
+    <color name="primaryColorTeal">#263238</color>
+    <color name="primaryLightTeal">#009688</color>
+    <color name="primaryDarkColorTeal">#14171a</color>
+    <color name="primaryRippleColorTeal">#12009688</color>
+    <color name="statusBarColorTeal">#14171a</color>
+    <color name="accentColorTeal">#009688</color>
+
+    <!-- Theme attributes. Color #7 (VK 5.x) !-->
+    <color name="primaryColorVK5">#5181b8</color>
+    <color name="primaryLightVK5">#71b1fa</color>
+    <color name="primaryDarkColorVK5">#5181b8</color>
+    <color name="primaryRippleVK5">#1297cdfc</color>
+    <color name="statusBarVK5">#5181b8</color>
+    <color name="accentColorVK5">#2975cc</color>
+
+    <!-- Theme attributes. Color #8 (gray) !-->
+    <color name="primaryColorGray">#5a5a5a</color>
+    <color name="primaryLightGray">#8f8f8f</color>
+    <color name="primaryDarkColorGray">#2a2a2a</color>
+    <color name="primaryRippleColorGray">#128f8f8f</color>
+    <color name="statusBarColorGray">#484747</color>
+    <color name="accentColorGray">#5a5a5a</color>
 </resources>

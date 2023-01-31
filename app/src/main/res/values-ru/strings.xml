@@ -50,8 +50,28 @@
     <string name="error_instance">Инстанция недоступна</string>
     <string name="error_parsing">Невозможно обработать ответ</string>
     <string name="error_subtitle">Проверьте подключение к сети и повторите попытку.</string>
-    <string name="error_subtitle_instance">Пожалуйста, повторите позже или обратитесь к системному администратору.</string>
+    <string name="error_subtitle_instance">Повторите попытку позже или обратитесь к системному администратору.</string>
 
     <string name="my_news_item">Подписки</string>
     <string name="all_news_item">Все новости</string>
+
+    <string name="your_last_message">Вы: %s</string>
+
+    <string name="pref_appearance_category">Внешний вид</string>
+    <string name="pref_personalization">Персонализация</string>
+    <string name="pref_others">Прочее</string>
+    <string name="pref_about_app">О приложении</string>
+    <string name="pref_accentcolor">Основной цвет</string>
+    <string name="pref_darktheme">Темная тема</string>
+    <string name="pref_darktheme_summary">Комфортно в темное время суток и для экономии заряда</string>
+    <string name="loading">Загрузка…</string>
+    <string name="wall_coming_soon">Стена появится в следующих версиях, а пока собираем отзывы.</string>
+    <string name="sett_app_restart_required">Настройки вступят в силу после перезапуска приложения.</string>
+
+    <string name="not_implemented">На данный момент такая функция не реализована. Следите за обновлениями.</string>
+    <string name="not_supported">На данный момент такая функция не поддерживается. Следите за обновлениями.</string>
+
+    <string name="version_subtitle">Версия %s</string>
+    <string name="app_license_text">Эта программа является свободным програмнным обеспечением: вы можете распространять и/или изменять его в соответствии с условиями GNU (Affero) General Public License версии 3.0 (https://www.gnu.org/licenses/agpl.txt) или поздней версии, опубликованной Фондом свободного программного обеспечения.\n\nБЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ВКЛЮЧАЯ КОММЕРЧЕСКУЮ ЦЕННОСТЬ ИЛИ ПРИГОДНОСТЬ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</string>
+    <string name="source_code_btn">Исходный код</string>
 </resources>

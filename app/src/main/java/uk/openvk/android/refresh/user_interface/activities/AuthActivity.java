@@ -15,11 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -46,8 +49,14 @@ public class AuthActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.ApplicationTheme_NoActionBar);
         super.onCreate(savedInstanceState);
+        global_prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        if(global_prefs.getBoolean("dark_theme", false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         setContentView(R.layout.auth_screen);
         auth_layout = findViewById(R.id.auth_layout);
         auth_layout.setOnKeyboardStateListener(new OnKeyboardStateListener() {

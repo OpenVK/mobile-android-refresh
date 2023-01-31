@@ -6,4 +6,15 @@
         <item>вчера в %s</item>
         <item>%s в %s</item>
     </string-array>
+
+    <string-array name="colors">
+        <item>Голубой</item>
+        <item>Красный</item>
+        <item>Зеленый</item>
+        <item>Фиолетовый</item>
+        <item>Оранжевый</item>
+        <item>Бирюзовый</item>
+        <item>ВКонтакте 5.x</item>
+        <item>В оттенках серого</item>
+    </string-array>
 </resources>

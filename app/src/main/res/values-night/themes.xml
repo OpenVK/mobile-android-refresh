@@ -1,21 +1,251 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="ApplicationTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimary">@color/primaryLightColor</item>
         <item name="colorPrimaryVariant">@color/primaryColor</item>
-        <item name="rippleColor">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/primaryColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="rippleColor">@color/primaryLightColor</item>
+        <item name="colorAccent">@color/primaryLightColor</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
     </style>
 
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryColor</item>
-        <item name="rippleColor">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/primaryColor</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightColor</item>
+        <item name="colorPrimaryVariant">@color/accentColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightColor</item>
+        <item name="colorAccent">@color/primaryLightColor</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightColor</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primaryLightRed</item>
+        <item name="colorPrimaryVariant">@color/primaryColorRed</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorRed</item>
+        <item name="rippleColor">@color/primaryLightRed</item>
+        <item name="colorAccent">@color/primaryLightRed</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color2.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightRed</item>
+        <item name="colorPrimaryVariant">@color/primaryColorRed</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorRed</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightRed</item>
+        <item name="colorAccent">@color/primaryLightRed</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightRed</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color3" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primaryLightGreen</item>
+        <item name="colorPrimaryVariant">@color/primaryColorGreen</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorGreen</item>
+        <item name="rippleColor">@color/primaryLightGreen</item>
+        <item name="colorAccent">@color/primaryLightGreen</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color3.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightGreen</item>
+        <item name="colorPrimaryVariant">@color/primaryColorGreen</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorGreen</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightGreen</item>
+        <item name="colorAccent">@color/primaryLightGreen</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightGreen</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color4" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primaryLightViolet</item>
+        <item name="colorPrimaryVariant">@color/primaryColorViolet</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorViolet</item>
+        <item name="rippleColor">@color/primaryLightViolet</item>
+        <item name="colorAccent">@color/primaryLightViolet</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color4.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightViolet</item>
+        <item name="colorPrimaryVariant">@color/primaryColorViolet</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorViolet</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightViolet</item>
+        <item name="colorAccent">@color/primaryLightViolet</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightViolet</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color5" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primaryLightOrange</item>
+        <item name="colorPrimaryVariant">@color/primaryColorOrange</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorOrange</item>
+        <item name="rippleColor">@color/primaryLightOrange</item>
+        <item name="colorAccent">@color/primaryLightOrange</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color5.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightOrange</item>
+        <item name="colorPrimaryVariant">@color/primaryColorOrange</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorOrange</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightOrange</item>
+        <item name="colorAccent">@color/primaryLightOrange</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightOrange</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color6" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primaryLightTeal</item>
+        <item name="colorPrimaryVariant">@color/primaryColorTeal</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorTeal</item>
+        <item name="rippleColor">@color/primaryLightTeal</item>
+        <item name="colorAccent">@color/primaryLightTeal</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color6.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightTeal</item>
+        <item name="colorPrimaryVariant">@color/primaryColorTeal</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorTeal</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightTeal</item>
+        <item name="colorAccent">@color/primaryLightTeal</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightTeal</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color7" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primaryLightTeal</item>
+        <item name="colorPrimaryVariant">@color/primaryColorTeal</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorTeal</item>
+        <item name="rippleColor">@color/primaryLightTeal</item>
+        <item name="colorAccent">@color/primaryLightTeal</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color7.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightVK5</item>
+        <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorVK5</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightVK5</item>
+        <item name="colorAccent">@color/primaryLightVK5</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightVK5</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color8" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primaryLightGray</item>
+        <item name="colorPrimaryVariant">@color/primaryColorGray</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
+        <item name="rippleColor">@color/primaryLightGray</item>
+        <item name="colorAccent">@color/primaryLightGray</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color8.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightGray</item>
+        <item name="colorPrimaryVariant">@color/primaryColorGray</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightGray</item>
+        <item name="colorAccent">@color/primaryLightGray</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightGray</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
     </style>
 
     <style name="ApplicationTheme.Navigation" parent="Widget.MaterialComponents.BottomNavigationView">

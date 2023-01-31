@@ -10,7 +10,7 @@ public class PhotoAttachment implements Parcelable {
     public String url;
     public String original_url;
     public String filename;
-    public Bitmap photo;
+    public boolean loaded;
     public String error;
 
     public PhotoAttachment() {
