@@ -97,6 +97,7 @@ public class AppActivity extends AppCompatActivity {
     private MainSettingsFragment mainSettingsFragment;
     private PersonalizationFragment personalizationFragment;
     private AboutApplicationFragment aboutAppFragment;
+    private Fragment selectedFragment;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -127,6 +128,7 @@ public class AppActivity extends AppCompatActivity {
         setNavDrawer();
         setAppBar();
         if (newsfeedFragment != null) {
+            FragmentManager fm = getSupportFragmentManager();
             ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_screen, newsfeedFragment, "newsfeed");
             ft.add(R.id.fragment_screen, messagesFragment, "messages");
@@ -141,6 +143,8 @@ public class AppActivity extends AppCompatActivity {
             ft.hide(mainSettingsFragment);
             ft.hide(personalizationFragment);
             ft.hide(aboutAppFragment);
+            selectedFragment = newsfeedFragment;
+            ft.show(selectedFragment);
             ft.commit();
         }
     }
@@ -250,37 +254,22 @@ public class AppActivity extends AppCompatActivity {
     }
 
     public void switchNavItem(MenuItem item) {
-        Fragment selectedFragment = null;
         int itemId = item.getItemId();
         FragmentManager fm = getSupportFragmentManager();
         ft = getSupportFragmentManager().beginTransaction();
+        ft.hide(selectedFragment);
         if (itemId == R.id.home) {
-            ft.show(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("messages")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
         } else if (itemId == R.id.newsfeed) {
-            ft.show(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("messages")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
         } else if(itemId == R.id.messages) {
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
-            ft.show(Objects.requireNonNull(fm.findFragmentByTag("messages")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
             profileFragment.setData(account.user);
@@ -290,27 +279,19 @@ public class AppActivity extends AppCompatActivity {
             }
             messages.getConversations(ovk_api);
         } else if(itemId == R.id.profile) {
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("messages")));
-            ft.show(Objects.requireNonNull(fm.findFragmentByTag("profile")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
             profileFragment.setData(account.user);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_profile);
         } else if(itemId == R.id.settings) {
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("messages")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
-            ft.show(Objects.requireNonNull(fm.findFragmentByTag("main_settings")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
-            ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
+            ft.hide(selectedFragment);
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
         }
+        ft.show(selectedFragment);
         ft.commit();
     }
 
