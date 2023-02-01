@@ -154,7 +154,7 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                     editor.putString("theme_color", "gray");
                 }
                 editor.apply();
-                setPreferenceSummary(findPreference("avatarsShape"), "theme_color");
+                setPreferenceSummary(findPreference("accentColor"), "theme_color");
                 dialog.dismiss();
             }
         });

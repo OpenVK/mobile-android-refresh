@@ -50,8 +50,7 @@ public class OvkAPIWrapper {
         this.ctx = ctx;
         error = new Error();
         try {
-            httpClient = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
-                    .retryOnConnectionFailure(false).build();
+            httpClient = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -103,13 +102,8 @@ public class OvkAPIWrapper {
     public void authorize(String username, String password) {
         error.description = "";
         String url;
-        if(use_https) {
-            url = String.format("https://%s/token?username=%s&password=%s&grant_type=password&client_name=%s&2fa_supported=1", server, Strings.urlEncode(username), Strings.urlEncode(password), client_name);
-            if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s... (Secured)", server));
-        } else {
-            url = String.format("http://%s/token?username=%s&password=%s&grant_type=password&client_name=%s&2fa_supported=1", server, Strings.urlEncode(username), Strings.urlEncode(password), client_name);
-            if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s...", server));
-        }
+        url = String.format("http://%s/token?username=%s&password=%s&grant_type=password&client_name=%s&2fa_supported=1", server, Strings.urlEncode(username), Strings.urlEncode(password), client_name);
+        if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s... (Secured)", server));
         final String fUrl = url;
         Runnable httpRunnable = new Runnable() {
             private Request request = null;
@@ -155,6 +149,7 @@ public class OvkAPIWrapper {
                             Log.e("OpenVK API", String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
                         sendMessage(HandlerMessages.CONNECTION_TIMEOUT, error.description);
+                        e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
                         sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
@@ -172,13 +167,8 @@ public class OvkAPIWrapper {
     public void authorize(String username, String password, String code) {
         error.description = "";
         String url;
-        if(use_https) {
-            url = String.format("https://%s/token?username=%s&password=%s&grant_type=password&code=%s&client_name=%s&2fa_supported=1", server, Strings.urlEncode(username), Strings.urlEncode(password), code, client_name);
-            if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s (Secured)...", server));
-        } else {
-            url = String.format("http://%s/token?username=%s&password=%s&grant_type=password&code=%s&client_name=%s&2fa_supported=1", server, Strings.urlEncode(username), Strings.urlEncode(password), code, client_name);
-            if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s...", server));
-        }
+        url = String.format("http://%s/token?username=%s&password=%s&grant_type=password&code=%s&client_name=%s&2fa_supported=1", server, Strings.urlEncode(username), Strings.urlEncode(password), code, client_name);
+        if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s...", server));
         final String fUrl = url;
         Runnable httpRunnable = new Runnable() {
             private Request request = null;
@@ -245,13 +235,8 @@ public class OvkAPIWrapper {
     public void sendAPIMethod(final String method, final String args, final String where) {
         error.description = "";
         String url;
-        if(use_https) {
-            url = String.format("https://%s/method/%s?%s&access_token=%s", server, method, args, access_token);
-            if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s (Secured)...\r\nMethod: %s\r\nArguments: %s\r\nWhere: %s", server, method, args, where));
-        } else {
-            url = String.format("http://%s/method/%s?%s&access_token=%s", server, method, args, access_token);
-            if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s...\r\nMethod: %s\r\nArguments: %s\r\nWhere: %s", server, method, args, where));
-        }
+        url = String.format("http://%s/method/%s?%s&access_token=%s", server, method, args, access_token);
+        if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s...\r\nMethod: %s\r\nArguments: %s\r\nWhere: %s", server, method, args, where));
         final String fUrl = url;
         Runnable httpRunnable = new Runnable() {
             private Request request = null;
@@ -497,13 +482,8 @@ public class OvkAPIWrapper {
     public void sendAPIMethod(final String method, final String args) {
         error.description = "";
         String url;
-        if(use_https) {
-            url = String.format("https://%s/method/%s?%s&access_token=%s", server, method, args, access_token);
-            Log.v("OpenVK API", String.format("Connecting to %s (Secured)...\r\nMethod: %s\r\nArguments: %s", server, method, args));
-        } else {
-            url = String.format("http://%s/method/%s?%s&access_token=%s", server, method, args, access_token);
-            Log.v("OpenVK API", String.format("Connecting to %s...\r\nMethod: %s\r\nArguments: %s", server, method, args));
-        }
+        url = String.format("http://%s/method/%s?%s&access_token=%s", server, method, args, access_token);
+        Log.v("OpenVK API", String.format("Connecting to %s...\r\nMethod: %s\r\nArguments: %s", server, method, args));
         final String fUrl = url;
         Runnable httpRunnable = new Runnable() {
             private Request request = null;
@@ -715,13 +695,8 @@ public class OvkAPIWrapper {
     public void sendAPIMethod(final String method) {
         error.description = "";
         String url;
-        if(use_https) {
-            url = String.format("https://%s/method/%s?access_token=%s", server, method, access_token);
-            if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s (Secured)...\r\nMethod: %s\r\nArguments: [without arguments]", server, method));
-        } else {
-            url = String.format("http://%s/method/%s?access_token=%s", server, method, access_token);
-            if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s...\r\nMethod: %s\r\nArguments: [without arguments]", server, method));
-        }
+        url = String.format("http://%s/method/%s?access_token=%s", server, method, access_token);
+        if(logging_enabled) Log.v("OpenVK API", String.format("Connecting to %s...\r\nMethod: %s\r\nArguments: [without arguments]", server, method));
         final String fUrl = url;
         Runnable httpRunnable = new Runnable() {
             private Request request = null;
