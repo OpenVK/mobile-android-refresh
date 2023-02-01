@@ -24,6 +24,8 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.user_interface.GlideApp;
+import uk.openvk.android.refresh.user_interface.activities.AppActivity;
+import uk.openvk.android.refresh.user_interface.layouts.ErrorLayout;
 import uk.openvk.android.refresh.user_interface.layouts.ProgressLayout;
 import uk.openvk.android.refresh.user_interface.list_adapters.ConversationsAdapter;
 
@@ -47,6 +49,14 @@ public class MessagesFragment extends Fragment {
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
+        ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                    ((AppActivity) requireActivity()).refreshConversations(false);
+                }
+            }
+        });
         ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(typedValue.data);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         return view;
@@ -57,7 +67,7 @@ public class MessagesFragment extends Fragment {
         this.conversations = conversations;
         conversationsView = (RecyclerView) view.findViewById(R.id.conversations_rv);
         if(conversationsAdapter == null) {
-            conversationsAdapter = new ConversationsAdapter(getContext(), this.conversations, account);
+            conversationsAdapter = new ConversationsAdapter(requireActivity(), this.conversations, account);
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             conversationsView.setLayoutManager(llm);
@@ -71,7 +81,7 @@ public class MessagesFragment extends Fragment {
     }
 
     public void disableUpdateState() {
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setRefreshing(false);
+        ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setRefreshing(false);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -85,5 +95,11 @@ public class MessagesFragment extends Fragment {
         if(conversationsAdapter != null) {
             conversationsAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void showProgress() {
+        ((ErrorLayout) view.findViewById(R.id.error_layout)).setVisibility(View.GONE);
+        ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setVisibility(View.GONE);
+        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
     }
 }

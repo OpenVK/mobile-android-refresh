@@ -27,6 +27,7 @@ import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Error;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.activities.AuthActivity;
+import uk.openvk.android.refresh.user_interface.activities.ConversationActivity;
 
 public class OvkAPIWrapper {
 
@@ -920,7 +921,6 @@ public class OvkAPIWrapper {
             ((AuthActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) ctx).handler.sendMessage(msg);
-        }
 //        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
 //            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
@@ -929,8 +929,9 @@ public class OvkAPIWrapper {
 //            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("MainSettingsActivity")) {
 //            ((MainSettingsActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
-//            ((ConversationActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
+            ((ConversationActivity) ctx).handler.sendMessage(msg);
+        }
 //        } else if(ctx.getClass().getSimpleName().equals("NewPostActivity")) {
 //            ((NewPostActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("QuickSearchActivity")) {
@@ -951,7 +952,6 @@ public class OvkAPIWrapper {
             ((AuthActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) ctx).handler.sendMessage(msg);
-        }
 //        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
 //            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
@@ -960,8 +960,9 @@ public class OvkAPIWrapper {
 //            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("MainSettingsActivity")) {
 //            ((MainSettingsActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
-//            ((ConversationActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
+            ((ConversationActivity) ctx).handler.sendMessage(msg);
+        }
 //        } else if(ctx.getClass().getSimpleName().equals("NewPostActivity")) {
 //            ((NewPostActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("QuickSearchActivity")) {
@@ -983,7 +984,6 @@ public class OvkAPIWrapper {
             ((AuthActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) ctx).handler.sendMessage(msg);
-        }
 //        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
 //            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
@@ -992,8 +992,9 @@ public class OvkAPIWrapper {
 //            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("MainSettingsActivity")) {
 //            ((MainSettingsActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
-//            ((ConversationActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
+            ((ConversationActivity) ctx).handler.sendMessage(msg);
+        }
 //        } else if(ctx.getClass().getSimpleName().equals("NewPostActivity")) {
 //            ((NewPostActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("QuickSearchActivity")) {

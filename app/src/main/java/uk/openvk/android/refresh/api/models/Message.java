@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import uk.openvk.android.refresh.api.wrappers.JSONParser;
 
 public class Message {
+    public final int type;
     public long id;
     public boolean isIncoming;
     public boolean isError;
@@ -24,7 +25,8 @@ public class Message {
     private JSONParser parser;
 
     @SuppressLint("SimpleDateFormat")
-    public Message(long id, boolean incoming, boolean error, long _timestamp, String _text, Context ctx) {
+    public Message(int type, long id, boolean incoming, boolean error, long _timestamp, String _text, Context ctx) {
+        this.type = type;
         this.id = id;
         isIncoming = incoming;
         isError = error;

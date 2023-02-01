@@ -4,10 +4,13 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+
 public class OvkApplication extends Application {
     public String version;
     private SharedPreferences global_prefs;
     private SharedPreferences instance_prefs;
+    public OvkAPIWrapper ovk_api;
 
     @Override
     public void onCreate() {

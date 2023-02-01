@@ -2,20 +2,16 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/main_group">
+        <item android:title="@string/nav_profile"
+            android:icon="@drawable/ic_account"
+            android:id="@+id/profile" />
         <item android:title="@string/nav_news"
             android:icon="@drawable/ic_feed"
             android:id="@+id/newsfeed"
             android:checked="true"/>
-        <item android:title="@string/nav_profile"
-            android:icon="@drawable/ic_account"
-            android:id="@+id/profile" />
-        <!--
-            Not implemented yet.
-
-            <item android:title="@string/nav_friends"
-                android:icon="@drawable/ic_person"
-                android:id="@+id/friends" />
-        !-->
+        <item android:title="@string/nav_friends"
+            android:icon="@drawable/ic_person"
+            android:id="@+id/friends" />
         <item android:title="@string/nav_messages"
             android:icon="@drawable/ic_chat"
             android:id="@+id/messages" />

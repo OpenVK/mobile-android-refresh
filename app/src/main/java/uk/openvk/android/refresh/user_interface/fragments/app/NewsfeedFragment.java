@@ -20,8 +20,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.attachments.Attachment;
-import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
@@ -40,7 +38,7 @@ public class NewsfeedFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.newsfeed, container, false);
+        view = inflater.inflate(R.layout.newsfeed_fragment, container, false);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);

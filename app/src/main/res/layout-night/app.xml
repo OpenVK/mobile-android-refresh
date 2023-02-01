@@ -61,7 +61,8 @@
             app:layout_constraintTop_toBottomOf="@+id/fragment_screen"
             app:itemIconTint="@color/bnv_items"
             app:itemTextColor="@color/bnv_items"
-            app:menu="@menu/app_bottom_nav" />
+            app:menu="@menu/app_bottom_nav"
+            app:labelVisibilityMode="labeled"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

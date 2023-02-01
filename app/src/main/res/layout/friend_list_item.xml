@@ -42,29 +42,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:singleLine="true"
                 android:text="Conversation title"
                 android:textColor="@color/primaryTextColor"
-                android:textStyle="bold"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText,InefficientWeight" />
 
-            <TextView
-                android:id="@+id/conversation_time"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:text="5:12"
-                tools:ignore="HardcodedText,RtlHardcoded" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/last_message_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:singleLine="true"
-            android:text="You: Last message text"
-            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <View

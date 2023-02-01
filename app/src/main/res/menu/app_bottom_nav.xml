@@ -4,6 +4,11 @@
         android:id="@+id/home"
         android:icon="@drawable/ic_home"
         android:title="@string/bottom_nav_home" />
+
+    <item
+        android:icon="@drawable/ic_person"
+        android:id="@+id/friends"
+        android:title="@string/nav_friends"/>
     <item
         android:id="@+id/messages"
         android:icon="@drawable/ic_chat"

@@ -41,6 +41,7 @@
     <string name="date_at">at</string>
 
     <string name="online">Online</string>
+    <string name="offline">Offline</string>
     <string name="last_seen_profile_m">last seen %s</string>
     <string name="last_seen_profile_f">last seen %s</string>
     <string name="date_just_now">just now</string>
@@ -75,4 +76,5 @@
     <string name="version_subtitle">Version %s</string>
     <string name="app_license_text">This program is free software: you may redistribute and/or modify it under the terms GNU (Affero) General Public License v3.0 (https://www.gnu.org/licenses/agpl.txt) or a later version published by the Free Software Foundation.\n\nWITHOUT ANY WARRANTY, NOT EVEN FOR MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</string>
     <string name="source_code_btn">Source code</string>
+    <string name="enter_msg">Message</string>
 </resources>
