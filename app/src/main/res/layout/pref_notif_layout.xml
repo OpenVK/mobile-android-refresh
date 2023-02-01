@@ -10,14 +10,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/warningColor"
+        android:drawableLeft="@drawable/ic_warning_amber"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
         android:paddingLeft="12dp"
         android:paddingTop="8dp"
         android:paddingRight="12dp"
         android:paddingBottom="8dp"
         android:text="@string/sett_app_restart_required"
         android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

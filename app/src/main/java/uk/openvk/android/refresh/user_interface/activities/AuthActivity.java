@@ -1,5 +1,6 @@
 package uk.openvk.android.refresh.user_interface.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -46,7 +47,9 @@ public class AuthActivity extends AppCompatActivity {
     private AuthFragment authFragment;
     private SharedPreferences instance_prefs;
     private SharedPreferences global_prefs;
+    private Snackbar snackbar;
 
+    @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +122,7 @@ public class AuthActivity extends AppCompatActivity {
         ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.dynamic_fragment_layout, new AuthProgressFragment());
         ft.commit();
+        snackbar.dismiss();
         if(ovk_api == null) {
             ovk_api = new OvkAPIWrapper(this);
             ovk_api.setServer(instance);
@@ -146,13 +150,22 @@ public class AuthActivity extends AppCompatActivity {
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
-            Snackbar.make(auth_layout, R.string.invalid_email_or_password, Snackbar.LENGTH_LONG).show();
+            snackbar = Snackbar.make(auth_layout, R.string.invalid_email_or_password, Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            snackTextView.setMaxLines(3);
+            snackTextView.setTextColor(getResources().getColor(R.color.primaryTextColor));
+            snackbar.setBackgroundTint(Color.WHITE);
+            snackbar.setActionTextColor(getResources().getColor(R.color.accentColor));
+            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
+            snackActionBtn.setLetterSpacing(0);
+            snackbar.show();
         } else if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
-            Snackbar snackbar = Snackbar.make(auth_layout, R.string.auth_error_network, Snackbar.LENGTH_INDEFINITE).setAction(R.string.retry_btn, new View.OnClickListener() {
+            snackbar = Snackbar.make(auth_layout, R.string.auth_error_network, Snackbar.LENGTH_INDEFINITE).setAction(R.string.retry_btn, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     signIn(instance, username, password);
@@ -161,8 +174,9 @@ public class AuthActivity extends AppCompatActivity {
             View snackbarView = snackbar.getView();
             TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
             snackTextView.setMaxLines(3);
+            snackTextView.setTextColor(getResources().getColor(R.color.primaryTextColor));
             snackbar.setBackgroundTint(Color.WHITE);
-            snackbar.setActionTextColor(getResources().getColor(R.color.primaryColor));
+            snackbar.setActionTextColor(getResources().getColor(R.color.accentColor));
             Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
@@ -171,13 +185,31 @@ public class AuthActivity extends AppCompatActivity {
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
-            Snackbar.make(auth_layout, R.string.auth_instance_unavailable, Snackbar.LENGTH_LONG).show();
+            snackbar = Snackbar.make(auth_layout, R.string.auth_instance_unavailable, Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            snackbar.setBackgroundTint(Color.WHITE);
+            snackTextView.setMaxLines(3);
+            snackTextView.setTextColor(getResources().getColor(R.color.primaryTextColor));
+            snackbar.setActionTextColor(getResources().getColor(R.color.accentColor));
+            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
+            snackActionBtn.setLetterSpacing(0);
+            snackbar.show();
         } else if(message == HandlerMessages.UNKNOWN_ERROR) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
-            Snackbar.make(auth_layout, R.string.auth_unknown_error, Snackbar.LENGTH_LONG).show();
+            snackbar = Snackbar.make(auth_layout, R.string.auth_unknown_error, Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            snackTextView.setMaxLines(3);
+            snackbar.setBackgroundTint(Color.WHITE);
+            snackTextView.setTextColor(getResources().getColor(R.color.primaryTextColor));
+            snackbar.setActionTextColor(getResources().getColor(R.color.accentColor));
+            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
+            snackActionBtn.setLetterSpacing(0);
+            snackbar.show();
         }
     }
 
