@@ -210,7 +210,7 @@ public class AppActivity extends AppCompatActivity {
         toggle.syncState();
     }
 
-    private void setNavView() {
+    public void setNavView() {
         NavigationView navView = findViewById(R.id.nav_view);
         BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
         b_navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -247,52 +247,14 @@ public class AppActivity extends AppCompatActivity {
                 }
             });
         }
-        String profile_name = getResources().getString(R.string.loading);
-        ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name)).setText(profile_name);
-        ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
-                .setVisibility(View.GONE);
-        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView)((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
-        Global.setAvatarShape(this, avatar);
-    }
-
-    public static void setAvatarShape(Context ctx, ShapeableImageView imageView) {
-        try {
-            SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-            if (global_prefs.contains("avatar_shape")) {
-                if (global_prefs.getString("avatar_shape", "circle").equals("circle")) {
-                    float size = (float)((double)imageView.getLayoutParams().height / 2);
-                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
-                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
-                            .setTopRightCorner(CornerFamily.ROUNDED, size)
-                            .setBottomRightCornerSize(size)
-                            .setBottomLeftCornerSize(size).build());
-                } else if (global_prefs.getString("avatar_shape", "circle").equals("round32dp")) {
-                    float size = 32;
-                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
-                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
-                            .setTopRightCorner(CornerFamily.ROUNDED, size)
-                            .setBottomRightCornerSize(size)
-                            .setBottomLeftCornerSize(size).build());
-                } else if (global_prefs.getString("avatar_shape", "circle").equals("round16dp")) {
-                    float size = 16;
-                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
-                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
-                            .setTopRightCorner(CornerFamily.ROUNDED, size)
-                            .setBottomRightCornerSize(size)
-                            .setBottomLeftCornerSize(size).build());
-                } else {
-                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().withCornerSize(0).toBuilder().build());
-                }
-            } else {
-                imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
-                        .setTopLeftCorner(CornerFamily.ROUNDED, (float)(imageView.getLayoutParams().height / 2))
-                        .setTopRightCorner(CornerFamily.ROUNDED, (float)(imageView.getLayoutParams().height / 2))
-                        .setBottomRightCornerSize((float)(imageView.getLayoutParams().height / 2))
-                        .setBottomLeftCornerSize((float)(imageView.getLayoutParams().height / 2)).build());
-            }
-        } catch (Exception ignored) {
-
+        if(account == null || account.user == null) {
+            String profile_name = getResources().getString(R.string.loading);
+            ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name)).setText(profile_name);
+            ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
+                    .setVisibility(View.GONE);
         }
+        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
+        Global.setAvatarShape(this, avatar);
     }
 
     public void switchNavItem(MenuItem item) {
@@ -377,7 +339,7 @@ public class AppActivity extends AppCompatActivity {
                 newsfeed.parse(this, downloadManager, data.getString("response"), "medium", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.disableUpdateState();
-            }  else if(message == HandlerMessages.LIKES_ADD) {
+            } else if(message == HandlerMessages.LIKES_ADD) {
                 likes.parse(data.getString("response"));
                 if (global_prefs.getString("current_screen", "").equals("newsfeed")) {
                     newsfeedFragment.select(likes.position, "likes", 1);
@@ -519,5 +481,10 @@ public class AppActivity extends AppCompatActivity {
             newsfeedFragment.select(0, "likes", "delete");
         }
         likes.delete(ovk_api, item.owner_id, item.post_id, position);
+    }
+
+    public void setAvatarShape() {
+        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
+        Global.setAvatarShape(this, avatar);
     }
 }

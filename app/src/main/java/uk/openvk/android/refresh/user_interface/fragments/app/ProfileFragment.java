@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
             Glide.with(ctx).load(
                     String.format("%s/photos_cache/account_avatar/avatar_%s",
                             ctx.getCacheDir().getAbsolutePath(), user.id))
-                    .into((ImageView) view.findViewById(R.id.profile_avatar));
+                    .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
         }
     }
 }

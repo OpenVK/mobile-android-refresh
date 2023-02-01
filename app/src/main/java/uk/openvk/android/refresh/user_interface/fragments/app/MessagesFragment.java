@@ -70,6 +70,10 @@ public class MessagesFragment extends Fragment {
         ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
+    public void disableUpdateState() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setRefreshing(false);
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     public void loadAvatars(ArrayList<Conversation> conversations) {
         Context ctx = requireContext();

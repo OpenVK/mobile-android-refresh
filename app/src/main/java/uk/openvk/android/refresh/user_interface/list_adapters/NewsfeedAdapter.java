@@ -4,7 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorSpace;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.text.method.LinkMovementMethod;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +19,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.text.SimpleDateFormat;
@@ -86,7 +97,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             this.post_repost = (TextView) view.findViewById(R.id.repost_btn);
         }
 
-        @SuppressLint("SimpleDateFormat")
+        @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
         void bind(final int position) {
             final WallPost item = getItem(position);
             poster_name.setText(item.name);
@@ -122,10 +133,18 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             post_comments.setText(String.format("%s", item.counters.comments));
             post_repost.setText(String.format("%s", item.counters.reposts));
 
+            TypedValue accentColor = new TypedValue();
+            ctx.getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, accentColor, true);
             if(item.counters.isLiked) {
+                int color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent, Color.BLACK);
                 post_likes.setSelected(true);
+                post_likes.setTextColor(color);
+                setTextViewDrawableColor(post_likes, color);
             } else {
+                int color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorControlNormal, Color.BLACK);
                 post_likes.setSelected(false);
+                post_likes.setTextColor(color);
+                setTextViewDrawableColor(post_likes, color);
             }
 
             if(item.counters.enabled) {
@@ -200,6 +219,14 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
             } catch (Exception ignored) {
 
+            }
+        }
+    }
+
+    private void setTextViewDrawableColor(TextView textView, int color) {
+        for (Drawable drawable : textView.getCompoundDrawablesRelative()) {
+            if (drawable != null) {
+                drawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
             }
         }
     }

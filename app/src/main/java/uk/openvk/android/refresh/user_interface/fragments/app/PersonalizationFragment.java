@@ -19,6 +19,7 @@ import androidx.preference.SwitchPreferenceCompat;
 import java.util.Objects;
 
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 
 public class PersonalizationFragment extends PreferenceFragmentCompat {
     private SharedPreferences global_prefs;
@@ -153,6 +154,7 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                     editor.putString("theme_color", "gray");
                 }
                 editor.apply();
+                setPreferenceSummary(findPreference("avatarsShape"), "theme_color");
                 dialog.dismiss();
             }
         });
@@ -205,6 +207,10 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                     editor.putString("avatars_shape", "rectangular");
                 }
                 editor.apply();
+                setPreferenceSummary(findPreference("avatarsShape"), "avatars_shape");
+                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                    ((AppActivity) requireActivity()).setAvatarShape();
+                }
                 dialog.dismiss();
             }
         });

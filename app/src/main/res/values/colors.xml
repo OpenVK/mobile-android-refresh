@@ -74,4 +74,5 @@
     <color name="primaryRippleColorGray">#128f8f8f</color>
     <color name="statusBarColorGray">#484747</color>
     <color name="accentColorGray">#5a5a5a</color>
+    <color name="warningColor">#FFDB70</color>
 </resources>
