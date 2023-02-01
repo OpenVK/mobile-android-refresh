@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="8dp"
-                android:maxWidth="200dp"
+                android:maxWidth="160dp"
                 android:text="Incoming message text example"
                 android:textColor="@android:color/white"
                 tools:ignore="HardcodedText"
