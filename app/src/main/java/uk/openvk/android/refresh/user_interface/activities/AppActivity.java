@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +22,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -39,8 +35,11 @@ import androidx.preference.PreferenceManager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -58,6 +57,7 @@ import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.models.User;
+import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.fragments.app.AboutApplicationFragment;
@@ -251,6 +251,48 @@ public class AppActivity extends AppCompatActivity {
         ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name)).setText(profile_name);
         ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
                 .setVisibility(View.GONE);
+        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView)((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
+        Global.setAvatarShape(this, avatar);
+    }
+
+    public static void setAvatarShape(Context ctx, ShapeableImageView imageView) {
+        try {
+            SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+            if (global_prefs.contains("avatar_shape")) {
+                if (global_prefs.getString("avatar_shape", "circle").equals("circle")) {
+                    float size = (float)((double)imageView.getLayoutParams().height / 2);
+                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
+                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
+                            .setTopRightCorner(CornerFamily.ROUNDED, size)
+                            .setBottomRightCornerSize(size)
+                            .setBottomLeftCornerSize(size).build());
+                } else if (global_prefs.getString("avatar_shape", "circle").equals("round32dp")) {
+                    float size = 32;
+                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
+                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
+                            .setTopRightCorner(CornerFamily.ROUNDED, size)
+                            .setBottomRightCornerSize(size)
+                            .setBottomLeftCornerSize(size).build());
+                } else if (global_prefs.getString("avatar_shape", "circle").equals("round16dp")) {
+                    float size = 16;
+                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
+                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
+                            .setTopRightCorner(CornerFamily.ROUNDED, size)
+                            .setBottomRightCornerSize(size)
+                            .setBottomLeftCornerSize(size).build());
+                } else {
+                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().withCornerSize(0).toBuilder().build());
+                }
+            } else {
+                imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
+                        .setTopLeftCorner(CornerFamily.ROUNDED, (float)(imageView.getLayoutParams().height / 2))
+                        .setTopRightCorner(CornerFamily.ROUNDED, (float)(imageView.getLayoutParams().height / 2))
+                        .setBottomRightCornerSize((float)(imageView.getLayoutParams().height / 2))
+                        .setBottomLeftCornerSize((float)(imageView.getLayoutParams().height / 2)).build());
+            }
+        } catch (Exception ignored) {
+
+        }
     }
 
     public void switchNavItem(MenuItem item) {
@@ -262,22 +304,24 @@ public class AppActivity extends AppCompatActivity {
             selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+            ((NewsfeedFragment) selectedFragment).refreshAdapter();
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
         } else if (itemId == R.id.newsfeed) {
             selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
+            ((NewsfeedFragment) selectedFragment).refreshAdapter();
         } else if(itemId == R.id.messages) {
             selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
             profileFragment.setData(account.user);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_messages);
-            if(messages == null) {
-                messages = new Messages();
+            if(conversations == null) {
+                messages.getConversations(ovk_api);
             }
-            messages.getConversations(ovk_api);
+            ((MessagesFragment) selectedFragment).refreshAdapter();
         } else if(itemId == R.id.profile) {
             selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
@@ -333,7 +377,21 @@ public class AppActivity extends AppCompatActivity {
                 newsfeed.parse(this, downloadManager, data.getString("response"), "medium", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.disableUpdateState();
-            } else if (message == HandlerMessages.USERS_GET_ALT) {
+            }  else if(message == HandlerMessages.LIKES_ADD) {
+                likes.parse(data.getString("response"));
+                if (global_prefs.getString("current_screen", "").equals("newsfeed")) {
+                    newsfeedFragment.select(likes.position, "likes", 1);
+                } else if (global_prefs.getString("current_screen", "").equals("profile")) {
+                    //((WallLayout) profileLayout.findViewById(R.id.wall_layout)).select(likes.position, "likes", 1);
+                }
+            } else if(message == HandlerMessages.LIKES_DELETE) {
+                likes.parse(data.getString("response"));
+                if (selectedFragment == newsfeedFragment) {
+                    newsfeedFragment.select(likes.position, "likes", 0);
+                } else if (selectedFragment == profileFragment) {
+                    newsfeedFragment.select(likes.position, "likes", 0);
+                }
+            }else if (message == HandlerMessages.USERS_GET_ALT) {
                 users.parse(data.getString("response"));
                 account.user = users.getList().get(0);
                 account.user.downloadAvatar(downloadManager, "high", "account_avatar");
@@ -411,13 +469,55 @@ public class AppActivity extends AppCompatActivity {
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("settings")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
-        if(tag.equals("personalization")) {
-            ft.show(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
+        if(tag.equals("newsfeed")) {
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
+            ft.show(selectedFragment);
+            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                    .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
+        } else if(tag.equals("personalization")) {
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("personalization"));
+            ft.show(selectedFragment);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
-        } else {
-            ft.show(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
+        } else if(tag.equals("about_app")) {
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("about_app"));
+            ft.show(selectedFragment);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_about_app);
         }
         ft.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if(selectedFragment != Objects.requireNonNull(fm.findFragmentByTag("newsfeed"))) {
+            switchFragment("newsfeed");
+        } else {
+            System.exit(0);
+        }
+    }
+
+    public void addLike(int position, String post, View view) {
+        WallPost item;
+        if (global_prefs.getString("current_screen", "").equals("profile")) {
+            item = wall.getWallItems().get(position);
+            //((WallLayout) profileLayout.findViewById(R.id.wall_layout)).select(position, "likes", "add");
+        } else {
+            item = newsfeed.getWallPosts().get(position);
+            newsfeedFragment.select(position, "likes", "add");
+        }
+        likes.add(ovk_api, item.owner_id, item.post_id, position);
+    }
+
+    public void deleteLike(int position, String post, View view) {
+        WallPost item;
+        if (global_prefs.getString("current_screen", "").equals("profile")) {
+            item = wall.getWallItems().get(position);
+           // ((WallLayout) profileLayout.findViewById(R.id.wall_layout)).select(0, "likes", "delete");
+        } else {
+            item = newsfeed.getWallPosts().get(position);
+            newsfeedFragment.select(0, "likes", "delete");
+        }
+        likes.delete(ovk_api, item.owner_id, item.post_id, position);
     }
 }

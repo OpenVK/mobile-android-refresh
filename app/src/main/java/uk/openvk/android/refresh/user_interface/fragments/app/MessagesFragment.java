@@ -75,4 +75,11 @@ public class MessagesFragment extends Fragment {
         Context ctx = requireContext();
         conversationsAdapter.notifyDataSetChanged();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void refreshAdapter() {
+        if(conversationsAdapter != null) {
+            conversationsAdapter.notifyDataSetChanged();
+        }
+    }
 }

@@ -15,7 +15,7 @@
         <item>%s at %s</item>
     </string-array>
     
-    <string-array name="colors">
+    <string-array name="theme_colors">
         <item>Blue</item>
         <item>Red</item>
         <item>Green</item>
@@ -24,5 +24,12 @@
         <item>Teal</item>
         <item>VK 5.x</item>
         <item>Gray</item>
+    </string-array>
+
+    <string-array name="avatars_shape">
+        <item>Circle</item>
+        <item>Round (32px)</item>
+        <item>Round (16px)</item>
+        <item>Rectangular</item>
     </string-array>
 </resources>

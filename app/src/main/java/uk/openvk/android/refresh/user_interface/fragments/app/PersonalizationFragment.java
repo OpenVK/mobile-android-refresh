@@ -43,6 +43,19 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
+        setPreferenceSummary(accentColor, "theme_color");
+
+        Preference avatars_shape = findPreference("avatarsShape");
+        assert avatars_shape != null;
+        avatars_shape.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showAvatarsShapeChangeDialog();
+                return false;
+            }
+        });
+        setPreferenceSummary(avatars_shape, "avatars_shape");
+
         SwitchPreferenceCompat darkTheme = (SwitchPreferenceCompat) findPreference("darkTheme");
         if(global_prefs.getBoolean("dark_theme", false)) {
             Objects.requireNonNull(darkTheme).setChecked(true);
@@ -63,12 +76,62 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
+
+    }
+
+    private void setPreferenceSummary(Preference pref, String tag) {
+        if(tag.equals("theme_color")) {
+            String value = global_prefs.getString("theme_color", "blue");
+            switch (value) {
+                case "blue":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[0]);
+                    break;
+                case "red":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[1]);
+                    break;
+                case "green":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[2]);
+                    break;
+                case "violet":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[3]);
+                    break;
+                case "orange":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[4]);
+                    break;
+                case "teal":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[5]);
+                    break;
+                case "vk5x":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[6]);
+                    break;
+                case "gray":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[7]);
+                    break;
+            }
+        } else if(tag.equals("avatars_shape")) {
+            String value = global_prefs.getString("avatars_shape", "blue");
+            switch (value) {
+                case "circle":
+                    pref.setSummary(getResources().getStringArray(R.array.avatars_shape)[0]);
+                    break;
+                case "round32px":
+                    pref.setSummary(getResources().getStringArray(R.array.avatars_shape)[1]);
+                    break;
+                case "rond16px":
+                    pref.setSummary(getResources().getStringArray(R.array.avatars_shape)[2]);
+                    break;
+                case "rectangular":
+                    pref.setSummary(getResources().getStringArray(R.array.avatars_shape)[3]);
+                    break;
+            }
+        }
+
     }
 
     private void showAccentColorChangeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(R.string.pref_accentcolor);
-        builder.setSingleChoiceItems(R.array.colors, 0, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(R.array.theme_colors, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SharedPreferences.Editor editor = global_prefs.edit();
@@ -121,6 +184,46 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 break;
             case "gray":
                 dialog.getListView().setItemChecked(7, true);
+                break;
+        }
+    }
+
+    private void showAvatarsShapeChangeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(R.string.pref_avatars_shape);
+        builder.setSingleChoiceItems(R.array.avatars_shape, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPreferences.Editor editor = global_prefs.edit();
+                if(which == 0) {
+                    editor.putString("avatars_shape", "circle");
+                } else if(which == 1) {
+                    editor.putString("avatars_shape", "round32px");
+                } else if(which == 2) {
+                    editor.putString("avatars_shape", "round16px");
+                } else if(which == 3) {
+                    editor.putString("avatars_shape", "rectangular");
+                }
+                editor.apply();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        String value = global_prefs.getString("avatars_shape", "blue");
+        switch (value) {
+            default:
+                dialog.getListView().setItemChecked(0, true);
+                break;
+            case "round32px":
+                dialog.getListView().setItemChecked(1, true);
+                break;
+            case "round16px":
+                dialog.getListView().setItemChecked(2, true);
+                break;
+            case "rectangular":
+                dialog.getListView().setItemChecked(3, true);
                 break;
         }
     }

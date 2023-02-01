@@ -74,4 +74,5 @@
     <string name="version_subtitle">Версия %s</string>
     <string name="app_license_text">Эта программа является свободным програмнным обеспечением: вы можете распространять и/или изменять его в соответствии с условиями GNU (Affero) General Public License версии 3.0 (https://www.gnu.org/licenses/agpl.txt) или поздней версии, опубликованной Фондом свободного программного обеспечения.\n\nБЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ВКЛЮЧАЯ КОММЕРЧЕСКУЮ ЦЕННОСТЬ ИЛИ ПРИГОДНОСТЬ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</string>
     <string name="source_code_btn">Исходный код</string>
+    <string name="pref_avatars_shape">Форма аватаров</string>
 </resources>

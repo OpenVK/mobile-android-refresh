@@ -1,6 +1,14 @@
 package uk.openvk.android.refresh;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.view.View;
+
+import androidx.preference.PreferenceManager;
+
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -48,6 +56,46 @@ public class Global {
             ctx.setTheme(R.style.ApplicationTheme_Color7_NoActionBar);
         } else if(value.equals("gray")) {
             ctx.setTheme(R.style.ApplicationTheme_Color8_NoActionBar);
+        }
+    }
+
+    public static void setAvatarShape(Context ctx, ShapeableImageView imageView) {
+        try {
+            SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+            if (global_prefs.contains("avatars_shape")) {
+                if (global_prefs.getString("avatars_shape", "circle").equals("circle")) {
+                    float size = (float)((double)imageView.getLayoutParams().height / 2);
+                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
+                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
+                            .setTopRightCorner(CornerFamily.ROUNDED, size)
+                            .setBottomRightCornerSize(size)
+                            .setBottomLeftCornerSize(size).build());
+                } else if (global_prefs.getString("avatars_shape", "circle").equals("round32px")) {
+                    float size = 32;
+                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
+                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
+                            .setTopRightCorner(CornerFamily.ROUNDED, size)
+                            .setBottomRightCornerSize(size)
+                            .setBottomLeftCornerSize(size).build());
+                } else if (global_prefs.getString("avatars_shape", "circle").equals("round16px")) {
+                    float size = 16;
+                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
+                            .setTopLeftCorner(CornerFamily.ROUNDED, size)
+                            .setTopRightCorner(CornerFamily.ROUNDED, size)
+                            .setBottomRightCornerSize(size)
+                            .setBottomLeftCornerSize(size).build());
+                } else {
+                    imageView.setShapeAppearanceModel(new ShapeAppearanceModel().withCornerSize(0).toBuilder().build());
+                }
+            } else {
+                imageView.setShapeAppearanceModel(new ShapeAppearanceModel().toBuilder()
+                        .setTopLeftCorner(CornerFamily.ROUNDED, (float)(imageView.getLayoutParams().height / 2))
+                        .setTopRightCorner(CornerFamily.ROUNDED, (float)(imageView.getLayoutParams().height / 2))
+                        .setBottomRightCornerSize((float)(imageView.getLayoutParams().height / 2))
+                        .setBottomLeftCornerSize((float)(imageView.getLayoutParams().height / 2)).build());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

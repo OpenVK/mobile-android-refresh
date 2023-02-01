@@ -7,7 +7,7 @@
         <item>%s в %s</item>
     </string-array>
 
-    <string-array name="colors">
+    <string-array name="theme_colors">
         <item>Голубой</item>
         <item>Красный</item>
         <item>Зеленый</item>
@@ -16,5 +16,12 @@
         <item>Бирюзовый</item>
         <item>ВКонтакте 5.x</item>
         <item>В оттенках серого</item>
+    </string-array>
+
+    <string-array name="avatars_shape">
+        <item>Круглая</item>
+        <item>Скругленная (32 пикс.)</item>
+        <item>Скругленная (16 пикс.)</item>
+        <item>Прямоугольная</item>
     </string-array>
 </resources>

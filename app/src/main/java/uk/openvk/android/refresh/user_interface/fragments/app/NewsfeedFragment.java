@@ -70,7 +70,7 @@ public class NewsfeedFragment extends Fragment {
         Log.d("Newsfeed", String.format("Count: %s", wallPosts.size()));
         newsfeedView = (RecyclerView) view.findViewById(R.id.newsfeed_rv);
         if(newsfeedAdapter == null) {
-            newsfeedAdapter = new NewsfeedAdapter(getContext(), this.wallPosts);
+            newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts);
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             newsfeedView.setLayoutManager(llm);
@@ -121,5 +121,29 @@ public class NewsfeedFragment extends Fragment {
         ((ErrorLayout) view.findViewById(R.id.error_layout)).setVisibility(View.GONE);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void select(int position, String item, int value) {
+        if(item.equals("likes")) {
+            if(value == 1) {
+                wallPosts.get(position).counters.isLiked = true;
+            } else {
+                wallPosts.get(position).counters.isLiked = false;
+            }
+            newsfeedAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void select(int position, String item, String value) {
+        if(item.equals("likes")) {
+            if(value.equals("add")) {
+                wallPosts.get(position).counters.isLiked = true;
+            } else {
+                wallPosts.get(position).counters.isLiked = false;
+            }
+            newsfeedAdapter.notifyDataSetChanged();
+        }
     }
 }

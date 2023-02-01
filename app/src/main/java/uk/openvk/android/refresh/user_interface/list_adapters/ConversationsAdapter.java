@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.models.Conversation;
@@ -69,13 +70,13 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             } else {
                 last_msg_text.setText(item.lastMsgText);
             }
+            Global.setAvatarShape(ctx, convertView.findViewById(R.id.conversation_avatar));
             ((ImageView) convertView.findViewById(R.id.conversation_avatar)).setImageTintList(null);
             GlideApp.with(ctx)
                     .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.peer_id))
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
                     .centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.conversation_avatar));
-
         }
     }
 

@@ -28,9 +28,11 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.Attachment;
 import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.layouts.PhotoAttachmentLayout;
 
 public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder> {
@@ -70,6 +72,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         private final TextView post_likes;
         private final TextView post_comments;
         private final TextView post_repost;
+        private boolean likeAdded = false;
+        private boolean likeDeleted = false;
 
         public Holder(View view) {
             super(view);
@@ -117,6 +121,54 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             post_likes.setText(String.format("%s", item.counters.likes));
             post_comments.setText(String.format("%s", item.counters.comments));
             post_repost.setText(String.format("%s", item.counters.reposts));
+
+            if(item.counters.isLiked) {
+                post_likes.setSelected(true);
+            } else {
+                post_likes.setSelected(false);
+            }
+
+            if(item.counters.enabled) {
+                post_likes.setEnabled(true);
+                if(item.counters.isLiked && likeAdded) {
+                    post_likes.setText(String.format("%s", (item.counters.likes + 1)));
+                } else if(!item.counters.isLiked && likeDeleted) {
+                    post_likes.setText(String.format("%s", (item.counters.likes - 1)));
+                } else {
+                    post_likes.setText(String.format("%s", item.counters.likes));
+                }
+            } else {
+                post_likes.setEnabled(false);
+            }
+
+            post_likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (item.counters.isLiked) {
+                        if(!likeAdded) {
+                            likeDeleted = true;
+                        }
+                        if (ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
+                            //((ProfileIntentActivity) ctx).deleteLike(position, "post", view);
+                        } else if (ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
+                            //((GroupIntentActivity) ctx).deleteLike(position, "post", view);
+                        } else if (ctx.getClass().getSimpleName().equals("AppActivity")) {
+                            ((AppActivity) ctx).deleteLike(position, "post", view);
+                        }
+                    } else {
+                        if(!likeDeleted) {
+                            likeAdded = true;
+                        }
+                        if (ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
+                            //((ProfileIntentActivity) ctx).addLike(position, "post", view);
+                        } else if (ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
+                            //((GroupIntentActivity) ctx).addLike(position, "post", view);
+                        } else if (ctx.getClass().getSimpleName().equals("AppActivity")) {
+                            ((AppActivity) ctx).addLike(position, "post", view);
+                        }
+                    }
+                }
+            });
             try {
                 boolean contains_photos = false;
                 if(item.attachments != null && item.attachments.size() > 0) {
@@ -127,7 +179,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         }
                     }
                 }
-                Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.owner_id))
+                Global.setAvatarShape(ctx, ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)));
+                Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.author_id))
                         .dontAnimate().diskCacheStrategy(DiskCacheStrategy.DATA).centerCrop().error(R.drawable.circular_avatar).into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
                 ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)).setImageTintList(null);
                 if(contains_photos) {

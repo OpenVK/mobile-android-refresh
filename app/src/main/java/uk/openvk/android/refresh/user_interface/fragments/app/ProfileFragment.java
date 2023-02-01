@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.user_interface.layouts.PhotoAttachmentLayout;
@@ -34,6 +35,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile, container, false);
         header = (ProfileHeader) view.findViewById(R.id.header);
+        Global.setAvatarShape(requireContext(), header.findViewById(R.id.profile_avatar));
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
         if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
@@ -52,6 +54,7 @@ public class ProfileFragment extends Fragment {
             header.setStatus(user.status);
             header.setOnline(user.online);
             Context ctx = requireContext();
+            Global.setAvatarShape(getContext(), view.findViewById(R.id.profile_avatar));
             Glide.with(ctx).load(
                     String.format("%s/photos_cache/account_avatar/avatar_%s",
                             ctx.getCacheDir().getAbsolutePath(), user.id))

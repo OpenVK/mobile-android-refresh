@@ -17,6 +17,11 @@
             app:title="@string/pref_accentcolor"
             app:iconSpaceReserved="false"/>
 
+        <Preference
+            app:key="avatarsShape"
+            app:title="@string/pref_avatars_shape"
+            app:iconSpaceReserved="false"/>
+
         <SwitchPreferenceCompat
             app:key="darkTheme"
             app:defaultValue="false"
