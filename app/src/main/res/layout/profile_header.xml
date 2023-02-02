@@ -33,15 +33,32 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/profile_name"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Profile name"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Profile name"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="18sp"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/verified_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:contentDescription="TODO"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_verified"
+                    tools:ignore="ContentDescription,HardcodedText" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
                 android:id="@+id/last_seen"
@@ -49,13 +66,15 @@
                 android:layout_height="wrap_content"
                 android:text="today/yesterday/etc"
                 android:textSize="12sp"
+                android:letterSpacing="0.04"
                 tools:ignore="HardcodedText,TextContrastCheck" />
 
             <TextView
                 android:id="@+id/profile_status"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
+                android:maxLines="2"
                 android:text="Profile status"
                 android:textColor="@color/primaryTextColor"
                 tools:ignore="HardcodedText" />

@@ -46,11 +46,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
     public class Holder extends RecyclerView.ViewHolder {
         private final View convertView;
         private final TextView friend_title;
+        private final ImageView verified_icon;
 
         public Holder(View view) {
             super(view);
             this.convertView = view;
             this.friend_title = (TextView) view.findViewById(R.id.friend_title);
+            this.verified_icon = (ImageView) view.findViewById(R.id.verified_icon);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -64,6 +66,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
                     .centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.friend_avatar));
+            if(item.verified) {
+                verified_icon.setVisibility(View.VISIBLE);
+            } else {
+                verified_icon.setVisibility(View.GONE);
+            }
         }
     }
 

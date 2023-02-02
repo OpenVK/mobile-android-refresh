@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +29,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
@@ -52,10 +54,13 @@ public class ConversationActivity extends AppCompatActivity {
     private SharedPreferences instance_prefs;
     private SendTextBottomPanel bottomPanel;
     private uk.openvk.android.refresh.api.models.Message last_sended_message;
+    private SharedPreferences global_prefs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
         instance_prefs = getSharedPreferences("instance", 0);
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();

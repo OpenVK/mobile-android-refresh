@@ -50,6 +50,21 @@
             app:layout_constraintTop_toBottomOf="@id/app_bar"
             app:navGraph="@navigation/drawer" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:visibility="gone"
+            app:backgroundTint="?attr/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_screen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_post_add"
+            app:tint="#000000"
+            tools:ignore="SpeakableTextPresentCheck" />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_view"
             style="@style/ApplicationTheme.Toolbar"
@@ -62,7 +77,9 @@
             app:itemIconTint="@color/bnv_items"
             app:itemTextColor="@color/bnv_items"
             app:menu="@menu/app_bottom_nav"
-            app:labelVisibilityMode="labeled"/>
+            app:labelVisibilityMode="labeled">
+
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

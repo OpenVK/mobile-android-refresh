@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:layout_marginStart="8dp"
-        app:cardBackgroundColor="?attr/colorAccent"
+        app:cardBackgroundColor="?attr/colorPrimaryDark"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
         app:cardUseCompatPadding="false"

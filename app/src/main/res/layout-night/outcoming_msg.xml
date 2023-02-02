@@ -72,6 +72,5 @@
         app:layout_constraintEnd_toStartOf="@+id/sending_progress"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_error"
-        app:tint="?android:attr/colorError"
-        tools:ignore="ContentDescription,NewApi" />
+        tools:ignore="ContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

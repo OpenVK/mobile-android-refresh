@@ -58,6 +58,7 @@
     <color name="primaryRippleColorTeal">#12009688</color>
     <color name="statusBarColorTeal">#14171a</color>
     <color name="accentColorTeal">#009688</color>
+    <color name="accentColorTeal_reserve">#009688</color>
 
     <!-- Theme attributes. Color #7 (VK 5.x) !-->
     <color name="primaryColorVK5">#5181b8</color>

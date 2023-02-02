@@ -330,6 +330,9 @@ public class AppActivity extends AppCompatActivity {
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
             profileFragment.setData(account.user);
+            if(wall.getWallItems() == null) {
+                wall.get(ovk_api, account.user.id, 50);
+            }
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_profile);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
             b_navView.getMenu().getItem(3).setChecked(true);
@@ -371,6 +374,10 @@ public class AppActivity extends AppCompatActivity {
         friends = new Friends();
         groups = new Groups();
         wall = new Wall();
+    }
+
+    public Fragment getSelectedFragment() {
+        return selectedFragment;
     }
 
     private void receiveState(int message, Bundle data) {
@@ -426,6 +433,9 @@ public class AppActivity extends AppCompatActivity {
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createAdapter(this, friendsList, "friends");
                 friendsFragment.disableUpdateState();
+            } else if (message == HandlerMessages.WALL_GET) {
+                wall.parse(this, downloadManager, "high", data.getString("response"));
+                profileFragment.createWallAdapter(this, wall.getWallItems());
             } else if(message == HandlerMessages.CONVERSATIONS_AVATARS) {
                 messagesFragment.loadAvatars(conversations);
             } else if(message == HandlerMessages.NEWSFEED_AVATARS || message == HandlerMessages.NEWSFEED_ATTACHMENTS) {
@@ -520,9 +530,9 @@ public class AppActivity extends AppCompatActivity {
 
     public void addLike(int position, String post, View view) {
         WallPost item;
-        if (global_prefs.getString("current_screen", "").equals("profile")) {
+        if (selectedFragment == profileFragment) {
             item = wall.getWallItems().get(position);
-            //((WallLayout) profileLayout.findViewById(R.id.wall_layout)).select(position, "likes", "add");
+            profileFragment.wallSelect(position, "likes", "add");
         } else {
             item = newsfeed.getWallPosts().get(position);
             newsfeedFragment.select(position, "likes", "add");
@@ -532,9 +542,9 @@ public class AppActivity extends AppCompatActivity {
 
     public void deleteLike(int position, String post, View view) {
         WallPost item;
-        if (global_prefs.getString("current_screen", "").equals("profile")) {
+        if (selectedFragment == profileFragment) {
             item = wall.getWallItems().get(position);
-           // ((WallLayout) profileLayout.findViewById(R.id.wall_layout)).select(0, "likes", "delete");
+            profileFragment.wallSelect(0, "likes", "delete");
         } else {
             item = newsfeed.getWallPosts().get(position);
             newsfeedFragment.select(0, "likes", "delete");

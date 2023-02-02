@@ -8,7 +8,8 @@
         <item name="colorAccent">@color/primaryLightColor</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
         <item name="colorOnSecondary">#86ffffff</item>
@@ -29,6 +30,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightColor</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
     <style name="ApplicationTheme.Color2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -39,7 +42,8 @@
         <item name="colorAccent">@color/primaryLightRed</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
         <item name="colorOnSecondary">#86ffffff</item>
@@ -60,6 +64,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightRed</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
     <style name="ApplicationTheme.Color3" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -70,7 +76,8 @@
         <item name="colorAccent">@color/primaryLightGreen</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
         <item name="colorOnSecondary">#86ffffff</item>
@@ -91,6 +98,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightGreen</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
     <style name="ApplicationTheme.Color4" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -101,7 +110,8 @@
         <item name="colorAccent">@color/primaryLightViolet</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
         <item name="colorOnSecondary">#86ffffff</item>
@@ -122,6 +132,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightViolet</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
     <style name="ApplicationTheme.Color5" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -132,7 +144,8 @@
         <item name="colorAccent">@color/primaryLightOrange</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
         <item name="colorOnSecondary">#86ffffff</item>
@@ -153,6 +166,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightOrange</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
     <style name="ApplicationTheme.Color6" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -163,7 +178,8 @@
         <item name="colorAccent">@color/primaryLightTeal</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
         <item name="colorOnSecondary">#86ffffff</item>
@@ -177,24 +193,27 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryLightTeal</item>
         <item name="colorPrimaryVariant">@color/primaryColorTeal</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorTeal</item>
+        <item name="colorPrimaryDark">@color/accentColorTeal_reserve</item>
         <!-- Customize your theme here. -->
         <item name="rippleColor">@color/primaryLightTeal</item>
         <item name="colorAccent">@color/primaryLightTeal</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightTeal</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
     <style name="ApplicationTheme.Color7" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/primaryLightTeal</item>
-        <item name="colorPrimaryVariant">@color/primaryColorTeal</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorTeal</item>
-        <item name="rippleColor">@color/primaryLightTeal</item>
-        <item name="colorAccent">@color/primaryLightTeal</item>
+        <item name="colorPrimary">@color/primaryLightVK5</item>
+        <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorVK5</item
+        <item name="rippleColor">@color/primaryLightVK5</item>
+        <item name="colorAccent">@color/primaryLightVK5</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
         <item name="colorOnSecondary">#86ffffff</item>
@@ -215,6 +234,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightVK5</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
     <style name="ApplicationTheme.Color8" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -225,7 +246,8 @@
         <item name="colorAccent">@color/primaryLightGray</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
         <item name="colorControlHighlight">@color/primaryRippleColor</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorOnPrimary">@color/backgroundColor</item>
         <item name="colorOnSecondary">#86ffffff</item>
@@ -246,9 +268,11 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightGray</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
-    <style name="ApplicationTheme.Navigation" parent="Widget.MaterialComponents.BottomNavigationView">
+    <style name="ApplicationTheme.BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="backgroundTint">@color/navbarColor</item>
         <item name="elevation">8dp</item>
     </style>

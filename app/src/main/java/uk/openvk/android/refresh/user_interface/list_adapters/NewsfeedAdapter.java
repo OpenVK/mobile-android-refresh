@@ -135,17 +135,18 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
             TypedValue accentColor = new TypedValue();
             ctx.getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, accentColor, true);
+            int color;
             if(item.counters.isLiked) {
-                int color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent, Color.BLACK);
+                color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent, Color.BLACK);
                 post_likes.setSelected(true);
-                post_likes.setTextColor(color);
-                setTextViewDrawableColor(post_likes, color);
             } else {
-                int color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorControlNormal, Color.BLACK);
+                color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorControlNormal, Color.BLACK);
                 post_likes.setSelected(false);
-                post_likes.setTextColor(color);
-                setTextViewDrawableColor(post_likes, color);
             }
+            post_likes.setTextColor(color);
+            setTextViewDrawableColor(post_likes, color);
+
+            setTextViewDrawableColor(post_repost, MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorControlNormal, Color.BLACK));
 
             if(item.counters.enabled) {
                 post_likes.setEnabled(true);
@@ -199,12 +200,27 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                     }
                 }
                 Global.setAvatarShape(ctx, ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)));
-                Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.author_id))
+                String local_avatar_frm;
+                String local_photo_frm;
+                if(ctx.getClass().getSimpleName().equals("AppActivity")) {
+                    if(((AppActivity) ctx).getSelectedFragment() != null &&
+                            ((AppActivity) ctx).getSelectedFragment().getClass().getSimpleName().equals("NewsfeedFragment")) {
+                        local_avatar_frm = "%s/photos_cache/newsfeed_avatars/avatar_%s";
+                        local_photo_frm = "%s/photos_cache/newsfeed_photo_attachments/newsfeed_attachment_o%sp%s";
+                    } else {
+                        local_avatar_frm = "%s/photos_cache/wall_avatars/avatar_%s";
+                        local_photo_frm = "%s/photos_cache/wall_photo_attachments/wall_attachment_o%sp%s";
+                    }
+                } else {
+                    local_avatar_frm = "%s/photos_cache/wall_avatars/avatar_%s";
+                    local_photo_frm = "%s/photos_cache/wall_photo_attachments/wall_attachment_o%sp%s";
+                }
+                Glide.with(ctx).load(String.format(local_avatar_frm, ctx.getCacheDir().getAbsolutePath(), item.author_id))
                         .dontAnimate().diskCacheStrategy(DiskCacheStrategy.DATA).centerCrop().error(R.drawable.circular_avatar).into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
                 ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)).setImageTintList(null);
                 if(contains_photos) {
                     ((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
-                    Glide.with(ctx).load(String.format("%s/photos_cache/newsfeed_photo_attachments/newsfeed_attachment_o%sp%s", ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
+                    Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
                             .dontAnimate().diskCacheStrategy(DiskCacheStrategy.DATA).error(R.drawable.warning).into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
                     ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                     ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {

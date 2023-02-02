@@ -65,7 +65,6 @@ public class NewsfeedFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public void createAdapter(Context ctx, ArrayList<WallPost> wallPosts) {
         this.wallPosts = wallPosts;
-        Log.d("Newsfeed", String.format("Count: %s", wallPosts.size()));
         newsfeedView = (RecyclerView) view.findViewById(R.id.newsfeed_rv);
         if(newsfeedAdapter == null) {
             newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts);

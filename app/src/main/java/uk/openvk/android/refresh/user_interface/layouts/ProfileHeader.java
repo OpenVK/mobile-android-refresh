@@ -120,12 +120,9 @@ public class ProfileHeader extends LinearLayoutCompat {
 
     public void setVerified(boolean verified, Context ctx) {
         if(verified) {
-            SpannableStringBuilder sb = new SpannableStringBuilder(name);
-            ImageSpan imageSpan;
-            imageSpan = new CenteredImageSpan(ctx.getApplicationContext(), R.drawable.ic_verified);
-            ((CenteredImageSpan) imageSpan).getDrawable().setBounds(0, 0, 0, (int)(6 * ctx.getResources().getDisplayMetrics().density));
-            sb.setSpan(imageSpan, name.length() - 1, name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ((TextView) findViewById(R.id.profile_name)).setText(sb);
+            findViewById(R.id.verified_icon).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.verified_icon).setVisibility(View.GONE);
         }
     }
 }

@@ -64,7 +64,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_screen"
             app:menu="@menu/app_bottom_nav"
-            app:labelVisibilityMode="labeled"/>
+            app:labelVisibilityMode="labeled" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_newpost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:visibility="gone"
+            app:backgroundTint="?attr/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_screen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_post_add"
+            app:tint="#ffffff"
+            tools:ignore="SpeakableTextPresentCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -73,6 +88,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:theme="@style/ApplicationTheme.Navigation"
         app:menu="@menu/app_nav_drawer"
         app:headerLayout="@layout/drawer_header"
         app:itemIconTint="@color/nv_items"

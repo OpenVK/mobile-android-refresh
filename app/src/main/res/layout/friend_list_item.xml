@@ -11,8 +11,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,15 +39,24 @@
 
             <TextView
                 android:id="@+id/friend_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
+                android:gravity="center"
                 android:singleLine="true"
-                android:text="Conversation title"
+                android:text="Friend first and last name"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="16sp"
                 tools:ignore="HardcodedText,InefficientWeight" />
+
+            <ImageView
+                android:id="@+id/verified_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_verified" />
 
         </LinearLayout>
 
