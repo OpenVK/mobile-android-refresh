@@ -207,7 +207,7 @@
     <style name="ApplicationTheme.Color7" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/primaryLightVK5</item>
         <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorVK5</item
+        <item name="colorPrimaryDark">@color/primaryDarkColorVK5</item>
         <item name="rippleColor">@color/primaryLightVK5</item>
         <item name="colorAccent">@color/primaryLightVK5</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
