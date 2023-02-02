@@ -79,7 +79,7 @@
     <string name="enter_msg">Message</string>
 
     <string name="new_post_title">New post</string>
-    <string name="whats_new_hint">What\'s new?</string>
+    <string name="whats_new_hint">Post text</string>
     <string name="send_item">Send</string>
     <string name="posting_error">An error occurred while posting. Please try again later.</string>
     <string name="posting_access_denied">You are not allowed to post on this wall.</string>

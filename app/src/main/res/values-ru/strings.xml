@@ -79,7 +79,7 @@
     <string name="enter_msg">Сообщение</string>
 
     <string name="new_post_title">Новая запись</string>
-    <string name="whats_new_hint">Что нового?</string>
+    <string name="whats_new_hint">Текст публикации</string>
     <string name="send_item">Отправить</string>
     <string name="posting_error">При отправке записи произошла ошибка. Повторите попытку позже.</string>
     <string name="posting_access_denied">Вы не имеете права публиковать запись на этой стене.</string>

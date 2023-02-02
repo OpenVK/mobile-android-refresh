@@ -66,14 +66,17 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
         Objects.requireNonNull(darkTheme).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = global_prefs.edit();
+                editor.putBoolean("dark_theme", Objects.requireNonNull(darkTheme).isChecked());
+                editor.apply();
                 if(Objects.requireNonNull(darkTheme).isChecked()) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
-                @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = global_prefs.edit();
-                editor.putBoolean("dark_theme", Objects.requireNonNull(darkTheme).isChecked());
-                editor.apply();
+                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                    ((AppActivity) requireActivity()).restart();
+                }
                 return true;
             }
         });

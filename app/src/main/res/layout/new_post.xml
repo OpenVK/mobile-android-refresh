@@ -33,6 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/app_toolbar">
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -44,7 +45,7 @@
                 android:gravity="start|top"
                 android:hint="@string/whats_new_hint"
                 android:inputType="textMultiLine|text"
-                android:maxLines="10"
+                android:maxLines="20"
                 android:minLines="2"
                 android:textColorHint="#616161"
                 tools:ignore="TextContrastCheck" />

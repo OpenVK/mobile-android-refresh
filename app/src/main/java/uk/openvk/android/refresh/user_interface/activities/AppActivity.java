@@ -106,6 +106,7 @@ public class AppActivity extends AppCompatActivity {
     private Fragment selectedFragment;
     private MenuItem prevBottomMenuItem;
     private FriendsFragment friendsFragment;
+    private String current_fragment;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -113,6 +114,14 @@ public class AppActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                current_fragment = extras.getString("current_fragment");
+            }
+        } else {
+            current_fragment = savedInstanceState.getString("current_fragment");
+        }
         if(global_prefs.getBoolean("dark_theme", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
@@ -159,6 +168,22 @@ public class AppActivity extends AppCompatActivity {
             ft.show(selectedFragment);
             ft.commit();
         }
+        if(current_fragment != null && current_fragment.equals("personalization")) {
+            ft.hide(selectedFragment);
+            selectedFragment = personalizationFragment;
+            ft.show(selectedFragment);
+        }
+    }
+
+    public void restart() {
+        Intent intent = new Intent(this, AppActivity.class);
+        if(selectedFragment != null) {
+            if (selectedFragment == personalizationFragment) {
+                intent.putExtra("current_fragment", "personalization");
+            }
+        }
+        startActivity(intent);
+        finishActivity(1);
     }
 
     private void setAppBar() {
