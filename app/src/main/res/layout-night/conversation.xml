@@ -29,6 +29,7 @@
         android:id="@+id/app_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@color/navbarColor"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/messages_view"
         app:layout_constraintEnd_toEndOf="parent"

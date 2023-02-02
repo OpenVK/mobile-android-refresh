@@ -109,11 +109,11 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
-            if((dt_midnight.getTime() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 86400000) {
+            if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 86400000) {
                 item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[1], new SimpleDateFormat("HH:mm").format(dt));
-            } else if((dt_midnight.getTime() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < (86400000 * 2)) {
+            } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < (86400000 * 2)) {
                 item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[2], new SimpleDateFormat("HH:mm").format(dt));
-            } else if((dt_midnight.getTime() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 31536000000L) {
+            } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 31536000000L) {
                 item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[3], new SimpleDateFormat("d MMMM").format(dt),
                         new SimpleDateFormat("HH:mm").format(dt));
             } else {

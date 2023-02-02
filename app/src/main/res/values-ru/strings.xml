@@ -77,4 +77,11 @@
     <string name="source_code_btn">Исходный код</string>
     <string name="pref_avatars_shape">Форма аватаров</string>
     <string name="enter_msg">Сообщение</string>
+
+    <string name="new_post_title">Новая запись</string>
+    <string name="whats_new_hint">Что нового?</string>
+    <string name="send_item">Отправить</string>
+    <string name="posting_error">При отправке записи произошла ошибка. Повторите попытку позже.</string>
+    <string name="posting_access_denied">Вы не имеете права публиковать запись на этой стене.</string>
+    <string name="posted_successfully">Запись опубликована.</string>
 </resources>

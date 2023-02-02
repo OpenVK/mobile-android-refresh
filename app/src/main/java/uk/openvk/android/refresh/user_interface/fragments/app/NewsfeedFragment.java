@@ -111,7 +111,7 @@ public class NewsfeedFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshAdapter() {
-        newsfeedAdapter.notifyDataSetChanged();
+        if(newsfeedAdapter != null) newsfeedAdapter.notifyDataSetChanged();
     }
 
     public void showProgress() {

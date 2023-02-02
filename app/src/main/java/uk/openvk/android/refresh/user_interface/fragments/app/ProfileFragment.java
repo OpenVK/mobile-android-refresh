@@ -54,6 +54,14 @@ public class ProfileFragment extends Fragment {
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(typedValue.data);
+        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                    ((AppActivity) requireActivity()).refreshMyWall(false);
+                }
+            }
+        });
         return view;
     }
 
@@ -72,6 +80,11 @@ public class ProfileFragment extends Fragment {
                     .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.VISIBLE);
+            if(user.verified) {
+                view.findViewById(R.id.verified_icon).setVisibility(View.VISIBLE);
+            } else {
+                view.findViewById(R.id.verified_icon).setVisibility(View.GONE);
+            }
         }
     }
 
@@ -119,6 +132,7 @@ public class ProfileFragment extends Fragment {
             wallAdapter.notifyDataSetChanged();
         }
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
+        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setRefreshing(false);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
@@ -144,5 +158,15 @@ public class ProfileFragment extends Fragment {
             }
             wallAdapter.notifyDataSetChanged();
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void refreshWallAdapter() {
+        if(wallAdapter != null) {
+            wallAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void showProgress() {
     }
 }

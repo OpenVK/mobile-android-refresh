@@ -51,18 +51,19 @@
             app:navGraph="@navigation/drawer" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton2"
+            android:id="@+id/fab_newpost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:clickable="true"
             android:visibility="gone"
-            app:backgroundTint="?attr/colorAccent"
+            app:backgroundTint="?attr/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="@+id/fragment_screen"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_post_add"
-            app:tint="#000000"
+            app:tint="#ffffff"
+            app:rippleColor="?attr/colorAccent"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

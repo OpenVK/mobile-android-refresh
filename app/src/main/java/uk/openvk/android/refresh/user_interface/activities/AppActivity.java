@@ -37,6 +37,7 @@ import androidx.preference.PreferenceManager;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
@@ -135,6 +136,7 @@ public class AppActivity extends AppCompatActivity {
         setAPIWrapper();
         setNavDrawer();
         setAppBar();
+        setFloatingActionButton();
         if (newsfeedFragment != null) {
             FragmentManager fm = getSupportFragmentManager();
             ft = getSupportFragmentManager().beginTransaction();
@@ -187,6 +189,22 @@ public class AppActivity extends AppCompatActivity {
             }
         });
         ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
+    }
+
+    public void setFloatingActionButton() {
+        ((FloatingActionButton) findViewById(R.id.fab_newpost)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), NewPostActivity.class);
+                try {
+                    intent.putExtra("owner_id", account.user.id);
+                    intent.putExtra("account_id", account.id);
+                    startActivity(intent);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -256,99 +274,119 @@ public class AppActivity extends AppCompatActivity {
         }
         @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
         Global.setAvatarShape(this, avatar);
+        ((FloatingActionButton) findViewById(R.id.fab_newpost)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public void switchNavItem(MenuItem item) {
-        int itemId = item.getItemId();
-        BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
-        NavigationView navView = findViewById(R.id.nav_view);
-        FragmentManager fm = getSupportFragmentManager();
-        ft = getSupportFragmentManager().beginTransaction();
-        ft.hide(selectedFragment);
-        if(prevBottomMenuItem != null) prevBottomMenuItem.setChecked(false);
-        else b_navView.getMenu().getItem(0).setChecked(false);
-        if(prevMenuItem != null) {
-            prevMenuItem.setChecked(false);
-        } else {
-            navView.getMenu().getItem(1).setChecked(false);
-        }
-        if (itemId == R.id.home) {
-            prevBottomMenuItem = b_navView.getMenu().getItem(0);
-            prevMenuItem = navView.getMenu().getItem(1);
-            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
-            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                    .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
-            ((NewsfeedFragment) selectedFragment).refreshAdapter();
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
-            b_navView.getMenu().getItem(0).setChecked(true);
-            navView.getMenu().getItem(1).setChecked(true);
-        } else if (itemId == R.id.newsfeed) {
-            prevBottomMenuItem = b_navView.getMenu().getItem(0);
-            prevMenuItem = navView.getMenu().getItem(1);
-            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
-            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                    .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
-            ((NewsfeedFragment) selectedFragment).refreshAdapter();
-            b_navView.getMenu().getItem(0).setChecked(true);
-            navView.getMenu().getItem(1).setChecked(true);
-        } else if(itemId == R.id.friends) {
-            prevBottomMenuItem = b_navView.getMenu().getItem(1);
-            prevMenuItem = navView.getMenu().getItem(2);
-            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("friends"));
-            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                    .findViewById(R.id.spinner)).setVisibility(View.GONE);
-            profileFragment.setData(account.user);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_friends);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
-            if(friends.getFriends() == null || friends.getFriends().size() == 0) {
-                friends.get(ovk_api, account.id, 25, "friends_list");
-            }
-            b_navView.getMenu().getItem(1).setChecked(true);
-            navView.getMenu().getItem(2).setChecked(true);
-        } else if(itemId == R.id.messages) {
-            prevBottomMenuItem = b_navView.getMenu().getItem(2);
-            prevMenuItem = navView.getMenu().getItem(3);
-            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
-            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                    .findViewById(R.id.spinner)).setVisibility(View.GONE);
-            profileFragment.setData(account.user);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_messages);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
-            if(conversations == null) {
-                messages.getConversations(ovk_api);
-            }
-            ((MessagesFragment) selectedFragment).refreshAdapter();
-            b_navView.getMenu().getItem(2).setChecked(true);
-            navView.getMenu().getItem(3).setChecked(true);
-        } else if(itemId == R.id.profile) {
-            prevBottomMenuItem = b_navView.getMenu().getItem(3);
-            prevMenuItem = navView.getMenu().getItem(0);
-            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
-            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                    .findViewById(R.id.spinner)).setVisibility(View.GONE);
-            profileFragment.setData(account.user);
-            if(wall.getWallItems() == null) {
-                wall.get(ovk_api, account.user.id, 50);
-            }
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_profile);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
-            b_navView.getMenu().getItem(3).setChecked(true);
-            navView.getMenu().getItem(0).setChecked(true);
-        } else if(itemId == R.id.settings) {
+        try {
+            int itemId = item.getItemId();
+            BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
+            NavigationView navView = findViewById(R.id.nav_view);
+            FragmentManager fm = getSupportFragmentManager();
+            ft = getSupportFragmentManager().beginTransaction();
             ft.hide(selectedFragment);
-            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
-            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                    .findViewById(R.id.spinner)).setVisibility(View.GONE);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
-            navView.getMenu().getItem(4).setChecked(true);
-            prevMenuItem = navView.getMenu().getItem(4);
+            if (prevBottomMenuItem != null) prevBottomMenuItem.setChecked(false);
+            else b_navView.getMenu().getItem(0).setChecked(false);
+            if (prevMenuItem != null) {
+                prevMenuItem.setChecked(false);
+            } else {
+                navView.getMenu().getItem(1).setChecked(false);
+            }
+            if (itemId == R.id.home) {
+                prevBottomMenuItem = b_navView.getMenu().getItem(0);
+                prevMenuItem = navView.getMenu().getItem(1);
+                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
+                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+                ((NewsfeedFragment) selectedFragment).refreshAdapter();
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                b_navView.getMenu().getItem(0).setChecked(true);
+                navView.getMenu().getItem(1).setChecked(true);
+                if (newsfeed.getWallPosts() != null) {
+                    findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
+                }
+            } else if (itemId == R.id.newsfeed) {
+                prevBottomMenuItem = b_navView.getMenu().getItem(0);
+                prevMenuItem = navView.getMenu().getItem(1);
+                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
+                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                ((NewsfeedFragment) selectedFragment).refreshAdapter();
+                b_navView.getMenu().getItem(0).setChecked(true);
+                navView.getMenu().getItem(1).setChecked(true);
+                if (newsfeed.getWallPosts() != null) {
+                    findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
+                }
+            } else if (itemId == R.id.friends) {
+                prevBottomMenuItem = b_navView.getMenu().getItem(1);
+                prevMenuItem = navView.getMenu().getItem(2);
+                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("friends"));
+                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                profileFragment.setData(account.user);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_friends);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                if (friends.getFriends() == null || friends.getFriends().size() == 0) {
+                    friends.get(ovk_api, account.id, 25, "friends_list");
+                }
+                b_navView.getMenu().getItem(1).setChecked(true);
+                navView.getMenu().getItem(2).setChecked(true);
+                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
+            } else if (itemId == R.id.messages) {
+                prevBottomMenuItem = b_navView.getMenu().getItem(2);
+                prevMenuItem = navView.getMenu().getItem(3);
+                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
+                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                profileFragment.setData(account.user);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_messages);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                if (conversations == null) {
+                    messages.getConversations(ovk_api);
+                }
+                ((MessagesFragment) selectedFragment).refreshAdapter();
+                b_navView.getMenu().getItem(2).setChecked(true);
+                navView.getMenu().getItem(3).setChecked(true);
+                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
+            } else if (itemId == R.id.profile) {
+                prevBottomMenuItem = b_navView.getMenu().getItem(3);
+                prevMenuItem = navView.getMenu().getItem(0);
+                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
+                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                profileFragment.setData(account.user);
+                if (wall.getWallItems() == null) {
+                    wall.get(ovk_api, account.user.id, 50);
+                }
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_profile);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                b_navView.getMenu().getItem(3).setChecked(true);
+                navView.getMenu().getItem(0).setChecked(true);
+                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
+            } else if (itemId == R.id.settings) {
+                ft.hide(selectedFragment);
+                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
+                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                navView.getMenu().getItem(4).setChecked(true);
+                prevMenuItem = navView.getMenu().getItem(4);
+                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
+            }
+            ft.show(selectedFragment);
+            ft.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        ft.show(selectedFragment);
-        ft.commit();
     }
 
     private void setAPIWrapper() {
@@ -387,11 +425,14 @@ public class AppActivity extends AppCompatActivity {
                 newsfeed.get(ovk_api, 25);
                 users.getAccountUser(ovk_api, account.id);
             } else if (message == HandlerMessages.NEWSFEED_GET) {
-                newsfeed.parse(this, downloadManager, data.getString("response"), "medium", true);
+                newsfeed.parse(this, downloadManager, data.getString("response"), "high", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.disableUpdateState();
+                if(selectedFragment == newsfeedFragment) {
+                    findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
+                }
             } else if (message == HandlerMessages.NEWSFEED_GET_GLOBAL) {
-                newsfeed.parse(this, downloadManager, data.getString("response"), "medium", true);
+                newsfeed.parse(this, downloadManager, data.getString("response"), "high", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.disableUpdateState();
             } else if(message == HandlerMessages.LIKES_ADD) {
@@ -438,8 +479,13 @@ public class AppActivity extends AppCompatActivity {
                 profileFragment.createWallAdapter(this, wall.getWallItems());
             } else if(message == HandlerMessages.CONVERSATIONS_AVATARS) {
                 messagesFragment.loadAvatars(conversations);
-            } else if(message == HandlerMessages.NEWSFEED_AVATARS || message == HandlerMessages.NEWSFEED_ATTACHMENTS) {
-                newsfeedFragment.refreshAdapter();
+            } else if(message == HandlerMessages.NEWSFEED_AVATARS || message == HandlerMessages.NEWSFEED_ATTACHMENTS
+                    || message == HandlerMessages.WALL_AVATARS || message == HandlerMessages.WALL_ATTACHMENTS) {
+                if(selectedFragment == newsfeedFragment) {
+                    newsfeedFragment.refreshAdapter();
+                } else {
+                    profileFragment.refreshWallAdapter();
+                }
             } else if(message == HandlerMessages.ACCOUNT_AVATAR) {
                 Glide.with(this).load(
                                 String.format("%s/photos_cache/account_avatar/avatar_%s",
@@ -466,7 +512,12 @@ public class AppActivity extends AppCompatActivity {
             newsfeed.get(ovk_api, 25);
         } else {
             account = new Account(this);
-            account.addQueue("Newsfeed.get", "count=25&extended=1");
+            if(selectedFragment == newsfeedFragment)
+                account.addQueue("Newsfeed.get", "count=25&extended=1");
+            else if(selectedFragment == friendsFragment)
+                account.addQueue("Friends.get", "count=25&extended=1");
+            else if(selectedFragment == profileFragment)
+                account.addQueue("Wall.get", String.format("owner_id=%s&count=50", account.id));
             account.getProfileInfo(ovk_api);
         }
     }
@@ -488,6 +539,27 @@ public class AppActivity extends AppCompatActivity {
         }
     }
 
+    public void refreshFriendsList(boolean progress) {
+        friends.get(ovk_api, account.id, 25, "friends_list");
+        if (progress) {
+            friendsFragment.showProgress();
+        }
+    }
+
+    public void refreshConversations(boolean progress) {
+        messages.getConversations(ovk_api);
+        if (progress) {
+            messagesFragment.showProgress();
+        }
+    }
+
+    public void refreshMyWall(boolean progress) {
+        wall.get(ovk_api, account.user.id, 50);
+        if (progress) {
+            profileFragment.showProgress();
+        }
+    }
+
     public void switchFragment(String tag) {
         FragmentManager fm = getSupportFragmentManager();
         ft = getSupportFragmentManager().beginTransaction();
@@ -504,16 +576,21 @@ public class AppActivity extends AppCompatActivity {
                     .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+            if(newsfeed.getWallPosts() != null) {
+                findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
+            }
         } else if(tag.equals("personalization")) {
             selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("personalization"));
             ft.show(selectedFragment);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+            findViewById(R.id.fab_newpost).setVisibility(View.GONE);
         } else if(tag.equals("about_app")) {
             selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("about_app"));
             ft.show(selectedFragment);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_about_app);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+            findViewById(R.id.fab_newpost).setVisibility(View.GONE);
         }
         ft.commit();
     }
@@ -555,20 +632,6 @@ public class AppActivity extends AppCompatActivity {
     public void setAvatarShape() {
         @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
         Global.setAvatarShape(this, avatar);
-    }
-
-    public void refreshFriendsList(boolean progress) {
-        friends.get(ovk_api, account.id, 25, "friends_list");
-        if (progress) {
-            friendsFragment.showProgress();
-        }
-    }
-
-    public void refreshConversations(boolean progress) {
-        messages.getConversations(ovk_api);
-        if (progress) {
-            friendsFragment.showProgress();
-        }
     }
 
     public void openConversation(int position) {

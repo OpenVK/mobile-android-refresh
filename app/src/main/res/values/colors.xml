@@ -13,6 +13,7 @@
 
     <!-- Theme attributes. Default color (blue) !-->
     <color name="primaryColor">#338cea</color>
+    <color name="primaryColorBlue">#338cea</color>
     <color name="primaryLightColor">#6fb2ff</color>
     <color name="primaryDarkColor">#2b6ebb</color>
     <color name="primaryRippleColor">#126fb2ff</color>

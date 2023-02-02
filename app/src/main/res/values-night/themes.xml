@@ -3,7 +3,7 @@
     <style name="ApplicationTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/primaryLightColor</item>
         <item name="colorPrimaryVariant">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorPrimaryDark">@color/primaryColor</item>
         <item name="rippleColor">@color/primaryLightColor</item>
         <item name="colorAccent">@color/primaryLightColor</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
@@ -23,7 +23,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryLightColor</item>
         <item name="colorPrimaryVariant">@color/accentColor</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorPrimaryDark">@color/primaryColorBlue</item>
         <!-- Customize your theme here. -->
         <item name="rippleColor">@color/primaryLightColor</item>
         <item name="colorAccent">@color/primaryLightColor</item>
@@ -37,7 +37,7 @@
     <style name="ApplicationTheme.Color2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/primaryLightRed</item>
         <item name="colorPrimaryVariant">@color/primaryColorRed</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorRed</item>
+        <item name="colorPrimaryDark">@color/primaryColorRed</item>
         <item name="rippleColor">@color/primaryLightRed</item>
         <item name="colorAccent">@color/primaryLightRed</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
@@ -57,7 +57,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryLightRed</item>
         <item name="colorPrimaryVariant">@color/primaryColorRed</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorRed</item>
+        <item name="colorPrimaryDark">@color/primaryColorRed</item>
         <!-- Customize your theme here. -->
         <item name="rippleColor">@color/primaryLightRed</item>
         <item name="colorAccent">@color/primaryLightRed</item>
@@ -71,7 +71,7 @@
     <style name="ApplicationTheme.Color3" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/primaryLightGreen</item>
         <item name="colorPrimaryVariant">@color/primaryColorGreen</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorGreen</item>
+        <item name="colorPrimaryDark">@color/primaryColorGreen</item>
         <item name="rippleColor">@color/primaryLightGreen</item>
         <item name="colorAccent">@color/primaryLightGreen</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
@@ -91,7 +91,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryLightGreen</item>
         <item name="colorPrimaryVariant">@color/primaryColorGreen</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorGreen</item>
+        <item name="colorPrimaryDark">@color/primaryColorGreen</item>
         <!-- Customize your theme here. -->
         <item name="rippleColor">@color/primaryLightGreen</item>
         <item name="colorAccent">@color/primaryLightGreen</item>
@@ -105,7 +105,7 @@
     <style name="ApplicationTheme.Color4" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/primaryLightViolet</item>
         <item name="colorPrimaryVariant">@color/primaryColorViolet</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorViolet</item>
+        <item name="colorPrimaryDark">@color/primaryColorViolet</item>
         <item name="rippleColor">@color/primaryLightViolet</item>
         <item name="colorAccent">@color/primaryLightViolet</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
@@ -125,7 +125,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryLightViolet</item>
         <item name="colorPrimaryVariant">@color/primaryColorViolet</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorViolet</item>
+        <item name="colorPrimaryDark">@color/primaryColorViolet</item>
         <!-- Customize your theme here. -->
         <item name="rippleColor">@color/primaryLightViolet</item>
         <item name="colorAccent">@color/primaryLightViolet</item>
@@ -139,7 +139,7 @@
     <style name="ApplicationTheme.Color5" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/primaryLightOrange</item>
         <item name="colorPrimaryVariant">@color/primaryColorOrange</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorOrange</item>
+        <item name="colorPrimaryDark">@color/primaryColorOrange</item>
         <item name="rippleColor">@color/primaryLightOrange</item>
         <item name="colorAccent">@color/primaryLightOrange</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
@@ -159,7 +159,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryLightOrange</item>
         <item name="colorPrimaryVariant">@color/primaryColorOrange</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorOrange</item>
+        <item name="colorPrimaryDark">@color/primaryColorOrange</item>
         <!-- Customize your theme here. -->
         <item name="rippleColor">@color/primaryLightOrange</item>
         <item name="colorAccent">@color/primaryLightOrange</item>
