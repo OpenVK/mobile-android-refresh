@@ -348,8 +348,8 @@
     </style>
 
     <style name="ApplicationFont.Inter">
-        <item name="fontFamily">@font/inter_regular</item>
-        <item name="android:fontFamily">@font/inter_regular</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inteк</item>
     </style>
 
     <style name="ApplicationFont.Inter.Bold">
