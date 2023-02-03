@@ -40,7 +40,7 @@ public class FriendsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Comfortaa);
+        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Inter);
         view = inflater.inflate(R.layout.friends_fragment, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))

@@ -114,7 +114,7 @@ public class AppActivity extends AppCompatActivity {
     @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Global.setInterfaceFont(this, R.style.ApplicationFont_Comfortaa);
+        Global.setInterfaceFont(this, R.style.ApplicationFont_Inter);
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));

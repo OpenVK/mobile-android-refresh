@@ -347,18 +347,6 @@
 
     </style>
 
-    <style name="ApplicationFont.Comfortaa">
-        <item name="fontFamily">@font/comfortaa</item>
-    </style>
-
-    <style name="ApplicationFont.Comfortaa.Bold">
-        <item name="fontFamily">@font/comfortaa_bold</item>
-    </style>
-
-    <style name="ApplicationFont.Comfortaa.Light">
-        <item name="fontFamily">@font/comfortaa_light</item>
-    </style>
-
     <style name="ApplicationFont.Inter">
         <item name="fontFamily">@font/inter</item>
     </style>

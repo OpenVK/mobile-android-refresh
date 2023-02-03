@@ -42,7 +42,7 @@ public class NewsfeedFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Comfortaa);
+        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Inter);
         view = inflater.inflate(R.layout.newsfeed_fragment, container, false);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);

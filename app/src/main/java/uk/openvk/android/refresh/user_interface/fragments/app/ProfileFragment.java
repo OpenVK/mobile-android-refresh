@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Comfortaa);
+        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Inter);
         view = inflater.inflate(R.layout.profile_fragment, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         header = (ProfileHeader) view.findViewById(R.id.header);
