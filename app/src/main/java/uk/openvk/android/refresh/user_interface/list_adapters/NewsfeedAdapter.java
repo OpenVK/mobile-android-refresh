@@ -42,14 +42,19 @@ import java.util.concurrent.TimeUnit;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.Attachment;
+import uk.openvk.android.refresh.api.models.Group;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
+import uk.openvk.android.refresh.user_interface.activities.GroupIntentActivity;
+import uk.openvk.android.refresh.user_interface.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.user_interface.layouts.PhotoAttachmentLayout;
 
 public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder> {
     private final Context ctx;
     private final ArrayList<WallPost> items;
     private FragmentManager fragman;
+    private boolean photo_loaded = false;
+    private boolean avatar_loaded = false;
 
     public NewsfeedAdapter(Context context, ArrayList<WallPost> posts) {
         ctx = context;
@@ -215,20 +220,37 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                     local_avatar_frm = "%s/photos_cache/wall_avatars/avatar_%s";
                     local_photo_frm = "%s/photos_cache/wall_photo_attachments/wall_attachment_o%sp%s";
                 }
-                Glide.with(ctx).load(String.format(local_avatar_frm, ctx.getCacheDir().getAbsolutePath(), item.author_id))
-                        .dontAnimate().diskCacheStrategy(DiskCacheStrategy.DATA).centerCrop().error(R.drawable.circular_avatar).into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
+                if(avatar_loaded)
+                    Glide.with(ctx).load(String.format(local_avatar_frm, ctx.getCacheDir().getAbsolutePath(), item.author_id))
+                            .dontAnimate().centerCrop().error(R.drawable.circular_avatar).into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
                 ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)).setImageTintList(null);
-                if(contains_photos) {
-                    ((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
-                    Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
-                            .dontAnimate().diskCacheStrategy(DiskCacheStrategy.DATA).error(R.drawable.warning).into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
-                    ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
-                    ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
+                View.OnClickListener openProfileListener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(ctx.getClass().getSimpleName().equals("AppActivity")) {
+                            ((AppActivity) ctx).openProfileFromWall(position);
+                        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
+                            ((ProfileIntentActivity) ctx).openProfileFromWall(position);
+                        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
+                            ((GroupIntentActivity) ctx).openProfileFromWall(position);
                         }
-                    });
+                    }
+                };
+                ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)).setOnClickListener(openProfileListener);
+                poster_name.setOnClickListener(openProfileListener);
+                if(contains_photos) {
+                    if(photo_loaded) {
+                        ((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
+                        Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
+                                .dontAnimate().error(R.drawable.warning).into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
+                        ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
+                        ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                            }
+                        });
+                    }
                 } else {
                     ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.GONE);
                 }
@@ -250,5 +272,17 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setPhotoLoadState(boolean value) {
+        this.photo_loaded = value;
+        notifyDataSetChanged();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setAvatarLoadState(boolean value) {
+        this.avatar_loaded = value;
+        notifyDataSetChanged();
     }
 }

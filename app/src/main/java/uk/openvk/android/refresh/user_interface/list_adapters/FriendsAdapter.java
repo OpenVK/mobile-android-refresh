@@ -17,6 +17,7 @@ import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.user_interface.GlideApp;
+import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder>  {
     private Context ctx;
@@ -71,6 +72,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
             } else {
                 verified_icon.setVisibility(View.GONE);
             }
+            View.OnClickListener openProfileListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(ctx.getClass().getSimpleName().equals("AppActivity")) {
+                        ((AppActivity) ctx).openProfileFromFriends(position);
+                    }
+                }
+            };
+            ((ImageView) convertView.findViewById(R.id.friend_avatar)).setOnClickListener(openProfileListener);
+            friend_title.setOnClickListener(openProfileListener);
         }
     }
 

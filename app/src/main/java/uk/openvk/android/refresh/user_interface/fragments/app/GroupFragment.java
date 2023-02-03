@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
+import uk.openvk.android.refresh.api.models.Group;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
@@ -31,7 +32,7 @@ import uk.openvk.android.refresh.user_interface.layouts.ProfileHeader;
 import uk.openvk.android.refresh.user_interface.layouts.ProgressLayout;
 import uk.openvk.android.refresh.user_interface.list_adapters.NewsfeedAdapter;
 
-public class ProfileFragment extends Fragment {
+public class GroupFragment extends Fragment {
     public ProfileHeader header;
     private View view;
     private ArrayList<WallPost> wallPosts;
@@ -41,20 +42,20 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.profile_fragment, container, false);
+        view = inflater.inflate(R.layout.group_fragment, container, false);
         header = (ProfileHeader) view.findViewById(R.id.header);
-        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
+        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setVisibility(View.GONE);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         Global.setAvatarShape(requireContext(), header.findViewById(R.id.profile_avatar));
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
         if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+            ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+            ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
-        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(typedValue.data);
-        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setColorSchemeColors(typedValue.data);
+        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -65,32 +66,26 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    public void setData(User user) {
-        if(user != null && user.first_name != null && user.last_name != null) {
-            header.setProfileName(String.format("%s %s", user.first_name, user.last_name));
-            header.setLastSeen(user.sex, user.ls_date, user.ls_platform);
-            header.setStatus(user.status);
-            header.setVerified(user.verified, requireContext());
-            header.setOnline(user.online);
+    public void setData(Group group) {
+        if(group != null && group.name != null) {
+            header.setProfileName(group.name);
+            header.setStatus(group.description);
+            header.findViewById(R.id.last_seen).setVisibility(View.GONE);
+            header.setVerified(group.verified, requireContext());
             Context ctx = requireContext();
             Global.setAvatarShape(getContext(), view.findViewById(R.id.profile_avatar));
             Glide.with(ctx).load(
-                    String.format("%s/photos_cache/profile_avatars/avatar_%s",
-                            ctx.getCacheDir().getAbsolutePath(), user.id))
+                    String.format("%s/photos_cache/group_avatars/avatar_%s",
+                            ctx.getCacheDir().getAbsolutePath(), group.id))
                     .placeholder(R.drawable.circular_avatar).error(R.drawable.circular_avatar)
                     .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.VISIBLE);
-            if(user.verified) {
-                view.findViewById(R.id.verified_icon).setVisibility(View.VISIBLE);
-            } else {
-                view.findViewById(R.id.verified_icon).setVisibility(View.GONE);
-            }
+            ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setVisibility(View.VISIBLE);
         }
     }
 
     public void disableUpdateState() {
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setRefreshing(false);
+        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setRefreshing(false);
     }
 
     public void setError(boolean visible, int message, View.OnClickListener listener) {
@@ -112,7 +107,7 @@ public class ProfileFragment extends Fragment {
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
             }
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
+            ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setVisibility(View.GONE);
             errorLayout.setVisibility(View.GONE);
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         }
@@ -133,8 +128,8 @@ public class ProfileFragment extends Fragment {
             wallAdapter.notifyDataSetChanged();
         }
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setRefreshing(false);
-        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.VISIBLE);
+        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setRefreshing(false);
+        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -78,10 +78,14 @@ public class NewPostActivity extends AppCompatActivity {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if(statusEditText.getText().toString().length() > 0) {
-                            toolbar.getMenu().getItem(0).setEnabled(true);
-                        } else {
-                            toolbar.getMenu().getItem(0).setEnabled(false);
+                        try {
+                            if (statusEditText.getText().toString().length() > 0) {
+                                toolbar.getMenu().getItem(0).setEnabled(true);
+                            } else {
+                                toolbar.getMenu().getItem(0).setEnabled(false);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
                     }
 

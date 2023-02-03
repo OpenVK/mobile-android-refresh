@@ -28,7 +28,9 @@ import uk.openvk.android.refresh.api.models.Error;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.activities.AuthActivity;
 import uk.openvk.android.refresh.user_interface.activities.ConversationActivity;
+import uk.openvk.android.refresh.user_interface.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.user_interface.activities.NewPostActivity;
+import uk.openvk.android.refresh.user_interface.activities.ProfileIntentActivity;
 
 public class OvkAPIWrapper {
 
@@ -922,12 +924,12 @@ public class OvkAPIWrapper {
             ((AuthActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
-//            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
+        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
+            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
+//        else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
 //            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
-//            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
+            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("MainSettingsActivity")) {
 //            ((MainSettingsActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
@@ -953,12 +955,12 @@ public class OvkAPIWrapper {
             ((AuthActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
-//            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
+            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
 //            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
-//            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
+            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("MainSettingsActivity")) {
 //            ((MainSettingsActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
@@ -985,10 +987,10 @@ public class OvkAPIWrapper {
             ((AuthActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
-//            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
-//            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
+            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
+            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
 //            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("MainSettingsActivity")) {

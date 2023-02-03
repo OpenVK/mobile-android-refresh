@@ -84,4 +84,7 @@
     <string name="posting_error">При отправке записи произошла ошибка. Повторите попытку позже.</string>
     <string name="posting_access_denied">Вы не имеете права публиковать запись на этой стене.</string>
     <string name="posted_successfully">Запись опубликована.</string>
+
+    <string name="profile_title">Профиль</string>
+    <string name="community_title">Сообщество</string>
 </resources>

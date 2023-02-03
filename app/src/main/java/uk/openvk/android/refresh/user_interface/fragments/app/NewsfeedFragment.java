@@ -32,7 +32,7 @@ public class NewsfeedFragment extends Fragment {
     private RecyclerView newsfeedView;
     private ArrayList<WallPost> wallPosts;
     private View view;
-    private NewsfeedAdapter newsfeedAdapter;
+    public NewsfeedAdapter newsfeedAdapter;
     private LinearLayoutManager llm;
 
     @Override

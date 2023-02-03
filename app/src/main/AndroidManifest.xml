@@ -60,6 +60,33 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
             android:theme="@style/ApplicationTheme.NoActionBar"
             tools:ignore="RedundantLabel" />
+
+        <activity android:name=".user_interface.activities.ProfileIntentActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/profile_title"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
+            android:theme="@style/ApplicationTheme.NoActionBar"
+            tools:ignore="RedundantLabel">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="openvk" android:host="profile" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".user_interface.activities.GroupIntentActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/community_title"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
+            android:theme="@style/ApplicationTheme.NoActionBar"
+            tools:ignore="RedundantLabel">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="openvk" android:host="group" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

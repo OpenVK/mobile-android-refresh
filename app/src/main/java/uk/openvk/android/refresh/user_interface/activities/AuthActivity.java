@@ -134,13 +134,15 @@ public class AuthActivity extends AppCompatActivity {
         if (message == HandlerMessages.AUTHORIZED) {
             SharedPreferences.Editor editor = instance_prefs.edit();
             Authorization auth = new Authorization(data.getString("response"));
-            editor.putString("server", instance);
-            editor.putString("access_token", auth.getAccessToken());
-            editor.putString("account_password_sha256", Global.generateSHA256Hash(password));
-            editor.apply();
-            Intent intent = new Intent(getApplicationContext(), AppActivity.class);
-            startActivity(intent);
-            finish();
+            if(auth.getAccessToken() != null && auth.getAccessToken().length() > 0) {
+                editor.putString("server", instance);
+                editor.putString("access_token", auth.getAccessToken());
+                editor.putString("account_password_sha256", Global.generateSHA256Hash(password));
+                editor.apply();
+                Intent intent = new Intent(getApplicationContext(), AppActivity.class);
+                startActivity(intent);
+                finish();
+            }
         } else if (message == HandlerMessages.TWOFACTOR_CODE_REQUIRED) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, new AuthTwoFactorFragment());

@@ -3,10 +3,6 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        app:enabled="false"
-        app:layout="@layout/pref_notif_layout" />
-
     <PreferenceCategory
         app:key="appearance_category"
         app:title="@string/pref_appearance_category"

@@ -84,4 +84,7 @@
     <string name="posting_error">An error occurred while posting. Please try again later.</string>
     <string name="posting_access_denied">You are not allowed to post on this wall.</string>
     <string name="posted_successfully">Post published.</string>
+
+    <string name="profile_title">Profile</string>
+    <string name="community_title">Community</string>
 </resources>

@@ -113,9 +113,9 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                     break;
             }
         } else if(tag.equals("avatars_shape")) {
-            String value = global_prefs.getString("avatars_shape", "blue");
+            String value = global_prefs.getString("avatars_shape", "circle");
             switch (value) {
-                case "circle":
+                default:
                     pref.setSummary(getResources().getStringArray(R.array.avatars_shape)[0]);
                     break;
                 case "round32px":
@@ -159,6 +159,9 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 editor.apply();
                 setPreferenceSummary(findPreference("accentColor"), "theme_color");
                 dialog.dismiss();
+                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                    ((AppActivity) requireActivity()).restart();
+                }
             }
         });
         builder.setNegativeButton(android.R.string.cancel, null);

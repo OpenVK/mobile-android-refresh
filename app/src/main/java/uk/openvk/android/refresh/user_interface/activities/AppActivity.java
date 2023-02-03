@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -172,6 +173,16 @@ public class AppActivity extends AppCompatActivity {
             ft.hide(selectedFragment);
             selectedFragment = personalizationFragment;
             ft.show(selectedFragment);
+            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                    .findViewById(R.id.spinner)).setVisibility(View.GONE);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+            NavigationView navView = findViewById(R.id.nav_view);
+            navView.getMenu().getItem(4).setChecked(true);
+            prevMenuItem = navView.getMenu().getItem(4);
+            navView.getMenu().getItem(1).setChecked(false);
+            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         }
     }
 
@@ -188,21 +199,13 @@ public class AppActivity extends AppCompatActivity {
 
     private void setAppBar() {
         MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawer.open();
-            }
-        });
         tbSpinnerItems = new ArrayList<>();
         tbSpinnerItems.add(new ToolbarSpinnerItem(getResources().getString(R.string.nav_news), getResources().getString(R.string.my_news_item), 60));
         tbSpinnerItems.add(new ToolbarSpinnerItem(getResources().getString(R.string.nav_news), getResources().getString(R.string.all_news_item), 61));
         tbSpinnerAdapter = new NewsfeedToolbarSpinnerAdapter(this, tbSpinnerItems);
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setAdapter(tbSpinnerAdapter);
-        ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
-        ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                .findViewById(R.id.spinner)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+        ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 refreshNewsfeed(true);
@@ -213,7 +216,17 @@ public class AppActivity extends AppCompatActivity {
 
             }
         });
-        ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
+        toolbar.setTitle("");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(selectedFragment == mainSettingsFragment || selectedFragment == personalizationFragment) {
+                    onBackPressed();
+                } else {
+                    drawer.open();
+                }
+            }
+        });
     }
 
     public void setFloatingActionButton() {
@@ -313,6 +326,7 @@ public class AppActivity extends AppCompatActivity {
             BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
             NavigationView navView = findViewById(R.id.nav_view);
             FragmentManager fm = getSupportFragmentManager();
+            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             ft = getSupportFragmentManager().beginTransaction();
             ft.hide(selectedFragment);
             if (prevBottomMenuItem != null) prevBottomMenuItem.setChecked(false);
@@ -329,8 +343,8 @@ public class AppActivity extends AppCompatActivity {
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                toolbar.setTitle("");
+                toolbar.setNavigationIcon(R.drawable.ic_menu);
                 b_navView.getMenu().getItem(0).setChecked(true);
                 navView.getMenu().getItem(1).setChecked(true);
                 if (newsfeed.getWallPosts() != null) {
@@ -342,8 +356,8 @@ public class AppActivity extends AppCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                toolbar.setTitle("");
+                toolbar.setNavigationIcon(R.drawable.ic_menu);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
                 b_navView.getMenu().getItem(0).setChecked(true);
                 navView.getMenu().getItem(1).setChecked(true);
@@ -357,8 +371,8 @@ public class AppActivity extends AppCompatActivity {
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_friends);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                toolbar.setTitle(R.string.nav_friends);
+                toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (friends.getFriends() == null || friends.getFriends().size() == 0) {
                     friends.get(ovk_api, account.id, 25, "friends_list");
                 }
@@ -372,8 +386,8 @@ public class AppActivity extends AppCompatActivity {
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_messages);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                toolbar.setTitle(R.string.nav_messages);
+                toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (conversations == null) {
                     messages.getConversations(ovk_api);
                 }
@@ -385,14 +399,13 @@ public class AppActivity extends AppCompatActivity {
                 prevBottomMenuItem = b_navView.getMenu().getItem(3);
                 prevMenuItem = navView.getMenu().getItem(0);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
-                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user);
                 if (wall.getWallItems() == null) {
                     wall.get(ovk_api, account.user.id, 50);
                 }
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_profile);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                toolbar.setTitle(R.string.nav_profile);
+                toolbar.setNavigationIcon(R.drawable.ic_menu);
                 b_navView.getMenu().getItem(3).setChecked(true);
                 navView.getMenu().getItem(0).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
@@ -401,8 +414,8 @@ public class AppActivity extends AppCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+                toolbar.setTitle(R.string.nav_settings);
+                toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
                 navView.getMenu().getItem(4).setChecked(true);
                 prevMenuItem = navView.getMenu().getItem(4);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
@@ -507,9 +520,17 @@ public class AppActivity extends AppCompatActivity {
             } else if(message == HandlerMessages.NEWSFEED_AVATARS || message == HandlerMessages.NEWSFEED_ATTACHMENTS
                     || message == HandlerMessages.WALL_AVATARS || message == HandlerMessages.WALL_ATTACHMENTS) {
                 if(selectedFragment == newsfeedFragment) {
-                    newsfeedFragment.refreshAdapter();
-                } else {
-                    profileFragment.refreshWallAdapter();
+                    if(message == HandlerMessages.NEWSFEED_AVATARS) {
+                        newsfeedFragment.newsfeedAdapter.setAvatarLoadState(true);
+                    } else {
+                        newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
+                    }
+                } else if(selectedFragment == profileFragment) {
+                    if(message == HandlerMessages.WALL_AVATARS) {
+                        profileFragment.wallAdapter.setAvatarLoadState(true);
+                    } else {
+                        profileFragment.wallAdapter.setPhotoLoadState(true);
+                    }
                 }
             } else if(message == HandlerMessages.ACCOUNT_AVATAR) {
                 Glide.with(this).load(
@@ -594,29 +615,28 @@ public class AppActivity extends AppCompatActivity {
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("settings")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
+        BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
+        NavigationView navView = findViewById(R.id.nav_view);
         if(tag.equals("newsfeed")) {
-            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
-            ft.show(selectedFragment);
-            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                    .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle("");
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
-            if(newsfeed.getWallPosts() != null) {
-                findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
-            }
+            switchNavItem(b_navView.getMenu().getItem(0));
         } else if(tag.equals("personalization")) {
+            switchNavItem(navView.getMenu().getItem(4));
+            ft.hide(selectedFragment);
             selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("personalization"));
             ft.show(selectedFragment);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
             findViewById(R.id.fab_newpost).setVisibility(View.GONE);
         } else if(tag.equals("about_app")) {
+            switchNavItem(navView.getMenu().getItem(4));
+            ft.hide(selectedFragment);
             selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("about_app"));
             ft.show(selectedFragment);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_about_app);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
             findViewById(R.id.fab_newpost).setVisibility(View.GONE);
         }
+        ft = getSupportFragmentManager().beginTransaction();
         ft.commit();
     }
 
@@ -669,6 +689,47 @@ public class AppActivity extends AppCompatActivity {
             startActivity(intent);
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void openProfileFromWall(int position) {
+        if(selectedFragment == newsfeedFragment) {
+            WallPost post = newsfeed.getWallPosts().get(position);
+            String url = "";
+            if(post.author_id > 0) {
+                url = String.format("openvk://profile/id%s", post.author_id);
+            } else if(post.author_id < 0) {
+                url = String.format("openvk://group/club%s", post.author_id);
+            }
+            if(url.length() > 0) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        } else {
+            WallPost post = wall.getWallItems().get(position);
+            String url = "";
+            if(post.author_id > 0) {
+                url = String.format("openvk://profile/id%s", post.author_id);
+            } else if(post.author_id < 0) {
+                url = String.format("openvk://group/club%s", post.author_id);
+            }
+            if(url.length() > 0) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        }
+    }
+
+    public void openProfileFromFriends(int position) {
+        Friend friend = friends.getFriends().get(position);
+        String url = "";
+        url = String.format("openvk://profile/id%s", friend.id);
+        if(url.length() > 0) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
         }
     }
 }

@@ -32,6 +32,8 @@ import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.activities.AuthActivity;
+import uk.openvk.android.refresh.user_interface.activities.GroupIntentActivity;
+import uk.openvk.android.refresh.user_interface.activities.ProfileIntentActivity;
 
 /**
  * File created by Dmitry on 27.09.2022.
@@ -361,13 +363,13 @@ public class DownloadManager {
             ((AuthActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) ctx).handler.sendMessage(msg);
-        }
-//        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
-//            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
+            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
 //            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
-//            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
+            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
+        }
 //        } else if(ctx.getClass().getSimpleName().equals("WallPostActivity")) {
 //            ((WallPostActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("PhotoViewerActivity")) {
