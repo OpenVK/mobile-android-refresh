@@ -259,24 +259,27 @@ public class AppActivity extends AppCompatActivity {
 
     @SuppressLint({"CutPasteId", "ObsoleteSdkInt"})
     private void setNavDrawer() {
-        BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_screen);
-        NavController navController = Objects.requireNonNull(navHostFragment).getNavController();
-        @SuppressLint("CutPasteId") AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(
-                ((DrawerLayout) findViewById(R.id.drawer_layout))).build();
-        NavigationUI.setupWithNavController(navView, navController);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, android.R.string.ok, android.R.string.cancel);
-        drawer.addDrawerListener(toggle);
-        TypedValue typedValue = new TypedValue();
-        boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)  == Configuration.UI_MODE_NIGHT_YES;
-        if(isDarkThemeEnabled) {
-            getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
-        } else {
-            getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+        try {
+            BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_screen);
+            NavController navController = Objects.requireNonNull(navHostFragment).getNavController();
+            @SuppressLint("CutPasteId") AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(
+                    ((DrawerLayout) findViewById(R.id.drawer_layout))).build();
+            NavigationUI.setupWithNavController(navView, navController);
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            toggle = new ActionBarDrawerToggle(this, drawer, android.R.string.ok, android.R.string.cancel);
+            drawer.addDrawerListener(toggle);
+            TypedValue typedValue = new TypedValue();
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            if (isDarkThemeEnabled) {
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+            } else {
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+            }
+            drawer.setStatusBarBackgroundColor(typedValue.data);
+            toggle.syncState();
+        } catch (Exception ignored) {
         }
-        drawer.setStatusBarBackgroundColor(typedValue.data);
-        toggle.syncState();
     }
 
     public void setNavView() {
