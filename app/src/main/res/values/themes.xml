@@ -348,18 +348,22 @@
     </style>
 
     <style name="ApplicationFont.Inter">
-        <item name="fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
     </style>
 
     <style name="ApplicationFont.Inter.Bold">
         <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
     </style>
 
     <style name="ApplicationFont.Inter.Medium">
         <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
     </style>
 
     <style name="ApplicationFont.Inter.Light">
         <item name="fontFamily">@font/inter_light</item>
+        <item name="android:fontFamily">@font/inter_light</item>
     </style>
 </resources>
