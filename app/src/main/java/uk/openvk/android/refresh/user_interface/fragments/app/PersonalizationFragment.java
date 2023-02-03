@@ -127,6 +127,9 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 case "gray":
                     pref.setSummary(getResources().getStringArray(R.array.theme_colors)[7]);
                     break;
+                case "monet":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[8]);
+                    break;
             }
         } else if(tag.equals("avatars_shape")) {
             String value = global_prefs.getString("avatars_shape", "circle");
@@ -193,6 +196,8 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                     editor.putString("theme_color", "vk5x");
                 } else if(which == 7) {
                     editor.putString("theme_color", "gray");
+                } else if(which == 8) {
+                    editor.putString("theme_color", "monet");
                 }
                 editor.apply();
                 setPreferenceSummary(findPreference("accentColor"), "theme_color");
@@ -231,6 +236,9 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
             case "gray":
                 dialog.getListView().setItemChecked(7, true);
                 break;
+            case "monet":
+                dialog.getListView().setItemChecked(8, true);
+                break;
         }
     }
 
@@ -261,7 +269,7 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
         builder.setNegativeButton(android.R.string.cancel, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-        String value = global_prefs.getString("avatars_shape", "blue");
+        String value = global_prefs.getString("avatars_shape", "circle");
         switch (value) {
             default:
                 dialog.getListView().setItemChecked(0, true);

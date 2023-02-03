@@ -24,6 +24,7 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -33,7 +34,7 @@ import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 
-public class NewPostActivity extends AppCompatActivity {
+public class NewPostActivity extends MonetCompatActivity {
     private SharedPreferences global_prefs;
     private SharedPreferences instance_prefs;
     private OvkAPIWrapper ovk_api;

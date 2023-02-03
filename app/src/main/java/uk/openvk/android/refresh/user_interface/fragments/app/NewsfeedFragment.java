@@ -18,6 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.color.MaterialColors;
+import com.kieronquinn.monetcompat.app.MonetCompatActivity;
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.Global;
@@ -43,18 +47,22 @@ public class NewsfeedFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.newsfeed_fragment, container, false);
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
-                .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        if(Global.checkMonet(requireContext())) {
+            MonetCompat monet = MonetCompat.getInstance();
+            boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
+            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeColors(monet.getAccentColor(requireContext(), isDarkTheme));
+        } else {
+            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeColors(typedValue.data);
+        }
         if(global_prefs.getBoolean("dark_theme", false)) {
             ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeColors(typedValue.data);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

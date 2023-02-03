@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 
 public class OvkApplication extends Application {
@@ -18,6 +20,7 @@ public class OvkApplication extends Application {
         version = BuildConfig.VERSION_NAME;
         global_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         instance_prefs = getSharedPreferences("instance", 0);
+        MonetCompat.enablePaletteCompat();
         SharedPreferences.Editor editor = instance_prefs.edit();
         if(!instance_prefs.contains("server")) {
             editor.putString("server", "");

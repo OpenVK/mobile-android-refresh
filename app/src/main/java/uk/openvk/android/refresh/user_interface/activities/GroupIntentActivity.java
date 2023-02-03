@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -36,7 +37,7 @@ import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.fragments.app.GroupFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.ProfileFragment;
 
-public class GroupIntentActivity extends AppCompatActivity {
+public class GroupIntentActivity extends MonetCompatActivity {
     private SharedPreferences global_prefs;
     private SharedPreferences instance_prefs;
     public Handler handler;

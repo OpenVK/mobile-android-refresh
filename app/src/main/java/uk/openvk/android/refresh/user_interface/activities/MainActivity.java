@@ -6,9 +6,11 @@ import androidx.core.splashscreen.SplashScreen;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.kieronquinn.monetcompat.app.MonetCompatActivity;
+
 import uk.openvk.android.refresh.OvkApplication;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MonetCompatActivity {
 
     private OvkApplication app;
 

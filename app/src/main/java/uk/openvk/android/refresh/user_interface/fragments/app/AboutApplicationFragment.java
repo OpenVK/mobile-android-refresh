@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.user_interface.fragments.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -15,8 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import uk.openvk.android.refresh.BuildConfig;
 import uk.openvk.android.refresh.Global;
@@ -34,6 +37,11 @@ public class AboutApplicationFragment extends Fragment {
         ((ShapeableImageView) view.findViewById(R.id.ovk_logo)).setImageTintList(null);
         ((TextView) view.findViewById(R.id.version_subtitle)).setText(getResources().getString(R.string.version_subtitle, BuildConfig.VERSION_NAME));
         ((TextView) view.findViewById(R.id.app_license)).setMovementMethod(LinkMovementMethod.getInstance());
+        if(Global.checkMonet(requireContext())) {
+            MonetCompat monet = MonetCompat.getInstance();
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false);
+            ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.valueOf(monet.getAccentColor(requireContext(), isDarkTheme)));
+        }
         ((Button) view.findViewById(R.id.source_code_btn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

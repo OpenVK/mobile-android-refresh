@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
 import java.util.Objects;
 
@@ -36,7 +37,7 @@ import uk.openvk.android.refresh.user_interface.fragments.auth.AuthTwoFactorFrag
 import uk.openvk.android.refresh.user_interface.layouts.XConstraintLayout;
 import uk.openvk.android.refresh.user_interface.listeners.OnKeyboardStateListener;
 
-public class AuthActivity extends AppCompatActivity {
+public class AuthActivity extends MonetCompatActivity {
     public Handler handler;
     public OvkAPIWrapper ovk_api;
     private FragmentTransaction ft;

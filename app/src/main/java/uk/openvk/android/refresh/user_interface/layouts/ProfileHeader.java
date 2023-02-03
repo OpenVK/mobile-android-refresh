@@ -2,12 +2,14 @@ package uk.openvk.android.refresh.user_interface.layouts;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,12 +18,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.preference.PreferenceManager;
+
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.user_interface.text.CenteredImageSpan;
 
@@ -39,6 +45,11 @@ public class ProfileHeader extends LinearLayoutCompat {
         layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         view.setLayoutParams(layoutParams);
+        if(Global.checkMonet(getContext())) {
+            MonetCompat monet = MonetCompat.getInstance();
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
+            ((ImageView)findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(monet.getAccentColor(getContext(), isDarkTheme)));
+        }
     }
 
     public void setProfileName(String name) {

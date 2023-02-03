@@ -20,6 +20,7 @@ import androidx.preference.PreferenceManager;
 import androidx.viewbinding.BuildConfig;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -40,7 +41,7 @@ import uk.openvk.android.refresh.user_interface.fragments.app.NewsfeedFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.PersonalizationFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.ProfileFragment;
 
-public class ProfileIntentActivity extends AppCompatActivity {
+public class ProfileIntentActivity extends MonetCompatActivity {
     private SharedPreferences global_prefs;
     private SharedPreferences instance_prefs;
     public Handler handler;

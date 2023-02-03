@@ -2,13 +2,18 @@ package uk.openvk.android.refresh;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.view.Window;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.kieronquinn.monetcompat.app.MonetCompatActivity;
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -56,6 +61,8 @@ public class Global {
             ctx.setTheme(R.style.ApplicationTheme_Color7_NoActionBar);
         } else if(value.equals("gray")) {
             ctx.setTheme(R.style.ApplicationTheme_Color8_NoActionBar);
+        } else if(value.equals("monet")) {
+            MonetCompat.setup(ctx);
         }
     }
 
@@ -113,5 +120,23 @@ public class Global {
         } else if(value.equals("rubik")) {
             activity.getTheme().applyStyle(R.style.ApplicationFont_Rubik, true);
         }
+    }
+
+    public static boolean checkMonet(Context ctx) {
+        String value = PreferenceManager.getDefaultSharedPreferences(ctx).getString("theme_color", "blue");
+        if(value.equals("monet")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @ColorInt
+    public static int adjustAlpha(@ColorInt int color, float factor) {
+        int alpha = Math.round(Color.alpha(color) * factor);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return Color.argb(alpha, red, green, blue);
     }
 }

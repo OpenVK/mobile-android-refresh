@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,7 @@ import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.layouts.SendTextBottomPanel;
 import uk.openvk.android.refresh.user_interface.list_adapters.MessagesAdapter;
 
-public class ConversationActivity extends AppCompatActivity {
+public class ConversationActivity extends MonetCompatActivity {
     public OvkAPIWrapper ovk_api;
     public Conversation conversation;
     public Handler handler;

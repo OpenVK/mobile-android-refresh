@@ -2,6 +2,8 @@ package uk.openvk.android.refresh.user_interface.list_adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.color.MaterialColors;
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
 
@@ -80,6 +86,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
                     }
                 }
             };
+            if(Global.checkMonet(ctx)) {
+                MonetCompat monet = MonetCompat.getInstance();
+                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
+                ((ImageView)convertView.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(monet.getAccentColor(ctx, isDarkTheme)));
+            } else {
+                ((ImageView)convertView.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent, Color.BLACK)));
+            }
             ((ImageView) convertView.findViewById(R.id.friend_avatar)).setOnClickListener(openProfileListener);
             friend_title.setOnClickListener(openProfileListener);
         }
