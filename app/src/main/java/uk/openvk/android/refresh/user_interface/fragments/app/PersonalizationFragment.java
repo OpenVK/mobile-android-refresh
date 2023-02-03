@@ -85,10 +85,10 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
     }
 
     private void setPreferenceSummary(Preference pref, String tag) {
+        if(global_prefs == null) {
+            global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        }
         if(tag.equals("theme_color")) {
-            if(global_prefs == null) {
-                global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-            }
             String value = global_prefs.getString("theme_color", "blue");
             switch (value) {
                 case "blue":
