@@ -34,37 +34,39 @@
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
                 app:srcCompat="@drawable/circular_avatar" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/post_author_label"
+            <LinearLayout
+                android:id="@+id/post_title_ll"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:ellipsize="start"
-                android:fontFamily="sans-serif-medium"
-                android:singleLine="true"
-                android:text="Post author"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="16sp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/profile_avatar"
-                app:layout_constraintTop_toTopOf="@+id/profile_avatar"
-                tools:ignore="HardcodedText" />
+                app:layout_constraintTop_toTopOf="@+id/profile_avatar">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/post_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:letterSpacing="0.04"
-                android:singleLine="true"
-                android:text="today/yesterday/etc"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/profile_avatar"
-                app:layout_constraintStart_toEndOf="@+id/profile_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/post_author_label"
-                app:layout_constraintVertical_bias="1.0"
-                tools:ignore="HardcodedText,TextContrastCheck" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/post_author_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:singleLine="true"
+                    android:text="Post author"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/post_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:letterSpacing="0.04"
+                    android:singleLine="true"
+                    android:text="today/yesterday/etc"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText,TextContrastCheck" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/post_view"
@@ -76,7 +78,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/buttons_ll"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/post_info">
+                app:layout_constraintTop_toBottomOf="@id/post_title_ll">
 
                 <TextView
                     android:id="@+id/post_text"
