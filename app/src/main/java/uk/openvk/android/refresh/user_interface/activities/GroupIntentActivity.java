@@ -2,12 +2,14 @@ package uk.openvk.android.refresh.user_interface.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -117,6 +119,14 @@ public class GroupIntentActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        TypedValue typedValue = new TypedValue();
+        boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)  == Configuration.UI_MODE_NIGHT_YES;
+        if(isDarkThemeEnabled) {
+            getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+        } else {
+            getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+        }
+        getWindow().setStatusBarColor(typedValue.data);
     }
 
     private void receiveState(int message, Bundle data) {
