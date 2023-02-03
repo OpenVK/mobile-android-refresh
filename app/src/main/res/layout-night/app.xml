@@ -22,11 +22,11 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/app_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@menu/app_main"
                 app:navigationIcon="@drawable/ic_menu"
-                app:title="@string/app_name">
+                android:minHeight="?attr/actionBarSize">
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinner"
