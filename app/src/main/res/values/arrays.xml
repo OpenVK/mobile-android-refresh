@@ -32,4 +32,14 @@
         <item>Round (16px)</item>
         <item>Rectangular</item>
     </string-array>
+
+    <string-array name="fonts">
+        <item>System</item>
+        <item>Comfortaa</item>
+        <item>Inter</item>
+        <item>Open Sans</item>
+        <item>Raleway</item>
+        <item>Roboto</item>
+        <item>Rubik</item>
+    </string-array>
 </resources>

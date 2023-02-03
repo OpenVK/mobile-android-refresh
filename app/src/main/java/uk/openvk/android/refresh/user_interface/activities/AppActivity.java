@@ -14,6 +14,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.user_interface.enumerations.FontFamily;
 import uk.openvk.android.refresh.user_interface.fragments.app.AboutApplicationFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.FriendsFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.MainSettingsFragment;
@@ -112,6 +114,7 @@ public class AppActivity extends AppCompatActivity {
     @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Global.setInterfaceFont(this, R.style.ApplicationFont_Comfortaa);
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));

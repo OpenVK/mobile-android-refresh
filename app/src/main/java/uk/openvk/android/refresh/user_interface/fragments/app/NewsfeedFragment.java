@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.user_interface.fragments.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.WallPost;
@@ -34,17 +37,20 @@ public class NewsfeedFragment extends Fragment {
     private View view;
     public NewsfeedAdapter newsfeedAdapter;
     private LinearLayoutManager llm;
+    private SharedPreferences global_prefs;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Comfortaa);
         view = inflater.inflate(R.layout.newsfeed_fragment, container, false);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
+        global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
-        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
+        if(global_prefs.getBoolean("dark_theme", false)) {
             ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));

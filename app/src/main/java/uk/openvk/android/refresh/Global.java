@@ -3,7 +3,10 @@ package uk.openvk.android.refresh;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -12,6 +15,8 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import uk.openvk.android.refresh.user_interface.wrappers.TypefaceUtil;
 
 public class Global {
     public static String bytesToHex(byte[] bytes) {
@@ -97,5 +102,9 @@ public class Global {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void setInterfaceFont( AppCompatActivity activity, int value) {
+        activity.getTheme().applyStyle(value, true);
     }
 }

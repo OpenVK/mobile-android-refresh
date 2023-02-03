@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.user_interface.fragments.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,17 +40,20 @@ public class ProfileFragment extends Fragment {
     private RecyclerView wallView;
     public NewsfeedAdapter wallAdapter;
     private LinearLayoutManager llm;
+    private SharedPreferences global_prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Comfortaa);
         view = inflater.inflate(R.layout.profile_fragment, container, false);
+        global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         header = (ProfileHeader) view.findViewById(R.id.header);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         Global.setAvatarShape(requireContext(), header.findViewById(R.id.profile_avatar));
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
-        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
+        if(global_prefs.getBoolean("dark_theme", false)) {
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));

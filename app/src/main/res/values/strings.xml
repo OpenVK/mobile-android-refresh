@@ -63,6 +63,7 @@
     <string name="pref_accentcolor">Accent color</string>
     <string name="pref_darktheme">Dark theme</string>
     <string name="pref_avatars_shape">Avatars shape</string>
+    <string name="pref_font">Font</string>
     <string name="pref_darktheme_summary">Comfortable in the dark and for save battery</string>
     <string name="pref_others">Others</string>
     <string name="pref_about_app">About application</string>
@@ -72,6 +73,7 @@
 
     <string name="not_implemented">At the moment this feature is not implemented. Stay tuned.</string>
     <string name="not_supported">At the moment this feature is not supported. Stay tuned.</string>
+
     <string name="app_title" translatable="false">OpenVK Refresh</string>
     <string name="version_subtitle">Version %s</string>
     <string name="app_license_text">This program is free software: you may redistribute and/or modify it under the terms GNU (Affero) General Public License v3.0 (https://www.gnu.org/licenses/agpl.txt) or a later version published by the Free Software Foundation.\n\nWITHOUT ANY WARRANTY, NOT EVEN FOR MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</string>

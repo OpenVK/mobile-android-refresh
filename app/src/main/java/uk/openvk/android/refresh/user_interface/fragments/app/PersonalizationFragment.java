@@ -19,6 +19,7 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import java.util.Objects;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 

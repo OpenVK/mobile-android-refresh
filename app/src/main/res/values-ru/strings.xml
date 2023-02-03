@@ -64,6 +64,8 @@
     <string name="pref_about_app">О приложении</string>
     <string name="pref_accentcolor">Основной цвет</string>
     <string name="pref_darktheme">Темная тема</string>
+    <string name="pref_avatars_shape">Форма аватаров</string>
+    <string name="pref_font">Шрифт интерфейса</string>
     <string name="pref_darktheme_summary">Комфортно в темное время суток и для экономии заряда</string>
     <string name="loading">Загрузка…</string>
     <string name="wall_coming_soon">Стена появится в следующих версиях, а пока собираем отзывы.</string>
@@ -75,7 +77,7 @@
     <string name="version_subtitle">Версия %s</string>
     <string name="app_license_text">Эта программа является свободным програмнным обеспечением: вы можете распространять и/или изменять его в соответствии с условиями GNU (Affero) General Public License версии 3.0 (https://www.gnu.org/licenses/agpl.txt) или поздней версии, опубликованной Фондом свободного программного обеспечения.\n\nБЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ВКЛЮЧАЯ КОММЕРЧЕСКУЮ ЦЕННОСТЬ ИЛИ ПРИГОДНОСТЬ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</string>
     <string name="source_code_btn">Исходный код</string>
-    <string name="pref_avatars_shape">Форма аватаров</string>
+
     <string name="enter_msg">Сообщение</string>
 
     <string name="new_post_title">Новая запись</string>

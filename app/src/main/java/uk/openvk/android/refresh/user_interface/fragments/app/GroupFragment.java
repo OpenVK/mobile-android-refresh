@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.user_interface.fragments.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,10 +41,13 @@ public class GroupFragment extends Fragment {
     private RecyclerView wallView;
     public NewsfeedAdapter wallAdapter;
     private LinearLayoutManager llm;
+    private SharedPreferences global_prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.group_fragment, container, false);
+        global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Comfortaa);
         header = (ProfileHeader) view.findViewById(R.id.header);
         ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setVisibility(View.GONE);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);

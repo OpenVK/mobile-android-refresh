@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.user_interface.fragments.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.models.Conversation;
@@ -35,10 +38,13 @@ public class MessagesFragment extends Fragment {
     private RecyclerView conversationsView;
     private ConversationsAdapter conversationsAdapter;
     private LinearLayoutManager llm;
+    private SharedPreferences global_prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Comfortaa);
         view = inflater.inflate(R.layout.conversations_fragment, container, false);
+        global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
         ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setVisibility(View.GONE);

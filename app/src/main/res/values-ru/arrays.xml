@@ -24,4 +24,14 @@
         <item>Скругленная (16 пикс.)</item>
         <item>Прямоугольная</item>
     </string-array>
+
+    <string-array name="fonts">
+        <item>Системный</item>
+        <item>Comfortaa</item>
+        <item>Inter</item>
+        <item>Open Sans</item>
+        <item>Raleway</item>
+        <item>Roboto</item>
+        <item>Rubik</item>
+    </string-array>
 </resources>

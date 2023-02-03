@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.user_interface.fragments.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.models.Friend;
@@ -32,11 +35,14 @@ public class FriendsFragment extends Fragment {
     private LinearLayoutManager llm;
     private ArrayList<Friend> friends;
     private FriendsAdapter friendsAdapter;
+    private SharedPreferences global_prefs;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Comfortaa);
         view = inflater.inflate(R.layout.friends_fragment, container, false);
+        global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.GONE);

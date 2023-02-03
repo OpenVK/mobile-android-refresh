@@ -9,6 +9,11 @@
         app:iconSpaceReserved="false">
 
         <Preference
+            app:key="font"
+            app:title="@string/pref_font"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
             app:key="accentColor"
             app:title="@string/pref_accentcolor"
             app:iconSpaceReserved="false"/>
