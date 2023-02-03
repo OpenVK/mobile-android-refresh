@@ -278,7 +278,8 @@ public class AppActivity extends AppCompatActivity {
             }
             drawer.setStatusBarBackgroundColor(typedValue.data);
             toggle.syncState();
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
+            System.exit(0);
         }
     }
 
