@@ -349,7 +349,7 @@
 
     <style name="ApplicationFont.Inter">
         <item name="fontFamily">@font/inter</item>
-        <item name="android:fontFamily">@font/inteк</item>
+        <item name="android:fontFamily">@font/inter</item>
     </style>
 
     <style name="ApplicationFont.Inter.Bold">
