@@ -52,6 +52,7 @@ public class AuthActivity extends AppCompatActivity {
     @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Global.setInterfaceFont(this);
         super.onCreate(savedInstanceState);
         global_prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
