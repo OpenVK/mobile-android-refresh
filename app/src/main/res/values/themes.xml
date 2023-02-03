@@ -348,30 +348,30 @@
     </style>
 
     <style name="ApplicationFont.Comfortaa">
-        <item name="android:fontFamily">@font/comfortaa</item>
+        <item name="fontFamily">@font/comfortaa</item>
     </style>
 
     <style name="ApplicationFont.Comfortaa.Bold">
-        <item name="android:fontFamily">@font/comfortaa_bold</item>
+        <item name="fontFamily">@font/comfortaa_bold</item>
     </style>
 
     <style name="ApplicationFont.Comfortaa.Light">
-        <item name="android:fontFamily">@font/comfortaa_light</item>
+        <item name="fontFamily">@font/comfortaa_light</item>
     </style>
 
     <style name="ApplicationFont.Inter">
-        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
     </style>
 
     <style name="ApplicationFont.Inter.Bold">
-        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
     </style>
 
     <style name="ApplicationFont.Inter.Medium">
-        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="fontFamily">@font/inter_medium</item>
     </style>
 
     <style name="ApplicationFont.Inter.Light">
-        <item name="android:fontFamily">@font/inter_light</item>
+        <item name="fontFamily">@font/inter_light</item>
     </style>
 </resources>
