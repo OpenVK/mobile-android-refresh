@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +41,7 @@ public class NewsfeedFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Inter);
+        Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.newsfeed_fragment, container, false);
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);

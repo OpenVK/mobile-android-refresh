@@ -26,7 +26,6 @@ import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Group;
-import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.layouts.ErrorLayout;
@@ -47,7 +46,7 @@ public class GroupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.group_fragment, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Inter);
+        Global.setInterfaceFont((AppCompatActivity) requireActivity());
         header = (ProfileHeader) view.findViewById(R.id.header);
         ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setVisibility(View.GONE);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);

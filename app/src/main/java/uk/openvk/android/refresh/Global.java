@@ -2,11 +2,8 @@ package uk.openvk.android.refresh;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -15,8 +12,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import uk.openvk.android.refresh.user_interface.wrappers.TypefaceUtil;
 
 public class Global {
     public static String bytesToHex(byte[] bytes) {
@@ -104,7 +99,19 @@ public class Global {
         }
     }
 
-    public static void setInterfaceFont( AppCompatActivity activity, int value) {
-        activity.getTheme().applyStyle(value, true);
+    public static void setInterfaceFont(AppCompatActivity activity) {
+        SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+        String value = global_prefs.getString("interface_font", "system");
+        if(value.equals("inter")) {
+            activity.getTheme().applyStyle(R.style.ApplicationFont_Inter, true);
+        } else if(value.equals("open_sans")) {
+            activity.getTheme().applyStyle(R.style.ApplicationFont_OpenSans, true);
+        } else if(value.equals("raleway")) {
+            activity.getTheme().applyStyle(R.style.ApplicationFont_Raleway, true);
+        } else if(value.equals("roboto")) {
+            activity.getTheme().applyStyle(R.style.ApplicationFont_Roboto, true);
+        } else if(value.equals("rubik")) {
+            activity.getTheme().applyStyle(R.style.ApplicationFont_Rubik, true);
+        }
     }
 }

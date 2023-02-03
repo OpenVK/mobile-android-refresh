@@ -59,6 +59,17 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
         });
         setPreferenceSummary(avatars_shape, "avatars_shape");
 
+        Preference interface_font = findPreference("interfaceFont");
+        assert interface_font != null;
+        interface_font.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showInterfaceFontsDialog();
+                return false;
+            }
+        });
+        setPreferenceSummary(interface_font, "interface_font");
+
         SwitchPreferenceCompat darkTheme = (SwitchPreferenceCompat) findPreference("darkTheme");
         if(global_prefs.getBoolean("dark_theme", false)) {
             Objects.requireNonNull(darkTheme).setChecked(true);
@@ -131,6 +142,28 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                     break;
                 case "rectangular":
                     pref.setSummary(getResources().getStringArray(R.array.avatars_shape)[3]);
+                    break;
+            }
+        } else if(tag.equals("interface_font")) {
+            String value = global_prefs.getString("interface_font", "system");
+            switch (value) {
+                default:
+                    pref.setSummary(getResources().getStringArray(R.array.fonts)[0]);
+                    break;
+                case "inter":
+                    pref.setSummary(getResources().getStringArray(R.array.fonts)[1]);
+                    break;
+                case "open_sans":
+                    pref.setSummary(getResources().getStringArray(R.array.fonts)[2]);
+                    break;
+                case "raleway":
+                    pref.setSummary(getResources().getStringArray(R.array.fonts)[3]);
+                    break;
+                case "roboto":
+                    pref.setSummary(getResources().getStringArray(R.array.fonts)[4]);
+                    break;
+                case "rubik":
+                    pref.setSummary(getResources().getStringArray(R.array.fonts)[5]);
                     break;
             }
         }
@@ -241,6 +274,60 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 break;
             case "rectangular":
                 dialog.getListView().setItemChecked(3, true);
+                break;
+        }
+    }
+
+    public void showInterfaceFontsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(R.string.pref_font);
+        builder.setSingleChoiceItems(R.array.fonts, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPreferences.Editor editor = global_prefs.edit();
+                if(which == 0) {
+                    editor.putString("interface_font", "system");
+                } else if(which == 1) {
+                    editor.putString("interface_font", "inter");
+                } else if(which == 2) {
+                    editor.putString("interface_font", "open_sans");
+                } else if(which == 3) {
+                    editor.putString("interface_font", "raleway");
+                } else if(which == 4) {
+                    editor.putString("interface_font", "roboto");
+                } else if(which == 5) {
+                    editor.putString("interface_font", "rubik");
+                }
+                editor.apply();
+                setPreferenceSummary(findPreference("interfaceFont"), "interface_font");
+                dialog.dismiss();
+                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                    ((AppActivity) requireActivity()).restart();
+                }
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        String value = global_prefs.getString("interface_font", "system");
+        switch (value) {
+            default:
+                dialog.getListView().setItemChecked(0, true);
+                break;
+            case "inter":
+                dialog.getListView().setItemChecked(1, true);
+                break;
+            case "open_sans":
+                dialog.getListView().setItemChecked(2, true);
+                break;
+            case "raleway":
+                dialog.getListView().setItemChecked(3, true);
+                break;
+            case "roboto":
+                dialog.getListView().setItemChecked(4, true);
+                break;
+            case "rubik":
+                dialog.getListView().setItemChecked(5, true);
                 break;
         }
     }

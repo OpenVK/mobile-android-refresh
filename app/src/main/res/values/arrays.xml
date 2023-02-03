@@ -35,7 +35,6 @@
 
     <string-array name="fonts">
         <item>System</item>
-        <item>Comfortaa</item>
         <item>Inter</item>
         <item>Open Sans</item>
         <item>Raleway</item>

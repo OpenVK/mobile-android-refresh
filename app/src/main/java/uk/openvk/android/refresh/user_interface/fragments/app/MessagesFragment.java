@@ -3,13 +3,11 @@ package uk.openvk.android.refresh.user_interface.fragments.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,15 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.models.Conversation;
-import uk.openvk.android.refresh.user_interface.GlideApp;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.layouts.ErrorLayout;
 import uk.openvk.android.refresh.user_interface.layouts.ProgressLayout;
@@ -42,7 +37,7 @@ public class MessagesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Global.setInterfaceFont((AppCompatActivity) requireActivity(), R.style.ApplicationFont_Inter);
+        Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.conversations_fragment, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout))

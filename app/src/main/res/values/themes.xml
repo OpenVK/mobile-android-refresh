@@ -344,7 +344,7 @@
     </style>
 
     <style name="ApplicationFont">
-
+        <!-- font famillies !-->
     </style>
 
     <style name="ApplicationFont.Inter">
@@ -352,18 +352,23 @@
         <item name="android:fontFamily">@font/inter</item>
     </style>
 
-    <style name="ApplicationFont.Inter.Bold">
-        <item name="fontFamily">@font/inter_bold</item>
-        <item name="android:fontFamily">@font/inter_bold</item>
+    <style name="ApplicationFont.OpenSans">
+        <item name="fontFamily">@font/open_sans</item>
+        <item name="android:fontFamily">@font/open_sans</item>
     </style>
 
-    <style name="ApplicationFont.Inter.Medium">
-        <item name="fontFamily">@font/inter_medium</item>
-        <item name="android:fontFamily">@font/inter_medium</item>
+    <style name="ApplicationFont.Raleway">
+        <item name="fontFamily">@font/raleway</item>
+        <item name="android:fontFamily">@font/raleway</item>
     </style>
 
-    <style name="ApplicationFont.Inter.Light">
-        <item name="fontFamily">@font/inter_light</item>
-        <item name="android:fontFamily">@font/inter_light</item>
+    <style name="ApplicationFont.Roboto">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik">
+        <item name="fontFamily">@font/rubik</item>
+        <item name="android:fontFamily">@font/rubik</item>
     </style>
 </resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font android:font="@font/rubik_light" android:fontWeight="300" android:fontStyle="normal"
+        app:font="@font/rubik_light" app:fontWeight="300" app:fontStyle="normal"
+        tools:targetApi="o" />
+
+    <font android:font="@font/rubik_light_italic" android:fontWeight="300" android:fontStyle="italic"
+        app:font="@font/rubik_light_italic" app:fontWeight="300" app:fontStyle="italic"
+        tools:targetApi="o" />
+
+    <font android:font="@font/rubik_regular" android:fontWeight="400" android:fontStyle="normal"
+        app:font="@font/rubik_regular" app:fontWeight="400" app:fontStyle="normal"
+        tools:targetApi="o" />
+
+    <font android:font="@font/rubik_italic" android:fontWeight="400"
+        android:fontStyle="italic" app:fontStyle="italic"
+        app:font="@font/rubik_italic" app:fontWeight="400"
+        tools:targetApi="o" />
+
+    <font android:font="@font/rubik_medium" android:fontWeight="500" android:fontStyle="normal"
+        app:font="@font/rubik_medium" app:fontWeight="500" app:fontStyle="normal"
+        tools:targetApi="o" />
+
+    <font android:font="@font/rubik_medium_italic" android:fontWeight="500" android:fontStyle="italic"
+        app:font="@font/rubik_medium_italic" app:fontWeight="500" app:fontStyle="italic"
+        tools:targetApi="o" />
+
+    <font android:font="@font/rubik_bold" android:fontWeight="700"
+        app:font="@font/rubik_bold" app:fontWeight="700"
+        tools:targetApi="o" />
+
+    <font android:font="@font/rubik_bold_italic" android:fontWeight="700"
+        android:fontStyle="italic" app:fontStyle="italic"
+        app:font="@font/rubik_bold_italic" app:fontWeight="700"
+        tools:targetApi="o" />
+
+</font-family>

@@ -9,7 +9,7 @@
         app:iconSpaceReserved="false">
 
         <Preference
-            app:key="font"
+            app:key="interfaceFont"
             app:title="@string/pref_font"
             app:iconSpaceReserved="false"/>
 

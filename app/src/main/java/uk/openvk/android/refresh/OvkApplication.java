@@ -18,31 +18,30 @@ public class OvkApplication extends Application {
         version = BuildConfig.VERSION_NAME;
         global_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         instance_prefs = getSharedPreferences("instance", 0);
+        SharedPreferences.Editor editor = instance_prefs.edit();
         if(!instance_prefs.contains("server")) {
-            SharedPreferences.Editor editor = instance_prefs.edit();
             editor.putString("server", "");
-            editor.apply();
         }
         if(!instance_prefs.contains("access_token")) {
-            SharedPreferences.Editor editor = instance_prefs.edit();
             editor.putString("access_token", "");
-            editor.apply();
         }
         if(!instance_prefs.contains("account_password_sha256")) {
-            SharedPreferences.Editor editor = instance_prefs.edit();
             editor.putString("account_password_sha256", "");
-            editor.apply();
         }
         if(!global_prefs.contains("enable_notification")) {
-            SharedPreferences.Editor editor = global_prefs.edit();
             editor.putBoolean("enable_notification", true);
-            editor.apply();
+
         }
-        if(!global_prefs.contains("use_ssl_connection")) {
-            SharedPreferences.Editor editor = global_prefs.edit();
-            editor.putBoolean("use_ssl_connection", true);
-            editor.apply();
+        if(!global_prefs.contains("theme_color")) {
+            editor.putString("theme_color", "blue");
         }
+        if(!global_prefs.contains("avatars_shape")) {
+            editor.putString("avatars_shape", "circle");
+        }
+        if(!global_prefs.contains("interface_font")) {
+            editor.putString("interface_font", "system");
+        }
+        editor.apply();
     }
 
     public SharedPreferences getGlobalPreferences() {
