@@ -18,6 +18,7 @@ import com.google.android.material.color.MaterialColors;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -66,6 +67,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
         void bind(final int position) {
             final Friend item = getItem(position);
             friend_title.setText(String.format("%s %s", item.first_name, item.last_name));
+            friend_title.setTypeface(Global.getFlexibleTypeface(ctx, 500));
             Global.setAvatarShape(ctx, convertView.findViewById(R.id.friend_avatar));
             ((ImageView) convertView.findViewById(R.id.friend_avatar)).setImageTintList(null);
             GlideApp.with(ctx)
@@ -86,15 +88,25 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
                     }
                 }
             };
-            if(Global.checkMonet(ctx)) {
-                MonetCompat monet = MonetCompat.getInstance();
-                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
-                ((ImageView)convertView.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(monet.getAccentColor(ctx, isDarkTheme)));
-            } else {
-                ((ImageView)convertView.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent, Color.BLACK)));
-            }
+            setTheme(convertView);
             ((ImageView) convertView.findViewById(R.id.friend_avatar)).setOnClickListener(openProfileListener);
             friend_title.setOnClickListener(openProfileListener);
+        }
+    }
+
+    private void setTheme(View view) {
+        if(Global.checkMonet(ctx)) {
+            MonetCompat monet = MonetCompat.getInstance();
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
+            if(isDarkTheme) {
+                ((ImageView) view.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
+            } else {
+                ((ImageView) view.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+            }
+        } else {
+            ((ImageView)view.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent, Color.BLACK)));
         }
     }
 

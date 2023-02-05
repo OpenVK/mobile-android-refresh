@@ -12,7 +12,7 @@
 
         <TextView
             android:id="@+id/appbar_title"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
+            style="?attr/textAppearanceHeadline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"

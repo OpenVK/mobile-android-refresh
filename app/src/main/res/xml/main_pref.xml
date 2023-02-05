@@ -29,6 +29,18 @@
 
     <PreferenceCategory
         app:key="others_category"
+        app:title="@string/pref_account"
+        app:iconSpaceReserved="false">
+        <Preference
+            app:icon="@drawable/ic_logout"
+            app:key="logout"
+            app:singleLineTitle="true"
+            app:title="@string/pref_logout"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="others_category"
         app:title="@string/pref_others"
         app:iconSpaceReserved="false">
         <Preference

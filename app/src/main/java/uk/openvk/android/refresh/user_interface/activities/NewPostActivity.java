@@ -1,7 +1,10 @@
 package uk.openvk.android.refresh.user_interface.activities;
 
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,15 +20,22 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import java.util.Objects;
+
+import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Wall;
@@ -46,18 +56,21 @@ public class NewPostActivity extends MonetCompatActivity {
     private String account_first_name;
     private TextInputEditText statusEditText;
     private MaterialToolbar toolbar;
+    private boolean isDarkTheme;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Global.setInterfaceFont(this);
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.new_post);
         setAPIWrapper();
         setAppBar();
+        isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         statusEditText = findViewById(R.id.status_edit);
+        setMonetTheme();
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
@@ -100,6 +113,32 @@ public class NewPostActivity extends MonetCompatActivity {
         }
     }
 
+    private void setMonetTheme() {
+        if(Global.checkMonet(this)) {
+            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+            if (!isDarkTheme) {
+                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                int[][] states = new int[][] {
+                        new int[] { android.R.attr.state_selected}, new int[] { }
+                };
+                int[] colors;
+                int colorOnSurface = MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
+                if(isDarkTheme) {
+                    colors = new int[]{
+                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
+                            Global.adjustAlpha(colorOnSurface, 0.6f)
+                    };
+                } else {
+                    colors = new int[]{
+                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
+                            Global.adjustAlpha(colorOnSurface, 0.6f)
+                    };
+                }
+            }
+        }
+    }
+
     private void setAppBar() {
         toolbar = findViewById(R.id.app_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -119,17 +158,19 @@ public class NewPostActivity extends MonetCompatActivity {
                 return false;
             }
         });
-        Window window = getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        TypedValue typedValue = new TypedValue();
-        boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)  == Configuration.UI_MODE_NIGHT_YES;
-        if(isDarkThemeEnabled) {
-            getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
-        } else {
-            getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+        if(!Global.checkMonet(this)) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            TypedValue typedValue = new TypedValue();
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            if (isDarkThemeEnabled) {
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+            } else {
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+            }
+            window.setStatusBarColor(typedValue.data);
         }
-        window.setStatusBarColor(typedValue.data);
     }
 
     private void sendPost() {
@@ -172,5 +213,15 @@ public class NewPostActivity extends MonetCompatActivity {
         }
     }
 
+    @Override
+    public void recreate() {
 
+    }
+
+    @Override
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
+        getMonet().updateMonetColors();
+        setMonetTheme();
+    }
 }

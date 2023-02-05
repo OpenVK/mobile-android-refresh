@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -21,7 +22,11 @@ import androidx.viewbinding.BuildConfig;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import java.util.Objects;
+
+import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
@@ -56,15 +61,18 @@ public class ProfileIntentActivity extends MonetCompatActivity {
     private MaterialToolbar toolbar;
     private Users users;
     private User user;
+    private boolean isDarkTheme;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Global.setInterfaceFont(this);
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.intent_view);
+        setMonetTheme();
         final Uri uri = getIntent().getData();
         if (uri != null) {
             String path = uri.toString();
@@ -79,6 +87,16 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 setAppBar();
             } catch (Exception ex) {
                 ex.printStackTrace();
+            }
+        }
+    }
+
+    private void setMonetTheme() {
+        if(Global.checkMonet(this)) {
+            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+            if (!isDarkTheme) {
+                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
             }
         }
     }
@@ -125,14 +143,16 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 onBackPressed();
             }
         });
-        TypedValue typedValue = new TypedValue();
-        boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)  == Configuration.UI_MODE_NIGHT_YES;
-        if(isDarkThemeEnabled) {
-            getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
-        } else {
-            getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+        if(!Global.checkMonet(this)) {
+            TypedValue typedValue = new TypedValue();
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            if (isDarkThemeEnabled) {
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+            } else {
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+            }
+            getWindow().setStatusBarColor(typedValue.data);
         }
-        getWindow().setStatusBarColor(typedValue.data);
     }
 
     private void receiveState(int message, Bundle data) {
@@ -190,5 +210,12 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 startActivity(i);
             }
         }
+    }
+
+    @Override
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
+        getMonet().updateMonetColors();
+        setMonetTheme();
     }
 }

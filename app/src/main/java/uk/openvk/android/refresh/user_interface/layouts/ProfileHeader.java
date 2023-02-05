@@ -25,6 +25,7 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import uk.openvk.android.refresh.Global;
@@ -45,10 +46,23 @@ public class ProfileHeader extends LinearLayoutCompat {
         layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         view.setLayoutParams(layoutParams);
+        setTheme();
+        ((TextView) findViewById(R.id.profile_name)).setTypeface(Global.getFlexibleTypeface(getContext(), 500));
+    }
+
+    private void setTheme() {
         if(Global.checkMonet(getContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
-            ((ImageView)findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(monet.getAccentColor(getContext(), isDarkTheme)));
+            if(isDarkTheme) {
+                ((ImageView) findViewById(R.id.verified_icon)).setImageTintList(
+                        ColorStateList.valueOf(Objects.requireNonNull(
+                                monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
+            } else {
+                ((ImageView) findViewById(R.id.verified_icon)).setImageTintList(
+                        ColorStateList.valueOf(Objects.requireNonNull(
+                                monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+            }
         }
     }
 

@@ -64,11 +64,14 @@
     <string name="pref_about_app">О приложении</string>
     <string name="pref_accentcolor">Основной цвет</string>
     <string name="pref_darktheme">Темная тема</string>
+    <string name="pref_darktheme_summary">Комфортно в темное время суток и для экономии заряда</string>
     <string name="pref_avatars_shape">Форма аватаров</string>
     <string name="pref_font">Шрифт интерфейса</string>
-    <string name="pref_darktheme_summary">Комфортно в темное время суток и для экономии заряда</string>
+    <string name="pref_account">Аккаунт</string>
+    <string name="pref_logout">Выйти</string>
     <string name="loading">Загрузка…</string>
-    <string name="wall_coming_soon">Стена появится в следующих версиях, а пока собираем отзывы.</string>
+
+    <string name="log_out_warning">При выходе из учётной записи из устройства будут удалены все связанные с ней данные. Продолжить?</string>
     <string name="sett_app_restart_required">Настройки вступят в силу после перезапуска приложения.</string>
 
     <string name="not_implemented">На данный момент такая функция не реализована. Следите за обновлениями.</string>

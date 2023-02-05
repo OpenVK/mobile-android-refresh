@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.WindowCompat;
@@ -23,9 +24,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.Objects;
 
+import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Authorization;
@@ -53,10 +56,10 @@ public class AuthActivity extends MonetCompatActivity {
     @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Global.setInterfaceFont(this);
         super.onCreate(savedInstanceState);
         global_prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setInterfaceFont(this);
         if(global_prefs.getBoolean("dark_theme", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
@@ -124,7 +127,9 @@ public class AuthActivity extends MonetCompatActivity {
         ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.dynamic_fragment_layout, new AuthProgressFragment());
         ft.commit();
-        snackbar.dismiss();
+        if(snackbar != null) {
+            snackbar.dismiss();
+        }
         if(ovk_api == null) {
             ovk_api = new OvkAPIWrapper(this);
             ovk_api.setServer(instance);
@@ -224,5 +229,16 @@ public class AuthActivity extends MonetCompatActivity {
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
         }
+    }
+
+    @Override
+    public void recreate() {
+
+    }
+
+    @Override
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
+        getMonet().updateMonetColors();
     }
 }

@@ -2,9 +2,6 @@
 <font-family xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <font android:font="@font/raleway_light" android:fontWeight="300" android:fontStyle="normal"
-        app:font="@font/raleway_light" app:fontWeight="300" app:fontStyle="normal"
-        tools:targetApi="o" />
 
     <font android:font="@font/raleway_light_italic" android:fontWeight="300" android:fontStyle="italic"
         app:font="@font/raleway_light_italic" app:fontWeight="300" app:fontStyle="italic"

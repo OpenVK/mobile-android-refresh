@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -48,20 +49,7 @@ public class FriendsFragment extends Fragment {
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.GONE);
-        TypedValue typedValue = new TypedValue();
-        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
-        if(Global.checkMonet(requireContext())) {
-            MonetCompat monet = MonetCompat.getInstance();
-            boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setColorSchemeColors(monet.getAccentColor(requireContext(), isDarkTheme));
-        } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setColorSchemeColors(typedValue.data);
-        }
-        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
-        } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
-        }
+        setTheme();
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -72,6 +60,29 @@ public class FriendsFragment extends Fragment {
         });
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         return view;
+    }
+
+    private void setTheme() {
+        TypedValue typedValue = new TypedValue();
+        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        if(Global.checkMonet(requireContext())) {
+            MonetCompat monet = MonetCompat.getInstance();
+            boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
+            if(isDarkTheme) {
+                ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setColorSchemeColors(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+            } else {
+                ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setColorSchemeColors(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+            }
+        } else {
+            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setColorSchemeColors(typedValue.data);
+        }
+        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
+            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+        } else {
+            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

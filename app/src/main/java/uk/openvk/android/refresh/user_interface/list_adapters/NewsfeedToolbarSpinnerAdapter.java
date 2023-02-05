@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.list_items.ToolbarSpinnerItem;
@@ -83,9 +84,11 @@ public class NewsfeedToolbarSpinnerAdapter implements SpinnerAdapter {
         } else {
             ((TextView) view.findViewById(R.id.appbar_subtitle)).setText(item.name);
         }
+        ((TextView) view.findViewById(R.id.appbar_title)).setTypeface(Global.getFlexibleTypeface(ctx, 500));
         ((TextView) view.findViewById(R.id.appbar_title)).setTextColor(
                 ctx.getResources().getColor(R.color.onPrimaryTextColor));
         ((TextView) view.findViewById(R.id.appbar_subtitle)).setText(item.name);
+        ((TextView) view.findViewById(R.id.appbar_subtitle)).setTypeface(Global.getFlexibleTypeface(ctx, 400));
         ((TextView) view.findViewById(R.id.appbar_subtitle)).setTextColor(
                 ctx.getResources().getColor(R.color.onSecondaryTextColor));
         return view;

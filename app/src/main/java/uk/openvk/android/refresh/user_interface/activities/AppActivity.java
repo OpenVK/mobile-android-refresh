@@ -49,6 +49,7 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
@@ -115,16 +116,16 @@ public class AppActivity extends MonetCompatActivity {
     @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Global.setInterfaceFont(this);
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
-        isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         if(global_prefs.getBoolean("dark_theme", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setInterfaceFont(this);
+        isDarkTheme = global_prefs.getBoolean("dark_theme", false);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -190,61 +191,6 @@ public class AppActivity extends MonetCompatActivity {
             navView.getMenu().getItem(1).setChecked(false);
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        }
-    }
-
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            if(!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                drawer.setStatusBarBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
-            }
-            int colorOnSurface = MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
-            NavigationView navView = findViewById(R.id.nav_view);
-            int[][] states = new int[][] {
-                    new int[] { android.R.attr.state_checked}, new int[] { }
-            };
-            int[] colors;
-            if(isDarkTheme) {
-                colors = new int[]{
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
-                        Global.adjustAlpha(colorOnSurface, 0.6f)
-                };
-            } else {
-                colors = new int[]{
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
-                        Global.adjustAlpha(colorOnSurface, 0.6f)
-                };
-            }
-            ColorStateList csl = new ColorStateList(states, colors);
-            navView.setItemIconTintList(csl);
-            navView.setItemTextColor(csl);
-
-            BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
-            if(isDarkTheme) {
-                colors = new int[]{
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
-                        Global.adjustAlpha(colorOnSurface, 0.6f)
-                };
-            } else {
-                colors = new int[]{
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
-                        Global.adjustAlpha(colorOnSurface, 0.6f)
-                };
-            }
-            csl = new ColorStateList(states, colors);
-            b_navView.setItemTextColor(csl);
-            b_navView.setItemIconTintList(csl);
-            b_navView.setItemRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this, isDarkTheme)));
-            FloatingActionButton fab = findViewById(R.id.fab_newpost);
-            if(isDarkTheme) {
-                fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8()));
-            } else {
-                fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
-            }
-            fab.setImageTintList(ColorStateList.valueOf(getMonet().getAccentColor(this, isDarkTheme)));
-            fab.setRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this, isDarkTheme)));
         }
     }
 
@@ -339,7 +285,7 @@ public class AppActivity extends MonetCompatActivity {
             drawer.setStatusBarBackgroundColor(typedValue.data);
             toggle.syncState();
         } catch (Exception ex) {
-            System.exit(0);
+
         }
     }
 
@@ -385,6 +331,61 @@ public class AppActivity extends MonetCompatActivity {
 
             }
         });
+    }
+
+    private void setMonetTheme() {
+        if(Global.checkMonet(this)) {
+            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+            if(!isDarkTheme) {
+                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
+                drawer.setStatusBarBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+            }
+            int colorOnSurface = MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
+            NavigationView navView = findViewById(R.id.nav_view);
+            int[][] states = new int[][] {
+                    new int[] { android.R.attr.state_checked}, new int[] { }
+            };
+            int[] colors;
+            if(isDarkTheme) {
+                colors = new int[]{
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
+                        Global.adjustAlpha(colorOnSurface, 0.6f)
+                };
+            } else {
+                colors = new int[]{
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
+                        Global.adjustAlpha(colorOnSurface, 0.6f)
+                };
+            }
+            ColorStateList csl = new ColorStateList(states, colors);
+            navView.setItemIconTintList(csl);
+            navView.setItemTextColor(csl);
+
+            BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
+            if(isDarkTheme) {
+                colors = new int[]{
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
+                        Global.adjustAlpha(colorOnSurface, 0.6f)
+                };
+            } else {
+                colors = new int[]{
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
+                        Global.adjustAlpha(colorOnSurface, 0.6f)
+                };
+            }
+            csl = new ColorStateList(states, colors);
+            b_navView.setItemTextColor(csl);
+            b_navView.setItemIconTintList(csl);
+            b_navView.setItemRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this, isDarkTheme)));
+            FloatingActionButton fab = findViewById(R.id.fab_newpost);
+            if(isDarkTheme) {
+                fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8()));
+            } else {
+                fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
+            }
+            fab.setImageTintList(ColorStateList.valueOf(getMonet().getAccentColor(this, isDarkTheme)));
+            fab.setRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this, isDarkTheme)));
+        }
     }
 
     public void switchNavItem(MenuItem item) {
@@ -799,5 +800,17 @@ public class AppActivity extends MonetCompatActivity {
             i.setData(Uri.parse(url));
             startActivity(i);
         }
+    }
+
+    @Override
+    public void recreate() {
+
+    }
+
+    @Override
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
+        getMonet().updateMonetColors();
+        setMonetTheme();
     }
 }

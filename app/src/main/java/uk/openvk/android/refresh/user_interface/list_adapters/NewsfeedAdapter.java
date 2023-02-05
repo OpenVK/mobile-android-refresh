@@ -134,6 +134,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             } else {
                 post_text.setVisibility(View.GONE);
             }
+
+            poster_name.setTypeface(Global.getFlexibleTypeface(ctx, 500));
             post_likes.setText(String.format("%s", item.counters.likes));
             post_comments.setText(String.format("%s", item.counters.comments));
             post_repost.setText(String.format("%s", item.counters.reposts));

@@ -15,6 +15,8 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import java.util.Objects;
+
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 
@@ -33,7 +35,13 @@ public class ProgressLayout extends LinearLayoutCompat {
         if(Global.checkMonet(getContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
-            ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(monet.getAccentColor(getContext(), isDarkTheme));
+            if(isDarkTheme) {
+                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+            } else {
+                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+            }
         }
     }
 
@@ -50,7 +58,13 @@ public class ProgressLayout extends LinearLayoutCompat {
         if(Global.checkMonet(getContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
-            ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(monet.getAccentColor(getContext(), isDarkTheme));
+            if(isDarkTheme) {
+                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+            } else {
+                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+            }
         }
     }
 }

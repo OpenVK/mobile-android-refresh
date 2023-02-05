@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="iconPreferenceColor" format="reference|color" />
+    <declare-styleable name="HeadlineTextView">
+        <attr name="textFont" format="integer" />
+    </declare-styleable>
 </resources>

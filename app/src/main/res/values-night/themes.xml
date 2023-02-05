@@ -272,6 +272,14 @@
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
+    <style name="ApplicationTheme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="titleTextStyle">?attr/textAppearanceHeadline3</item>
+    </style>
+
     <style name="ApplicationTheme.BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="backgroundTint">@color/navbarColor</item>
         <item name="elevation">8dp</item>
@@ -299,5 +307,9 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_openvk_splash_logo</item>
         <item name="windowSplashScreenAnimationDuration">1280</item>
         <item name="postSplashScreenTheme">@style/ApplicationTheme</item>
+    </style>
+
+    <style name="ApplicationFont.ToolBar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="titleTextStyle">?attr/textAppearanceHeadline3</item>
     </style>
 </resources>

@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -52,20 +53,7 @@ public class ProfileFragment extends Fragment {
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         Global.setAvatarShape(requireContext(), header.findViewById(R.id.profile_avatar));
-        TypedValue typedValue = new TypedValue();
-        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
-        if(Global.checkMonet(requireContext())) {
-            MonetCompat monet = MonetCompat.getInstance();
-            boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(monet.getAccentColor(requireContext(), isDarkTheme));
-        } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(typedValue.data);
-        }
-        if(global_prefs.getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
-        } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
-        }
+        setTheme();
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -77,6 +65,30 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    private void setTheme() {
+        TypedValue typedValue = new TypedValue();
+        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        if(Global.checkMonet(requireContext())) {
+            MonetCompat monet = MonetCompat.getInstance();
+            boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
+            if(isDarkTheme) {
+                ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+            } else {
+                ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+            }
+        } else {
+            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(typedValue.data);
+        }
+
+        if(global_prefs.getBoolean("dark_theme", false)) {
+            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+        } else {
+            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+        }
+    }
+
     public void setData(User user) {
         if(user != null && user.first_name != null && user.last_name != null) {
             header.setProfileName(String.format("%s %s", user.first_name, user.last_name));
@@ -86,11 +98,19 @@ public class ProfileFragment extends Fragment {
             header.setOnline(user.online);
             Context ctx = requireContext();
             Global.setAvatarShape(getContext(), view.findViewById(R.id.profile_avatar));
-            Glide.with(ctx).load(
-                    String.format("%s/photos_cache/profile_avatars/avatar_%s",
-                            ctx.getCacheDir().getAbsolutePath(), user.id))
-                    .placeholder(R.drawable.circular_avatar).error(R.drawable.circular_avatar)
-                    .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
+            if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                Glide.with(ctx).load(
+                                String.format("%s/photos_cache/account_avatar/avatar_%s",
+                                        ctx.getCacheDir().getAbsolutePath(), user.id))
+                        .placeholder(R.drawable.circular_avatar).error(R.drawable.circular_avatar)
+                        .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
+            } else {
+                Glide.with(ctx).load(
+                                String.format("%s/photos_cache/profile_avatars/avatar_%s",
+                                        ctx.getCacheDir().getAbsolutePath(), user.id))
+                        .placeholder(R.drawable.circular_avatar).error(R.drawable.circular_avatar)
+                        .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
+            }
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.VISIBLE);
             if(user.verified) {

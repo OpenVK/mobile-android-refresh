@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -48,7 +49,13 @@ public class MessagesFragment extends Fragment {
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-            ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(monet.getAccentColor(requireContext(), isDarkTheme));
+            if(isDarkTheme) {
+                ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+            } else {
+                ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+            }
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(typedValue.data);
         }

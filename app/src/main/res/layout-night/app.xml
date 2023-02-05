@@ -23,10 +23,12 @@
                 android:id="@+id/app_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/ApplicationTheme.Toolbar"
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@menu/app_main"
                 app:navigationIcon="@drawable/ic_menu"
-                android:minHeight="?attr/actionBarSize">
+                app:title="@string/app_name">
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinner"
