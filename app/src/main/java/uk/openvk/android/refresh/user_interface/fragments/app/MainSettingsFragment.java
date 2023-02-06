@@ -8,16 +8,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.user_interface.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.activities.MainActivity;
 
@@ -68,31 +72,30 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void showLogoutConfirmDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setMessage(R.string.log_out_warning);
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                SharedPreferences.Editor editor = instance_prefs.edit();
-                editor.putString("access_token", "");
-                editor.putString("server", "");
-                editor.putString("account_password_sha256", "");
-                editor.apply();
-                Runnable runnable = new Runnable() {
+        OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        dialog.setMessage(R.string.log_out_warning);
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
-                    public void run() {
-                        Intent activity = new Intent(requireContext().getApplicationContext(), MainActivity.class);
-                        activity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(activity);
-                        System.exit(0);
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        SharedPreferences.Editor editor = instance_prefs.edit();
+                        editor.putString("access_token", "");
+                        editor.putString("server", "");
+                        editor.putString("account_password_sha256", "");
+                        editor.apply();
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent activity = new Intent(requireContext().getApplicationContext(), MainActivity.class);
+                                activity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(activity);
+                                System.exit(0);
+                            }
+                        };
+                        new Handler().postDelayed(runnable, 100);
                     }
-                };
-                new Handler().postDelayed(runnable, 100);
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        AlertDialog dialog = builder.create();
+                });
+        dialog.setNegativeButton(android.R.string.cancel, null);
         dialog.show();
     }
 }

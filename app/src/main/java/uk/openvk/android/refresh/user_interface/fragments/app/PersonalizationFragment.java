@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,11 +19,14 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.user_interface.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.user_interface.activities.AppActivity;
+import uk.openvk.android.refresh.user_interface.list_adapters.DialogSingleChoiceAdapter;
 
 public class PersonalizationFragment extends PreferenceFragmentCompat {
     private SharedPreferences global_prefs;
@@ -174,169 +179,165 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
     }
 
     private void showAccentColorChangeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(R.string.pref_accentcolor);
-        builder.setSingleChoiceItems(R.array.theme_colors, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SharedPreferences.Editor editor = global_prefs.edit();
-                if(which == 0) {
-                    editor.putString("theme_color", "blue");
-                } else if(which == 1) {
-                    editor.putString("theme_color", "red");
-                } else if(which == 2) {
-                    editor.putString("theme_color", "green");
-                } else if(which == 3) {
-                    editor.putString("theme_color", "violet");
-                } else if(which == 4) {
-                    editor.putString("theme_color", "orange");
-                } else if(which == 5) {
-                    editor.putString("theme_color", "teal");
-                } else if(which == 6) {
-                    editor.putString("theme_color", "vk5x");
-                } else if(which == 7) {
-                    editor.putString("theme_color", "gray");
-                } else if(which == 8) {
-                    editor.putString("theme_color", "monet");
-                }
-                editor.apply();
-                setPreferenceSummary(findPreference("accentColor"), "theme_color");
-                dialog.dismiss();
-                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).restart();
-                }
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        int valuePos = 0;
         String value = global_prefs.getString("theme_color", "blue");
         switch (value) {
-            case "blue":
-                dialog.getListView().setItemChecked(0, true);
-                break;
             case "red":
-                dialog.getListView().setItemChecked(1, true);
+                valuePos = 1;
                 break;
             case "green":
-                dialog.getListView().setItemChecked(2, true);
+                valuePos = 2;
                 break;
             case "violet":
-                dialog.getListView().setItemChecked(3, true);
+                valuePos = 3;
                 break;
             case "orange":
-                dialog.getListView().setItemChecked(4, true);
+                valuePos = 4;
                 break;
             case "teal":
-                dialog.getListView().setItemChecked(5, true);
+                valuePos = 5;
                 break;
             case "vk5x":
-                dialog.getListView().setItemChecked(6, true);
+                valuePos = 6;
                 break;
             case "gray":
-                dialog.getListView().setItemChecked(7, true);
+                valuePos = 7;
                 break;
             case "monet":
-                dialog.getListView().setItemChecked(8, true);
+                valuePos = 8;
                 break;
         }
+        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.theme_colors));
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        builder.setTitle(R.string.pref_accentcolor);
+        builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.show();
+        AlertDialog dialog = builder.getDialog();
+        singleChoiceAdapter.setDialogBuilder(builder);
     }
 
     private void showAvatarsShapeChangeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(R.string.pref_avatars_shape);
-        builder.setSingleChoiceItems(R.array.avatars_shape, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SharedPreferences.Editor editor = global_prefs.edit();
-                if(which == 0) {
-                    editor.putString("avatars_shape", "circle");
-                } else if(which == 1) {
-                    editor.putString("avatars_shape", "round32px");
-                } else if(which == 2) {
-                    editor.putString("avatars_shape", "round16px");
-                } else if(which == 3) {
-                    editor.putString("avatars_shape", "rectangular");
-                }
-                editor.apply();
-                setPreferenceSummary(findPreference("avatarsShape"), "avatars_shape");
-                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).setAvatarShape();
-                }
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        int valuePos = 0;
         String value = global_prefs.getString("avatars_shape", "circle");
         switch (value) {
-            default:
-                dialog.getListView().setItemChecked(0, true);
-                break;
             case "round32px":
-                dialog.getListView().setItemChecked(1, true);
+                valuePos = 1;
                 break;
             case "round16px":
-                dialog.getListView().setItemChecked(2, true);
+                valuePos = 2;
                 break;
             case "rectangular":
-                dialog.getListView().setItemChecked(3, true);
+                valuePos = 3;
                 break;
         }
+        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.avatars_shape));
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        builder.setTitle(R.string.pref_avatars_shape);
+        builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.show();
+        AlertDialog dialog = builder.getDialog();;
+        singleChoiceAdapter.setDialogBuilder(builder);
     }
 
     public void showInterfaceFontsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(R.string.pref_font);
-        builder.setSingleChoiceItems(R.array.fonts, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SharedPreferences.Editor editor = global_prefs.edit();
-                if(which == 0) {
-                    editor.putString("interface_font", "system");
-                } else if(which == 1) {
-                    editor.putString("interface_font", "inter");
-                } else if(which == 2) {
-                    editor.putString("interface_font", "open_sans");
-                } else if(which == 3) {
-                    editor.putString("interface_font", "raleway");
-                } else if(which == 4) {
-                    editor.putString("interface_font", "roboto");
-                } else if(which == 5) {
-                    editor.putString("interface_font", "rubik");
-                }
-                editor.apply();
-                setPreferenceSummary(findPreference("interfaceFont"), "interface_font");
-                dialog.dismiss();
-                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).restart();
-                }
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        int valuePos = 0;
         String value = global_prefs.getString("interface_font", "system");
         switch (value) {
             default:
-                dialog.getListView().setItemChecked(0, true);
+                valuePos = 0;
                 break;
             case "inter":
-                dialog.getListView().setItemChecked(1, true);
+                valuePos = 1;
                 break;
             case "open_sans":
-                dialog.getListView().setItemChecked(2, true);
+                valuePos = 2;
                 break;
             case "raleway":
-                dialog.getListView().setItemChecked(3, true);
+                valuePos = 3;
                 break;
             case "roboto":
-                dialog.getListView().setItemChecked(4, true);
+                valuePos = 4;
                 break;
             case "rubik":
-                dialog.getListView().setItemChecked(5, true);
+                valuePos = 5;
                 break;
+        }
+        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.fonts));
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        builder.setTitle(R.string.pref_font);
+        AlertDialog dialog = null;
+        builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.show();
+        dialog = builder.getDialog();
+        singleChoiceAdapter.setDialogBuilder(builder);
+    }
+
+    public void onMenuItemClicked(String[] list, int which) {
+        if(Arrays.equals(list, getResources().getStringArray(R.array.theme_colors))) {
+            SharedPreferences.Editor editor = global_prefs.edit();
+            if(which == 0) {
+                editor.putString("theme_color", "blue");
+            } else if(which == 1) {
+                editor.putString("theme_color", "red");
+            } else if(which == 2) {
+                editor.putString("theme_color", "green");
+            } else if(which == 3) {
+                editor.putString("theme_color", "violet");
+            } else if(which == 4) {
+                editor.putString("theme_color", "orange");
+            } else if(which == 5) {
+                editor.putString("theme_color", "teal");
+            } else if(which == 6) {
+                editor.putString("theme_color", "vk5x");
+            } else if(which == 7) {
+                editor.putString("theme_color", "gray");
+            } else if(which == 8) {
+                editor.putString("theme_color", "monet");
+            }
+            editor.apply();
+            setPreferenceSummary(findPreference("accentColor"), "theme_color");
+            if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                ((AppActivity) requireActivity()).restart();
+            }
+        } else if(Arrays.equals(list, getResources().getStringArray(R.array.fonts))) {
+            SharedPreferences.Editor editor = global_prefs.edit();
+            if(which == 0) {
+                editor.putString("interface_font", "system");
+            } else if(which == 1) {
+                editor.putString("interface_font", "inter");
+            } else if(which == 2) {
+                editor.putString("interface_font", "open_sans");
+            } else if(which == 3) {
+                editor.putString("interface_font", "raleway");
+            } else if(which == 4) {
+                editor.putString("interface_font", "roboto");
+            } else if(which == 5) {
+                editor.putString("interface_font", "rubik");
+            }
+            editor.apply();
+            setPreferenceSummary(findPreference("interfaceFont"), "interface_font");
+            if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                ((AppActivity) requireActivity()).restart();
+            }
+        } else if(Arrays.equals(list, getResources().getStringArray(R.array.avatars_shape))) {
+            SharedPreferences.Editor editor = global_prefs.edit();
+            if(which == 0) {
+                editor.putString("avatars_shape", "circle");
+            } else if(which == 1) {
+                editor.putString("avatars_shape", "round32px");
+            } else if(which == 2) {
+                editor.putString("avatars_shape", "round16px");
+            } else if(which == 3) {
+                editor.putString("avatars_shape", "rectangular");
+            }
+            editor.apply();
+            setPreferenceSummary(findPreference("avatarsShape"), "avatars_shape");
+            if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                ((AppActivity) requireActivity()).setAvatarShape();
+            }
         }
     }
 }

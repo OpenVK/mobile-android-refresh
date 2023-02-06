@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ApplicationFont">
+        <item name="textAppearanceHeadline1">?attr/textAppearanceHeadline1</item>
+        <item name="textAppearanceHeadline2">?attr/textAppearanceHeadline2</item>
+        <item name="textAppearanceHeadline3">?attr/textAppearanceHeadline3</item>
+        <item name="textAppearanceHeadline4">?attr/textAppearanceHeadline4</item>
+        <item name="textAppearanceHeadline5">?attr/textAppearanceHeadline5</item>
+        <item name="textAppearanceHeadline6">?attr/textAppearanceHeadline6</item>
+        <item name="textAppearanceBody1">?attr/textAppearanceBody1</item>
+        <item name="textAppearanceBody2">?attr/textAppearanceBody2</item>
+        <item name="textAppearanceLabelLarge">?attr/textAppearanceLabelLarge</item>
+        <item name="android:titleTextAppearance">?attr/titleTextAppearance</item>
+    </style>
+
+    <style name="ApplicationFont.ToolBar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textAppearance">@style/ApplicationFont.Inter.Headline6</item>
+    </style>
+
+    <style name="ApplicationFont.Inter">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="textAppearanceHeadline1">@style/ApplicationFont.Inter.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/ApplicationFont.Inter.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/ApplicationFont.Inter.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/ApplicationFont.Inter.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/ApplicationFont.Inter.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/ApplicationFont.Inter.Headline6</item>
+        <item name="textAppearanceBody1">@style/ApplicationFont.Inter.Body1</item>
+        <item name="textAppearanceBody2">@style/ApplicationFont.Inter.Body2</item>
+        <item name="android:titleTextAppearance">@style/ApplicationFont.Inter.Medium</item>
+        <item name="textAppearanceLabelLarge">@style/ApplicationFont.Inter.TextLarge</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.TextLarge" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Medium">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+    </style>
+
+    <style name="ApplicationFont.Inter.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:fontFamily">@font/inter</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="textAppearanceHeadline1">@style/ApplicationFont.OpenSans.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/ApplicationFont.OpenSans.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/ApplicationFont.OpenSans.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/ApplicationFont.OpenSans.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/ApplicationFont.OpenSans.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/ApplicationFont.OpenSans.Headline6</item>
+        <item name="textAppearanceBody1">@style/ApplicationFont.OpenSans.Body1</item>
+        <item name="textAppearanceBody2">@style/ApplicationFont.OpenSans.Body2</item>
+        <item name="android:titleTextAppearance">@style/ApplicationFont.OpenSans.Bold</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Bold">
+        <item name="fontFamily">@font/open_sans_bold</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/open_sans_bold</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/open_sans_bold</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/open_sans_bold</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/open_sans_bold</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/open_sans_bold</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/open_sans_bold</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/open_sans</item>
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
+
+    <style name="ApplicationFont.OpenSans.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/open_sans</item>
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway">
+        <item name="android:fontFamily">@font/raleway</item>
+        <item name="textAppearanceHeadline1">@style/ApplicationFont.Raleway.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/ApplicationFont.Raleway.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/ApplicationFont.Raleway.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/ApplicationFont.Raleway.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/ApplicationFont.Raleway.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/ApplicationFont.Raleway.Headline6</item>
+        <item name="textAppearanceBody1">@style/ApplicationFont.Raleway.Body1</item>
+        <item name="textAppearanceBody2">@style/ApplicationFont.Raleway.Body2</item>
+        <item name="android:titleTextAppearance">@style/ApplicationFont.Raleway.Medium</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Medium">
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/raleway_medium</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/open_sans</item>
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
+
+    <style name="ApplicationFont.Raleway.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/open_sans</item>
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto">
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="textAppearanceHeadline1">@style/ApplicationFont.Roboto.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/ApplicationFont.Roboto.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/ApplicationFont.Roboto.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/ApplicationFont.Roboto.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/ApplicationFont.Roboto.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/ApplicationFont.Roboto.Headline6</item>
+        <item name="textAppearanceBody1">@style/ApplicationFont.Roboto.Body1</item>
+        <item name="textAppearanceBody2">@style/ApplicationFont.Roboto.Body2</item>
+        <item name="android:titleTextAppearance">@style/ApplicationFont.Roboto.Medium</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Medium">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/open_sans</item>
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="ApplicationFont.Roboto.TextLarge" parent="TextAppearance.AppCompat.Large">
+        <item name="typeface">inter_medium</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik">
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="textAppearanceHeadline1">@style/ApplicationFont.Rubik.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/ApplicationFont.Rubik.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/ApplicationFont.Rubik.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/ApplicationFont.Rubik.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/ApplicationFont.Rubik.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/ApplicationFont.Rubik.Headline6</item>
+        <item name="textAppearanceBody1">@style/ApplicationFont.Rubik.Body1</item>
+        <item name="textAppearanceBody2">@style/ApplicationFont.Rubik.Body2</item>
+        <item name="android:titleTextAppearance">@style/ApplicationFont.Rubik.Medium</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Medium">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="android:fontFamily">@font/rubik_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Headline1"  parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="android:fontFamily">@font/rubik_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Headline2"  parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="android:fontFamily">@font/rubik_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Headline3"  parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="android:fontFamily">@font/rubik_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Headline4"  parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="android:fontFamily">@font/rubik_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Headline5"  parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="android:fontFamily">@font/rubik_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Headline6"  parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/rubik_medium</item>
+        <item name="android:fontFamily">@font/rubik_medium</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/rubik</item>
+        <item name="android:fontFamily">@font/rubik</item>
+    </style>
+
+    <style name="ApplicationFont.Rubik.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/rubik</item>
+        <item name="android:fontFamily">@font/rubik</item>
+    </style>
+
+</resources>

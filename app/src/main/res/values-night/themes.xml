@@ -272,6 +272,13 @@
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
+    <style name="ApplicationTheme.SplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#1a1a1a</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_openvk_splash_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1280</item>
+        <item name="postSplashScreenTheme">@style/ApplicationTheme</item>
+    </style>
+
     <style name="ApplicationTheme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">#86ffffff</item>
@@ -300,13 +307,6 @@
         <item name="rippleColor">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/primaryColor</item>
         <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="ApplicationTheme.SplashTheme" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#1a1a1a</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_openvk_splash_logo</item>
-        <item name="windowSplashScreenAnimationDuration">1280</item>
-        <item name="postSplashScreenTheme">@style/ApplicationTheme</item>
     </style>
 
     <style name="ApplicationFont.ToolBar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">

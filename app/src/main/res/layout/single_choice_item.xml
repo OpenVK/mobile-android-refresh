@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <CheckedTextView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@android:id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:drawablePadding="20dp"
+        android:ellipsize="marquee"
+        android:gravity="start|center_vertical"
+        android:paddingStart="@dimen/abc_select_dialog_padding_start_material"
+        android:paddingEnd="?attr/dialogPreferredPadding"
+        android:textAlignment="viewStart"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="16sp"
+        android:clickable="false"
+        app:drawableLeftCompat="?android:attr/listChoiceIndicatorSingle"
+        app:drawableStartCompat="?android:attr/listChoiceIndicatorSingle" />
+</androidx.appcompat.widget.LinearLayoutCompat>
