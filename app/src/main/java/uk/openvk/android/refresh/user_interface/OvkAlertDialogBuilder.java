@@ -7,6 +7,7 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +38,10 @@ public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
     }
 
     public void setFont() {
+        if(dialog.getWindow().findViewById(com.google.android.material.R.id.alertTitle) != null) {
+            ((TextView) dialog.getWindow().findViewById(com.google.android.material.R.id.alertTitle)).setTypeface(
+                    Global.getFlexibleTypeface(getContext(), 500));
+        }
         // setting medium fonts for buttons
         if(dialog.getButton(BUTTON_NEGATIVE) != null) dialog.getButton(BUTTON_NEGATIVE).setTypeface(Global.getFlexibleTypeface(getContext(), 500));
         if(dialog.getButton(BUTTON_NEUTRAL) != null) dialog.getButton(BUTTON_NEUTRAL).setTypeface(Global.getFlexibleTypeface(getContext(), 500));

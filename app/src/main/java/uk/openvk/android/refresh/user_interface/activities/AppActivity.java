@@ -311,8 +311,12 @@ public class AppActivity extends MonetCompatActivity {
             navView.getMenu().getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
-                    drawer.closeDrawers();
-                    switchNavItem(item);
+                    try {
+                        drawer.closeDrawers();
+                        switchNavItem(item);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                     return false;
                 }
             });
