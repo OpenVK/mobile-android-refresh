@@ -485,7 +485,7 @@ public class AppActivity extends MonetCompatActivity {
                     messages.getConversations(ovk_api);
                 }
                 ((MessagesFragment) selectedFragment).refreshAdapter();
-                b_navView.getMenu().getItem(3).setChecked(true);
+                b_navView.getMenu().getItem(2).setChecked(true);
                 navView.getMenu().getItem(3).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.profile) {
