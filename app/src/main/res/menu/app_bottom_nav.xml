@@ -4,7 +4,6 @@
         android:id="@+id/home"
         android:icon="@drawable/ic_home"
         android:title="@string/bottom_nav_home" />
-
     <item
         android:icon="@drawable/ic_person"
         android:id="@+id/friends"
@@ -13,6 +12,11 @@
         android:id="@+id/messages"
         android:icon="@drawable/ic_chat"
         android:title="@string/bottom_nav_messages" />
+
+    <item
+        android:icon="@drawable/ic_people"
+        android:id="@+id/groups"
+        android:title="@string/nav_groups"/>
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_account"

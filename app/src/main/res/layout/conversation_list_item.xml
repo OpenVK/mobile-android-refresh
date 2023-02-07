@@ -7,7 +7,7 @@
     android:background="@color/backgroundColor">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/friend_avatar"
+        android:id="@+id/conv_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -27,10 +27,10 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/friend_avatar"
+        app:layout_constraintBottom_toBottomOf="@+id/conv_avatar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/friend_avatar"
-        app:layout_constraintTop_toTopOf="@+id/friend_avatar">
+        app:layout_constraintStart_toEndOf="@+id/conv_avatar"
+        app:layout_constraintTop_toTopOf="@+id/conv_avatar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,14 +38,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/friend_title"
+                android:id="@+id/conversation_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:singleLine="true"
                 android:text="Conversation title"
                 android:textColor="@color/primaryTextColor"
-                android:textStyle="bold"
                 tools:ignore="HardcodedText,InefficientWeight" />
 
             <TextView

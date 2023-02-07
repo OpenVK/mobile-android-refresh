@@ -34,4 +34,10 @@
         <item>Roboto</item>
         <item>Rubik</item>
     </string-array>
+
+    <string-array name="members_count">
+        <item>%s участник</item>
+        <item>%s участника</item>
+        <item>%s участников</item>
+    </string-array>
 </resources>

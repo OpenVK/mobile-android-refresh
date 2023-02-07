@@ -33,7 +33,7 @@ import uk.openvk.android.refresh.user_interface.layouts.ProfileHeader;
 import uk.openvk.android.refresh.user_interface.layouts.ProgressLayout;
 import uk.openvk.android.refresh.user_interface.list_adapters.NewsfeedAdapter;
 
-public class GroupFragment extends Fragment {
+public class CommunityFragment extends Fragment {
     public ProfileHeader header;
     private View view;
     private ArrayList<WallPost> wallPosts;
@@ -44,7 +44,7 @@ public class GroupFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.group_fragment, container, false);
+        view = inflater.inflate(R.layout.community_fragment, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         header = (ProfileHeader) view.findViewById(R.id.header);

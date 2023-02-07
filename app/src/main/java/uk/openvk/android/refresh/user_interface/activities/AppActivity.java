@@ -64,12 +64,14 @@ import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.models.Friend;
+import uk.openvk.android.refresh.api.models.Group;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.fragments.app.AboutApplicationFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.FriendsFragment;
+import uk.openvk.android.refresh.user_interface.fragments.app.GroupsFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.MainSettingsFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.MessagesFragment;
 import uk.openvk.android.refresh.user_interface.fragments.app.NewsfeedFragment;
@@ -112,6 +114,7 @@ public class AppActivity extends MonetCompatActivity {
     private String current_fragment;
     private MonetCompat monet;
     private boolean isDarkTheme;
+    private GroupsFragment groupsFragment;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -143,6 +146,7 @@ public class AppActivity extends MonetCompatActivity {
     private void createFragments() {
         newsfeedFragment = new NewsfeedFragment();
         friendsFragment = new FriendsFragment();
+        groupsFragment = new GroupsFragment();
         messagesFragment = new MessagesFragment();
         profileFragment = new ProfileFragment();
         mainSettingsFragment = new MainSettingsFragment();
@@ -160,6 +164,7 @@ public class AppActivity extends MonetCompatActivity {
             ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_screen, newsfeedFragment, "newsfeed");
             ft.add(R.id.fragment_screen, friendsFragment, "friends");
+            ft.add(R.id.fragment_screen, groupsFragment, "groups");
             ft.add(R.id.fragment_screen, messagesFragment, "messages");
             ft.add(R.id.fragment_screen, profileFragment, "profile");
             ft.add(R.id.fragment_screen, mainSettingsFragment, "settings");
@@ -168,6 +173,7 @@ public class AppActivity extends MonetCompatActivity {
             ft.commit();
             ft = getSupportFragmentManager().beginTransaction();
             ft.hide(friendsFragment);
+            ft.hide(groupsFragment);
             ft.hide(messagesFragment);
             ft.hide(profileFragment);
             ft.hide(mainSettingsFragment);
@@ -183,8 +189,8 @@ public class AppActivity extends MonetCompatActivity {
             ft.show(selectedFragment);
             ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).setVisibility(View.GONE);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
-            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_menu);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
             NavigationView navView = findViewById(R.id.nav_view);
             navView.getMenu().getItem(4).setChecked(true);
             prevMenuItem = navView.getMenu().getItem(4);
@@ -225,14 +231,11 @@ public class AppActivity extends MonetCompatActivity {
             }
         });
         toolbar.setTitle("");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(selectedFragment == mainSettingsFragment || selectedFragment == personalizationFragment) {
-                    onBackPressed();
-                } else {
-                    drawer.open();
-                }
+        toolbar.setNavigationOnClickListener(v -> {
+            if(selectedFragment == mainSettingsFragment || selectedFragment == personalizationFragment) {
+                onBackPressed();
+            } else {
+                drawer.open();
             }
         });
     }
@@ -285,7 +288,7 @@ public class AppActivity extends MonetCompatActivity {
             drawer.setStatusBarBackgroundColor(typedValue.data);
             toggle.syncState();
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
     }
 
@@ -451,6 +454,21 @@ public class AppActivity extends MonetCompatActivity {
                 b_navView.getMenu().getItem(1).setChecked(true);
                 navView.getMenu().getItem(2).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
+            } else if (itemId == R.id.groups) {
+                prevBottomMenuItem = b_navView.getMenu().getItem(1);
+                prevMenuItem = navView.getMenu().getItem(2);
+                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("groups"));
+                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                profileFragment.setData(account.user);
+                toolbar.setTitle(R.string.nav_groups);
+                toolbar.setNavigationIcon(R.drawable.ic_menu);
+                if (groups.getList() == null || groups.getList().size() == 0) {
+                    groups.getGroups(ovk_api, account.id, 25);
+                }
+                b_navView.getMenu().getItem(3).setChecked(true);
+                navView.getMenu().getItem(3).setChecked(true);
+                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.messages) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(2);
                 prevMenuItem = navView.getMenu().getItem(3);
@@ -549,7 +567,8 @@ public class AppActivity extends MonetCompatActivity {
                 likes.parse(data.getString("response"));
                 if (global_prefs.getString("current_screen", "").equals("newsfeed")) {
                     newsfeedFragment.select(likes.position, "likes", 1);
-                } else if (global_prefs.getString("current_screen", "").equals("profile")) {
+                } else {
+                    global_prefs.getString("current_screen", "");
                     //((WallLayout) profileLayout.findViewById(R.id.wall_layout)).select(likes.position, "likes", 1);
                 }
             } else if(message == HandlerMessages.LIKES_DELETE) {
@@ -584,6 +603,12 @@ public class AppActivity extends MonetCompatActivity {
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createAdapter(this, friendsList, "friends");
                 friendsFragment.disableUpdateState();
+            } else if (message == HandlerMessages.GROUPS_GET) {
+                groups.parse(data.getString("response"), downloadManager, global_prefs.getString("photos_quality", ""), true, true);
+                ArrayList<Group> groupsList = groups.getList();
+                if (selectedFragment == groupsFragment) {
+                    groupsFragment.createAdapter(this, groups.getList(), "groups_list");
+                }
             } else if (message == HandlerMessages.WALL_GET) {
                 wall.parse(this, downloadManager, "high", data.getString("response"));
                 profileFragment.createWallAdapter(this, wall.getWallItems());
@@ -664,6 +689,13 @@ public class AppActivity extends MonetCompatActivity {
         }
     }
 
+    public void refreshGroupsList(boolean progress) {
+        groups.getGroups(ovk_api, account.id, 25);
+        if (progress) {
+            groupsFragment.showProgress();
+        }
+    }
+
     public void refreshConversations(boolean progress) {
         messages.getConversations(ovk_api);
         if (progress) {
@@ -691,6 +723,14 @@ public class AppActivity extends MonetCompatActivity {
         NavigationView navView = findViewById(R.id.nav_view);
         if(tag.equals("newsfeed")) {
             switchNavItem(b_navView.getMenu().getItem(0));
+        } else if(tag.equals("settings")) {
+            switchNavItem(navView.getMenu().getItem(4));
+            ft.hide(selectedFragment);
+            selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
+            ft.show(selectedFragment);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
+            ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+            findViewById(R.id.fab_newpost).setVisibility(View.GONE);
         } else if(tag.equals("personalization")) {
             switchNavItem(navView.getMenu().getItem(4));
             ft.hide(selectedFragment);
@@ -715,11 +755,14 @@ public class AppActivity extends MonetCompatActivity {
     @Override
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
-        if(selectedFragment != Objects.requireNonNull(fm.findFragmentByTag("newsfeed"))) {
-            switchFragment("newsfeed");
-        } else {
+        if(selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("about_app"))
+                || selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("personalization"))) {
+            switchFragment("settings");
+        } else if(selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("newsfeed"))) {
             finishAffinity();
             System.exit(0);
+        } else {
+            switchFragment("newsfeed");
         }
     }
 
@@ -799,6 +842,17 @@ public class AppActivity extends MonetCompatActivity {
         Friend friend = friends.getFriends().get(position);
         String url = "";
         url = String.format("openvk://profile/id%s", friend.id);
+        if(url.length() > 0) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+    }
+
+    public void openCommunityPage(int position) {
+        Group group = groups.getList().get(position);
+        String url = "";
+        url = String.format("openvk://group/club%s", group.id);
         if(url.length() > 0) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));

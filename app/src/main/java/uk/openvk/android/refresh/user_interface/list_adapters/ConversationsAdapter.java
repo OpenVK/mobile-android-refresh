@@ -2,7 +2,6 @@ package uk.openvk.android.refresh.user_interface.list_adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.conversation_title = (TextView) view.findViewById(R.id.friend_title);
+            this.conversation_title = (TextView) view.findViewById(R.id.conversation_title);
             this.conversation_time = (TextView) view.findViewById(R.id.conversation_time);
             this.last_msg_text = (TextView) view.findViewById(R.id.last_message_text);
         }
@@ -66,19 +65,20 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         void bind(final int position) {
             final Conversation item = getItem(position);
             conversation_title.setText(item.title);
+            conversation_title.setTypeface(Global.getFlexibleTypeface(ctx, 500));
             conversation_time.setText("");
             if(account.id == item.lastMsgAuthorId) {
                 last_msg_text.setText(ctx.getResources().getString(R.string.your_last_message, item.lastMsgText));
             } else {
                 last_msg_text.setText(item.lastMsgText);
             }
-            Global.setAvatarShape(ctx, convertView.findViewById(R.id.friend_avatar));
-            ((ImageView) convertView.findViewById(R.id.friend_avatar)).setImageTintList(null);
+            Global.setAvatarShape(ctx, convertView.findViewById(R.id.conv_avatar));
+            ((ImageView) convertView.findViewById(R.id.conv_avatar)).setImageTintList(null);
             GlideApp.with(ctx)
                     .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.peer_id))
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
                     .centerCrop()
-                    .into((ImageView) convertView.findViewById(R.id.friend_avatar));
+                    .into((ImageView) convertView.findViewById(R.id.conv_avatar));
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override

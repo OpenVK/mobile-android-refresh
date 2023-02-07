@@ -7,7 +7,7 @@
     android:background="@color/backgroundColor">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/friend_avatar"
+        android:id="@+id/group_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -27,10 +27,10 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/friend_avatar"
+        app:layout_constraintBottom_toBottomOf="@+id/group_avatar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/friend_avatar"
-        app:layout_constraintTop_toTopOf="@+id/friend_avatar">
+        app:layout_constraintStart_toEndOf="@+id/group_avatar"
+        app:layout_constraintTop_toTopOf="@+id/group_avatar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,28 +38,25 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/conversation_title"
-                android:layout_width="wrap_content"
+                android:id="@+id/group_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
-                android:gravity="center"
                 android:singleLine="true"
-                android:text="Friend first and last name"
+                android:text="Group name"
                 android:textColor="@color/primaryTextColor"
-                android:textSize="16sp"
                 tools:ignore="HardcodedText,InefficientWeight" />
-
-            <ImageView
-                android:id="@+id/verified_icon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="4dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_verified" />
-
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/group_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="Summary"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <View

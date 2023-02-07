@@ -42,4 +42,10 @@
         <item>Roboto</item>
         <item>Rubik</item>
     </string-array>
+
+    <string-array name="members_count">
+        <item>%s members</item>
+        <item>%s members</item>
+        <item>%s members</item>
+    </string-array>
 </resources>

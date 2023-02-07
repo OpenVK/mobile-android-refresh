@@ -14,7 +14,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
@@ -31,16 +30,13 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.Groups;
 import uk.openvk.android.refresh.api.Likes;
-import uk.openvk.android.refresh.api.Users;
 import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Group;
-import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
-import uk.openvk.android.refresh.user_interface.fragments.app.GroupFragment;
-import uk.openvk.android.refresh.user_interface.fragments.app.ProfileFragment;
+import uk.openvk.android.refresh.user_interface.fragments.app.CommunityFragment;
 
 public class GroupIntentActivity extends MonetCompatActivity {
     private SharedPreferences global_prefs;
@@ -51,7 +47,7 @@ public class GroupIntentActivity extends MonetCompatActivity {
     private Wall wall;
     private Account account;
     private Likes likes;
-    private GroupFragment groupFragment;
+    private CommunityFragment communityFragment;
     private FragmentTransaction ft;
     private String args;
     private MaterialToolbar toolbar;
@@ -117,13 +113,13 @@ public class GroupIntentActivity extends MonetCompatActivity {
 
     private void createFragments() {
         //friendsFragment = new FriendsFragment();
-        groupFragment = new GroupFragment();
+        communityFragment = new CommunityFragment();
         setAPIWrapper();
         setAppBar();
         FragmentManager fm = getSupportFragmentManager();
         ft = getSupportFragmentManager().beginTransaction();
         //ft.add(R.id.fragment_screen, friendsFragment, "friends");
-        ft.add(R.id.fragment_screen, groupFragment, "group");
+        ft.add(R.id.fragment_screen, communityFragment, "group");
         ft.commit();
         ft = getSupportFragmentManager().beginTransaction();
     }
@@ -165,7 +161,13 @@ public class GroupIntentActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parseSearch(data.getString("response"));
                 group = groups.getList().get(0);
-                groupFragment.setData(group);
+                communityFragment.setData(group);
+                group.downloadAvatar(downloadManager, "high");
+                wall.get(ovk_api, -group.id, 50);
+            } else if (message == HandlerMessages.GROUPS_GET_BY_ID) {
+                groups.parse(data.getString("response"));
+                group = groups.getList().get(0);
+                communityFragment.setData(group);
                 group.downloadAvatar(downloadManager, "high");
                 wall.get(ovk_api, -group.id, 50);
             } else if(message == HandlerMessages.GROUPS_SEARCH) {
@@ -173,15 +175,15 @@ public class GroupIntentActivity extends MonetCompatActivity {
                 groups.getGroups(ovk_api, groups.getList().get(0).id, 1);
             } else if (message == HandlerMessages.WALL_GET) {
                 wall.parse(this, downloadManager, "high", data.getString("response"));
-                groupFragment.createWallAdapter(this, wall.getWallItems());
+                communityFragment.createWallAdapter(this, wall.getWallItems());
             } else if(message == HandlerMessages.WALL_AVATARS || message == HandlerMessages.WALL_ATTACHMENTS) {
                 if(message == HandlerMessages.WALL_AVATARS) {
-                    groupFragment.wallAdapter.setAvatarLoadState(true);
+                    communityFragment.wallAdapter.setAvatarLoadState(true);
                 } else {
-                    groupFragment.wallAdapter.setPhotoLoadState(true);
+                    communityFragment.wallAdapter.setPhotoLoadState(true);
                 }
             } else if(message == HandlerMessages.GROUP_AVATARS) {
-                groupFragment.setData(group);
+                communityFragment.setData(group);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

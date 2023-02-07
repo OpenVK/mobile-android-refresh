@@ -12,16 +12,12 @@
         <item android:title="@string/nav_friends"
             android:icon="@drawable/ic_person"
             android:id="@+id/friends" />
+        <item android:title="@string/nav_groups"
+            android:icon="@drawable/ic_people"
+            android:id="@+id/groups" />
         <item android:title="@string/nav_messages"
             android:icon="@drawable/ic_chat"
             android:id="@+id/messages" />
-        <!--
-            Not implemented yet.
-
-            <item android:title="@string/nav_groups"
-                android:icon="@drawable/ic_people"
-                android:id="@+id/people" />
-        !-->
     </group>
 
     <group android:id="@+id/additional_group">
