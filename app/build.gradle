@@ -11,7 +11,6 @@ android {
         targetSdk 33
         versionCode 11
         versionName "0.0.11.alpha"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -48,10 +47,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.fragment:fragment:1.5.5"
     implementation "androidx.preference:preference:1.2.0"
-    testImplementation 'junit:junit:4.13.2'
     annotationProcessor ('com.github.bumptech.glide:compiler:4.12.0')
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.github.KieronQuinn:MonetCompat:0.4.1'
     implementation 'androidx.palette:palette:1.0.0'
 }
