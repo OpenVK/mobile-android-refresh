@@ -19,6 +19,7 @@
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -34,6 +35,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -55,6 +57,7 @@
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color2.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -69,6 +72,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color3" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -90,6 +94,7 @@
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color3.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -105,6 +110,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color4" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -126,6 +132,7 @@
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color4.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -141,6 +148,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color5" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -162,6 +170,7 @@
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color5.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -176,6 +185,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color6" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -197,6 +207,7 @@
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color6.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -211,6 +222,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color7" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -233,6 +245,7 @@
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="iconPreferenceColor">@color/primaryColorGray</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color7.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -249,6 +262,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
@@ -275,6 +289,7 @@
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="iconPreferenceColor">@color/primaryColorGray</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color8.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -290,6 +305,7 @@
         <item name="iconPreferenceColor">@color/primaryColorGray</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
