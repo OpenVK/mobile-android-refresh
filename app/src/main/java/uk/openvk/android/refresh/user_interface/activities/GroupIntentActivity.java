@@ -76,6 +76,7 @@ public class GroupIntentActivity extends MonetCompatActivity {
                 setAPIWrapper();
                 createFragments();
                 setAppBar();
+                setMonetTheme();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

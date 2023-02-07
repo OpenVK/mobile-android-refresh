@@ -31,30 +31,64 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/text_layout_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingLeft="8dp"
             android:paddingTop="4dp"
             android:paddingRight="8dp"
-            android:paddingBottom="4dp">
+            android:paddingBottom="4dp"
+            android:visibility="gone">
 
-            <TextView
+            <uk.openvk.android.refresh.user_interface.layouts.TightTextView
                 android:id="@+id/msg_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="8dp"
-                android:maxWidth="160dp"
                 android:text="Incoming message text example"
                 android:textColor="@android:color/white"
-                tools:ignore="HardcodedText"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:maxWidth="220dp"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:text="7:20"
+                android:textColor="#8fffffff"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/text_layout_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp">
+
+            <uk.openvk.android.refresh.user_interface.layouts.TightTextView
+                android:id="@+id/msg_text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxWidth="220dp"
+                android:text="Incoming message text example"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/timestamp_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
                 android:layout_weight="1"
                 android:text="7:20"
                 android:textColor="#8fffffff"

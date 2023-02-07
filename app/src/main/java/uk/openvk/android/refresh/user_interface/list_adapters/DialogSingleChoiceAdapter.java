@@ -104,6 +104,7 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
                 if(frg != null) {
                     if(dlgBuilder != null) {
                         dlgBuilder.clearCheck(checkedItem);
+                        checkedItem = position;
                         checkedTv.setChecked(true);
                     }
                     ((PersonalizationFragment) frg).onMenuItemClicked(list, position);
