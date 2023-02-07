@@ -35,7 +35,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.color.MaterialColors;
@@ -112,7 +111,6 @@ public class AppActivity extends MonetCompatActivity {
     private MenuItem prevBottomMenuItem;
     private FriendsFragment friendsFragment;
     private String current_fragment;
-    private MonetCompat monet;
     private boolean isDarkTheme;
     private GroupsFragment groupsFragment;
 
@@ -232,7 +230,8 @@ public class AppActivity extends MonetCompatActivity {
         });
         toolbar.setTitle("");
         toolbar.setNavigationOnClickListener(v -> {
-            if(selectedFragment == mainSettingsFragment || selectedFragment == personalizationFragment) {
+            if(selectedFragment == mainSettingsFragment || selectedFragment == personalizationFragment
+                    || selectedFragment == aboutAppFragment) {
                 onBackPressed();
             } else {
                 drawer.open();

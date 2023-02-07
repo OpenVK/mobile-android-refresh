@@ -214,6 +214,7 @@ public class ConversationActivity extends MonetCompatActivity {
             conversation_adapter = new MessagesAdapter(this, history, peer_id);
             llm = new LinearLayoutManager(this);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
+            llm.setStackFromEnd(true);
             messagesView.setLayoutManager(llm);
             messagesView.setAdapter(conversation_adapter);
         } else if (message == HandlerMessages.CHAT_DISABLED) {

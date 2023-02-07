@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.api.models;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import org.droidparts.util.Strings;
 import org.json.JSONArray;
@@ -71,24 +72,27 @@ public class Conversation {
                         startOfDay = startOfDay_calendar.getTime();
                         Date prev_startOfDay = null;
                         Calendar prevStartOfDay_calendar = Calendar.getInstance();
-                        if (i > 0) {
-                            prev_startOfDay = new Date(TimeUnit.SECONDS.toMillis(prevItem.getLong("date")));
-                            prevStartOfDay_calendar.setTime(startOfDay);
+                        if (i > 1) {
+                            prevStartOfDay_calendar.setTime(new Date(TimeUnit.SECONDS.toMillis(prevItem.getLong("date"))));
                             prevStartOfDay_calendar.set(Calendar.HOUR_OF_DAY, 0);
                             prevStartOfDay_calendar.set(Calendar.MINUTE, 0);
                             prevStartOfDay_calendar.set(Calendar.SECOND, 0);
                             prev_startOfDay = prevStartOfDay_calendar.getTime();
                         }
                         if(prev_startOfDay != null) {
+                            Log.d("compare", String.format("%s", startOfDay.compareTo(prev_startOfDay)));
                             if (startOfDay.compareTo(prev_startOfDay) > 0) {
-                                new Message(2, 0, false, false, item.getLong("date"), new SimpleDateFormat("dd MMMM yyyy").format(startOfDay), ctx);
+                                history.add(new Message(2, 0, false, false, item.getLong("date"), new SimpleDateFormat("d MMMM yyyy").format(startOfDay), ctx));
                             }
                         } else {
-                            new Message(2, 0, false, false, item.getLong("date"), new SimpleDateFormat("dd MMMM yyyy").format(startOfDay), ctx);
+                            history.add(new Message(2, 0, false, false, item.getLong("date"), new SimpleDateFormat("d MMMM yyyy").format(startOfDay), ctx));
                         }
+                    } else {
+                        history.add(new Message(2, 0, false, false, item.getLong("date"), new SimpleDateFormat("d MMMM yyyy").format(
+                                new Date(TimeUnit.SECONDS.toMillis(item.getLong("date")))), ctx));
                     }
                     Message message = new Message(type, item.getLong("id"), incoming, false, item.getLong("date"), item.getString("text"), ctx);
-                    message.timestamp = new SimpleDateFormat("HH:mm").format(item.getLong("date"));
+                    message.timestamp = new SimpleDateFormat("HH:mm").format(TimeUnit.SECONDS.toMillis(item.getLong("date")));
                     message.author_id = item.getLong("from_id");
                     prevItem = item;
                     history.add(message);

@@ -33,6 +33,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import java.lang.reflect.Field;
 import java.util.Objects;
 
 import dev.kdrag0n.monet.theme.ColorScheme;
@@ -129,11 +130,21 @@ public class NewPostActivity extends MonetCompatActivity {
                             Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
+                    Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
+                            .setHighlightColor(
+                                    Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                    Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
+                            .setHintTextColor(new ColorStateList(states, colors));
                 } else {
                     colors = new int[]{
                             Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
+                    Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
+                            .setHighlightColor(
+                                    Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8());
+                    Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
+                            .setHintTextColor(new ColorStateList(states, colors));
                 }
             }
         }

@@ -17,9 +17,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.Objects;
 
 import uk.openvk.android.refresh.BuildConfig;
 import uk.openvk.android.refresh.Global;
@@ -40,7 +43,11 @@ public class AboutApplicationFragment extends Fragment {
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false);
-            ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.valueOf(monet.getAccentColor(requireContext(), isDarkTheme)));
+            if(isDarkTheme) {
+                ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.valueOf(Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
+            } else {
+                ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.valueOf(Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+            }
         }
         ((Button) view.findViewById(R.id.source_code_btn)).setOnClickListener(new View.OnClickListener() {
             @Override

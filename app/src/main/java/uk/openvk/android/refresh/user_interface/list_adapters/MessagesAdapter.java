@@ -133,6 +133,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
                     }
                 }
             } else {
+                msg_text.setTypeface(Global.getFlexibleTypeface(ctx, 500));
                 msg_text.setText(item.text);
             }
         }
