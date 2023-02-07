@@ -473,7 +473,7 @@ public class AppActivity extends MonetCompatActivity {
                 navView.getMenu().getItem(3).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.messages) {
-                prevBottomMenuItem = b_navView.getMenu().getItem(3);
+                prevBottomMenuItem = b_navView.getMenu().getItem(2);
                 prevMenuItem = navView.getMenu().getItem(3);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
