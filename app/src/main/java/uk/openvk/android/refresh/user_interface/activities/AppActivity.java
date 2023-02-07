@@ -287,7 +287,7 @@ public class AppActivity extends MonetCompatActivity {
             drawer.setStatusBarBackgroundColor(typedValue.data);
             toggle.syncState();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            restart();
         }
     }
 
@@ -459,7 +459,7 @@ public class AppActivity extends MonetCompatActivity {
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.groups) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(1);
-                prevMenuItem = navView.getMenu().getItem(2);
+                prevMenuItem = navView.getMenu().getItem(3);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("groups"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
@@ -474,7 +474,7 @@ public class AppActivity extends MonetCompatActivity {
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.messages) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(2);
-                prevMenuItem = navView.getMenu().getItem(3);
+                prevMenuItem = navView.getMenu().getItem(4);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
@@ -486,7 +486,7 @@ public class AppActivity extends MonetCompatActivity {
                 }
                 ((MessagesFragment) selectedFragment).refreshAdapter();
                 b_navView.getMenu().getItem(2).setChecked(true);
-                navView.getMenu().getItem(3).setChecked(true);
+                navView.getMenu().getItem(4).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.profile) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(4);
