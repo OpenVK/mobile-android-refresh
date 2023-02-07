@@ -350,7 +350,8 @@
     </style>
 
     <style name="ApplicationTheme.Navigation" parent="Widget.MaterialComponents.NavigationView">
-        <item name="itemTextAppearance">?attr/textAppearanceSubtitle1</item>
+        <item name="itemTextAppearance">?attr/textAppearanceSubtitle2</item>
+        <item name="listPreferredItemHeightSmall">36dp</item>
     </style>
 
     <style name="ApplicationTheme.AlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">

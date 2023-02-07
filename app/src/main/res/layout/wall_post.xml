@@ -85,12 +85,12 @@
                     android:id="@+id/post_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="12dp"
                     android:text="Post text"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     tools:ignore="HardcodedText" />
 
                 <uk.openvk.android.refresh.user_interface.layouts.PhotoAttachmentLayout

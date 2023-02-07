@@ -473,7 +473,7 @@ public class AppActivity extends MonetCompatActivity {
                 navView.getMenu().getItem(3).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.messages) {
-                prevBottomMenuItem = b_navView.getMenu().getItem(2);
+                prevBottomMenuItem = b_navView.getMenu().getItem(3);
                 prevMenuItem = navView.getMenu().getItem(3);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
@@ -485,11 +485,11 @@ public class AppActivity extends MonetCompatActivity {
                     messages.getConversations(ovk_api);
                 }
                 ((MessagesFragment) selectedFragment).refreshAdapter();
-                b_navView.getMenu().getItem(2).setChecked(true);
+                b_navView.getMenu().getItem(3).setChecked(true);
                 navView.getMenu().getItem(3).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.profile) {
-                prevBottomMenuItem = b_navView.getMenu().getItem(3);
+                prevBottomMenuItem = b_navView.getMenu().getItem(4);
                 prevMenuItem = navView.getMenu().getItem(0);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
                 ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.GONE);
@@ -499,7 +499,7 @@ public class AppActivity extends MonetCompatActivity {
                 }
                 toolbar.setTitle(R.string.nav_profile);
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
-                b_navView.getMenu().getItem(3).setChecked(true);
+                b_navView.getMenu().getItem(4).setChecked(true);
                 navView.getMenu().getItem(0).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             } else if (itemId == R.id.settings) {
