@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <uk.openvk.android.refresh.user_interface.layouts.ProgressLayout
+    <uk.openvk.android.refresh.user_interface.view.layouts.ProgressLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
 
-    </uk.openvk.android.refresh.user_interface.layouts.ProgressLayout>
+    </uk.openvk.android.refresh.user_interface.view.layouts.ProgressLayout>
 
-    <uk.openvk.android.refresh.user_interface.layouts.ErrorLayout
+    <uk.openvk.android.refresh.user_interface.view.layouts.ErrorLayout
         android:id="@+id/error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,14 +42,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <uk.openvk.android.refresh.user_interface.layouts.ProfileHeader
+                <uk.openvk.android.refresh.user_interface.view.layouts.ProfileHeader
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                </uk.openvk.android.refresh.user_interface.layouts.ProfileHeader>
+                </uk.openvk.android.refresh.user_interface.view.layouts.ProfileHeader>
 
-                <uk.openvk.android.refresh.user_interface.layouts.ErrorLayout
+                <uk.openvk.android.refresh.user_interface.view.layouts.ErrorLayout
                     android:id="@+id/wall_error_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

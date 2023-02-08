@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import uk.openvk.android.refresh.user_interface.activities.AppActivity;
 import uk.openvk.android.refresh.api.counters.AccountCounters;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.wrappers.JSONParser;
