@@ -17,8 +17,12 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
@@ -30,10 +34,12 @@ import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.user_interface.core.activities.AppActivity;
+import uk.openvk.android.refresh.user_interface.core.fragments.pub_pages.WallFragment;
 import uk.openvk.android.refresh.user_interface.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.user_interface.view.layouts.ProfileHeader;
 import uk.openvk.android.refresh.user_interface.view.layouts.ProgressLayout;
 import uk.openvk.android.refresh.user_interface.list.adapters.NewsfeedAdapter;
+import uk.openvk.android.refresh.user_interface.view.pager.adapters.PublicPagerAdapter;
 
 public class ProfileFragment extends Fragment {
     public ProfileHeader header;
@@ -43,6 +49,8 @@ public class ProfileFragment extends Fragment {
     public NewsfeedAdapter wallAdapter;
     private LinearLayoutManager llm;
     private SharedPreferences global_prefs;
+    private User user;
+    private PublicPagerAdapter pagerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +70,30 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+        setTabsView();
         return view;
+    }
+
+    public void setTabsView() {
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        ViewPager2 viewPager = view.findViewById(R.id.pager);
+        pagerAdapter = new PublicPagerAdapter(this);
+        pagerAdapter.createFragment(0);
+        pagerAdapter.createFragment(1);
+        viewPager.setAdapter(pagerAdapter);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    if(position == 0) {
+                        if(user != null) {
+                            tab.setText(getResources().getString(R.string.owner_wall_tab, user.first_name));
+                        } else {
+                            tab.setText("Tab 1");
+                        }
+                    } else {
+                        tab.setText(getResources().getString(R.string.info_tab));
+                    }
+                }
+        ).attach();
     }
 
     private void setTheme() {
@@ -90,7 +121,9 @@ public class ProfileFragment extends Fragment {
     }
 
     public void setData(User user) {
+        this.user = user;
         if(user != null && user.first_name != null && user.last_name != null) {
+            setTabsView();
             header.setProfileName(String.format("%s %s", user.first_name, user.last_name));
             header.setLastSeen(user.sex, user.ls_date, user.ls_platform);
             header.setStatus(user.status);
@@ -153,20 +186,10 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public void createWallAdapter(Context ctx, ArrayList<WallPost> posts) {
         this.wallPosts = posts;
-        wallView = (RecyclerView) view.findViewById(R.id.wall_rv);
-        if(wallAdapter == null) {
-            wallAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts);
-            llm = new LinearLayoutManager(ctx);
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            wallView.setLayoutManager(llm);
-            wallView.setAdapter(wallAdapter);
-        } else {
-            //newsfeedAdapter.setArray(wallPosts);
-            wallAdapter.notifyDataSetChanged();
-        }
-        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
+        ((WallFragment) pagerAdapter.getFragment(0)).createWallAdapter(ctx, posts);
+        view.findViewById(R.id.progress_layout).setVisibility(View.GONE);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setRefreshing(false);
-        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.profile_swipe_layout).setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -201,5 +224,9 @@ public class ProfileFragment extends Fragment {
     }
 
     public void showProgress() {
+    }
+
+    public NewsfeedAdapter getWallAdapter() {
+        return ((WallFragment) pagerAdapter.getFragment(0)).getWallAdapter();
     }
 }

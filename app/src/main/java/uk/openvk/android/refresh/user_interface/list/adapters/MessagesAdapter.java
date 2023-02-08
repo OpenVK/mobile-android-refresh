@@ -24,7 +24,7 @@ import java.util.Objects;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Message;
-import uk.openvk.android.refresh.user_interface.GlideApp;
+import uk.openvk.android.refresh.user_interface.util.glide.GlideApp;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder>  {
     private Context ctx;

@@ -626,10 +626,12 @@ public class AppActivity extends MonetCompatActivity {
                         newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
                     }
                 } else if(selectedFragment == profileFragment) {
-                    if(message == HandlerMessages.WALL_AVATARS) {
-                        profileFragment.wallAdapter.setAvatarLoadState(true);
-                    } else {
-                        profileFragment.wallAdapter.setPhotoLoadState(true);
+                    if(profileFragment.getWallAdapter() != null) {
+                        if (message == HandlerMessages.WALL_AVATARS) {
+                            profileFragment.getWallAdapter().setAvatarLoadState(true);
+                        } else {
+                            profileFragment.getWallAdapter().setPhotoLoadState(true);
+                        }
                     }
                 }
             } else if(message == HandlerMessages.ACCOUNT_AVATAR) {

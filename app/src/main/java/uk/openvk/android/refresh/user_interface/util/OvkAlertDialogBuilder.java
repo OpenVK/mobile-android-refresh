@@ -1,4 +1,4 @@
-package uk.openvk.android.refresh.user_interface;
+package uk.openvk.android.refresh.user_interface.util;
 
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;

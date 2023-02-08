@@ -92,4 +92,6 @@
 
     <string name="profile_title">Профиль</string>
     <string name="community_title">Сообщество</string>
+    <string name="owner_wall_tab">Записи %s</string>
+    <string name="info_tab">Информация</string>
 </resources>

@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.user_interface.OvkAlertDialogBuilder;
+import uk.openvk.android.refresh.user_interface.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.user_interface.core.fragments.app.PersonalizationFragment;
 
 public class DialogSingleChoiceAdapter extends BaseAdapter {

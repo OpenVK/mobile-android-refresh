@@ -23,7 +23,7 @@ import java.util.Objects;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Friend;
-import uk.openvk.android.refresh.user_interface.GlideApp;
+import uk.openvk.android.refresh.user_interface.util.glide.GlideApp;
 import uk.openvk.android.refresh.user_interface.core.activities.AppActivity;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder>  {

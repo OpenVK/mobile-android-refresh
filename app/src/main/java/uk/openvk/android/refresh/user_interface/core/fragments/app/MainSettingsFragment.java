@@ -10,7 +10,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.user_interface.OvkAlertDialogBuilder;
+import uk.openvk.android.refresh.user_interface.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.user_interface.core.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.core.activities.MainActivity;
 

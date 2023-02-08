@@ -92,4 +92,6 @@
 
     <string name="profile_title">Profile</string>
     <string name="community_title">Community</string>
+    <string name="owner_wall_tab">%s\'s wall</string>
+    <string name="info_tab">Information</string>
 </resources>

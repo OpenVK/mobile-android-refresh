@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.user_interface.OvkAlertDialogBuilder;
+import uk.openvk.android.refresh.user_interface.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.user_interface.core.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.list.adapters.DialogSingleChoiceAdapter;
 

@@ -1,4 +1,4 @@
-package uk.openvk.android.refresh.user_interface;
+package uk.openvk.android.refresh.user_interface.util.glide;
 
 import android.content.Context;
 import android.util.Log;
