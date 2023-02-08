@@ -21,7 +21,7 @@
         android:theme="@style/ApplicationTheme.SplashTheme"
         tools:targetApi="m">
         <activity
-            android:name="uk.openvk.android.refresh.user_interface.activities.MainActivity"
+            android:name=".user_interface.core.activities.MainActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc">
             <intent-filter>
@@ -32,13 +32,13 @@
         </activity>
 
         <activity
-            android:name="uk.openvk.android.refresh.user_interface.activities.AuthActivity"
+            android:name=".user_interface.core.activities.AuthActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
             android:label="@string/title_activity_auth" />
         <activity
-            android:name="uk.openvk.android.refresh.user_interface.activities.AppActivity"
+            android:name=".user_interface.core.activities.AppActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/app_name"
@@ -46,7 +46,7 @@
             android:theme="@style/ApplicationTheme.NoActionBar"
             tools:ignore="RedundantLabel" />
         <activity
-            android:name="uk.openvk.android.refresh.user_interface.activities.ConversationActivity"
+            android:name=".user_interface.core.activities.ConversationActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/nav_messages"
@@ -54,7 +54,7 @@
             android:theme="@style/ApplicationTheme.NoActionBar"
             tools:ignore="RedundantLabel" />
         <activity
-            android:name="uk.openvk.android.refresh.user_interface.activities.NewPostActivity"
+            android:name=".user_interface.core.activities.NewPostActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/new_post_title"
@@ -62,7 +62,7 @@
             android:theme="@style/ApplicationTheme.NoActionBar"
             tools:ignore="RedundantLabel" />
 
-        <activity android:name=".user_interface.activities.ProfileIntentActivity"
+        <activity android:name=".user_interface.core.activities.ProfileIntentActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/profile_title"
@@ -75,7 +75,7 @@
                 <data android:scheme="openvk" android:host="profile" />
             </intent-filter>
         </activity>
-        <activity android:name=".user_interface.activities.GroupIntentActivity"
+        <activity android:name=".user_interface.core.activities.GroupIntentActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/community_title"

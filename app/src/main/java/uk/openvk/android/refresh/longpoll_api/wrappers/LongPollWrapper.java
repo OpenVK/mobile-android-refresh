@@ -2,19 +2,14 @@ package uk.openvk.android.refresh.longpoll_api.wrappers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
@@ -28,18 +23,14 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.internal.http.StatusLine;
 import uk.openvk.android.refresh.OvkApplication;
-import uk.openvk.android.refresh.longpoll_api.receivers.LongPollReceiver;
-import uk.openvk.android.refresh.user_interface.activities.AppActivity;
-import uk.openvk.android.refresh.user_interface.activities.AuthActivity;
-//import uk.openvk.android.refresh.user_interface.activities.ConversationActivity;
-//import uk.openvk.android.refresh.user_interface.activities.FriendsIntentActivity;
-//import uk.openvk.android.refresh.user_interface.activities.GroupIntentActivity;
-//import uk.openvk.android.refresh.user_interface.activities.MainSettingsActivity;
-//import uk.openvk.android.refresh.user_interface.activities.NewPostActivity;
-//import uk.openvk.android.refresh.user_interface.activities.ProfileIntentActivity;
-//import uk.openvk.android.refresh.user_interface.activities.QuickSearchActivity;
-//import uk.openvk.android.refresh.user_interface.activities.WallPostActivity;
-import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
+//import uk.openvk.android.refresh.user_interface.core.activities.ConversationActivity;
+//import uk.openvk.android.refresh.user_interface.core.activities.FriendsIntentActivity;
+//import uk.openvk.android.refresh.user_interface.core.activities.GroupIntentActivity;
+//import uk.openvk.android.refresh.user_interface.core.activities.MainSettingsActivity;
+//import uk.openvk.android.refresh.user_interface.core.activities.NewPostActivity;
+//import uk.openvk.android.refresh.user_interface.core.activities.ProfileIntentActivity;
+//import uk.openvk.android.refresh.user_interface.core.activities.QuickSearchActivity;
+//import uk.openvk.android.refresh.user_interface.core.activities.WallPostActivity;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 
 /**
