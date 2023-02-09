@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.color.MaterialColors;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
@@ -73,7 +74,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
             GlideApp.with(ctx)
                     .load(String.format("%s/photos_cache/friend_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.id))
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
-                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                    .dontAnimate().centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.friend_avatar));
             if(item.verified) {
                 verified_icon.setVisibility(View.VISIBLE);

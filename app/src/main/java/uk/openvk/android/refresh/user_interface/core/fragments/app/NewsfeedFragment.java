@@ -117,6 +117,9 @@ public class NewsfeedFragment extends Fragment {
             if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
                 ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_no_internet);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle);
+            } else if(message == HandlerMessages.CONNECTION_TIMEOUT) {
+                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance_nrps);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
             } else if(message == HandlerMessages.INTERNAL_ERROR || message == HandlerMessages.UNKNOWN_ERROR) {
                 ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance_failure);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);

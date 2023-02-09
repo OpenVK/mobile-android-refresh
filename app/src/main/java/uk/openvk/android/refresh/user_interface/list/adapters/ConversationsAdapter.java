@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.Global;
@@ -77,7 +79,8 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             GlideApp.with(ctx)
                     .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.peer_id))
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
-                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                    .dontAnimate().centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.conv_avatar));
 
             convertView.setOnClickListener(new View.OnClickListener() {

@@ -30,6 +30,7 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import uk.openvk.android.refresh.Global;
@@ -63,6 +64,7 @@ public class ProfileFragment extends Fragment {
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         header = (ProfileHeader) view.findViewById(R.id.header);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
+        view.findViewById(R.id.tabs_widget).setVisibility(View.GONE);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         Global.setAvatarShape(requireContext(), header.findViewById(R.id.profile_avatar));
         setTheme();
@@ -105,7 +107,7 @@ public class ProfileFragment extends Fragment {
         viewPager.setPageTransformer(new ViewPager2.PageTransformer() {
             @Override
             public void transformPage(@NonNull View page, float position) {
-                resizeViewPager(pagerAdapter.getFragment((int) position).getView(), viewPager);
+                resizeViewPager(pagerAdapter.getFragment(viewPager.getCurrentItem()).getView(), viewPager);
             }
         });
     }
@@ -120,10 +122,20 @@ public class ProfileFragment extends Fragment {
                 Log.d("OpenVK", String.format("ViewPager height: %s | Page measured height: %s", viewPager.getLayoutParams().height, page.getMeasuredHeight()));
                 if (viewPager.getLayoutParams().height != page.getMeasuredHeight()) {
                     viewPager.getLayoutParams().height = page.getMeasuredHeight();
-                    viewPager.invalidate();
                 }
+                viewPager.invalidate();
             }
         });
+    }
+
+    private void resizeViewPager(View page, ViewPager2 viewPager, int interval) {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                viewPager.requestTransform();
+            }
+        }, 0, interval);
+
     }
 
     private void setTheme() {
@@ -192,7 +204,6 @@ public class ProfileFragment extends Fragment {
         ErrorLayout errorLayout = view.findViewById(R.id.error_layout);
         if(visible) {
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
@@ -216,12 +227,13 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public void createWallAdapter(Context ctx, ArrayList<WallPost> posts) {
         this.wallPosts = posts;
+        view.findViewById(R.id.tabs_widget).setVisibility(View.VISIBLE);
         ((WallFragment) pagerAdapter.getFragment(0)).createWallAdapter(ctx, posts);
         view.findViewById(R.id.progress_layout).setVisibility(View.GONE);
-        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setRefreshing(false);
         view.findViewById(R.id.profile_swipe_layout).setVisibility(View.VISIBLE);
+        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setRefreshing(false);
         ViewPager2 pager = view.findViewById(R.id.pager);
-        resizeViewPager(pagerAdapter.getFragment(pager.getCurrentItem()).requireView(), pager);
+        resizeViewPager(pagerAdapter.getFragment(pager.getCurrentItem()).requireView(), pager, 2000);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -250,6 +262,8 @@ public class ProfileFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshWallAdapter() {
+        wallAdapter = ((WallFragment) pagerAdapter.getFragment(0)).getWallAdapter();
+        ViewPager2 pager = view.findViewById(R.id.pager);
         if(wallAdapter != null) {
             wallAdapter.notifyDataSetChanged();
         }

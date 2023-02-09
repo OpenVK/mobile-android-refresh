@@ -50,6 +50,7 @@
     <string name="error_parsing">Cannot process response</string>
     <string name="error_instance_failure">Instance failure</string>
     <string name="error_instance">Instance unavailable</string>
+    <string name="error_instance_nrps">Instance is not responding</string>
     <string name="error_subtitle">Please check your network connection and try again.</string>
     <string name="error_subtitle_instance">Please try again later or contact system administrator.</string>
 

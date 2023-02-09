@@ -49,6 +49,7 @@
     <string name="error_no_internet">Нет подключения к Интернету</string>
     <string name="error_instance_failure">Сбой инстанции</string>
     <string name="error_instance">Инстанция недоступна</string>
+    <string name="error_instance_nrps">Инстанция не отвечает</string>
     <string name="error_parsing">Невозможно обработать ответ</string>
     <string name="error_subtitle">Проверьте подключение к сети и повторите попытку.</string>
     <string name="error_subtitle_instance">Повторите попытку позже или обратитесь к системному администратору.</string>

@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -210,6 +211,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 }
                 if(avatar_loaded)
                     Glide.with(ctx).load(String.format(local_avatar_frm, ctx.getCacheDir().getAbsolutePath(), item.author_id))
+                            .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                             .dontAnimate().centerCrop().error(R.drawable.circular_avatar).into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
                 ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)).setImageTintList(null);
                 View.OnClickListener openProfileListener = new View.OnClickListener() {
@@ -230,6 +232,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                     if(photo_loaded) {
                         ((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
                         Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
+                                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                                 .dontAnimate().error(R.drawable.warning).into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
                         ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                         ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
@@ -265,12 +268,12 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     @SuppressLint("NotifyDataSetChanged")
     public void setPhotoLoadState(boolean value) {
         this.photo_loaded = value;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setAvatarLoadState(boolean value) {
         this.avatar_loaded = value;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 }

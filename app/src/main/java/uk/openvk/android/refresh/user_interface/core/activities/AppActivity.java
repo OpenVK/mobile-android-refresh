@@ -641,6 +641,7 @@ public class AppActivity extends MonetCompatActivity {
                         } else {
                             profileFragment.getWallAdapter().setPhotoLoadState(true);
                         }
+                        profileFragment.refreshWallAdapter();
                     }
                 }
             } else if(message == HandlerMessages.ACCOUNT_AVATAR) {
