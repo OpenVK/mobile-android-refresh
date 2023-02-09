@@ -198,6 +198,7 @@ public class AppActivity extends MonetCompatActivity {
         }
     }
 
+    // Restarting to restore activity to its normal state or to apply theme and font changes
     public void restart() {
         Intent intent = new Intent(this, AppActivity.class);
         if(selectedFragment != null) {
@@ -209,6 +210,7 @@ public class AppActivity extends MonetCompatActivity {
         finishActivity(1);
     }
 
+    // Setting Application Bar (by default, newsfeed fragment using custom layout with combo-box)
     private void setAppBar() {
         MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
         tbSpinnerItems = new ArrayList<>();
@@ -339,7 +341,13 @@ public class AppActivity extends MonetCompatActivity {
         });
     }
 
+    /*
+        Setting Monet color scheme on unsupported views (in particular Material Design 2)
+        using MonetCompat library:
+        https://github.com/KieronQuinn/MonetCompat (X11 License)
+    */
     private void setMonetTheme() {
+
         try {
             if (Global.checkMonet(this)) {
                 MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
@@ -550,6 +558,7 @@ public class AppActivity extends MonetCompatActivity {
     }
 
     private void receiveState(int message, Bundle data) {
+        // Handling OpenVK API and UI messages
         try {
             if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
                 account.parse(data.getString("response"), ovk_api);

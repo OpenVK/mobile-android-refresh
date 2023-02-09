@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +43,10 @@ public class WallFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.wall_tab, container, false);
+        LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
+        RecyclerView wall_rv = view.findViewById(R.id.wall_rv);
+        loading_layout.setVisibility(View.VISIBLE);
+        wall_rv.setVisibility(View.GONE);
         return view;
     }
 
@@ -58,6 +64,10 @@ public class WallFragment extends Fragment {
             //newsfeedAdapter.setArray(wallPosts);
             wallAdapter.notifyDataSetChanged();
         }
+        LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
+        @SuppressLint("CutPasteId") RecyclerView wall_rv = view.findViewById(R.id.wall_rv);
+        loading_layout.setVisibility(View.GONE);
+        wall_rv.setVisibility(View.VISIBLE);
     }
     public NewsfeedAdapter getWallAdapter() {
         return wallAdapter;

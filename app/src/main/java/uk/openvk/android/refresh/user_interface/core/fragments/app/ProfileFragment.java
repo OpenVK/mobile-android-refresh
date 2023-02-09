@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +30,7 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.TimerTask;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -73,6 +77,8 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    // Setting ViewPagers with embedded fragments: WallFragment and AboutFragment
+
     public void setTabsView() {
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         ViewPager2 viewPager = view.findViewById(R.id.pager);
@@ -94,6 +100,30 @@ public class ProfileFragment extends Fragment {
                 }
         );
         mediator.attach();
+
+        // WORKAROUND: Auto-resizing ViewPager2, because fragments have different height
+        viewPager.setPageTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                resizeViewPager(pagerAdapter.getFragment((int) position).getView(), viewPager);
+            }
+        });
+    }
+
+    private void resizeViewPager(View page, ViewPager2 viewPager) {
+        Objects.requireNonNull(page).post(new Runnable() {
+            @Override
+            public void run() {
+                int wMeasureSpec = View.MeasureSpec.makeMeasureSpec(page.getWidth(), View.MeasureSpec.EXACTLY);
+                int hMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+                page.measure(wMeasureSpec, hMeasureSpec);
+                Log.d("OpenVK", String.format("ViewPager height: %s | Page measured height: %s", viewPager.getLayoutParams().height, page.getMeasuredHeight()));
+                if (viewPager.getLayoutParams().height != page.getMeasuredHeight()) {
+                    viewPager.getLayoutParams().height = page.getMeasuredHeight();
+                    viewPager.invalidate();
+                }
+            }
+        });
     }
 
     private void setTheme() {
@@ -123,6 +153,7 @@ public class ProfileFragment extends Fragment {
     public void setData(User user) {
         this.user = user;
         if(user != null && user.first_name != null && user.last_name != null) {
+            if(pagerAdapter == null)
             setTabsView();
             header.setProfileName(String.format("%s %s", user.first_name, user.last_name));
             header.setLastSeen(user.sex, user.ls_date, user.ls_platform);
@@ -190,6 +221,8 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.progress_layout).setVisibility(View.GONE);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setRefreshing(false);
         view.findViewById(R.id.profile_swipe_layout).setVisibility(View.VISIBLE);
+        ViewPager2 pager = view.findViewById(R.id.pager);
+        resizeViewPager(pagerAdapter.getFragment(pager.getCurrentItem()).requireView(), pager);
     }
 
     @SuppressLint("NotifyDataSetChanged")
