@@ -70,7 +70,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-        setTabsView();
         return view;
     }
 
@@ -81,7 +80,7 @@ public class ProfileFragment extends Fragment {
         pagerAdapter.createFragment(0);
         pagerAdapter.createFragment(1);
         viewPager.setAdapter(pagerAdapter);
-        new TabLayoutMediator(tabLayout, viewPager,
+        TabLayoutMediator mediator = new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     if(position == 0) {
                         if(user != null) {
@@ -93,7 +92,8 @@ public class ProfileFragment extends Fragment {
                         tab.setText(getResources().getString(R.string.info_tab));
                     }
                 }
-        ).attach();
+        );
+        mediator.attach();
     }
 
     private void setTheme() {

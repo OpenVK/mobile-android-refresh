@@ -30,7 +30,7 @@ public class PublicPagerAdapter extends FragmentStateAdapter {
         } else {
             fragment = new AboutFragment();
         }
-        fragments.add(fragment);
+        fragments.add(position, fragment);
         return fragment;
     }
 

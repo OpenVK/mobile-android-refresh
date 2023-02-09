@@ -41,12 +41,6 @@ public class WallFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.wall_tab, container, false);
-        Log.d("OpenVK", "Inflated wall!");
-        wallView = view.findViewById(R.id.wall_rv);
-        llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        wallView.setLayoutManager(llm);
-        Log.d("OpenVK", "Inflated wall (State 2)!");
         return view;
     }
 
@@ -54,6 +48,10 @@ public class WallFragment extends Fragment {
     public void createWallAdapter(Context ctx, ArrayList<WallPost> posts) {
         this.wallPosts = posts;
         if(wallAdapter == null) {
+            wallView = view.findViewById(R.id.wall_rv);
+            llm = new LinearLayoutManager(getContext());
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            wallView.setLayoutManager(llm);
             wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts);
             wallView.setAdapter(wallAdapter);
         } else {
@@ -61,17 +59,6 @@ public class WallFragment extends Fragment {
             wallAdapter.notifyDataSetChanged();
         }
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        assert getArguments() != null;
-        if(getArguments().getString("createState").equals("ok")) {
-            TextView textView = view.findViewById(R.id.textView2);
-            textView.setText("OK!");
-        }
-    }
-
     public NewsfeedAdapter getWallAdapter() {
         return wallAdapter;
     }
