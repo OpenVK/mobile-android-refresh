@@ -52,7 +52,7 @@ public class AboutApplicationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("https://github.com/tretdm/openvk-refresh"));
+                i.setData(Uri.parse("https://github.com/openvk/mobile-android-refresh"));
                 startActivity(i);
             }
         });
