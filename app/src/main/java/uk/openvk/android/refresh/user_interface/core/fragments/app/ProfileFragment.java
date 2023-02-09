@@ -153,8 +153,7 @@ public class ProfileFragment extends Fragment {
     public void setData(User user) {
         this.user = user;
         if(user != null && user.first_name != null && user.last_name != null) {
-            if(pagerAdapter == null)
-            setTabsView();
+            if(pagerAdapter == null) setTabsView();
             header.setProfileName(String.format("%s %s", user.first_name, user.last_name));
             header.setLastSeen(user.sex, user.ls_date, user.ls_platform);
             header.setStatus(user.status);
