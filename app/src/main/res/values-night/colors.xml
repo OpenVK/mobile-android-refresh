@@ -22,8 +22,8 @@
 
     <!-- Theme attributes. Color #3 (red) !-->
     <color name="primaryLightRed">#ff5f53</color>
-    <color name="primaryDarkColorRed">#993931</color>
-    <color name="accentColorRed">#d34b41</color>
+    <color name="primaryDarkColorRed">#88322c</color>
+    <color name="accentColorRed">#d04b40</color>
 
     <!-- Theme attributes. Color #4 (violet) !-->
     <color name="primaryLightViolet">#b895ff</color>
