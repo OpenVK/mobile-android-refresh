@@ -29,12 +29,12 @@
     <color name="accentColorGreen">#689f38</color>
 
     <!-- Theme attributes. Color #3 (red) !-->
-    <color name="primaryColorRed">#d84c21</color>
+    <color name="primaryColorRed">#d34b41</color>
     <color name="primaryLightRed">#fd8155</color>
-    <color name="primaryDarkColorRed">#943518</color>
+    <color name="primaryDarkColorRed">#993931</color>
     <color name="primaryRippleColorRed">#12eb987b</color>
-    <color name="statusBarColorRed">#d84c21</color>
-    <color name="accentColorRed">#d84c21</color>
+    <color name="statusBarColorRed">#993931</color>
+    <color name="accentColorRed">#d34b41</color>
 
     <!-- Theme attributes. Color #4 (violet) !-->
     <color name="primaryColorViolet">#6941bb</color>
