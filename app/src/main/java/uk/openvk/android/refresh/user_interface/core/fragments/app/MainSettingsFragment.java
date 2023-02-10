@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Ovk;
 import uk.openvk.android.refresh.api.models.InstanceLink;
@@ -96,7 +97,6 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         ((LinearLayout) about_instance_view.findViewById(R.id.instance_version_ll)).setVisibility(View.GONE);
         ((LinearLayout) about_instance_view.findViewById(R.id.instance_statistics_ll)).setVisibility(View.GONE);
         ((LinearLayout) about_instance_view.findViewById(R.id.instance_links_ll)).setVisibility(View.GONE);
-        server_name.setText(instance_prefs.getString("server", ""));
         ((TextView) about_instance_view.findViewById(R.id.rules_link)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +109,12 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                 openWebAddress(String.format("http://%s/privacy", instance_prefs.getString("server", "")));
             }
         });
+
+        ((TextView) about_instance_view.findViewById(R.id.server_addr_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.connection_type_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.instance_statistics_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.instance_links_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+
         dialog.show();
         if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
             OvkAPIWrapper ovk_api = ((AppActivity) requireActivity()).ovk_api;

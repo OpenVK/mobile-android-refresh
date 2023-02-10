@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,10 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingStart="24dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +21,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="8dp">
 
             <LinearLayout
                 android:id="@+id/server_addr_ll"
@@ -36,9 +37,9 @@
                     android:id="@+id/server_addr_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/server_address"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold" />
+                    android:textColor="@color/primaryTextColor" />
 
                 <TextView
                     android:id="@+id/server_addr_label2"
@@ -61,9 +62,9 @@
                     android:id="@+id/connection_type_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/connection_type"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold" />
+                    android:textColor="@color/primaryTextColor" />
 
                 <TextView
                     android:id="@+id/connection_type_label2"
@@ -86,9 +87,9 @@
                     android:id="@+id/instance_version_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/instance_version"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold" />
+                    android:textColor="@color/primaryTextColor" />
 
                 <TextView
                     android:id="@+id/instance_version_label2"
@@ -111,9 +112,9 @@
                     android:id="@+id/instance_statistics_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/instance_statistics"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold" />
+                    android:textColor="@color/primaryTextColor" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -219,9 +220,9 @@
                     android:id="@+id/instance_links_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
                     android:text="@string/instance_links"
-                    android:textColor="@color/primaryTextColor"
-                    android:textStyle="bold" />
+                    android:textColor="@color/primaryTextColor" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -345,43 +346,41 @@
                         tools:ignore="HardcodedText,RtlHardcoded" />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView2">
+
+                <TextView
+                    android:id="@+id/rules_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/rules_link"
+                    android:textColor="?attr/colorAccent"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/privacy_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:singleLine="true"
+                    android:text="@string/privacy_link"
+                    android:textColor="?attr/colorAccent"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
-
-        <TextView
-            android:id="@+id/rules_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="@string/rules_link"
-            android:textColor="?attr/colorAccent"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/privacy_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:singleLine="true"
-            android:text="@string/privacy_link"
-            android:textColor="?attr/colorAccent"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
