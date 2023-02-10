@@ -25,11 +25,13 @@ import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.user_interface.list.adapters.NewsfeedAdapter;
 
 public class WallFragment extends Fragment {
-    private View view;
+    public View view;
     private RecyclerView wallView;
     public NewsfeedAdapter wallAdapter;
     private LinearLayoutManager llm;
     private ArrayList<WallPost> wallPosts;
+    private RecyclerView wall_rv;
+    private Context ctx;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,17 +46,23 @@ public class WallFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.wall_tab, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
-        RecyclerView wall_rv = view.findViewById(R.id.wall_rv);
+        wall_rv = view.findViewById(R.id.wall_rv);
         loading_layout.setVisibility(View.VISIBLE);
         wall_rv.setVisibility(View.GONE);
+        if(wallPosts != null) {
+            Log.d("OpenVK", "WallPosts exist");
+        } else {
+            Log.d("OpenVK", "WallPosts does not exist");
+        }
         return view;
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void createWallAdapter(Context ctx, ArrayList<WallPost> posts) {
+        this.ctx = ctx;
         this.wallPosts = posts;
         if(wallAdapter == null) {
-            wallView = view.findViewById(R.id.wall_rv);
+            wallView = wall_rv;
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             wallView.setLayoutManager(llm);
@@ -71,5 +79,18 @@ public class WallFragment extends Fragment {
     }
     public NewsfeedAdapter getWallAdapter() {
         return wallAdapter;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(view != null && llm != null && wallAdapter != null) {
+            LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
+            loading_layout.setVisibility(View.GONE);
+            wall_rv = view.findViewById(R.id.wall_rv);
+            wall_rv.setVisibility(View.VISIBLE);
+            wall_rv.setLayoutManager(llm);
+            wall_rv.setAdapter(wallAdapter);
+        }
     }
 }

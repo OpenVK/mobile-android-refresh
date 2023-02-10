@@ -93,6 +93,24 @@
 
     <string name="profile_title">Профиль</string>
     <string name="community_title">Сообщество</string>
-    <string name="owner_wall_tab">Записи %s</string>
+    <string name="owner_wall_tab">Стена</string>
     <string name="info_tab">Информация</string>
+
+    <string name="profile_info_contacts">Контактная информация</string>
+    <string name="profile_telegram">Telegram</string>
+    <string name="profile_info_education">Образование</string>
+    <string name="profile_school">Школа</string>
+    <string name="profile_info_personal">Личная информация</string>
+    <string name="profile_occupation">Деятельность</string>
+    <string name="profile_interests">Интересы</string>
+    <string name="profile_music">Любимая музыка</string>
+    <string name="profile_movies">Любимые фильмы</string>
+    <string name="profile_tv">Любимые телешоу</string>
+    <string name="profile_games">Любимые игры</string>
+    <string name="profile_books">Любимые книги</string>
+    <string name="profile_quotations">Любимые цитаты</string>
+    <string name="profile_about">О себе</string>
+
+    <string name="group_descr">Описание</string>
+    <string name="group_site">Веб-сайт</string>
 </resources>

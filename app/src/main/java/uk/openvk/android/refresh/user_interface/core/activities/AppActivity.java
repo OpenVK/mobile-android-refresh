@@ -510,6 +510,8 @@ public class AppActivity extends MonetCompatActivity {
                 b_navView.getMenu().getItem(4).setChecked(true);
                 navView.getMenu().getItem(0).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
+                if(wall.getWallItems() != null) profileFragment.recreateWallAdapter();
+                if(profileFragment.aboutItems != null) profileFragment.recreateAboutAdapter();
             } else if (itemId == R.id.settings) {
                 ft.hide(selectedFragment);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));

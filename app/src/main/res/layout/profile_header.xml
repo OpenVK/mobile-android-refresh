@@ -81,13 +81,6 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <ImageView
-                android:id="@+id/dropdown_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_arrow_drop_down_24"
-                tools:ignore="ContentDescription,HardcodedText" />
-
         </androidx.appcompat.widget.LinearLayoutCompat>
     </FrameLayout>
 

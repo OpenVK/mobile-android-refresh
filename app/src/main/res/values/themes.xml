@@ -393,4 +393,8 @@
         <item name="fontWeight">500</item>
         <item name="android:textFontWeight" tools:targetApi="p">500</item>
     </style>
+
+    <style name="ApplicationText">
+
+    </style>
 </resources>
