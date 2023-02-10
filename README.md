@@ -10,9 +10,16 @@ We will be happy to accept your bugreports in [our bug-tracker](https://github.c
 ## Building
 You can build your app from source in Android Studio current version. [Download](https://developer.android.com/studio)
 
+### Used Library
+_OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.com/openvk/mobile-android-legacy) (GNU Affero GPL 3.0+)_\
+2. [AndroidX](https://developer.android.com/jetpack/androidx) (Apache License 2.0)\
+3. [Material Design 2 components](https://m2.material.io) (Apache License 2.0)\
+4. [Glide](https://bumptech.github.io/glide/) (BSD 2-Clause License)\
+5. [MonetCompat](https://github.com/KieronQuinn/MonetCompat) (X11 License)\
+
 ### OpenVK Refresh License
 [GNU (Affero) GPL v3.0](https://github.com/openvk/mobile-android-refresh/blob/main/COPYING) or later version.
 
 ### Links
-[OpenVK API docs](https://docs.openvk.su/openvk_engine/api/description/)
+[OpenVK API docs](https://docs.openvk.su/openvk_engine/api/description/)\
 [OpenVK Mobile](https://openvk.uk/app)
