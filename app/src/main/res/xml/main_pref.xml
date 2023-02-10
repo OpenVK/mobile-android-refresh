@@ -44,6 +44,13 @@
         app:title="@string/pref_others"
         app:iconSpaceReserved="false">
         <Preference
+            app:icon="@drawable/ic_instance"
+            app:key="about_instance"
+            app:singleLineTitle="true"
+            app:title="@string/pref_about_instance"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
             app:icon="@drawable/ic_info"
             app:key="about_app"
             app:singleLineTitle="true"

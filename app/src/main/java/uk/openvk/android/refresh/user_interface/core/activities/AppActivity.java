@@ -81,7 +81,7 @@ import uk.openvk.android.refresh.user_interface.list.items.ToolbarSpinnerItem;
 
 public class AppActivity extends MonetCompatActivity {
     public Handler handler;
-    private OvkAPIWrapper ovk_api;
+    public OvkAPIWrapper ovk_api;
     private SharedPreferences instance_prefs;
     private SharedPreferences global_prefs;
     private DownloadManager downloadManager;
@@ -626,6 +626,12 @@ public class AppActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.WALL_GET) {
                 wall.parse(this, downloadManager, "high", data.getString("response"));
                 profileFragment.createWallAdapter(this, wall.getWallItems());
+            } else if (message == HandlerMessages.OVK_ABOUTINSTANCE) {
+                mainSettingsFragment.getInstanceInfo("stats", data.getString("response"));
+            } else if (message == HandlerMessages.OVK_CHECK_HTTP || message == HandlerMessages.OVK_CHECK_HTTPS) {
+                mainSettingsFragment.getInstanceInfo("checkHTTP", data.getString("response"));
+            } else if (message == HandlerMessages.OVK_VERSION) {
+                mainSettingsFragment.getInstanceInfo("instanceVersion", data.getString("response"));
             } else if(message == HandlerMessages.CONVERSATIONS_AVATARS) {
                 messagesFragment.loadAvatars(conversations);
             } else if(message == HandlerMessages.NEWSFEED_AVATARS || message == HandlerMessages.NEWSFEED_ATTACHMENTS
