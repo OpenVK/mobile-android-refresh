@@ -24,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.kieronquinn.monetcompat.core.MonetCompat;
@@ -46,7 +47,7 @@ import uk.openvk.android.refresh.user_interface.view.layouts.ProgressLayout;
 import uk.openvk.android.refresh.user_interface.list.adapters.NewsfeedAdapter;
 import uk.openvk.android.refresh.user_interface.view.pager.adapters.PublicPagerAdapter;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
     public ProfileHeader header;
     private View view;
     private ArrayList<WallPost> wallPosts;
@@ -56,6 +57,7 @@ public class ProfileFragment extends Fragment {
     private SharedPreferences global_prefs;
     private User user;
     private PublicPagerAdapter pagerAdapter;
+    private AppBarLayout appBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,10 +66,10 @@ public class ProfileFragment extends Fragment {
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         header = (ProfileHeader) view.findViewById(R.id.header);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
-        view.findViewById(R.id.tabs_widget).setVisibility(View.GONE);
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         Global.setAvatarShape(requireContext(), header.findViewById(R.id.profile_avatar));
         setTheme();
+        appBar = view.findViewById(R.id.app_bar);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -186,8 +188,6 @@ public class ProfileFragment extends Fragment {
                         .placeholder(R.drawable.circular_avatar).error(R.drawable.circular_avatar)
                         .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
             }
-            ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.VISIBLE);
             if(user.verified) {
                 view.findViewById(R.id.verified_icon).setVisibility(View.VISIBLE);
             } else {
@@ -227,13 +227,10 @@ public class ProfileFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public void createWallAdapter(Context ctx, ArrayList<WallPost> posts) {
         this.wallPosts = posts;
-        view.findViewById(R.id.tabs_widget).setVisibility(View.VISIBLE);
-        ((WallFragment) pagerAdapter.getFragment(0)).createWallAdapter(ctx, posts);
         view.findViewById(R.id.progress_layout).setVisibility(View.GONE);
         view.findViewById(R.id.profile_swipe_layout).setVisibility(View.VISIBLE);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setRefreshing(false);
-        ViewPager2 pager = view.findViewById(R.id.pager);
-        resizeViewPager(pagerAdapter.getFragment(pager.getCurrentItem()).requireView(), pager, 2000);
+        ((WallFragment) pagerAdapter.getFragment(0)).createWallAdapter(ctx, posts);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -274,5 +271,22 @@ public class ProfileFragment extends Fragment {
 
     public NewsfeedAdapter getWallAdapter() {
         return ((WallFragment) pagerAdapter.getFragment(0)).getWallAdapter();
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setEnabled(verticalOffset == 0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        appBar.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        appBar.removeOnOffsetChangedListener(this);
     }
 }

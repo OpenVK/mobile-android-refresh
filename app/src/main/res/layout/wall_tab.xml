@@ -27,9 +27,7 @@
         android:id="@+id/wall_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="20dp"
-        android:nestedScrollingEnabled="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:minHeight="20dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
