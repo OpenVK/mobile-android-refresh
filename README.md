@@ -10,7 +10,7 @@ We will be happy to accept your bugreports in [our bug-tracker](https://github.c
 ## Building
 You can build your app from source in Android Studio current version. [Download](https://developer.android.com/studio)
 
-### Used Library
+## Used Library
 _OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.com/openvk/mobile-android-legacy) (GNU Affero GPL 3.0+)_
 
 1. [AndroidX](https://developer.android.com/jetpack/androidx) (Apache License 2.0)
