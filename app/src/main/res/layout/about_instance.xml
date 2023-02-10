@@ -34,7 +34,7 @@
 
                 <TextView
                     android:id="@+id/server_addr_label"
-                    android:layout_width="320dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/server_address"
                     android:textColor="@color/primaryTextColor"
@@ -42,7 +42,7 @@
 
                 <TextView
                     android:id="@+id/server_addr_label2"
-                    android:layout_width="320dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="openvk.uk"
@@ -59,7 +59,7 @@
 
                 <TextView
                     android:id="@+id/connection_type_label"
-                    android:layout_width="320dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/connection_type"
                     android:textColor="@color/primaryTextColor"
@@ -67,7 +67,7 @@
 
                 <TextView
                     android:id="@+id/connection_type_label2"
-                    android:layout_width="320dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Connection type"
@@ -84,7 +84,7 @@
 
                 <TextView
                     android:id="@+id/instance_version_label"
-                    android:layout_width="320dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/instance_version"
                     android:textColor="@color/primaryTextColor"
@@ -92,7 +92,7 @@
 
                 <TextView
                     android:id="@+id/instance_version_label2"
-                    android:layout_width="320dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="OpenVK instance version"
@@ -368,7 +368,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="@string/rules_link"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorAccent"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -379,7 +379,7 @@
             android:layout_marginLeft="10dp"
             android:singleLine="true"
             android:text="@string/privacy_link"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorAccent"
             android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
