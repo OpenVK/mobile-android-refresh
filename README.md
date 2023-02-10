@@ -19,9 +19,9 @@ _OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.c
 4. [MonetCompat](https://github.com/KieronQuinn/MonetCompat) (X11 License)
 5. [OkHttp](https://square.github.io/okhttp/) (Apache License 2.0)
 
-### OpenVK Refresh License
+## OpenVK Refresh License
 [GNU (Affero) GPL v3.0](https://github.com/openvk/mobile-android-refresh/blob/main/COPYING) or later version.
 
-### Links
+## Links
 [OpenVK API docs](https://docs.openvk.su/openvk_engine/api/description/)\
 [OpenVK Mobile](https://openvk.uk/app)
