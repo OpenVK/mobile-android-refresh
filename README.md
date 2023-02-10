@@ -5,7 +5,7 @@ _Powered by OpenVK API. Android 5.0+ supported._
 We will be happy to accept your bugreports in [our bug-tracker](https://github.com/orgs/openvk/projects/1).
 
 ## Download APK
-* via [Telegram channel](https://t.me/+nPLHBZqAsFlhYmIy)
+* **via [Telegram channel](https://t.me/+nPLHBZqAsFlhYmIy)**
 
 ## Building
 You can build your app from source in Android Studio current version. [Download](https://developer.android.com/studio)
