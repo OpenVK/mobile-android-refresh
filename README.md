@@ -13,11 +13,11 @@ You can build your app from source in Android Studio current version. [Download]
 ### Used Library
 _OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.com/openvk/mobile-android-legacy) (GNU Affero GPL 3.0+)_
 
-2. [AndroidX](https://developer.android.com/jetpack/androidx) (Apache License 2.0)\
-3. [Material Design 2 components](https://m2.material.io) (Apache License 2.0)\
-4. [Glide](https://bumptech.github.io/glide/) (BSD 2-Clause License)\
-5. [MonetCompat](https://github.com/KieronQuinn/MonetCompat) (X11 License)\
-6. [OkHttp](https://square.github.io/okhttp/) (Apache License 2.0)\
+2. [AndroidX](https://developer.android.com/jetpack/androidx) (Apache License 2.0)
+3. [Material Design 2 components](https://m2.material.io) (Apache License 2.0)
+4. [Glide](https://bumptech.github.io/glide/) (BSD 2-Clause License)
+5. [MonetCompat](https://github.com/KieronQuinn/MonetCompat) (X11 License)
+6. [OkHttp](https://square.github.io/okhttp/) (Apache License 2.0)
 
 ### OpenVK Refresh License
 [GNU (Affero) GPL v3.0](https://github.com/openvk/mobile-android-refresh/blob/main/COPYING) or later version.
