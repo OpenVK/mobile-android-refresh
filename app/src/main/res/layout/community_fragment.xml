@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <uk.openvk.android.refresh.user_interface.view.layouts.ProgressLayout
+    <uk.openvk.android.refresh.ui.view.layouts.ProgressLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <uk.openvk.android.refresh.user_interface.view.layouts.ErrorLayout
+    <uk.openvk.android.refresh.ui.view.layouts.ErrorLayout
         android:id="@+id/error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -57,7 +57,7 @@
                 android:fitsSystemWindows="true"
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-                <uk.openvk.android.refresh.user_interface.view.layouts.ProfileHeader
+                <uk.openvk.android.refresh.ui.view.layouts.ProfileHeader
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

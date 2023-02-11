@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-        <uk.openvk.android.refresh.user_interface.view.layouts.ProgressLayout
+        <uk.openvk.android.refresh.ui.view.layouts.ProgressLayout
             android:id="@+id/progress_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"/>
 
-        <uk.openvk.android.refresh.user_interface.view.layouts.ErrorLayout
+        <uk.openvk.android.refresh.ui.view.layouts.ErrorLayout
             android:id="@+id/error_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -43,7 +43,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/app_bar" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <uk.openvk.android.refresh.user_interface.view.layouts.ErrorLayout
+        <uk.openvk.android.refresh.ui.view.layouts.ErrorLayout
             android:id="@+id/wall_error_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -68,7 +68,7 @@
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-                <uk.openvk.android.refresh.user_interface.view.layouts.ProfileHeader
+                <uk.openvk.android.refresh.ui.view.layouts.ProfileHeader
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -81,7 +81,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:tabMode="scrollable"/>
+            app:tabMode="scrollable"
+            app:tabIndicatorColor="?attr/colorAccent"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 

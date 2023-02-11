@@ -93,7 +93,7 @@
                     android:textSize="14sp"
                     tools:ignore="HardcodedText" />
 
-                <uk.openvk.android.refresh.user_interface.view.layouts.PhotoAttachmentLayout
+                <uk.openvk.android.refresh.ui.view.layouts.PhotoAttachmentLayout
                     android:id="@+id/photo_attachment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                     android:visibility="gone"
                     tools:targetApi="m">
 
-                </uk.openvk.android.refresh.user_interface.view.layouts.PhotoAttachmentLayout>
+                </uk.openvk.android.refresh.ui.view.layouts.PhotoAttachmentLayout>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

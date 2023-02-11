@@ -17,7 +17,7 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <uk.openvk.android.refresh.user_interface.view.layouts.SendTextBottomPanel
+    <uk.openvk.android.refresh.ui.view.layouts.SendTextBottomPanel
         android:id="@+id/sendTextBottomPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

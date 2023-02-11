@@ -25,12 +25,12 @@ import uk.openvk.android.refresh.BuildConfig;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Error;
-import uk.openvk.android.refresh.user_interface.core.activities.AppActivity;
-import uk.openvk.android.refresh.user_interface.core.activities.AuthActivity;
-import uk.openvk.android.refresh.user_interface.core.activities.ConversationActivity;
-import uk.openvk.android.refresh.user_interface.core.activities.GroupIntentActivity;
-import uk.openvk.android.refresh.user_interface.core.activities.NewPostActivity;
-import uk.openvk.android.refresh.user_interface.core.activities.ProfileIntentActivity;
+import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.AuthActivity;
+import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
+import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
+import uk.openvk.android.refresh.ui.core.activities.NewPostActivity;
+import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 
 public class OvkAPIWrapper {
 

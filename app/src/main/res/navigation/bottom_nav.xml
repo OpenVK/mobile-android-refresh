@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/newsfeedFragment"
-        android:name="uk.openvk.android.refresh.user_interface.core.fragments.app.NewsfeedFragment"
+        android:name="uk.openvk.android.refresh.ui.core.fragments.app.NewsfeedFragment"
         android:label="NewsfeedFragment" />
 </navigation>

@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <uk.openvk.android.refresh.user_interface.view.layouts.ProgressLayout
+    <uk.openvk.android.refresh.ui.view.layouts.ProgressLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
 
-    </uk.openvk.android.refresh.user_interface.view.layouts.ProgressLayout>
+    </uk.openvk.android.refresh.ui.view.layouts.ProgressLayout>
 
-    <uk.openvk.android.refresh.user_interface.view.layouts.ErrorLayout
+    <uk.openvk.android.refresh.ui.view.layouts.ErrorLayout
         android:id="@+id/error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

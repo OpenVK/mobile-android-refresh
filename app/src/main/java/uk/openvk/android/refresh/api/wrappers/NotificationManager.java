@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.longpoll_api.MessageEvent;
-import uk.openvk.android.refresh.user_interface.core.activities.MainActivity;
+import uk.openvk.android.refresh.ui.core.activities.MainActivity;
 
 public class NotificationManager {
 
