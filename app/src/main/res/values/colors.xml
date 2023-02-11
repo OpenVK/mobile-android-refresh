@@ -54,9 +54,9 @@
 
     <!-- Theme attributes. Color #6 (teal) !-->
     <color name="primaryColorTeal">#263238</color>
-    <color name="primaryLightTeal">#009688</color>
+    <color name="primaryLightTeal">#80cbc4</color>
     <color name="primaryDarkColorTeal">#14171a</color>
-    <color name="primaryRippleColorTeal">#12009688</color>
+    <color name="primaryRippleColorTeal">#1280cbc4</color>
     <color name="statusBarColorTeal">#14171a</color>
     <color name="accentColorTeal">#009688</color>
     <color name="accentColorTeal_reserve">#009688</color>

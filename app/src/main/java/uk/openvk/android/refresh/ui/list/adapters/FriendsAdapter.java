@@ -102,7 +102,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((ImageView) view.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
             } else {
                 ((ImageView) view.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(
                         Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));

@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.ui.core.fragments.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.TypedValue;
@@ -21,7 +22,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.kieronquinn.monetcompat.core.MonetCompat;
@@ -121,17 +124,22 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
     private void setTheme() {
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        int unselectedColor = MaterialColors.getColor(requireContext(), com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
+        int accentColor = MaterialColors.getColor(requireContext(), com.google.android.material.R.attr.colorAccent, Color.BLACK);
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8();
             } else {
-                ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
             }
+            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(accentColor);
+            ((TabLayout) view.findViewById(R.id.tab_layout)).setSelectedTabIndicatorColor(accentColor);
+            ((TabLayout) view.findViewById(R.id.tab_layout)).setTabTextColors(Global.adjustAlpha(unselectedColor, 0.6f), accentColor);
         } else {
+            ((TabLayout) view.findViewById(R.id.tab_layout)).setSelectedTabIndicatorColor(accentColor);
+            ((TabLayout) view.findViewById(R.id.tab_layout)).setTabTextColors(Global.adjustAlpha(unselectedColor, 0.6f), accentColor);
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(typedValue.data);
         }
 
@@ -157,12 +165,14 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                 Glide.with(ctx).load(
                                 String.format("%s/photos_cache/account_avatar/avatar_%s",
                                         ctx.getCacheDir().getAbsolutePath(), user.id))
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                         .placeholder(R.drawable.circular_avatar).error(R.drawable.circular_avatar)
                         .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
             } else {
                 Glide.with(ctx).load(
                                 String.format("%s/photos_cache/profile_avatars/avatar_%s",
                                         ctx.getCacheDir().getAbsolutePath(), user.id))
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                         .placeholder(R.drawable.circular_avatar).error(R.drawable.circular_avatar)
                         .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
             }

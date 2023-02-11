@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--suppress ALL -->
 <PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:key="pref_screen">
+
+    <Preference
+        app:key="restart_required"
+        app:layout="@layout/pref_notif_layout" />
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
@@ -35,15 +40,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:key="others_category"
-        app:title="@string/pref_account"
-        app:iconSpaceReserved="false">
+        app:iconSpaceReserved="false"
+        app:key="account_category"
+        app:title="@string/pref_account">
         <Preference
             app:icon="@drawable/ic_logout"
+            app:iconSpaceReserved="false"
             app:key="logout"
             app:singleLineTitle="true"
-            app:title="@string/pref_logout"
-            app:iconSpaceReserved="false"/>
+            app:title="@string/pref_logout" />
     </PreferenceCategory>
 
     <PreferenceCategory

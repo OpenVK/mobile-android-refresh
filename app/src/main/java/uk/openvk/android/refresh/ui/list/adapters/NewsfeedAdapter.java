@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
@@ -239,7 +240,9 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         ((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
                         Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
                                 .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                                .dontAnimate().error(R.drawable.warning).into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
+                                .placeholder(ctx.getResources().getDrawable(R.drawable.photo_placeholder))
+                                .dontAnimate().error(R.drawable.warning)
+                                .into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
                         ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                         ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -247,6 +250,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
                             }
                         });
+                        ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView().setAdjustViewBounds(true);
                     }
                 } else {
                     ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.GONE);

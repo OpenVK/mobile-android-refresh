@@ -387,7 +387,7 @@ public class AppActivity extends MonetCompatActivity {
                 BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
                 if (isDarkTheme) {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
+                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8(),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 } else {

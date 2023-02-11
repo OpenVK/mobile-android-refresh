@@ -16,16 +16,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Ovk;
 import uk.openvk.android.refresh.api.models.InstanceLink;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.activities.MainSettingsActivity;
 import uk.openvk.android.refresh.ui.list.adapters.DialogSingleChoiceAdapter;
 import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
@@ -43,7 +47,13 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         instance_prefs = requireContext().getSharedPreferences("instance", 0);
         setListeners();
-        ovk = new Ovk();
+        if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
+            hideInstanceSettings();
+        } else {
+            ovk = new Ovk();
+        }
+        Preference restart_required = Objects.requireNonNull(findPreference("restart_required"));
+        restart_required.setVisible(false);
     }
 
     public void setListeners() {
@@ -54,6 +64,8 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceClick(Preference preference) {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                     ((AppActivity) requireActivity()).switchFragment("personalization");
+                } else if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
+                    ((MainSettingsActivity) requireActivity()).switchFragment("personalization");
                 }
                 return false;
             }
@@ -93,9 +105,11 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         assert about_app != null;
         about_app.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
+            public boolean onPreferenceClick(@NonNull Preference preference) {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                     ((AppActivity) requireActivity()).switchFragment("about_app");
+                } else if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
+                    ((MainSettingsActivity) requireActivity()).switchFragment("about_app");
                 }
                 return false;
             }
@@ -144,6 +158,9 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         }
         if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) requireActivity()).restart();
+        } else {
+            Preference restart_required = Objects.requireNonNull(findPreference("restart_required"));
+            restart_required.setVisible(true);
         }
     }
 
@@ -291,5 +308,14 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             }
             ((LinearLayout) about_instance_view.findViewById(R.id.instance_version_ll)).setVisibility(View.VISIBLE);
         }
+    }
+
+    public void hideInstanceSettings() {
+        Preference about_instance = findPreference("about_instance");
+        assert about_instance != null;
+        about_instance.setVisible(false);
+        PreferenceCategory account_category = findPreference("account_category");
+        assert account_category != null;
+        account_category.setVisible(false);
     }
 }

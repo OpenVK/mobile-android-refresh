@@ -25,6 +25,8 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.person_perf);
+        Preference restart_required = Objects.requireNonNull(findPreference("restart_required"));
+        restart_required.setVisible(false);
         setListeners();
     }
 
@@ -85,6 +87,9 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 }
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                     ((AppActivity) requireActivity()).restart();
+                } else {
+                    Preference restart_required = Objects.requireNonNull(findPreference("restart_required"));
+                    restart_required.setVisible(true);
                 }
                 return true;
             }
@@ -292,6 +297,9 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
             setPreferenceSummary(findPreference("accentColor"), "theme_color");
             if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                 ((AppActivity) requireActivity()).restart();
+            } else {
+                Preference restart_required = Objects.requireNonNull(findPreference("restart_required"));
+                restart_required.setVisible(true);
             }
         } else if(Arrays.equals(list, getResources().getStringArray(R.array.fonts))) {
             SharedPreferences.Editor editor = global_prefs.edit();
@@ -312,6 +320,9 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
             setPreferenceSummary(findPreference("interfaceFont"), "interface_font");
             if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                 ((AppActivity) requireActivity()).restart();
+            } else {
+                Preference restart_required = Objects.requireNonNull(findPreference("restart_required"));
+                restart_required.setVisible(true);
             }
         } else if(Arrays.equals(list, getResources().getStringArray(R.array.avatars_shape))) {
             SharedPreferences.Editor editor = global_prefs.edit();
@@ -328,6 +339,9 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
             setPreferenceSummary(findPreference("avatarsShape"), "avatars_shape");
             if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                 ((AppActivity) requireActivity()).setAvatarShape();
+            } else {
+                Preference restart_required = Objects.requireNonNull(findPreference("restart_required"));
+                restart_required.setVisible(true);
             }
         }
     }

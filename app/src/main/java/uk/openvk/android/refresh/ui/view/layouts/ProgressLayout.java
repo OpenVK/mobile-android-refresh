@@ -34,7 +34,7 @@ public class ProgressLayout extends LinearLayoutCompat {
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8());
             } else {
                 ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
                         monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());

@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.ui.list.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,14 @@ import android.widget.CheckedTextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
+
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.ui.core.fragments.app.MainSettingsFragment;
 import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
@@ -90,6 +96,17 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         CheckedTextView checkedTv = ((CheckedTextView) convertView.findViewById(android.R.id.text1));
+        if(Global.checkMonet(ctx)) {
+            MonetCompat monet = MonetCompat.getInstance();
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
+            int accentColor;
+            if (isDarkTheme) {
+                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8();
+            } else {
+                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+            }
+            checkedTv.setBackgroundTintList(ColorStateList.valueOf(accentColor));
+        }
         checkedTv.setChecked(viewHolder.isSelected);
         checkedTv.setText((CharSequence) getItem(position));
         View finalConvertView = convertView;

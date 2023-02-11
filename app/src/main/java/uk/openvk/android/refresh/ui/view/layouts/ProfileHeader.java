@@ -48,7 +48,7 @@ public class ProfileHeader extends LinearLayoutCompat {
             if(isDarkTheme) {
                 ((ImageView) findViewById(R.id.verified_icon)).setImageTintList(
                         ColorStateList.valueOf(Objects.requireNonNull(
-                                monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
+                                monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
             } else {
                 ((ImageView) findViewById(R.id.verified_icon)).setImageTintList(
                         ColorStateList.valueOf(Objects.requireNonNull(

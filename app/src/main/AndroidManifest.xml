@@ -37,6 +37,15 @@
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
             android:label="@string/title_activity_auth" />
+
+        <activity
+            android:name=".ui.core.activities.MainSettingsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/nav_settings"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
+            android:theme="@style/ApplicationTheme.NoActionBar"
+            tools:ignore="RedundantLabel" />
         <activity
             android:name=".ui.core.activities.AppActivity"
             android:exported="false"

@@ -43,7 +43,7 @@ public class AboutApplicationFragment extends Fragment {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.valueOf(Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
+                ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.valueOf(Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
             } else {
                 ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.valueOf(Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
             }

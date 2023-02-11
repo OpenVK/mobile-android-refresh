@@ -2,8 +2,10 @@ package uk.openvk.android.refresh.ui.core.fragments.auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +17,14 @@ import android.widget.Button;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.Objects;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.ui.core.activities.AuthActivity;
 
@@ -60,7 +65,27 @@ public class AuthFragment extends Fragment {
                 openWebAddress(String.format("http://%s/restore", instance_edit.getText().toString()));
             }
         });
+        setMonetTheme();
         return view;
+    }
+
+    private void setMonetTheme() {
+        Button sign_in_btn = view.findViewById(R.id.sign_in_btn);
+        Button register_btn = view.findViewById(R.id.register_btn);
+        if(Global.checkMonet(getContext())) {
+            MonetCompat monet = MonetCompat.getInstance();
+            if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false)) {
+                sign_in_btn.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
+                register_btn.setTextColor(ColorStateList.valueOf(Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
+            } else {
+                sign_in_btn.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+                register_btn.setTextColor(ColorStateList.valueOf(Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+            }
+        }
     }
 
     public void setAuthorizationData(String instance, String username, String password) {
