@@ -8,6 +8,7 @@
         <item>vepurovk.xyz</item>
         <item>vepurovk.fun</item>
     </string-array>
+
     <string-array name="date_differences">
         <item>just now</item>
         <item>today at %s</item>
@@ -41,6 +42,13 @@
         <item>Raleway</item>
         <item>Roboto</item>
         <item>Rubik</item>
+    </string-array>
+
+    <string-array name="ui_languages" translatable="false">
+        <item>System</item>
+        <item>English</item>
+        <item>Русский</item>
+        <!-- <item>Українська</item> later !-->
     </string-array>
 
     <string-array name="members_count">

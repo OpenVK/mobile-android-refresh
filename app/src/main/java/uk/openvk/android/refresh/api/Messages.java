@@ -109,6 +109,6 @@ public class Messages {
     }
 
     public void delete(OvkAPIWrapper ovk, long id) {
-        ovk.sendAPIMethod("Messages.delete", String.format("message_ids=%d", id));
+        ovk.sendAPIMethod("Messages.delete", String.format("message_ids=%s", id));
     }
 }

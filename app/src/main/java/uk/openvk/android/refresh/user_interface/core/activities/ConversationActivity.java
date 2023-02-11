@@ -1,6 +1,7 @@
 package uk.openvk.android.refresh.user_interface.core.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -28,10 +29,12 @@ import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Conversation;
@@ -39,6 +42,7 @@ import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.view.layouts.SendTextBottomPanel;
 import uk.openvk.android.refresh.user_interface.list.adapters.MessagesAdapter;
+import uk.openvk.android.refresh.user_interface.wrappers.LocaleContextWrapper;
 
 public class ConversationActivity extends MonetCompatActivity {
     public OvkAPIWrapper ovk_api;
@@ -86,6 +90,12 @@ public class ConversationActivity extends MonetCompatActivity {
         setAPIWrapper();
         setAppBar();
         setBottomPanel();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale languageType = OvkApplication.getLocale(newBase);
+        super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
     }
 
     private void setMonetTheme() {

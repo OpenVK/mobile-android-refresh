@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.user_interface.list.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,12 @@ public class PublicPageAboutAdapter extends RecyclerView.Adapter<PublicPageAbout
         void bind(final int position) {
             final PublicPageAboutItem item = getItem(position);
             title.setText(item.title);
-            subtitle.setText(item.subtitle);
+            if(item.title.equals(ctx.getResources().getString(R.string.group_site))) {
+                subtitle.setText(Global.formatLinksAsHtml(item.subtitle));
+                subtitle.setMovementMethod(LinkMovementMethod.getInstance());
+            } else {
+                subtitle.setText(item.subtitle);
+            }
         }
     }
 

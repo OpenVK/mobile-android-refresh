@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,7 +96,7 @@ public class NewsfeedFragment extends Fragment {
             newsfeedView.setLayoutManager(llm);
             newsfeedView.setAdapter(newsfeedAdapter);
         } else {
-            //newsfeedAdapter.setArray(wallPosts);
+            newsfeedAdapter.setArray(wallPosts);
             newsfeedAdapter.notifyDataSetChanged();
         }
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);

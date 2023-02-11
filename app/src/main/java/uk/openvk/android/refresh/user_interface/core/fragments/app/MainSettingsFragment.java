@@ -14,19 +14,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+
+import java.util.Arrays;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Ovk;
 import uk.openvk.android.refresh.api.models.InstanceLink;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.user_interface.list.adapters.DialogSingleChoiceAdapter;
 import uk.openvk.android.refresh.user_interface.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.user_interface.core.activities.AppActivity;
 import uk.openvk.android.refresh.user_interface.core.activities.MainActivity;
 
 public class MainSettingsFragment extends PreferenceFragmentCompat {
+    private SharedPreferences global_prefs;
     private SharedPreferences instance_prefs;
     private View about_instance_view;
     private Ovk ovk;
@@ -34,6 +40,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.main_pref);
+        global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         instance_prefs = requireContext().getSharedPreferences("instance", 0);
         setListeners();
         ovk = new Ovk();
@@ -52,17 +59,28 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        Preference ui_language = findPreference("ui_language");
+        assert ui_language != null;
+        ui_language.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showUiLanguageSelectionDialog();
+                return false;
+            }
+        });
+
         Preference logout = findPreference("logout");
         assert logout != null;
         logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
+            public boolean onPreferenceClick(@NonNull Preference preference) {
                 showLogoutConfirmDialog();
                 return false;
             }
         });
 
         Preference about_instance = findPreference("about_instance");
+        assert about_instance != null;
         about_instance.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(@NonNull Preference preference) {
@@ -82,6 +100,51 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
+    }
+
+    private void showUiLanguageSelectionDialog() {
+        int valuePos = 0;
+        String value = global_prefs.getString("ui_language", "blue");
+        switch (value) {
+            default:
+                break;
+            case "English":
+                valuePos = 1;
+                break;
+            case "Русский":
+                valuePos = 2;
+                break;
+            case "Українська":
+                valuePos = 3;
+                break;
+        }
+        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.ui_languages));
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        builder.setTitle(R.string.pref_language);
+        builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);
+        builder.setNegativeButton(android.R.string.cancel, null);
+        builder.show();
+        AlertDialog dialog = builder.getDialog();
+        singleChoiceAdapter.setDialogBuilder(builder);
+    }
+
+    public void onMenuItemClicked(String[] list, int which) {
+        if (Arrays.equals(list, getResources().getStringArray(R.array.ui_languages))) {
+            SharedPreferences.Editor editor = global_prefs.edit();
+            if(which == 0) {
+                editor.putString("ui_language", "System");
+            } else if(which == 1) {
+                editor.putString("ui_language", "English");
+            } else if(which == 2) {
+                editor.putString("ui_language", "Русский");
+            } else if(which == 3) {
+                editor.putString("ui_language", "Українська");
+            }
+            editor.apply();
+        }
+        if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+            ((AppActivity) requireActivity()).restart();
+        }
     }
 
     @SuppressLint("InflateParams")
@@ -112,6 +175,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
 
         ((TextView) about_instance_view.findViewById(R.id.server_addr_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
         ((TextView) about_instance_view.findViewById(R.id.connection_type_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.instance_version_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
         ((TextView) about_instance_view.findViewById(R.id.instance_statistics_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
         ((TextView) about_instance_view.findViewById(R.id.instance_links_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
 

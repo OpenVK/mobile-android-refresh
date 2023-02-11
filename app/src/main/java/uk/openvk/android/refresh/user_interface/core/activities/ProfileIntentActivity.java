@@ -1,5 +1,6 @@
 package uk.openvk.android.refresh.user_interface.core.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -22,10 +23,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.Likes;
@@ -37,6 +40,7 @@ import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.user_interface.core.fragments.app.ProfileFragment;
+import uk.openvk.android.refresh.user_interface.wrappers.LocaleContextWrapper;
 
 public class ProfileIntentActivity extends MonetCompatActivity {
     private SharedPreferences global_prefs;
@@ -81,6 +85,12 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 ex.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale languageType = OvkApplication.getLocale(newBase);
+        super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
     }
 
     private void setMonetTheme() {

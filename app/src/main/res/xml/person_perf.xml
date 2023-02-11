@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        app:key="appearance_category"
-        app:title="@string/pref_appearance_category"
+        app:key="interface_category"
+        app:title="@string/pref_interface_category"
         app:iconSpaceReserved="false">
 
         <Preference

@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.user_interface.list.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,11 +86,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
                 if(item.text.length() < 20) {
                     vertical_layout.setVisibility(View.GONE);
                     horizontal_layout.setVisibility(View.VISIBLE);
-                    msg_text.setText(item.text);
+                    msg_text.setText(Global.formatLinksAsHtml(item.text));
+                    msg_text.setMovementMethod(LinkMovementMethod.getInstance());
                 } else {
                     vertical_layout.setVisibility(View.VISIBLE);
                     horizontal_layout.setVisibility(View.GONE);
-                    msg_text_2.setText(item.text);
+                    msg_text_2.setText(Global.formatLinksAsHtml(item.text));
+                    msg_text_2.setMovementMethod(LinkMovementMethod.getInstance());
                 }
                 msg_timestamp.setText(item.timestamp);
                 if(item.type == 1) {
@@ -104,14 +107,18 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
                         ((ProgressBar) convertView.findViewById(R.id.sending_progress)).setVisibility(View.GONE);
                     }
                 } else {
-                    Global.setAvatarShape(ctx, convertView.findViewById(R.id.companion_avatar));
-                    ((ImageView) convertView.findViewById(R.id.companion_avatar)).setImageTintList(null);
-                    GlideApp.with(ctx)
-                            .load(String.format("%s/photos_cache/friend_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.id))
-                            .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
-                            .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                            .dontAnimate().centerCrop()
-                            .into((ImageView) convertView.findViewById(R.id.companion_avatar));
+                    if(getItem(position - 1).type != item.type) {
+                        Global.setAvatarShape(ctx, convertView.findViewById(R.id.companion_avatar));
+                        ((ImageView) convertView.findViewById(R.id.companion_avatar)).setImageTintList(null);
+                        GlideApp.with(ctx)
+                                .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.id))
+                                .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
+                                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                                .dontAnimate().centerCrop()
+                                .into((ImageView) convertView.findViewById(R.id.companion_avatar));
+                    } else {
+                        ((ImageView) convertView.findViewById(R.id.companion_avatar)).setVisibility(View.INVISIBLE);
+                    }
                 }
                 CardView cardView;
                 boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
@@ -133,7 +140,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
                 }
             } else {
                 msg_text.setTypeface(Global.getFlexibleTypeface(ctx, 500));
-                msg_text.setText(item.text);
+                msg_text.setText(Global.formatLinksAsHtml(item.text));
+                msg_text.setMovementMethod(LinkMovementMethod.getInstance());
             }
         }
     }

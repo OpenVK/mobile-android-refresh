@@ -1,10 +1,14 @@
 package uk.openvk.android.refresh;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.Locale;
 
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 
@@ -54,4 +58,26 @@ public class OvkApplication extends Application {
     public SharedPreferences getInstancePreferences() {
         return instance_prefs;
     }
+    public static Locale getLocale(Context ctx) {
+        SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String language = global_prefs.getString("ui_language", "System");
+        String language_code = "en";
+        if(language.equals("English")) {
+            language_code = "en";
+        } else if(language.equals("Русский")) {
+            language_code = "ru";
+//        } else if(language.equals("Украïнська")) {
+//            language_code = "uk"; (later)
+        } else {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                language_code = ctx.getResources().getConfiguration().getLocales().get(0).getLanguage();
+            } else {
+                language_code = ctx.getResources().getConfiguration().locale.getLanguage();
+            }
+        }
+
+
+        return new Locale(language_code);
+    }
+
 }

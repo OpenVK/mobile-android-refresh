@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        app:iconSpaceReserved="false"
         app:key="appearance_category"
-        app:title="@string/pref_appearance_category"
-        app:iconSpaceReserved="false">
+        app:title="@string/pref_interface_category">
 
         <!--<Preference
             app:key="accentColor"
@@ -21,10 +21,17 @@
 
         <Preference
             app:icon="@drawable/ic_personalization"
+            app:iconSpaceReserved="false"
             app:key="personalization"
             app:singleLineTitle="true"
-            app:title="@string/pref_personalization"
-            app:iconSpaceReserved="false"/>
+            app:title="@string/pref_personalization" />
+
+        <Preference
+            app:icon="@drawable/ic_language"
+            app:iconSpaceReserved="false"
+            app:key="ui_language"
+            app:singleLineTitle="true"
+            app:title="@string/pref_language" />
     </PreferenceCategory>
 
     <PreferenceCategory

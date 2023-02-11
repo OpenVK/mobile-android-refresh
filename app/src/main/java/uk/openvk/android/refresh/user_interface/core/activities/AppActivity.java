@@ -1,6 +1,7 @@
 package uk.openvk.android.refresh.user_interface.core.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -46,6 +47,7 @@ import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 import dev.kdrag0n.monet.theme.ColorScheme;
@@ -78,6 +80,7 @@ import uk.openvk.android.refresh.user_interface.core.fragments.app.Personalizati
 import uk.openvk.android.refresh.user_interface.core.fragments.app.ProfileFragment;
 import uk.openvk.android.refresh.user_interface.list.adapters.NewsfeedToolbarSpinnerAdapter;
 import uk.openvk.android.refresh.user_interface.list.items.ToolbarSpinnerItem;
+import uk.openvk.android.refresh.user_interface.wrappers.LocaleContextWrapper;
 
 public class AppActivity extends MonetCompatActivity {
     public Handler handler;
@@ -139,6 +142,12 @@ public class AppActivity extends MonetCompatActivity {
         setContentView(R.layout.app);
         instance_prefs = getSharedPreferences("instance", 0);
         createFragments();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale languageType = OvkApplication.getLocale(newBase);
+        super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
     }
 
     private void createFragments() {
@@ -695,12 +704,12 @@ public class AppActivity extends MonetCompatActivity {
             if (account != null) {
                 if (pos == 0) {
                     newsfeed.get(ovk_api, 25);
-                    if (progress) {
-                        newsfeedFragment.showProgress();
-                    }
+                } else {
+                    newsfeed.getGlobal(ovk_api, 25);
                 }
-                else
-                    Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_LONG).show();
+                if (progress) {
+                    newsfeedFragment.showProgress();
+                }
             }
         }
     }

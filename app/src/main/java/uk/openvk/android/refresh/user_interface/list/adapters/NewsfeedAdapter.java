@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +40,7 @@ import uk.openvk.android.refresh.user_interface.view.layouts.PhotoAttachmentLayo
 
 public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder> {
     private final Context ctx;
-    private final ArrayList<WallPost> items;
+    private ArrayList<WallPost> items;
     private FragmentManager fragman;
     private boolean photo_loaded = false;
     private boolean avatar_loaded = false;
@@ -65,6 +67,10 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
     public WallPost getItem(int position) {
         return items.get(position);
+    }
+
+    public void setArray(ArrayList<WallPost> wallPosts) {
+        items = wallPosts;
     }
 
     public class Holder extends RecyclerView.ViewHolder {
@@ -117,10 +123,11 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 post_text.setVisibility(View.VISIBLE);
                 String text = item.text.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
                         .replaceAll("&amp;", "&").replaceAll("&quot;", "\"");
-                post_text.setText(text);
+                post_text.setText(Global.formatLinksAsHtml(text));
             } else {
                 post_text.setVisibility(View.GONE);
             }
+            post_text.setMovementMethod(LinkMovementMethod.getInstance());
 
             poster_name.setTypeface(Global.getFlexibleTypeface(ctx, 500));
             post_likes.setText(String.format("%s", item.counters.likes));

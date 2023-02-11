@@ -1,6 +1,7 @@
 package uk.openvk.android.refresh.user_interface.core.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -25,8 +26,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import java.util.Locale;
+
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Authorization;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
@@ -36,6 +40,7 @@ import uk.openvk.android.refresh.user_interface.core.fragments.auth.AuthProgress
 import uk.openvk.android.refresh.user_interface.core.fragments.auth.AuthTwoFactorFragment;
 import uk.openvk.android.refresh.user_interface.view.layouts.XConstraintLayout;
 import uk.openvk.android.refresh.user_interface.core.listeners.OnKeyboardStateListener;
+import uk.openvk.android.refresh.user_interface.wrappers.LocaleContextWrapper;
 
 public class AuthActivity extends MonetCompatActivity {
     public Handler handler;
@@ -93,6 +98,12 @@ public class AuthActivity extends MonetCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale languageType = OvkApplication.getLocale(newBase);
+        super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
     }
 
     private void setAPIWrapper() {

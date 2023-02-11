@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.view.Window;
+import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +17,14 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import uk.openvk.android.refresh.api.models.OvkLink;
 
 public class Global {
     public static String bytesToHex(byte[] bytes) {
@@ -160,21 +165,28 @@ public class Global {
         SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(ctx.getApplicationContext());
         String value = global_prefs.getString("interface_font", "system");
         Typeface family = null;
-        if(value.equals("inter")) {
-            family = ResourcesCompat.getFont(ctx, R.font.inter);
-        } else if(value.equals("open_sans")) {
-            family = ResourcesCompat.getFont(ctx, R.font.open_sans);
-        } else if(value.equals("raleway")) {
-            family = ResourcesCompat.getFont(ctx, R.font.raleway);
-        } else if(value.equals("roboto")) {
-            family = ResourcesCompat.getFont(ctx, R.font.roboto);
-        } else if(value.equals("rubik")) {
-            family = ResourcesCompat.getFont(ctx, R.font.rubik);
-        } else {
-            if(weight < 700)
-                family = Typeface.DEFAULT;
-            else
-                family = Typeface.DEFAULT_BOLD;
+        switch (value) {
+            case "inter":
+                family = ResourcesCompat.getFont(ctx, R.font.inter);
+                break;
+            case "open_sans":
+                family = ResourcesCompat.getFont(ctx, R.font.open_sans);
+                break;
+            case "raleway":
+                family = ResourcesCompat.getFont(ctx, R.font.raleway);
+                break;
+            case "roboto":
+                family = ResourcesCompat.getFont(ctx, R.font.roboto);
+                break;
+            case "rubik":
+                family = ResourcesCompat.getFont(ctx, R.font.rubik);
+                break;
+            default:
+                if (weight < 700)
+                    family = Typeface.DEFAULT;
+                else
+                    family = Typeface.DEFAULT_BOLD;
+                break;
         }
         boolean italic = false;
         if(weight >= 800) {
@@ -199,5 +211,49 @@ public class Global {
             return TypefaceCompat.create(ctx, family, 700, italic);
         }
         return TypefaceCompat.create(ctx, family, weight, italic);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned formatLinksAsHtml(String original_text) {
+        String[] lines = original_text.split("\r\n|\r|\n");
+        StringBuilder text_llines = new StringBuilder();
+        Pattern pattern = Pattern.compile("\\[(.+?)\\]|" +
+                "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{1,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+        Matcher matcher = pattern.matcher(original_text);
+        boolean regexp_search = matcher.find();
+        String text = original_text.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
+                .replaceAll("&amp;", "&").replaceAll("&quot;", "\"");
+        text = text.replace("\r\n", "<br>").replace("\n", "<br>");
+        int regexp_results = 0;
+        while(regexp_search) {
+            String block = matcher.group();
+            if(block.startsWith("[") && block.endsWith("]")) {
+                OvkLink link = new OvkLink();
+                String[] markup = block.replace("[", "").replace("]", "").split("\\|");
+                link.screen_name = markup[0];
+                if (markup.length == 2) {
+                    if (markup[0].startsWith("id")) {
+                        link.url = String.format("openvk://profile/%s", markup[0]);
+                        link.name = markup[1];
+                    } else if (markup[0].startsWith("club")) {
+                        link.url = String.format("openvk://group/%s", markup[0]);
+                        link.name = markup[1];
+                    }
+                    link.name = markup[1];
+                    if (markup[0].startsWith("id") || markup[0].startsWith("club")) {
+                        text = text.replace(block, String.format("<a href=\"%s\">%s</a>", link.url, link.name));
+                    }
+                }
+            } else if(block.startsWith("https://") || block.startsWith("http://")) {
+                text = text.replace(block, String.format("<a href=\"%s\">%s</a>", block, block));
+            }
+            regexp_results = regexp_results + 1;
+            regexp_search = matcher.find();
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            return Html.fromHtml(text);
+        }
     }
 }

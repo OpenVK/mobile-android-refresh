@@ -42,7 +42,6 @@ public class OvkAPIWrapper {
     public Error error;
     private Context ctx;
     private String access_token;
-
     private OkHttpClient httpClient = null;
     private boolean logging_enabled = true; // default for beta releases
     private String client_name = "openvk_refresh_android";

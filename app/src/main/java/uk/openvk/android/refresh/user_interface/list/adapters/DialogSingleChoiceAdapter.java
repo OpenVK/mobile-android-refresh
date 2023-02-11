@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.user_interface.core.fragments.app.MainSettingsFragment;
 import uk.openvk.android.refresh.user_interface.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.user_interface.core.fragments.app.PersonalizationFragment;
 
@@ -101,7 +102,11 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
                         checkedItem = position;
                         checkedTv.setChecked(true);
                     }
-                    ((PersonalizationFragment) frg).onMenuItemClicked(list, position);
+                    if(frg.getClass().getSimpleName().equals("PersonalizationFragment")) {
+                        ((PersonalizationFragment) frg).onMenuItemClicked(list, position);
+                    } else {
+                        ((MainSettingsFragment) frg).onMenuItemClicked(list, position);
+                    }
                 }
             }
         });

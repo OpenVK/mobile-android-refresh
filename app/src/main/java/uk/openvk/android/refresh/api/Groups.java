@@ -105,7 +105,11 @@ public class Groups implements Parcelable {
     }
 
     public void getGroupByID(OvkAPIWrapper ovk, long id) {
-        ovk.sendAPIMethod("Groups.getById", String.format("group_id=%s&fields=verified,photo_200,photo_400,photo_max_orig,is_member,members_count,site,description,contacts", id));
+        if (id < 0) {
+            ovk.sendAPIMethod("Groups.getById", String.format("group_id=%s&fields=verified,photo_200,photo_400,photo_max_orig,is_member,members_count,site,description,contacts", -id));
+        } else {
+            ovk.sendAPIMethod("Groups.getById", String.format("group_id=%s&fields=verified,photo_200,photo_400,photo_max_orig,is_member,members_count,site,description,contacts", id));
+        }
     }
 
     public void getGroups(OvkAPIWrapper ovk, long user_id, long count) {

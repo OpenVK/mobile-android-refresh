@@ -46,10 +46,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="8dp"
+                android:maxWidth="220dp"
                 android:text="Incoming message text example"
                 android:textColor="@android:color/white"
+                android:textColorLink="@android:color/white"
                 android:textSize="16sp"
-                android:maxWidth="220dp"
                 tools:ignore="HardcodedText" />
 
             <TextView
@@ -81,6 +82,7 @@
                 android:maxWidth="220dp"
                 android:text="Incoming message text example"
                 android:textColor="@android:color/white"
+                android:textColorLink="@android:color/white"
                 android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 

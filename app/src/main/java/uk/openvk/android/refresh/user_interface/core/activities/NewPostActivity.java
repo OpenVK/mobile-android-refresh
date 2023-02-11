@@ -1,5 +1,6 @@
 package uk.openvk.android.refresh.user_interface.core.activities;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -30,15 +31,18 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.user_interface.wrappers.LocaleContextWrapper;
 
 public class NewPostActivity extends MonetCompatActivity {
     private SharedPreferences global_prefs;
@@ -107,6 +111,12 @@ public class NewPostActivity extends MonetCompatActivity {
                 });
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale languageType = OvkApplication.getLocale(newBase);
+        super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
     }
 
     private void setMonetTheme() {
