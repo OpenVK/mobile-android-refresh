@@ -11,9 +11,11 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 import java.util.Locale;
 
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.longpoll_api.LongPollService;
 
 public class OvkApplication extends Application {
     public String version;
+    public LongPollService longPollService;
     private SharedPreferences global_prefs;
     private SharedPreferences instance_prefs;
     public OvkAPIWrapper ovk_api;

@@ -24,6 +24,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.snackbar.Snackbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
@@ -76,11 +77,11 @@ public class AuthActivity extends MonetCompatActivity {
         auth_layout.setOnKeyboardStateListener(new OnKeyboardStateListener() {
             @Override
             public void onKeyboardStateChanged(boolean state) {
-                ImageView auth_logo = (ImageView) findViewById(R.id.ovk_logo);
+                AppBarLayout appBar = findViewById(R.id.appbar);
                 if (state) {
-                    auth_logo.setVisibility(View.GONE);
+                    appBar.setVisibility(View.GONE);
                 } else {
-                    auth_logo.setVisibility(View.VISIBLE);
+                    appBar.setVisibility(View.VISIBLE);
                 }
             }
         });

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.net.ConnectException;
@@ -186,7 +187,7 @@ public class LongPollWrapper {
 
     public void updateCounters(final OvkAPIWrapper ovk) {
         Thread thread = null;
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(Looper.myLooper());
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

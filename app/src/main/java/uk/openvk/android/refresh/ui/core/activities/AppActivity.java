@@ -1,8 +1,12 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -10,6 +14,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -65,10 +70,12 @@ import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.api.models.Group;
+import uk.openvk.android.refresh.api.models.LongPollServer;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.longpoll_api.LongPollService;
 import uk.openvk.android.refresh.ui.core.fragments.app.AboutApplicationFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.FriendsFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.GroupsFragment;
@@ -116,10 +123,16 @@ public class AppActivity extends MonetCompatActivity {
     private boolean isDarkTheme;
     private GroupsFragment groupsFragment;
 
+    private boolean mShouldUnbind;
+    private LongPollService longPollService;
+    private LongPollServer longPollServer;
+    private Intent longPollIntent;
+
     @SuppressLint("ObsoleteSdkInt")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if(global_prefs.getBoolean("dark_theme", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -574,6 +587,17 @@ public class AppActivity extends MonetCompatActivity {
                 account.parse(data.getString("response"), ovk_api);
                 newsfeed.get(ovk_api, 25);
                 users.getAccountUser(ovk_api, account.id);
+                messages.getLongPollServer(ovk_api);
+                messages.getConversations(ovk_api);
+            } else if (message == HandlerMessages.ACCOUNT_COUNTERS) {
+                account.parseCounters(data.getString("response"));
+                BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
+                if(account.counters.friends_requests > 0) {
+                    b_navView.getOrCreateBadge(R.id.friends).setNumber(account.counters.friends_requests);
+                }
+                if(account.counters.new_messages > 0) {
+                    b_navView.getOrCreateBadge(R.id.messages).setNumber(account.counters.new_messages);
+                }
             } else if (message == HandlerMessages.NEWSFEED_GET) {
                 newsfeed.parse(this, downloadManager, data.getString("response"), "high", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
@@ -620,7 +644,28 @@ public class AppActivity extends MonetCompatActivity {
                 conversations = messages.parseConversationsList(data.getString("response"), downloadManager);
                 messagesFragment.createAdapter(this, conversations, account);
                 messagesFragment.disableUpdateState();
-            } else if (message == HandlerMessages.FRIENDS_GET) {
+            } else if (message == HandlerMessages.MESSAGES_GET_LONGPOLL_SERVER) {
+                longPollServer = messages.parseLongPollServer(data.getString("response"));
+                AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                longPollIntent = new Intent(this, LongPollService.class);
+                PendingIntent pendingIntent = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                    pendingIntent = PendingIntent.getService(this, 0, longPollIntent, PendingIntent.FLAG_MUTABLE);
+                } else {
+                    pendingIntent = PendingIntent.getService(this, 0, longPollIntent, 0);
+                }
+                longPollIntent.setPackage("uk.openvk.android.refresh.longpoll_api");
+                longPollIntent.putExtra("access_token", instance_prefs.getString("access_token", ""));
+                longPollIntent.putExtra("instance", instance_prefs.getString("server", ""));
+                longPollIntent.putExtra("server", longPollServer.address);
+                longPollIntent.putExtra("key", longPollServer.key);
+                longPollIntent.putExtra("ts", longPollServer.ts);
+                startService(longPollIntent);
+                bindService(longPollIntent, lpConnection, Context.BIND_AUTO_CREATE);
+                // Wake up service
+                mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis(), 60 * 1000, pendingIntent);
+            }  else if (message == HandlerMessages.FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager, true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createAdapter(this, friendsList, "friends");
@@ -891,6 +936,26 @@ public class AppActivity extends MonetCompatActivity {
         }
     }
 
+    private ServiceConnection lpConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            longPollService = ((LongPollService.LongPollBinder) service).getService();
+            longPollService.run(AppActivity.this, instance_prefs.getString("server", ""), longPollServer.address, longPollServer.key, longPollServer.ts, true);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            longPollService = null;
+        }
+    };
+
+    void doUnbindService() {
+        if (mShouldUnbind) {
+            // Release information about the service's state.
+            unbindService(lpConnection);
+            mShouldUnbind = false;
+        }
+    }
+
     @Override
     public void recreate() {
 
@@ -905,5 +970,14 @@ public class AppActivity extends MonetCompatActivity {
         } catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(longPollIntent != null) {
+            stopService(longPollIntent);
+        }
+        doUnbindService();
     }
 }

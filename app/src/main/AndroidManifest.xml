@@ -20,6 +20,12 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/ApplicationTheme.SplashTheme"
         tools:targetApi="m">
+        <receiver android:name=".longpoll_api.receivers.LongPollReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="uk.openvk.android.legacy.LONGPOLL_RECEIVE" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".ui.core.activities.MainActivity"
             android:exported="true"
@@ -101,6 +107,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <service android:enabled="true" android:name=".longpoll_api.LongPollService"/>
     </application>
 
 </manifest>

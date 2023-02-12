@@ -3,6 +3,8 @@ package uk.openvk.android.refresh.longpoll_api;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -20,28 +22,30 @@ public class LongPollService extends Service {
     private String access_token;
     private boolean use_https = false;
 
-    public LongPollService() {
-    }
-
-    public LongPollService(Context ctx, String access_token, boolean use_https) {
-        this.ctx = ctx;
-        this.access_token = access_token;
-        lpW = new LongPollWrapper(ctx, use_https);
+    public class LongPollBinder extends Binder {
+        public LongPollService getService() {
+            return LongPollService.this;
+        }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i("OpenVK Legacy", "Starting LongPoll Service...");
+        Log.i("OpenVK", "Creating LongPoll Service...");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("OpenVK Legacy", String.format("Getting LPS start ID: %d", startId));
-        return super.onStartCommand(intent, flags, startId);
+        Log.i("OpenVK", String.format("Getting LPS start ID: %d", startId));
+        Bundle data = intent.getExtras();
+        if (data != null) {
+            access_token = data.getString("access_token");
+        }
+        return flags;
     }
 
-    public void run(String instance, String lp_server, String key, int ts, boolean use_https) {
+    public void run(Context ctx, String instance, String lp_server, String key, int ts, boolean use_https) {
+        this.ctx = ctx;
         this.use_https = use_https;
         if(lpW == null) {
             lpW = new LongPollWrapper(ctx, use_https);
@@ -62,11 +66,15 @@ public class LongPollService extends Service {
         }
     }
 
+    private final IBinder myBinder = new LongPollBinder();
+
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        Log.d("OpenVK", "Service ONBIND");
+        return mBinder;
     }
+
+    private final IBinder mBinder = new LongPollBinder();
 
     @Override
     public void onDestroy() {
