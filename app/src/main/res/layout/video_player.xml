@@ -44,7 +44,10 @@
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
             app:srcCompat="@drawable/ic_play_large"
-            app:tint="?attr/rippleColor" />
+            app:tint="?attr/rippleColor"
+            android:contentDescription="Play"
+            app:contentDescription="Play"
+            tools:ignore="ContentDescription,HardcodedText"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -88,7 +91,10 @@
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
             app:srcCompat="@drawable/ic_zoom_out_large"
-            app:tint="?attr/rippleColor" />
+            app:tint="?attr/rippleColor"
+            android:contentDescription="Zoom"
+            app:contentDescription="Zoom"
+            tools:ignore="ContentDescription,HardcodedText" />
     </LinearLayout>
 
 </RelativeLayout>
