@@ -18,6 +18,7 @@ _OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.c
 3. [Glide](https://bumptech.github.io/glide/) (BSD 2-Clause License)
 4. [MonetCompat](https://github.com/KieronQuinn/MonetCompat) (X11 License)
 5. [OkHttp](https://square.github.io/okhttp/) (Apache License 2.0)
+6. [libVLC](https://www.videolan.org/vlc/libvlc.html) (LGPL 2.1)
 
 ## OpenVK Refresh License
 [GNU (Affero) GPL v3.0](https://github.com/openvk/mobile-android-refresh/blob/main/COPYING) or later version.
