@@ -132,4 +132,7 @@
     <string name="instance_admins_count">%d админ-ов</string>
     <string name="instance_links">Ссылки:</string>
     <string name="connection_error">Ошибка подключения</string>
+    <string name="comments_label">Комментарии</string>
+    <string name="post_title">Запись</string>
+    <string name="reply_btn">Ответить</string>
 </resources>

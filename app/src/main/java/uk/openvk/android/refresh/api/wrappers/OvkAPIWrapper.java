@@ -31,6 +31,7 @@ import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.NewPostActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
+import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
 
 public class OvkAPIWrapper {
 
@@ -929,18 +930,15 @@ public class OvkAPIWrapper {
 //            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
             ((GroupIntentActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("MainSettingsActivity")) {
-//            ((MainSettingsActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("ConversationActivity")) {
             ((ConversationActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("NewPostActivity")) {
             ((NewPostActivity) ctx).handler.sendMessage(msg);
-        }
 //        else if(ctx.getClass().getSimpleName().equals("QuickSearchActivity")) {
 //            ((QuickSearchActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("WallPostActivity")) {
-//            ((WallPostActivity) ctx).handler.sendMessage(msg);
-//        }
+        } else if(ctx.getClass().getSimpleName().equals("WallPostActivity")) {
+           ((WallPostActivity) ctx).handler.sendMessage(msg);
+        }
     }
 
     private void sendMessage(int message, String method, String response) {
@@ -966,12 +964,11 @@ public class OvkAPIWrapper {
             ((ConversationActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("NewPostActivity")) {
             ((NewPostActivity) ctx).handler.sendMessage(msg);
-        }
 //        else if(ctx.getClass().getSimpleName().equals("QuickSearchActivity")) {
 //            ((QuickSearchActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("WallPostActivity")) {
-//            ((WallPostActivity) ctx).handler.sendMessage(msg);
-//        }
+        } else if(ctx.getClass().getSimpleName().equals("WallPostActivity")) {
+            ((WallPostActivity) ctx).handler.sendMessage(msg);
+        }
     }
 
     private void sendMessage(int message, String method, String args, String response) {
@@ -998,12 +995,11 @@ public class OvkAPIWrapper {
             ((ConversationActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("NewPostActivity")) {
             ((NewPostActivity) ctx).handler.sendMessage(msg);
-        }
 //        else if(ctx.getClass().getSimpleName().equals("QuickSearchActivity")) {
 //            ((QuickSearchActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("WallPostActivity")) {
-//            ((WallPostActivity) ctx).handler.sendMessage(msg);
-//        }
+        } else if(ctx.getClass().getSimpleName().equals("WallPostActivity")) {
+            ((WallPostActivity) ctx).handler.sendMessage(msg);
+        }
     }
 
     public void checkHTTPS() {

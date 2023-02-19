@@ -5,9 +5,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -37,15 +39,18 @@ public class WallPost implements Parcelable {
         name = author;
         Date dt = new Date(TimeUnit.SECONDS.toMillis(dt_sec));
         Date dt_midnight = new Date(System.currentTimeMillis() + 86400000);
-        dt_midnight.setHours(0);
-        dt_midnight.setMinutes(0);
-        dt_midnight.setSeconds(0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dt_midnight);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
         this.dt_sec = dt_sec;
-        if((dt_midnight.getTime() - (TimeUnit.SECONDS.toMillis(dt_sec))) < 86400000) {
+        if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(dt_sec))) < 86400000) {
             info = String.format("%s %s", ctx.getResources().getString(R.string.today_at), new SimpleDateFormat("HH:mm").format(dt));
-        } else if((dt_midnight.getTime() - (TimeUnit.SECONDS.toMillis(dt_sec))) < (86400000 * 2)) {
+        } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(dt_sec))) < (86400000 * 2)) {
             info = String.format("%s %s", ctx.getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt));
-        } else if((dt_midnight.getTime() - (TimeUnit.SECONDS.toMillis(dt_sec))) < 31536000000L) {
+        } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(dt_sec))) < 31536000000L) {
             info = String.format("%s %s %s", new SimpleDateFormat("d MMMM").format(dt), ctx.getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt));
         } else {
             info = String.format("%s %s %s", new SimpleDateFormat("d MMMM yyyy").format(dt), ctx.getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt));
@@ -65,13 +70,15 @@ public class WallPost implements Parcelable {
 
     protected WallPost(Parcel in) {
         avatar_url = in.readString();
-        avatar = in.readParcelable(Bitmap.class.getClassLoader());
+        //avatar = in.readParcelable(Bitmap.class.getClassLoader());
         name = in.readString();
         info = in.readString();
         text = in.readString();
         owner_id = in.readLong();
         post_id = in.readLong();
-        author_id = in.readInt();
+        author_id = in.readLong();
+        verified_author = in.readInt() != 0;
+        post_source = in.readParcelable(WallPostSource.class.getClassLoader());
     }
 
     public static final Creator<WallPost> CREATOR = new Creator<WallPost>() {
@@ -94,12 +101,18 @@ public class WallPost implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(avatar_url);
-        parcel.writeParcelable(avatar, i);
+        //parcel.writeParcelable(avatar, i);
         parcel.writeString(name);
         parcel.writeString(info);
         parcel.writeString(text);
         parcel.writeLong(owner_id);
         parcel.writeLong(post_id);
         parcel.writeLong(author_id);
+        int verified_author_temp = 0;
+        if(verified_author) {
+            verified_author_temp = 1;
+        }
+        parcel.writeInt(verified_author_temp);
+        parcel.writeParcelable(post_source, i);
     }
 }

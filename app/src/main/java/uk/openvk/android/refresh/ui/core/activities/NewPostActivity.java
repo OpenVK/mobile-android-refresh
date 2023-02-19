@@ -30,6 +30,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
+import com.kieronquinn.monetcompat.extensions.views.ViewExtensions_EditTextKt;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -68,6 +69,7 @@ public class NewPostActivity extends MonetCompatActivity {
         setContentView(R.layout.new_post);
         setAPIWrapper();
         setAppBar();
+
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         statusEditText = findViewById(R.id.status_edit);
         setMonetTheme();
@@ -122,36 +124,44 @@ public class NewPostActivity extends MonetCompatActivity {
     private void setMonetTheme() {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+            int[][] states = new int[][] {
+                    new int[] { android.R.attr.state_selected}, new int[] { }
+            };
+            int[] colors;
+            int colorOnSurface = MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
             if (!isDarkTheme) {
                 toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
                 getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
-                int[][] states = new int[][] {
-                        new int[] { android.R.attr.state_selected}, new int[] { }
+
+                colors = new int[]{
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8(),
+                        Global.adjustAlpha(colorOnSurface, 0.6f)
                 };
-                int[] colors;
-                int colorOnSurface = MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
-                if(isDarkTheme) {
-                    colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
-                            Global.adjustAlpha(colorOnSurface, 0.6f)
-                    };
-                    Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
-                            .setHighlightColor(
-                                    Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
-                    Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
-                            .setHintTextColor(new ColorStateList(states, colors));
-                } else {
-                    colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
-                            Global.adjustAlpha(colorOnSurface, 0.6f)
-                    };
-                    Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
-                            .setHighlightColor(
-                                    Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8());
-                    Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
-                            .setHintTextColor(new ColorStateList(states, colors));
-                }
+                Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
+                        .setHighlightColor(
+                                Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8());
+            } else {
+                colors = new int[]{
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8(),
+                        Global.adjustAlpha(colorOnSurface, 0.6f)
+                };
+                Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
+                        .setHighlightColor(
+                                Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
             }
+            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
+                    .setHintTextColor(ColorStateList.valueOf(colors[0]));
+            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
+                    .setBoxStrokeColor(colors[0]);
+        } else {
+            int rippleColor = MaterialColors.getColor(this, com.google.android.material.R.attr.rippleColor, Color.GRAY);
+            int accentColor = MaterialColors.getColor(this, com.google.android.material.R.attr.colorAccent, Color.BLACK);
+            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
+                    .setHighlightColor(rippleColor);
+            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
+                    .setHintTextColor(ColorStateList.valueOf(accentColor));
+            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
+                    .setBoxStrokeColor(accentColor);
         }
     }
 

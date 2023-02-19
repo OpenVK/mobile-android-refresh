@@ -1,6 +1,8 @@
 package uk.openvk.android.refresh;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -25,6 +27,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import uk.openvk.android.refresh.api.models.OvkLink;
+import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
 
 public class Global {
     public static String bytesToHex(byte[] bytes) {
@@ -255,5 +259,12 @@ public class Global {
         } else {
             return Html.fromHtml(text);
         }
+    }
+
+    public static void openPostComments(WallPost post, Context ctx) {
+        Intent intent = new Intent(ctx, WallPostActivity.class);
+        intent.putExtra("post", post);
+        intent.putExtra("counters", post.counters);
+        ctx.startActivity(intent);
     }
 }

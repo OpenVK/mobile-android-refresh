@@ -132,7 +132,6 @@ public class AppActivity extends MonetCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if(global_prefs.getBoolean("dark_theme", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -368,7 +367,6 @@ public class AppActivity extends MonetCompatActivity {
         https://github.com/KieronQuinn/MonetCompat (X11 License)
     */
     private void setMonetTheme() {
-
         try {
             if (Global.checkMonet(this)) {
                 MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
@@ -592,11 +590,24 @@ public class AppActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.ACCOUNT_COUNTERS) {
                 account.parseCounters(data.getString("response"));
                 BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
+                int accentColor;
+                if(Global.checkMonet(this)) {
+                    if(isDarkTheme) {
+                        accentColor = Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
+                    } else {
+                        accentColor = Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                    }
+                } else {
+                    accentColor = MaterialColors.getColor(this, com.kieronquinn.monetcompat.R.attr.colorAccent,
+                            getResources().getColor(R.color.accentColorRed));
+                }
                 if(account.counters.friends_requests > 0) {
                     b_navView.getOrCreateBadge(R.id.friends).setNumber(account.counters.friends_requests);
+                    b_navView.getOrCreateBadge(R.id.friends).setBackgroundColor(accentColor);
                 }
                 if(account.counters.new_messages > 0) {
                     b_navView.getOrCreateBadge(R.id.messages).setNumber(account.counters.new_messages);
+                    b_navView.getOrCreateBadge(R.id.messages).setBackgroundColor(accentColor);
                 }
             } else if (message == HandlerMessages.NEWSFEED_GET) {
                 newsfeed.parse(this, downloadManager, data.getString("response"), "high", true);

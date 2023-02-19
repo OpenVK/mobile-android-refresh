@@ -103,6 +103,14 @@
                 <data android:scheme="openvk" android:host="group" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.core.activities.WallPostActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/post_title"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
+            android:theme="@style/ApplicationTheme.NoActionBar"
+            tools:ignore="RedundantLabel">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.database.DataSetObserver;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,7 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
         boolean isSelected;
     }
 
-    @SuppressLint("ViewHolder")
+    @SuppressLint({"ViewHolder", "UseCompatTextViewDrawableApis"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
@@ -101,11 +102,13 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
             int accentColor;
             if (isDarkTheme) {
-                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8();
+                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
             } else {
                 accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
             }
-            checkedTv.setBackgroundTintList(ColorStateList.valueOf(accentColor));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkedTv.setCompoundDrawableTintList(ColorStateList.valueOf(accentColor));
+            }
         }
         checkedTv.setChecked(viewHolder.isSelected);
         checkedTv.setText((CharSequence) getItem(position));

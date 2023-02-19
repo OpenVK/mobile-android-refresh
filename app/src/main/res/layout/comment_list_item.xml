@@ -3,17 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/backgroundColor">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/conv_avatar"
+        android:id="@+id/comment_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,11 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/conv_avatar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/conv_avatar"
-        app:layout_constraintTop_toTopOf="@+id/conv_avatar">
+        app:layout_constraintStart_toEndOf="@+id/comment_avatar"
+        app:layout_constraintTop_toTopOf="@+id/comment_avatar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,18 +36,18 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/conversation_title"
+                android:id="@+id/comment_author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
                 android:singleLine="true"
-                android:text="Conversation title"
+                android:text="Comment author"
                 android:textColor="@color/primaryTextColor"
                 tools:ignore="HardcodedText,InefficientWeight" />
 
             <TextView
-                android:id="@+id/conversation_time"
+                android:id="@+id/comment_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
@@ -58,13 +56,28 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/last_message_text"
+            android:id="@+id/comment_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
-            android:singleLine="true"
-            android:text="You: Last message text"
+            android:singleLine="false"
+            android:text="Comment text"
             tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/reply_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reply_btn"
+                android:textColor="?android:attr/colorAccent"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
