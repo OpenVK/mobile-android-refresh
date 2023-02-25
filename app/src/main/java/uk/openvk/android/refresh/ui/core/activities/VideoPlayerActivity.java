@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.ui.core.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.preference.PreferenceManager;
 
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
@@ -32,7 +34,9 @@ import org.videolan.libvlc.util.VLCVideoLayout;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
+import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.VideoAttachment;
 
@@ -46,10 +50,14 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     private int duration;
     private int pos;
     private boolean seekPressed;
+    private SharedPreferences global_prefs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setInterfaceFont(this);
         setContentView(R.layout.video_player);
         loadVideo();
     }
@@ -214,5 +222,18 @@ public class VideoPlayerActivity extends MonetCompatActivity {
                 }
             }, 5000);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        if(mp.isPlaying()) mp.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mp.stop();
+        mp.release();
+        super.onDestroy();
     }
 }
