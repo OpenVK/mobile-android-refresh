@@ -287,11 +287,11 @@ public class DownloadManager {
                     } else {
                         short_address = url;
                     }
-                    if(logging_enabled) Log.v("DownloadManager", String.format("Downloading %s...", short_address));
-                    request = new Request.Builder()
-                            .url(url)
-                            .build();
                     try {
+                        if(logging_enabled) Log.v("DownloadManager", String.format("Downloading %s...", short_address));
+                        request = new Request.Builder()
+                                .url(url)
+                                .build();
                         Response response = httpClient.newCall(request).execute();
                         response_code = response.code();
                         File downloadedFile = new File(String.format("%s/photos_cache/%s", ctx.getCacheDir(), where), filename);
