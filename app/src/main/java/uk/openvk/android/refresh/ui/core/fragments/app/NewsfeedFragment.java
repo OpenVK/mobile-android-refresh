@@ -28,6 +28,8 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
+import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
 import uk.openvk.android.refresh.ui.list.adapters.NewsfeedAdapter;
@@ -89,7 +91,13 @@ public class NewsfeedFragment extends Fragment {
         this.wallPosts = wallPosts;
         newsfeedView = (RecyclerView) view.findViewById(R.id.newsfeed_rv);
         if(newsfeedAdapter == null) {
-            newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts);
+            if(ctx instanceof AppActivity) {
+                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts, ((AppActivity) ctx).account);
+            } else if(ctx instanceof ProfileIntentActivity) {
+                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts, ((ProfileIntentActivity) ctx).account);
+            } else if(ctx instanceof GroupIntentActivity) {
+                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts, ((GroupIntentActivity) ctx).account);
+            }
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             newsfeedView.setLayoutManager(llm);

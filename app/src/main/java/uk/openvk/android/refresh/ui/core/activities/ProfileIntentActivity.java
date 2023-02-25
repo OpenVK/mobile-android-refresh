@@ -49,7 +49,7 @@ public class ProfileIntentActivity extends MonetCompatActivity {
     private OvkAPIWrapper ovk_api;
     private DownloadManager downloadManager;
     private Wall wall;
-    private Account account;
+    public Account account;
     private Likes likes;
     private ProfileFragment profileFragment;
     private FragmentTransaction ft;

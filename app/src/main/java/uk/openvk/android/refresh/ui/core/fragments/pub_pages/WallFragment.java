@@ -19,6 +19,9 @@ import java.util.ArrayList;
 
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
+import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.list.adapters.NewsfeedAdapter;
 
 public class WallFragment extends Fragment {
@@ -63,7 +66,13 @@ public class WallFragment extends Fragment {
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             wallView.setLayoutManager(llm);
-            wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts);
+            if(ctx instanceof AppActivity) {
+                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts, ((AppActivity) ctx).account);
+            } else if(ctx instanceof ProfileIntentActivity) {
+                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts, ((ProfileIntentActivity) ctx).account);
+            } else if(ctx instanceof GroupIntentActivity) {
+                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts, ((GroupIntentActivity) ctx).account);
+            }
             wallView.setAdapter(wallAdapter);
         } else {
             //newsfeedAdapter.setArray(wallPosts);

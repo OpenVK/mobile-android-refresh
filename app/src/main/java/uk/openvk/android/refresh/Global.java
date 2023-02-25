@@ -1,6 +1,5 @@
 package uk.openvk.android.refresh;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.models.OvkLink;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
@@ -261,7 +261,7 @@ public class Global {
         }
     }
 
-    public static void openPostComments(WallPost post, Context ctx) {
+    public static void openPostComments(Account account, WallPost post, Context ctx) {
         Intent intent = new Intent(ctx, WallPostActivity.class);
         intent.putExtra("post", post);
         intent.putExtra("counters", post.counters);

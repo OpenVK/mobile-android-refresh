@@ -1,3 +1,4 @@
+//file:noinspection DifferentStdlibGradleVersion
 plugins {
     id 'com.android.application'
 }
@@ -9,8 +10,8 @@ android {
         applicationId "uk.openvk.android.refresh"
         minSdk 21
         targetSdk 33
-        versionCode 19
-        versionName "0.0.19.alpha"
+        versionCode 20
+        versionName "0.0.20.alpha"
     }
 
     buildTypes {
@@ -52,4 +53,5 @@ dependencies {
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'org.videolan.android:libvlc-all:3.3.13'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0"
+    implementation "androidx.emoji2:emoji2:1.2.0"
 }

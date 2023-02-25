@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -51,6 +53,7 @@ import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -94,7 +97,7 @@ public class AppActivity extends MonetCompatActivity {
     private SharedPreferences instance_prefs;
     private SharedPreferences global_prefs;
     private DownloadManager downloadManager;
-    private Account account;
+    public Account account;
     private Newsfeed newsfeed;
     private User user;
     private Likes likes;
@@ -907,6 +910,14 @@ public class AppActivity extends MonetCompatActivity {
             if(url.length() > 0) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
+                final PackageManager pm = getPackageManager();
+                @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+                for (int index = 0; index < activityList.size(); index++) {
+                    ResolveInfo app = activityList.get(index);
+                    if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                        i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                    }
+                }
                 startActivity(i);
             }
         } else {
@@ -932,6 +943,14 @@ public class AppActivity extends MonetCompatActivity {
         if(url.length() > 0) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
+            final PackageManager pm = getPackageManager();
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            for (int index = 0; index < activityList.size(); index++) {
+                ResolveInfo app = activityList.get(index);
+                if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                    i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                }
+            }
             startActivity(i);
         }
     }
@@ -943,6 +962,14 @@ public class AppActivity extends MonetCompatActivity {
         if(url.length() > 0) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
+            final PackageManager pm = getPackageManager();
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            for (int index = 0; index < activityList.size(); index++) {
+                ResolveInfo app = activityList.get(index);
+                if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                    i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                }
+            }
             startActivity(i);
         }
     }

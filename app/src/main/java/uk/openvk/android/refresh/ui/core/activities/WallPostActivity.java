@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.textfield.TextInputEditText;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
 import java.text.SimpleDateFormat;
@@ -55,6 +59,8 @@ import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.list.adapters.CommentsAdapter;
+import uk.openvk.android.refresh.ui.list.adapters.MessagesAdapter;
+import uk.openvk.android.refresh.ui.view.layouts.SendTextBottomPanel;
 
 public class WallPostActivity extends MonetCompatActivity {
     private SharedPreferences global_prefs;
@@ -71,6 +77,8 @@ public class WallPostActivity extends MonetCompatActivity {
     private CommentsAdapter commentsAdapter;
     private RecyclerView comments_rv;
     private LinearLayoutManager llm;
+    private SendTextBottomPanel bottomPanel;
+    private Comment last_sended_comment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +98,7 @@ public class WallPostActivity extends MonetCompatActivity {
             wallPost = savedInstanceState.getParcelable("post");
             wallPost.counters = savedInstanceState.getParcelable("counters");
         } else {
-            if(getIntent().getExtras() != null) {
+            if(getIntent().getExtras() != null) {account = getIntent().getExtras().getParcelable("account");
                wallPost = getIntent().getExtras().getParcelable("post");
                wallPost.counters = getIntent().getExtras().getParcelable("counters");
             }
@@ -124,7 +132,10 @@ public class WallPostActivity extends MonetCompatActivity {
     }
 
     private void receiveState(int message, Bundle data) {
-        if (message == HandlerMessages.WALL_ALL_COMMENTS) {
+        if(message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
+            account.parse(data.getString("response"), ovk_api);
+            setBottomPanel();
+        } else if (message == HandlerMessages.WALL_ALL_COMMENTS) {
             comments = wall.parseComments(this, downloadManager, data.getString("response"));
             createCommentsAdapter(comments);
         } else if (message == HandlerMessages.COMMENT_AVATARS) {
@@ -183,6 +194,62 @@ public class WallPostActivity extends MonetCompatActivity {
             }
             getWindow().setStatusBarColor(typedValue.data);
         }
+    }
+
+    private void setBottomPanel() {
+        bottomPanel = (SendTextBottomPanel) findViewById(R.id.sendTextBottomPanel);
+        bottomPanel.setOnSendButtonClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View v) {
+                if(bottomPanel.getText().length() > 0) {
+                    try {
+                        last_sended_comment = new Comment(0, account.id, String.format("%s %s", account.first_name, account.last_name),
+                                (int) (System.currentTimeMillis() / 1000), bottomPanel.getText());
+                        wall.createComment(ovk_api, wallPost.owner_id, wallPost.post_id, bottomPanel.getText());
+                        if(comments == null) {
+                            comments = new ArrayList<>();
+                        }
+                        comments.add(last_sended_comment);
+                        if(commentsAdapter == null) {
+                            commentsAdapter = new CommentsAdapter(WallPostActivity.this, comments);
+                            comments_rv.setAdapter(commentsAdapter);
+                        } else {
+                            commentsAdapter.notifyDataSetChanged();
+                        }
+                        bottomPanel.clearText();
+                        comments_rv.smoothScrollToPosition(comments.size() -1);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                AppCompatImageButton send_btn = bottomPanel.findViewById(R.id.send_btn);
+                if(bottomPanel.getText().length() > 0) {
+                    send_btn.setEnabled(true);
+                } else {
+                    send_btn.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).getLineCount() > 4) {
+                    ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(4);
+                } else {
+                    ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).getLineCount());
+                }
+            }
+        });
     }
 
     @SuppressLint("SimpleDateFormat")

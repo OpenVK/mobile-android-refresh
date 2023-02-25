@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.attachments.Attachment;
 import uk.openvk.android.refresh.api.attachments.VideoAttachment;
 import uk.openvk.android.refresh.api.models.WallPost;
@@ -49,8 +50,10 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     private FragmentManager fragman;
     private boolean photo_loaded = false;
     private boolean avatar_loaded = false;
+    private Account account;
 
-    public NewsfeedAdapter(Context context, ArrayList<WallPost> posts) {
+    public NewsfeedAdapter(Context context, ArrayList<WallPost> posts, Account account) {
+        this.account = account;
         ctx = context;
         items = posts;
     }
@@ -199,7 +202,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             post_comments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Global.openPostComments(item, ctx);
+                    Global.openPostComments(account, item, ctx);
                 }
             });
 

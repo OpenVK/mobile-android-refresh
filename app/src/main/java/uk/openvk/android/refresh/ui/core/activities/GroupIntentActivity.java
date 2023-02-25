@@ -49,7 +49,7 @@ public class GroupIntentActivity extends MonetCompatActivity {
     private OvkAPIWrapper ovk_api;
     private DownloadManager downloadManager;
     private Wall wall;
-    private Account account;
+    public Account account;
     private Likes likes;
     private CommunityFragment communityFragment;
     private FragmentTransaction ft;
