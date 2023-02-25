@@ -189,14 +189,18 @@ public class VideoPlayerActivity extends MonetCompatActivity {
                 @SuppressLint("DefaultLocale")
                 @Override
                 public void run() {
-                    if(mp.isPlaying()) {
-                        pos = (int) (mp.getTime() / 1000);
-                        if(!seekPressed) {
-                            ((SeekBar) findViewById(R.id.seekbar)).setProgress(pos);
+                    try {
+                        if (mp.isPlaying()) {
+                            pos = (int) (mp.getTime() / 1000);
+                            if (!seekPressed) {
+                                ((SeekBar) findViewById(R.id.seekbar)).setProgress(pos);
+                            }
+                            ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
                         }
-                        ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
+                        new Handler(Looper.myLooper()).postDelayed(this, 200);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-                    new Handler(Looper.myLooper()).postDelayed(this, 200);
                 }
             });
         } catch (Exception e) {
