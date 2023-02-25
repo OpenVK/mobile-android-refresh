@@ -25,6 +25,7 @@
     </FrameLayout>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/loading_card"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentStart="false"
@@ -42,79 +43,86 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminateTint="?attr/rippleColor" />
+
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:id="@+id/player_controls"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:background="@drawable/bottom_shadow"
-        android:paddingTop="8dp">
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/play_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            app:srcCompat="@drawable/ic_play_large"
-            app:tint="?attr/rippleColor"
-            android:contentDescription="Play"
-            app:contentDescription="Play"
-            tools:ignore="ContentDescription,HardcodedText"/>
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/player_controls"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:ignore="InefficientWeight">
+            android:layout_height="58dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="@drawable/bottom_shadow"
+            android:paddingTop="8dp"
+            android:fitsSystemWindows="true">
 
-            <TextView
-                android:id="@+id/timecode"
+            <ImageButton
+                android:id="@+id/play_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="5dp"
-                android:text="00:00 / 00:00"
-                android:textColor="#9fffffff"
-                android:textSize="12sp"
-                tools:ignore="HardcodedText" />
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:contentDescription="Play"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:contentDescription="Play"
+                app:srcCompat="@drawable/ic_play_large"
+                app:tint="?attr/rippleColor"
+                tools:ignore="ContentDescription,HardcodedText" />
 
-            <SeekBar
-                android:id="@+id/seekbar"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:paddingStart="6dip"
-                android:paddingEnd="6dip"
-                android:progress="0"
-                android:progressTint="?attr/rippleColor"
-                android:thumbTint="?attr/rippleColor" />
-        </RelativeLayout>
+                android:layout_weight="1"
+                tools:ignore="InefficientWeight">
 
-        <ImageButton
-            android:id="@+id/zoom_btn"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            app:srcCompat="@drawable/ic_zoom_out_large"
-            app:tint="?attr/rippleColor"
-            android:contentDescription="Zoom"
-            app:contentDescription="Zoom"
-            tools:ignore="ContentDescription,HardcodedText" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/timecode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="00:00 / 00:00"
+                    android:textColor="#9fffffff"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
+
+                <SeekBar
+                    android:id="@+id/seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:paddingStart="6dip"
+                    android:paddingEnd="6dip"
+                    android:progress="0"
+                    android:progressTint="?attr/rippleColor"
+                    android:thumbTint="?attr/rippleColor" />
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/zoom_btn"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:contentDescription="Zoom"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:contentDescription="Zoom"
+                app:srcCompat="@drawable/ic_zoom_out_large"
+                app:tint="?attr/rippleColor"
+                tools:ignore="ContentDescription,HardcodedText" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

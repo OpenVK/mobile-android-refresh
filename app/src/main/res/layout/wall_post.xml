@@ -99,9 +99,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:visibility="gone"
-                    tools:targetApi="m">
+                    tools:targetApi="m"/>
 
-                </uk.openvk.android.refresh.ui.view.layouts.PhotoAttachmentLayout>
+                <uk.openvk.android.refresh.ui.view.layouts.VideoAttachmentLayout
+                    android:id="@+id/video_attachment"
+                    android:layout_width="match_parent"
+                    android:layout_height="256dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    tools:targetApi="m" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

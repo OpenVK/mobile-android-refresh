@@ -135,4 +135,5 @@
     <string name="comments_label">Comments</string>
     <string name="post_title">Post</string>
     <string name="reply_btn">Ответить</string>
+    <string name="video_player">Video</string>
 </resources>

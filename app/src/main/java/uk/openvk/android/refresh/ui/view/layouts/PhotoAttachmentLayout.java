@@ -40,6 +40,6 @@ public class PhotoAttachmentLayout extends ConstraintLayout {
     }
 
     public ImageView getImageView() {
-        return ((ImageView) view.findViewById(R.id.photo_view));
+        return ((ImageView) view.findViewById(R.id.thumbnail_view));
     }
 }

@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.ui.list.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -33,11 +34,14 @@ import java.util.concurrent.TimeUnit;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.Attachment;
+import uk.openvk.android.refresh.api.attachments.VideoAttachment;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
+import uk.openvk.android.refresh.ui.core.activities.VideoPlayerActivity;
 import uk.openvk.android.refresh.ui.view.layouts.PhotoAttachmentLayout;
+import uk.openvk.android.refresh.ui.view.layouts.VideoAttachmentLayout;
 
 public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder> {
     private final Context ctx;
@@ -201,11 +205,16 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
             try {
                 boolean contains_photos = false;
+                boolean contains_video = false;
+                VideoAttachment video_attachment = null;
                 if(item.attachments != null && item.attachments.size() > 0) {
                     for(int pos = 0; pos < item.attachments.size(); pos++) {
                         Attachment attachment = item.attachments.get(pos);
                         if(attachment.type.equals("photo")) {
                             contains_photos = true;
+                        } if(attachment.type.equals("video")) {
+                            contains_video = true;
+                            video_attachment = (VideoAttachment) attachment.getContent();
                         }
                     }
                 }
@@ -246,14 +255,14 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 poster_name.setOnClickListener(openProfileListener);
                 if(contains_photos) {
                     if(photo_loaded) {
-                        ((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
+                        (((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
                         Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
                                 .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                                 .placeholder(ctx.getDrawable(R.drawable.photo_placeholder))
                                 .dontAnimate().error(R.drawable.warning)
-                                .into((ImageView) ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
-                        ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
-                        ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
+                                .into(((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
+                        (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
+                        (convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
@@ -262,7 +271,24 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView().setAdjustViewBounds(true);
                     }
                 } else {
-                    ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).setVisibility(View.GONE);
+                    (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.GONE);
+                }
+                if(contains_video) {
+                    ((VideoAttachmentLayout) convertView.findViewById(R.id.video_attachment)).setAttachment(video_attachment);
+                    (convertView.findViewById(R.id.video_attachment)).setVisibility(View.VISIBLE);
+                    final int posFinal = position;
+                    VideoAttachment finalVideo_attachment = video_attachment;
+                    (convertView.findViewById(R.id.video_attachment)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(ctx, VideoPlayerActivity.class);
+                            intent.putExtra("attachment", finalVideo_attachment);
+                            intent.putExtra("files", finalVideo_attachment.files);
+                            ctx.startActivity(intent);
+                        }
+                    });
+                } else {
+                    (convertView.findViewById(R.id.video_attachment)).setVisibility(View.GONE);
                 }
 
             } catch (Exception ignored) {

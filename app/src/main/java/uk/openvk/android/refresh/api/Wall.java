@@ -16,8 +16,10 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.Attachment;
 import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.attachments.PollAttachment;
+import uk.openvk.android.refresh.api.attachments.VideoAttachment;
 import uk.openvk.android.refresh.api.models.Comment;
 import uk.openvk.android.refresh.api.models.PollAnswer;
+import uk.openvk.android.refresh.api.models.VideoFiles;
 import uk.openvk.android.refresh.api.models.WallPostSource;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.JSONParser;
@@ -36,6 +38,7 @@ public class Wall implements Parcelable {
     private ArrayList<PhotoAttachment> photos_msize;
     private ArrayList<PhotoAttachment> photos_hsize;
     private ArrayList<PhotoAttachment> photos_osize;
+    private DownloadManager dlm;
 
     public Wall(String response, DownloadManager downloadManager, String quality, Context ctx) {
         jsonParser = new JSONParser();
@@ -63,6 +66,7 @@ public class Wall implements Parcelable {
     };
 
     public void parse(Context ctx, DownloadManager downloadManager, String quality, String response) {
+        this.dlm = downloadManager;
         items = new ArrayList<WallPost>();
         photos_msize = new ArrayList<PhotoAttachment>();
         photos_hsize = new ArrayList<PhotoAttachment>();
@@ -111,9 +115,9 @@ public class Wall implements Parcelable {
                     }
                     if(post.getJSONArray("copy_history").length() > 0) {
                         JSONObject repost = post.getJSONArray("copy_history").getJSONObject(0);
-                        WallPost repost_item = new WallPost(String.format("(Unknown author: %d)", repost.getInt("from_id")), repost.getInt("date"), null, repost.getString("text"), null, "",
+                        WallPost repost_item = new WallPost(String.format("(Unknown author: %s)", repost.getInt("from_id")), repost.getInt("date"), null, repost.getString("text"), null, "",
                                 null, repost.getInt("owner_id"), repost.getInt("id"), ctx);
-                        RepostInfo repostInfo = new RepostInfo(String.format("(Unknown author: %d)", repost.getInt("from_id")), repost.getInt("date"), ctx);
+                        RepostInfo repostInfo = new RepostInfo(String.format("(Unknown author: %s)", repost.getInt("from_id")), repost.getInt("date"), ctx);
                         repostInfo.newsfeed_item = repost_item;
                         item.repost = repostInfo;
                         JSONArray repost_attachments = repost.getJSONArray("attachments");
@@ -173,12 +177,16 @@ public class Wall implements Parcelable {
                     avatars.add(avatar);
                     this.items.add(item);
                 }
-                if(quality.equals("medium")) {
-                    downloadManager.downloadPhotosToCache(photos_msize, "wall_photo_attachments");
-                } else if(quality.equals("high")) {
-                    downloadManager.downloadPhotosToCache(photos_hsize, "wall_photo_attachments");
-                } else if(quality.equals("original")) {
-                    downloadManager.downloadPhotosToCache(photos_osize, "wall_photo_attachments");
+                switch (quality) {
+                    case "medium":
+                        downloadManager.downloadPhotosToCache(photos_msize, "wall_photo_attachments");
+                        break;
+                    case "high":
+                        downloadManager.downloadPhotosToCache(photos_hsize, "wall_photo_attachments");
+                        break;
+                    case "original":
+                        downloadManager.downloadPhotosToCache(photos_osize, "wall_photo_attachments");
+                        break;
                 }
                 downloadManager.downloadPhotosToCache(avatars, "wall_avatars");
             }
@@ -269,12 +277,16 @@ public class Wall implements Parcelable {
                     photo_medium_size = photo_sizes.getJSONObject(5).getString("url");
                     photo_high_size = photo_sizes.getJSONObject(8).getString("url");
                     photo_original_size = photo_sizes.getJSONObject(10).getString("url");
-                    if(quality.equals("medium")) {
-                        photoAttachment.url = photo_medium_size;
-                    } else if(quality.equals("high")) {
-                        photoAttachment.url = photo_high_size;
-                    } else if(quality.equals("original")) {
-                        photoAttachment.url = photo_original_size;
+                    switch (quality) {
+                        case "medium":
+                            photoAttachment.url = photo_medium_size;
+                            break;
+                        case "high":
+                            photoAttachment.url = photo_high_size;
+                            break;
+                        case "original":
+                            photoAttachment.url = photo_original_size;
+                            break;
                     }
                     photoAttachment.filename = String.format("wall_attachment_o%sp%s", owner_id, post_id);
                     photoAttachment.original_url = photo_original_size;
@@ -287,13 +299,53 @@ public class Wall implements Parcelable {
                     attachment_obj.status = attachment_status;
                     attachment_obj.setContent(photoAttachment);
                     attachments_list.add(attachment_obj);
-                    if(quality.equals("medium")) {
-                        photos_msize.add(photoAttachment);
-                    } else if(quality.equals("high")) {
-                        photos_hsize.add(photoAttachment);
-                    } else if(quality.equals("original")) {
-                        photos_osize.add(photoAttachment);
+                    switch (quality) {
+                        case "medium":
+                            photos_msize.add(photoAttachment);
+                            break;
+                        case "high":
+                            photos_hsize.add(photoAttachment);
+                            break;
+                        case "original":
+                            photos_osize.add(photoAttachment);
+                            break;
                     }
+                } else if (attachment.getString("type").equals("video")) {
+                    JSONObject video = attachment.getJSONObject("video");
+                    VideoAttachment videoAttachment = new VideoAttachment();
+                    videoAttachment.id = video.getLong("id");
+                    videoAttachment.title = video.getString("title");
+                    VideoFiles files = new VideoFiles();
+                    if(video.has("files")) {
+                        JSONObject videoFiles = video.getJSONObject("files");
+                        if(videoFiles.has("mp4_144")) {
+                            files.mp4_144 = videoFiles.getString("mp4_144");
+                        } if(videoFiles.has("mp4_240")) {
+                            files.mp4_240 = videoFiles.getString("mp4_240");
+                        } if(videoFiles.has("mp4_360")) {
+                            files.mp4_360 = videoFiles.getString("mp4_360");
+                        } if(videoFiles.has("mp4_480")) {
+                            files.mp4_480 = videoFiles.getString("mp4_480");
+                        } if(videoFiles.has("mp4_720")) {
+                            files.mp4_720 = videoFiles.getString("mp4_720");
+                        } if(videoFiles.has("mp4_1080")) {
+                            files.mp4_1080 = videoFiles.getString("mp4_1080");
+                        } if(videoFiles.has("ogv_480")) {
+                            files.ogv_480 = videoFiles.getString("ogv_480");
+                        }
+                    }
+                    videoAttachment.files = files;
+                    if(video.has("image")) {
+                        JSONArray thumb_array = video.getJSONArray("image");
+                        videoAttachment.url_thumb = thumb_array.getJSONObject(0).getString("url");
+                        dlm.downloadOnePhotoToCache(videoAttachment.url_thumb, String.format("thumbnail_%s", video.getLong("id")), "video_thumbnails");
+                    }
+                    videoAttachment.duration = video.getInt("duration");
+                    attachment_status = "done";
+                    Attachment attachment_obj = new Attachment(attachment.getString("type"));
+                    attachment_obj.status = attachment_status;
+                    attachment_obj.setContent(videoAttachment);
+                    attachments_list.add(attachment_obj);
                 } else if (attachment.getString("type").equals("poll")) {
                     JSONObject poll_attachment = attachment.getJSONObject("poll");
                     PollAttachment pollAttachment = new PollAttachment(poll_attachment.getString("question"), poll_attachment.getInt("id"), poll_attachment.getLong("end_date"), poll_attachment.getBoolean("multiple"), poll_attachment.getBoolean("can_vote"),
