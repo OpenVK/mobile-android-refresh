@@ -23,6 +23,7 @@ import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 
 public class ProfileHeader extends LinearLayoutCompat {
 
@@ -141,6 +142,26 @@ public class ProfileHeader extends LinearLayoutCompat {
             findViewById(R.id.verified_icon).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.verified_icon).setVisibility(View.GONE);
+        }
+    }
+
+    public void hideSendMessageButton() {
+        findViewById(R.id.send_msg_btn).setVisibility(GONE);
+    }
+
+    public void setCountersVisibility(int counter, boolean value) {
+        if(counter == PublicPageCounters.FRIENDS) {
+            if(value) {
+                findViewById(R.id.show_friends_btn).setVisibility(VISIBLE);
+            } else {
+                findViewById(R.id.show_friends_btn).setVisibility(GONE);
+            }
+        } else if(counter == PublicPageCounters.MEMBERS) {
+            if(value) {
+                findViewById(R.id.show_members_btn).setVisibility(VISIBLE);
+            } else {
+                findViewById(R.id.show_members_btn).setVisibility(GONE);
+            }
         }
     }
 }

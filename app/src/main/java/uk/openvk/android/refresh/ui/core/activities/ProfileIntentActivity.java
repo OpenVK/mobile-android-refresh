@@ -42,6 +42,7 @@ import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 import uk.openvk.android.refresh.ui.core.fragments.app.ProfileFragment;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
@@ -175,6 +176,8 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 } else {
                     users.search(ovk_api, args);
                 }
+                profileFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, false);
+                profileFragment.header.setCountersVisibility(PublicPageCounters.FRIENDS, true);
             } else if (message == HandlerMessages.USERS_GET) {
                 users.parse(data.getString("response"));
                 user = users.getList().get(0);

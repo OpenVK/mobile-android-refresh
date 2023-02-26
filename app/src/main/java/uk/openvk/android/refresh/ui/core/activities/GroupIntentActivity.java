@@ -39,6 +39,7 @@ import uk.openvk.android.refresh.api.models.Group;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 import uk.openvk.android.refresh.ui.core.fragments.app.CommunityFragment;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
@@ -169,6 +170,9 @@ public class GroupIntentActivity extends MonetCompatActivity {
                 } else {
                     groups.search(ovk_api, args);
                 }
+                communityFragment.header.hideSendMessageButton();
+                communityFragment.header.setCountersVisibility(PublicPageCounters.FRIENDS, false);
+                communityFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, true);
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parseSearch(data.getString("response"));
                 group = groups.getList().get(0);

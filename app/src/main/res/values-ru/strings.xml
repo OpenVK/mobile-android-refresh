@@ -137,4 +137,5 @@
     <string name="reply_btn">Ответить</string>
     <string name="video_player">Видеозапись</string>
     <string name="send_msg_btn">Сообщение</string>
+    <string name="profile_status">Статус</string>
 </resources>

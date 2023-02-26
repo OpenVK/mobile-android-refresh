@@ -239,6 +239,8 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
 
     private void createAboutAdapter(User user) {
         aboutItems = new ArrayList<PublicPageAboutItem>();
+        if(user.status != null && user.status.length() > 0)
+            aboutItems.add(new PublicPageAboutItem(getResources().getString(R.string.profile_status), user.status));
         if(user.interests != null && user.interests.length() > 0)
             aboutItems.add(new PublicPageAboutItem(getResources().getString(R.string.profile_interests), user.interests));
         if(user.music != null && user.music.length() > 0)

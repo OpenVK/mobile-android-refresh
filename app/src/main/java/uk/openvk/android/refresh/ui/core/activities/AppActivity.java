@@ -79,6 +79,7 @@ import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.longpoll_api.LongPollService;
+import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 import uk.openvk.android.refresh.ui.core.fragments.app.AboutApplicationFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.FriendsFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.GroupsFragment;
@@ -524,6 +525,8 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
                 ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user, account);
+                profileFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, false);
+                profileFragment.header.setCountersVisibility(PublicPageCounters.FRIENDS, true);
                 if (wall.getWallItems() == null) {
                     wall.get(ovk_api, account.user.id, 50);
                 }

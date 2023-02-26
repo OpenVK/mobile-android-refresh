@@ -11,7 +11,7 @@ android {
         minSdk 21
         targetSdk 33
         versionCode 22
-        versionName "0.0.22.alpha"
+        versionName "0.9.22.alpha"
     }
 
     buildTypes {

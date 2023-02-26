@@ -137,4 +137,5 @@
     <string name="reply_btn">Reply</string>
     <string name="video_player">Video</string>
     <string name="send_msg_btn">Message</string>
+    <string name="profile_status">Status</string>
 </resources>

@@ -136,8 +136,10 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     private void playVideo() {
         if(mp.isPlaying()) {
             mp.pause();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         } else {
             mp.play();
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 
@@ -147,6 +149,7 @@ public class VideoPlayerActivity extends MonetCompatActivity {
         window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         window.setStatusBarColor(Global.adjustAlpha(Color.BLACK, 0.5f));
         ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
@@ -175,6 +178,11 @@ public class VideoPlayerActivity extends MonetCompatActivity {
                 if(event.type == MediaPlayer.Event.LengthChanged) {
                     duration = (int) (mp.getLength() / 1000);
                     ((SeekBar) findViewById(R.id.seekbar)).setMax(duration);
+                }
+
+                if(event.type == MediaPlayer.Event.EncounteredError) {
+                    mp.release();
+                    finish();
                 }
 
             }
@@ -243,9 +251,11 @@ public class VideoPlayerActivity extends MonetCompatActivity {
             new Handler(Looper.myLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    findViewById(R.id.player_controls).setVisibility(View.GONE);
-                    View decorView = getWindow().getDecorView();
+                    if(findViewById(R.id.player_controls).getVisibility() == View.VISIBLE) {
+                        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                        findViewById(R.id.player_controls).setVisibility(View.GONE);
+                        View decorView = getWindow().getDecorView();
+                    }
                 }
             }, 5000);
         }

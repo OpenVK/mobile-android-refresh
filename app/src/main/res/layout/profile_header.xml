@@ -115,7 +115,16 @@
                         style="@style/ApplicationTheme.Button.Borderless.NoCaps"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
                         android:text="0 friends"
+                        tools:ignore="HardcodedText" />
+
+                    <Button
+                        android:id="@+id/show_members_btn"
+                        style="@style/ApplicationTheme.Button.Borderless.NoCaps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 members"
                         tools:ignore="HardcodedText" />
                 </TableRow>
 

@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -101,6 +103,8 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
                     .centerCrop().into((ImageView) view.findViewById(R.id.profile_avatar));
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
             ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setVisibility(View.VISIBLE);
+            ((Button) header.findViewById(R.id.show_members_btn)).setText(
+                    String.format(getResources().getStringArray(R.array.members_count)[2], group.members_count));
         }
     }
 
