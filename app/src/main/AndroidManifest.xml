@@ -90,6 +90,7 @@
                 <data android:scheme="openvk" android:host="profile" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.core.activities.GroupIntentActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
@@ -103,6 +104,21 @@
                 <data android:scheme="openvk" android:host="group" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.core.activities.FriendsIntentActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/nav_friends"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
+            android:theme="@style/ApplicationTheme.NoActionBar"
+            tools:ignore="RedundantLabel">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="openvk" android:host="friends" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".ui.core.activities.WallPostActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"

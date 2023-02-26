@@ -24,6 +24,7 @@ import java.util.Objects;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Friend;
+import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 
@@ -87,6 +88,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
                 public void onClick(View v) {
                     if(ctx.getClass().getSimpleName().equals("AppActivity")) {
                         ((AppActivity) ctx).openProfileFromFriends(position);
+                    } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
+                        ((FriendsIntentActivity) ctx).openProfileFromFriends(position);
                     }
                 }
             };

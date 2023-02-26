@@ -134,6 +134,7 @@
     <string name="connection_error">Connection error</string>
     <string name="comments_label">Comments</string>
     <string name="post_title">Post</string>
-    <string name="reply_btn">Ответить</string>
+    <string name="reply_btn">Reply</string>
     <string name="video_player">Video</string>
+    <string name="send_msg_btn">Message</string>
 </resources>

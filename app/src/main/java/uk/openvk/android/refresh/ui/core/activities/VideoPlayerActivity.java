@@ -2,22 +2,34 @@ package uk.openvk.android.refresh.ui.core.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Surface;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -51,6 +63,7 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     private int pos;
     private boolean seekPressed;
     private SharedPreferences global_prefs;
+    private Window window;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,8 +71,15 @@ public class VideoPlayerActivity extends MonetCompatActivity {
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
         Global.setInterfaceFont(this);
+        window = getWindow();
         setContentView(R.layout.video_player);
+        resizeControlPanel();
+        findViewById(R.id.loading_card).setVisibility(View.GONE);
         loadVideo();
+    }
+
+    private void resizeControlPanel() {
+
     }
 
     private void loadVideo() {
@@ -124,7 +144,11 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     @SuppressLint("DefaultLocale")
     private void createMediaPlayer(Uri uri) {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        window.setStatusBarColor(Global.adjustAlpha(Color.BLACK, 0.5f));
         ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
         vlc = new LibVLC(this);
         mp = new MediaPlayer(vlc);
@@ -198,8 +222,7 @@ public class VideoPlayerActivity extends MonetCompatActivity {
                             ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
                         }
                         new Handler(Looper.myLooper()).postDelayed(this, 200);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                    } catch (Exception ignored) {
                     }
                 }
             });
@@ -210,19 +233,19 @@ public class VideoPlayerActivity extends MonetCompatActivity {
 
     private void showPlayControls() {
         if(findViewById(R.id.player_controls).getVisibility() == View.VISIBLE) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             findViewById(R.id.player_controls).setVisibility(View.GONE);
             View decorView = getWindow().getDecorView();
         } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             findViewById(R.id.player_controls).setVisibility(View.VISIBLE);
             View decorView = getWindow().getDecorView();
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             new Handler(Looper.myLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     findViewById(R.id.player_controls).setVisibility(View.GONE);
                     View decorView = getWindow().getDecorView();
-                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 }
             }, 5000);
         }
@@ -238,6 +261,12 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     protected void onDestroy() {
         mp.stop();
         mp.release();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onDestroy();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }

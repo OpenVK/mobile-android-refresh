@@ -478,10 +478,10 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("friends"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
-                profileFragment.setData(account.user);
+                profileFragment.setData(account.user, account);
                 toolbar.setTitle(R.string.nav_friends);
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
-                if (friends.getFriends() == null || friends.getFriends().size() == 0) {
+                if (friendsFragment.getFriendsCount() == 0) {
                     friends.get(ovk_api, account.id, 25, "friends_list");
                 }
                 b_navView.getMenu().getItem(1).setChecked(true);
@@ -493,7 +493,7 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("groups"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
-                profileFragment.setData(account.user);
+                profileFragment.setData(account.user, account);
                 toolbar.setTitle(R.string.nav_groups);
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (groups.getList() == null || groups.getList().size() == 0) {
@@ -508,7 +508,7 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
-                profileFragment.setData(account.user);
+                profileFragment.setData(account.user, account);
                 toolbar.setTitle(R.string.nav_messages);
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (conversations == null) {
@@ -523,7 +523,7 @@ public class AppActivity extends MonetCompatActivity {
                 prevMenuItem = navView.getMenu().getItem(0);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
                 ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.GONE);
-                profileFragment.setData(account.user);
+                profileFragment.setData(account.user, account);
                 if (wall.getWallItems() == null) {
                     wall.get(ovk_api, account.user.id, 50);
                 }
@@ -619,10 +619,20 @@ public class AppActivity extends MonetCompatActivity {
                 if(selectedFragment == newsfeedFragment) {
                     findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
                 }
+                newsfeedFragment.setScrollingPositions(this, true);
             } else if (message == HandlerMessages.NEWSFEED_GET_GLOBAL) {
                 newsfeed.parse(this, downloadManager, data.getString("response"), "high", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
+                newsfeedFragment.setScrollingPositions(this, true);
                 newsfeedFragment.disableUpdateState();
+            } else if (message == HandlerMessages.NEWSFEED_GET_MORE) {
+                newsfeed.parse(this, downloadManager, data.getString("response"), global_prefs.getString("photos_quality", ""), false);
+                newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
+                newsfeedFragment.setScrollingPositions(this, true);
+            } else if (message == HandlerMessages.NEWSFEED_GET_MORE_GLOBAL) {
+                newsfeed.parse(this, downloadManager, data.getString("response"),  global_prefs.getString("photos_quality", ""), false);
+                newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
+                newsfeedFragment.setScrollingPositions(this, true);
             } else if(message == HandlerMessages.LIKES_ADD) {
                 likes.parse(data.getString("response"));
                 if (global_prefs.getString("current_screen", "").equals("newsfeed")) {
@@ -654,6 +664,7 @@ public class AppActivity extends MonetCompatActivity {
                     ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
                             .setVisibility(View.GONE);
                 }
+                friends.get(ovk_api, account.user.id, 25, "profile_counter");
             } else if(message == HandlerMessages.MESSAGES_CONVERSATIONS) {
                 conversations = messages.parseConversationsList(data.getString("response"), downloadManager);
                 messagesFragment.createAdapter(this, conversations, account);
@@ -679,11 +690,21 @@ public class AppActivity extends MonetCompatActivity {
                 // Wake up service
                 mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                         System.currentTimeMillis(), 60 * 1000, pendingIntent);
-            }  else if (message == HandlerMessages.FRIENDS_GET) {
+            } else if (message == HandlerMessages.FRIENDS_GET_ALT) {
+                friends.parse(data.getString("response"), downloadManager, false, true);
+                profileFragment.setFriendsCount(friends.count);
+            } else if (message == HandlerMessages.FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager, true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createAdapter(this, friendsList, "friends");
                 friendsFragment.disableUpdateState();
+                friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
+            } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
+                int old_friends_size = friends.getFriends().size();
+                friends.parse(data.getString("response"), downloadManager, true, false);
+                ArrayList<Friend> friendsList = friends.getFriends();
+                friendsFragment.createAdapter(this, friendsList, "friends");
+                friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parse(data.getString("response"), downloadManager, global_prefs.getString("photos_quality", ""), true, true);
                 ArrayList<Group> groupsList = groups.getList();
@@ -1017,5 +1038,22 @@ public class AppActivity extends MonetCompatActivity {
             stopService(longPollIntent);
         }
         doUnbindService();
+    }
+
+    public void loadMoreFriends() {
+        if(friends != null) {
+            friends.get(ovk_api, account.id, 25, friends.offset);
+        }
+    }
+
+    public void loadMoreNews() {
+        if(newsfeed != null) {
+            int pos = ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar)).findViewById(R.id.spinner)).getSelectedItemPosition();
+            if(pos == 0) {
+                newsfeed.get(ovk_api, 25, newsfeed.next_from);
+            } else {
+                newsfeed.getGlobal(ovk_api, 25, newsfeed.next_from);
+            }
+        }
     }
 }

@@ -26,12 +26,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <uk.openvk.android.refresh.ui.view.InfinityRecyclerView
             android:id="@+id/newsfeed_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </androidx.recyclerview.widget.RecyclerView>
+        </uk.openvk.android.refresh.ui.view.InfinityRecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <uk.openvk.android.refresh.ui.view.layouts.ProgressLayout

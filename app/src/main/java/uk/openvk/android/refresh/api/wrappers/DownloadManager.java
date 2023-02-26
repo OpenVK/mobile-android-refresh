@@ -32,6 +32,7 @@ import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.AuthActivity;
+import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 
@@ -365,8 +366,8 @@ public class DownloadManager {
             ((AppActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
             ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
-//            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
+            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
             ((GroupIntentActivity) ctx).handler.sendMessage(msg);
         }
@@ -388,16 +389,15 @@ public class DownloadManager {
             ((AuthActivity) ctx).handler.sendMessage(msg);
         } else if(ctx.getClass().getSimpleName().equals("AppActivity")) {
             ((AppActivity) ctx).handler.sendMessage(msg);
-        }
 //        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
 //            ((ProfileIntentActivity) ctx).handler.sendMessage(msg);
-//        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
-//            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
+        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
+            ((FriendsIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
 //            ((GroupIntentActivity) ctx).handler.sendMessage(msg);
 //        } else if(ctx.getClass().getSimpleName().equals("CommentsIntentActivity")) {
 //            ((WallPostActivity) ctx).handler.sendMessage(msg);
-//        }
+        }
     }
 
     public boolean clearCache(File dir) {

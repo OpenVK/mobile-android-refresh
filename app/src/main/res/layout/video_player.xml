@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -49,7 +48,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:id="@+id/player_controls"
@@ -61,7 +61,6 @@
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
             android:background="@drawable/bottom_shadow"
-            android:fitsSystemWindows="true"
             android:paddingTop="8dp">
 
             <ImageButton

@@ -330,17 +330,19 @@
         <item name="android:textColor">#ffffff</item>
     </style>
 
-    <style name="ApplicationTheme.Button.Borderless" parent="Widget.AppCompat.Button.Borderless.Colored">
+    <style name="ApplicationTheme.Button.Borderless" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="rippleColor">?attr/rippleColor</item>
         <item name="colorAccent">?attr/colorAccent</item>
         <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 
-    <style name="ApplicationTheme.Button.Borderless.NoCaps" parent="Widget.AppCompat.Button.Borderless.Colored">
+    <style name="ApplicationTheme.Button.Borderless.NoCaps" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="rippleColor">?attr/rippleColor</item>
         <item name="colorAccent">?attr/colorAccent</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 
     <style name="ApplicationTheme.AlertDialog.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog">

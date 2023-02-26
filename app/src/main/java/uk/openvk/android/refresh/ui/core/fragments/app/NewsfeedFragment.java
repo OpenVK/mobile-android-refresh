@@ -28,20 +28,24 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
+import uk.openvk.android.refresh.ui.core.listeners.OnRecyclerScrollListener;
+import uk.openvk.android.refresh.ui.view.InfinityRecyclerView;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
 import uk.openvk.android.refresh.ui.list.adapters.NewsfeedAdapter;
 
 public class NewsfeedFragment extends Fragment {
     private LinearLayoutManager layoutManager;
-    private RecyclerView newsfeedView;
+    private InfinityRecyclerView newsfeedView;
     private ArrayList<WallPost> wallPosts;
     private View view;
     public NewsfeedAdapter newsfeedAdapter;
     private LinearLayoutManager llm;
     private SharedPreferences global_prefs;
+    public boolean loading_more_posts;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -89,7 +93,7 @@ public class NewsfeedFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public void createAdapter(Context ctx, ArrayList<WallPost> wallPosts) {
         this.wallPosts = wallPosts;
-        newsfeedView = (RecyclerView) view.findViewById(R.id.newsfeed_rv);
+        newsfeedView = view.findViewById(R.id.newsfeed_rv);
         if(newsfeedAdapter == null) {
             if(ctx instanceof AppActivity) {
                 newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts, ((AppActivity) ctx).account);
@@ -175,5 +179,21 @@ public class NewsfeedFragment extends Fragment {
             }
             newsfeedAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void setScrollingPositions(final Context ctx, final boolean infinity_scroll) {
+        loading_more_posts = !infinity_scroll;
+        newsfeedView.setOnScrollListener((recyclerView, x, y, old_x, old_y) -> {
+            View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
+            int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
+            if (!loading_more_posts) {
+                if (diff == 0) {
+                    if (ctx.getClass().getSimpleName().equals("AppActivity")) {
+                        loading_more_posts = true;
+                        ((AppActivity) ctx).loadMoreNews();
+                    }
+                }
+            }
+        });
     }
 }

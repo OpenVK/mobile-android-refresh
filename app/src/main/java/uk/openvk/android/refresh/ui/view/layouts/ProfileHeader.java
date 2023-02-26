@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class ProfileHeader extends LinearLayoutCompat {
         layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         view.setLayoutParams(layoutParams);
         setTheme();
+        ((Button) findViewById(R.id.show_friends_btn)).setTypeface(Global.getFlexibleTypeface(context, 500));
         ((TextView) findViewById(R.id.profile_name)).setTypeface(Global.getFlexibleTypeface(getContext(), 500));
     }
 

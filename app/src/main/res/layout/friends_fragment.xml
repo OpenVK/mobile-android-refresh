@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <uk.openvk.android.refresh.ui.view.InfinityRecyclerView
         android:id="@+id/friends_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"

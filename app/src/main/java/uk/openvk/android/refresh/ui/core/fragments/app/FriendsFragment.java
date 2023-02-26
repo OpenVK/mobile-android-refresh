@@ -28,17 +28,22 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
+import uk.openvk.android.refresh.ui.core.listeners.OnRecyclerScrollListener;
+import uk.openvk.android.refresh.ui.core.listeners.OnScrollListener;
+import uk.openvk.android.refresh.ui.view.InfinityRecyclerView;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
 import uk.openvk.android.refresh.ui.list.adapters.FriendsAdapter;
 
 public class FriendsFragment extends Fragment {
     private View view;
-    private RecyclerView friendsView;
+    private InfinityRecyclerView friendsView;
     private LinearLayoutManager llm;
     private ArrayList<Friend> friends;
     private FriendsAdapter friendsAdapter;
     private SharedPreferences global_prefs;
+    private boolean loading_more_friends;
 
     @Nullable
     @Override
@@ -55,6 +60,8 @@ public class FriendsFragment extends Fragment {
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                     ((AppActivity) requireActivity()).refreshFriendsList(false);
+                } else if(requireActivity().getClass().getSimpleName().equals("FriendsIntentActivity")) {
+                    ((FriendsIntentActivity) requireActivity()).refreshFriendsList(false);
                 }
             }
         });
@@ -88,7 +95,7 @@ public class FriendsFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public void createAdapter(Context ctx, ArrayList<Friend> friends, String where) {
         this.friends = friends;
-        friendsView = (RecyclerView) view.findViewById(R.id.friends_rv);
+        friendsView = view.findViewById(R.id.friends_rv);
         if(friendsAdapter == null) {
             friendsAdapter = new FriendsAdapter(getContext(), this.friends);
             llm = new LinearLayoutManager(ctx);
@@ -98,8 +105,8 @@ public class FriendsFragment extends Fragment {
         } else {
             friendsAdapter.notifyDataSetChanged();
         }
-        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-        ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
+        (view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
+        (view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
     public void disableUpdateState() {
@@ -120,8 +127,38 @@ public class FriendsFragment extends Fragment {
     }
 
     public void showProgress() {
-        ((ErrorLayout) view.findViewById(R.id.error_layout)).setVisibility(View.GONE);
-        ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.GONE);
-        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
+        (view.findViewById(R.id.error_layout)).setVisibility(View.GONE);
+        (view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.GONE);
+        (view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
+    }
+
+    public int getFriendsCount() {
+        if(friendsAdapter != null) {
+            return friendsAdapter.getItemCount();
+        } else {
+            return 0;
+        }
+    }
+
+    public void setScrollingPositions(final Context ctx, final boolean infinity_scroll) {
+        loading_more_friends = !infinity_scroll;
+        friendsView.setOnScrollListener(new OnRecyclerScrollListener() {
+            @Override
+            public void onScroll(InfinityRecyclerView recyclerView, int x, int y, int old_x, int old_y) {
+                View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
+                int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
+                if (!loading_more_friends) {
+                    if (diff == 0) {
+                        if (ctx.getClass().getSimpleName().equals("AppActivity")) {
+                            loading_more_friends = true;
+                            ((AppActivity) ctx).loadMoreFriends();
+                        } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
+                            loading_more_friends = true;
+                            ((FriendsIntentActivity) ctx).loadMoreFriends();
+                        }
+                    }
+                }
+            }
+        });
     }
 }

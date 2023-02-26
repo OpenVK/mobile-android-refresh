@@ -2,14 +2,19 @@ package uk.openvk.android.refresh.ui.core.fragments.app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,14 +35,17 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
 import uk.openvk.android.refresh.ui.core.fragments.pub_pages.AboutFragment;
 import uk.openvk.android.refresh.ui.core.fragments.pub_pages.WallFragment;
 import uk.openvk.android.refresh.ui.list.adapters.PublicPageAboutAdapter;
@@ -81,7 +89,13 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                 }
             }
         });
+        setFriendsCount(0);
         return view;
+    }
+
+    public void setFriendsCount(int count) {
+        ((Button) header.findViewById(R.id.show_friends_btn))
+                .setText(String.format(getResources().getStringArray(R.array.friends_count)[2], count));
     }
 
     // Setting ViewPagers with embedded fragments: WallFragment and AboutFragment
@@ -150,7 +164,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
         }
     }
 
-    public void setData(User user) {
+    public void setData(User user, Account account) {
         this.user = user;
         if(user != null && user.first_name != null && user.last_name != null) {
             setTabsView();
@@ -159,6 +173,11 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             header.setStatus(user.status);
             header.setVerified(user.verified, requireContext());
             header.setOnline(user.online);
+            if(account.id == user.id) {
+                header.findViewById(R.id.send_msg_btn).setVisibility(View.GONE);
+            } else {
+                header.findViewById(R.id.send_msg_btn).setVisibility(View.VISIBLE);
+            }
             Context ctx = requireContext();
             Global.setAvatarShape(getContext(), view.findViewById(R.id.profile_avatar));
             if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -181,6 +200,40 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             } else {
                 view.findViewById(R.id.verified_icon).setVisibility(View.GONE);
             }
+            header.findViewById(R.id.show_friends_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(String.format("openvk://friends/id%s", user.id)));
+                    final PackageManager pm = requireContext().getPackageManager();
+                    @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+                    for (int index = 0; index < activityList.size(); index++) {
+                        ResolveInfo app = activityList.get(index);
+                        if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                            i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                        }
+                    }
+                    startActivity(i);
+                }
+            });
+            header.findViewById(R.id.send_msg_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), ConversationActivity.class);
+                    try {
+                        intent.putExtra("peer_id", user.id);
+                        intent.putExtra("conv_title", String.format("%s %s", user.first_name, user.last_name));
+                        if(user.online) {
+                            intent.putExtra("online", 1);
+                        } else {
+                            intent.putExtra("online", 0);
+                        }
+                        startActivity(intent);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
         }
     }
 

@@ -56,4 +56,10 @@
         <item>%s members</item>
         <item>%s members</item>
     </string-array>
+
+    <string-array name="friends_count">
+        <item>%s friends</item>
+        <item>%s friends</item>
+        <item>%s friends</item>
+    </string-array>
 </resources>

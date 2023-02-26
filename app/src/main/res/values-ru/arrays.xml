@@ -40,4 +40,10 @@
         <item>%s участника</item>
         <item>%s участников</item>
     </string-array>
+
+    <string-array name="friends_count">
+        <item>%s друг</item>
+        <item>%s друга</item>
+        <item>%s друзей</item>
+    </string-array>
 </resources>
