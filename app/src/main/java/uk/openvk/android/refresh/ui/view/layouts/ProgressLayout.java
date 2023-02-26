@@ -1,6 +1,7 @@
 package uk.openvk.android.refresh.ui.view.layouts;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
@@ -62,6 +64,9 @@ public class ProgressLayout extends LinearLayoutCompat {
                 ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
                         monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
             }
+        } else {
+            ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(
+                    MaterialColors.getColor(getContext(), androidx.appcompat.R.attr.colorAccent, Color.BLACK));
         }
     }
 }
