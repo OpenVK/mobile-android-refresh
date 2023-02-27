@@ -264,7 +264,11 @@ public class VideoPlayerActivity extends MonetCompatActivity {
 
     @Override
     protected void onPause() {
-        if(mp.isPlaying()) mp.pause();
+        try {
+            if (mp.isPlaying()) mp.pause();
+        } catch (Exception ignored) {
+            
+        }
         super.onPause();
     }
 
