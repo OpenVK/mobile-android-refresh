@@ -8,13 +8,17 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.View;
+import android.view.Window;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.TypefaceCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -56,7 +60,7 @@ public class Global {
         return hash;
     }
 
-    public static void setColorTheme(Context ctx, String value) {
+    public static void setColorTheme(Context ctx, String value, Window window) {
         if(value.equals("blue")) {
             ctx.setTheme(R.style.ApplicationTheme_NoActionBar);
         } else if(value.equals("red")) {
@@ -77,6 +81,17 @@ public class Global {
             ctx.setTheme(R.style.ApplicationTheme_NoActionBar);
             MonetCompat.setup(ctx);
         }
+        WindowInsetsControllerCompat controllerCompat = new WindowInsetsControllerCompat(window, window.getDecorView());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.setNavigationBarColor(MaterialColors.getColor(ctx, com.google.android.material.R.attr.colorSurface, Color.BLACK));
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        } else {
+            window.setNavigationBarColor(Global.adjustAlpha(Color.BLACK, 0.5f));
+        }
+    }
+
+    private static boolean checkDarkTheme(Context ctx) {
+        return PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", true);
     }
 
     public static void setAvatarShape(Context ctx, ShapeableImageView imageView) {

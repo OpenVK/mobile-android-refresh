@@ -11,13 +11,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.WindowCompat;
@@ -25,6 +29,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.snackbar.Snackbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
@@ -40,9 +45,11 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Authorization;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.enumerations.UiMessages;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthFragment;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthProgressFragment;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthTwoFactorFragment;
+import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.ui.view.layouts.XConstraintLayout;
 import uk.openvk.android.refresh.ui.core.listeners.OnKeyboardStateListener;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
@@ -65,7 +72,7 @@ public class AuthActivity extends MonetCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         if(global_prefs.getBoolean("dark_theme", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -92,18 +99,36 @@ public class AuthActivity extends MonetCompatActivity {
         global_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         instance_prefs = getSharedPreferences("instance", 0);
         setAPIWrapper();
+        showOvkWarning();
         if(getResources().getColor(R.color.navbarColor) == getResources().getColor(android.R.color.white)) {
             try {
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     WindowInsetsControllerCompat windowInsetsController =
                             WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
                     windowInsetsController.setAppearanceLightStatusBars(true);
+                } else {
+                    getWindow().setStatusBarColor(Global.adjustAlpha(Color.BLACK, 0.5f));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         setAppBar();
+    }
+
+    private void showOvkWarning() {
+        instance_prefs = getSharedPreferences("instance", 0);
+        if ((instance_prefs.getString("server", "").length() == 0
+                || instance_prefs.getString("access_token", "").length() == 0
+                || instance_prefs.getString("account_password_sha256", "").length() == 0)
+                && !global_prefs.getBoolean("hide_ovk_warn_for_beginners", false)) {
+            Message msg = new Message();
+            msg.what = UiMessages.SHOW_WARNING_DIALOG;
+            try {
+                handler.sendMessage(msg);
+            } catch (Exception ignored) {
+            }
+        }
     }
 
     private void setAppBar() {
@@ -146,8 +171,17 @@ public class AuthActivity extends MonetCompatActivity {
         if(ovk_api == null) {
             ovk_api = new OvkAPIWrapper(this);
         }
-        ovk_api.setServer(instance);
-        ovk_api.authorize(username, password);
+        if(instance.equals("vk.com") || instance.equals("vk.ru") || instance.equals("vkontakte.ru")) {
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.dynamic_fragment_layout, new AuthFragment());
+            instance = "openvk.uk";
+            ft.commit();
+            authFragment.setAuthorizationData(instance, username, password);
+            showOvkWarning();
+        } else {
+            ovk_api.setServer(instance);
+            ovk_api.authorize(username, password);
+        }
     }
 
     public void signIn(String twofactor_code) {
@@ -306,6 +340,28 @@ public class AuthActivity extends MonetCompatActivity {
             Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
+        } else if(message == UiMessages.SHOW_WARNING_DIALOG) {
+            View warn_view = getLayoutInflater().inflate(R.layout.warn_message, null, false);
+            OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(this, R.style.ApplicationTheme_AlertDialog);
+            builder.setTitle(R.string.ovk_warning_title);
+            builder.setView(warn_view);
+            builder.setNegativeButton(android.R.string.ok, null);
+            builder.show();
+            AlertDialog dialog = builder.getDialog();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                ((TextView) warn_view.findViewById(R.id.warn_message_text)).setText(Html.fromHtml(getResources().getString(R.string.ovk_warning), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                ((TextView) warn_view.findViewById(R.id.warn_message_text)).setText(Html.fromHtml(getResources().getString(R.string.ovk_warning)));
+            }
+            ((TextView) warn_view.findViewById(R.id.warn_message_text)).setMovementMethod(LinkMovementMethod.getInstance());
+            ((MaterialCheckBox) warn_view.findViewById(R.id.do_not_show_messages)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    SharedPreferences.Editor global_prefs_editor = global_prefs.edit();
+                    global_prefs_editor.putBoolean("hide_ovk_warn_for_beginners", b);
+                    global_prefs_editor.apply();
+                }
+            });
         }
     }
 

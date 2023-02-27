@@ -69,7 +69,7 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         window = getWindow();
         setContentView(R.layout.video_player);
@@ -152,6 +152,7 @@ public class VideoPlayerActivity extends MonetCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         window.setStatusBarColor(Global.adjustAlpha(Color.BLACK, 0.5f));
+        window.setNavigationBarColor(Color.BLACK);
         ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
         vlc = new LibVLC(this);
         mp = new MediaPlayer(vlc);

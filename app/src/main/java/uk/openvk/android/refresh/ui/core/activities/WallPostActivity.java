@@ -90,7 +90,7 @@ public class WallPostActivity extends MonetCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         instance_prefs = getSharedPreferences("instance", 0);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         setContentView(R.layout.wall_post_watch);

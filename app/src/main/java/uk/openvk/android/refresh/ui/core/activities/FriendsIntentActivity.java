@@ -71,7 +71,7 @@ public class FriendsIntentActivity extends MonetCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         instance_prefs = getSharedPreferences("instance", 0);

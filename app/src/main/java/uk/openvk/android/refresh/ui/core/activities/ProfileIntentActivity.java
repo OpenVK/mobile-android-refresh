@@ -69,7 +69,7 @@ public class ProfileIntentActivity extends MonetCompatActivity {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"));
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.intent_view);

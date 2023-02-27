@@ -262,7 +262,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
                                 .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                                 .placeholder(ctx.getDrawable(R.drawable.photo_placeholder))
-                                .dontAnimate().error(R.drawable.warning)
+                                .dontAnimate().error(R.drawable.photo_loading_error)
                                 .into(((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
                         (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                         (convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {

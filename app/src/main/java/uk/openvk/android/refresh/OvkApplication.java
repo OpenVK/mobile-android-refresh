@@ -50,6 +50,9 @@ public class OvkApplication extends Application {
         if(!global_prefs.contains("interface_font")) {
             editor.putString("interface_font", "system");
         }
+        if(!global_prefs.contains("hide_ovk_warn_for_beginners")) {
+            editor.putBoolean("hide_ovk_warn_for_beginners", false);
+        }
         editor.apply();
     }
 
