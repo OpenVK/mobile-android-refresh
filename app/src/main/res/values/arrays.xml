@@ -51,6 +51,11 @@
         <!-- <item>Українська</item> later !-->
     </string-array>
 
+    <string-array name="video_player">
+        <item>Built-in (libVLC)</item>
+        <item>3rd-party</item>
+    </string-array>
+
     <string-array name="members_count">
         <item>%s members</item>
         <item>%s members</item>

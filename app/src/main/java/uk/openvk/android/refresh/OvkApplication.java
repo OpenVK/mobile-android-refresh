@@ -27,6 +27,10 @@ public class OvkApplication extends Application {
         global_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         instance_prefs = getSharedPreferences("instance", 0);
         MonetCompat.enablePaletteCompat();
+        createSettings();
+    }
+
+    private void createSettings() {
         SharedPreferences.Editor editor = instance_prefs.edit();
         if(!instance_prefs.contains("server")) {
             editor.putString("server", "");
@@ -39,7 +43,9 @@ public class OvkApplication extends Application {
         }
         if(!global_prefs.contains("enable_notification")) {
             editor.putBoolean("enable_notification", true);
-
+        }
+        if(!global_prefs.contains("video_player")) {
+            editor.putString("video_player", "built_in");
         }
         if(!global_prefs.contains("theme_color")) {
             editor.putString("theme_color", "blue");

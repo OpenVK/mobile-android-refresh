@@ -8,8 +8,8 @@
         app:layout="@layout/pref_notif_layout" />
 
     <PreferenceCategory
-        app:key="interface_category"
-        app:title="@string/pref_interface_category"
+        app:key="appearance_category"
+        app:title="@string/pref_appearance"
         app:iconSpaceReserved="false">
 
         <Preference

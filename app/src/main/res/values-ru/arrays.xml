@@ -35,6 +35,11 @@
         <item>Rubik</item>
     </string-array>
 
+    <string-array name="video_player">
+        <item>Встроенный (libVLC)</item>
+        <item>Сторонний</item>
+    </string-array>
+
     <string-array name="members_count">
         <item>%s участник</item>
         <item>%s участника</item>

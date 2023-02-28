@@ -36,7 +36,7 @@ import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
 
 public class Global {
     public static String bytesToHex(byte[] bytes) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             String hex = Integer.toHexString(0xFF & bytes[i]);
             if (hex.length() == 1) {
@@ -61,25 +61,35 @@ public class Global {
     }
 
     public static void setColorTheme(Context ctx, String value, Window window) {
-        if(value.equals("blue")) {
-            ctx.setTheme(R.style.ApplicationTheme_NoActionBar);
-        } else if(value.equals("red")) {
-            ctx.setTheme(R.style.ApplicationTheme_Color2_NoActionBar);
-        } else if(value.equals("green")) {
-            ctx.setTheme(R.style.ApplicationTheme_Color3_NoActionBar);
-        } else if(value.equals("violet")) {
-            ctx.setTheme(R.style.ApplicationTheme_Color4_NoActionBar);
-        } else if(value.equals("orange")) {
-            ctx.setTheme(R.style.ApplicationTheme_Color5_NoActionBar);
-        } else if(value.equals("teal")) {
-            ctx.setTheme(R.style.ApplicationTheme_Color6_NoActionBar);
-        } else if(value.equals("vk5x")) {
-            ctx.setTheme(R.style.ApplicationTheme_Color7_NoActionBar);
-        } else if(value.equals("gray")) {
-            ctx.setTheme(R.style.ApplicationTheme_Color8_NoActionBar);
-        } else if(value.equals("monet")) {
-            ctx.setTheme(R.style.ApplicationTheme_NoActionBar);
-            MonetCompat.setup(ctx);
+        switch (value) {
+            case "blue":
+                ctx.setTheme(R.style.ApplicationTheme_NoActionBar);
+                break;
+            case "red":
+                ctx.setTheme(R.style.ApplicationTheme_Color2_NoActionBar);
+                break;
+            case "green":
+                ctx.setTheme(R.style.ApplicationTheme_Color3_NoActionBar);
+                break;
+            case "violet":
+                ctx.setTheme(R.style.ApplicationTheme_Color4_NoActionBar);
+                break;
+            case "orange":
+                ctx.setTheme(R.style.ApplicationTheme_Color5_NoActionBar);
+                break;
+            case "teal":
+                ctx.setTheme(R.style.ApplicationTheme_Color6_NoActionBar);
+                break;
+            case "vk5x":
+                ctx.setTheme(R.style.ApplicationTheme_Color7_NoActionBar);
+                break;
+            case "gray":
+                ctx.setTheme(R.style.ApplicationTheme_Color8_NoActionBar);
+                break;
+            case "monet":
+                ctx.setTheme(R.style.ApplicationTheme_NoActionBar);
+                MonetCompat.setup(ctx);
+                break;
         }
         WindowInsetsControllerCompat controllerCompat = new WindowInsetsControllerCompat(window, window.getDecorView());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

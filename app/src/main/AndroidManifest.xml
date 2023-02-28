@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,9 +22,11 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/ApplicationTheme.SplashTheme"
-        tools:targetApi="m">
+        tools:targetApi="m"
+        android:requestLegacyExternalStorage="true">
         <receiver android:name=".longpoll_api.receivers.LongPollReceiver"
-            android:exported="true">
+            android:exported="true"
+            android:permission="GET_LONGPOLL_NOTIFICATIONS">
             <intent-filter>
                 <action android:name="uk.openvk.android.legacy.LONGPOLL_RECEIVE" />
             </intent-filter>
@@ -132,6 +137,15 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/video_player"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
+            android:theme="@style/ApplicationTheme.NoActionBar"
+            tools:ignore="RedundantLabel">
+        </activity>
+
+        <activity android:name=".ui.core.activities.PhotoViewerActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/photo_title"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
             android:theme="@style/ApplicationTheme.NoActionBar"
             tools:ignore="RedundantLabel">

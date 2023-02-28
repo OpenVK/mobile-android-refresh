@@ -59,11 +59,16 @@
 
     <string name="your_last_message">Вы: %s</string>
 
+    <string name="pref_application_category">Приложение</string>
+    <string name="pref_video">Видео</string>
+    <string name="pref_video_player">Видеоплеер</string>
     <string name="pref_interface_category">Интерфейс</string>
     <string name="pref_personalization">Персонализация</string>
     <string name="pref_language">Язык (Language)</string>
     <string name="pref_others">Прочее</string>
     <string name="pref_about_app">О приложении</string>
+    <string name="pref_more">Ещё</string>
+    <string name="pref_appearance">Внешний вид</string>
     <string name="pref_accentcolor">Основной цвет</string>
     <string name="pref_darktheme">Темная тема</string>
     <string name="pref_darktheme_summary">Комфортно в темное время суток и для экономии заряда</string>
@@ -71,7 +76,9 @@
     <string name="pref_font">Шрифт интерфейса</string>
     <string name="pref_account">Аккаунт</string>
     <string name="pref_logout">Выйти</string>
+
     <string name="loading">Загрузка…</string>
+    <string name="error">Ошибка</string>
 
     <string name="log_out_warning">При выходе из учётной записи из устройства будут удалены все связанные с ней данные. Продолжить?</string>
     <string name="sett_app_restart_required">Настройки вступят в силу после перезапуска приложения.</string>
@@ -138,7 +145,14 @@
     <string name="video_player">Видеозапись</string>
     <string name="send_msg_btn">Сообщение</string>
     <string name="profile_status">Статус</string>
+
     <string name="ovk_warning_title">Предупреждение</string>
     <string name="ovk_warning"><![CDATA[Вы запустили свободный клиент OpenVK Refresh, работающий ТОЛЬКО с инстанциями <a href="https://github.com/openvk/openvk">OpenVK</a> - сети с открытым исходным кодом, несовместимая с ВКонтакте.<br><br>Пожалуйста, авторизуйтесь ТОЛЬКО в зарегистрированный аккаунт OpenVK в одной из существующих инстанций.]]></string>
     <string name="dont_show_warn">Больше не показывать</string>
+
+    <string name="photo_title">Фотография</string>
+    <string name="save">Сохранить</string>
+    <string name="download">Скачать</string>
+    <string name="copy_link">Скопировать ссылку</string>
+    <string name="photo_save_ok">Фотография сохранена в память устройства</string>
 </resources>

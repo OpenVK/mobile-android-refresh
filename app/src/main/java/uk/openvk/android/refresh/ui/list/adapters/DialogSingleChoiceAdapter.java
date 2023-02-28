@@ -22,9 +22,10 @@ import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.ui.core.fragments.app.MainSettingsFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.settings.MainSettingsFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.settings.VideoSettingsFragment;
 import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
-import uk.openvk.android.refresh.ui.core.fragments.app.PersonalizationFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.settings.PersonalizationFragment;
 
 public class DialogSingleChoiceAdapter extends BaseAdapter {
 
@@ -124,6 +125,8 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
                     }
                     if(frg.getClass().getSimpleName().equals("PersonalizationFragment")) {
                         ((PersonalizationFragment) frg).onMenuItemClicked(list, position);
+                    } else if(frg.getClass().getSimpleName().equals("VideoSettingsFragment")) {
+                        ((VideoSettingsFragment) frg).onMenuItemClicked(list, position);
                     } else {
                         ((MainSettingsFragment) frg).onMenuItemClicked(list, position);
                     }

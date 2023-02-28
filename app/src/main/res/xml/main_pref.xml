@@ -10,19 +10,21 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
+        app:key="application_category"
+        app:title="@string/pref_application_category">
+        <Preference
+            app:icon="@drawable/ic_video_library"
+            app:iconSpaceReserved="false"
+            app:key="video_settings"
+            app:singleLineTitle="true"
+            app:title="@string/pref_video" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
         app:key="appearance_category"
         app:title="@string/pref_interface_category">
-
-        <!--<Preference
-            app:key="accentColor"
-            app:title="@string/pref_accentcolor" />
-
-        <SwitchPreferenceCompat
-            app:key="darkTheme"
-            app:defaultValue="false"
-            app:title="@string/pref_darktheme"
-            app:summary="@string/pref_darktheme_summary"/>
-            !-->
 
         <Preference
             app:icon="@drawable/ic_personalization"
@@ -37,6 +39,7 @@
             app:key="ui_language"
             app:singleLineTitle="true"
             app:title="@string/pref_language" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

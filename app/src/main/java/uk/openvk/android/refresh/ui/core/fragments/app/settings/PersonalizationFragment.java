@@ -1,4 +1,4 @@
-package uk.openvk.android.refresh.ui.core.fragments.app;
+package uk.openvk.android.refresh.ui.core.fragments.app.settings;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;

@@ -19,6 +19,7 @@ public class PhotoAttachment implements Parcelable {
     protected PhotoAttachment(Parcel in) {
         url = in.readString();
         filename = in.readString();
+        original_url = in.readString();
     }
 
     public static final Creator<PhotoAttachment> CREATOR = new Creator<PhotoAttachment>() {
@@ -42,5 +43,6 @@ public class PhotoAttachment implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(url);
         parcel.writeString(filename);
+        parcel.writeString(original_url);
     }
 }

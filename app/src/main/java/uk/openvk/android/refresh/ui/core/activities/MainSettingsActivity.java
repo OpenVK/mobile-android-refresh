@@ -1,15 +1,10 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -21,8 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
@@ -37,15 +30,12 @@ import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.Likes;
 import uk.openvk.android.refresh.api.Users;
 import uk.openvk.android.refresh.api.Wall;
-import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.User;
-import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.core.fragments.app.AboutApplicationFragment;
-import uk.openvk.android.refresh.ui.core.fragments.app.MainSettingsFragment;
-import uk.openvk.android.refresh.ui.core.fragments.app.PersonalizationFragment;
-import uk.openvk.android.refresh.ui.core.fragments.app.ProfileFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.settings.MainSettingsFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.settings.PersonalizationFragment;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
 public class MainSettingsActivity extends MonetCompatActivity {

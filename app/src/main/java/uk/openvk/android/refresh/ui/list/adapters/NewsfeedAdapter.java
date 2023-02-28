@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -35,10 +37,12 @@ import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.attachments.Attachment;
+import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.attachments.VideoAttachment;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
+import uk.openvk.android.refresh.ui.core.activities.PhotoViewerActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.VideoPlayerActivity;
 import uk.openvk.android.refresh.ui.view.layouts.PhotoAttachmentLayout;
@@ -210,11 +214,13 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 boolean contains_photos = false;
                 boolean contains_video = false;
                 VideoAttachment video_attachment = null;
+                PhotoAttachment photo_attachment = null;
                 if(item.attachments != null && item.attachments.size() > 0) {
                     for(int pos = 0; pos < item.attachments.size(); pos++) {
                         Attachment attachment = item.attachments.get(pos);
                         if(attachment.type.equals("photo")) {
                             contains_photos = true;
+                            photo_attachment = (PhotoAttachment) attachment.getContent();
                         } if(attachment.type.equals("video")) {
                             contains_video = true;
                             video_attachment = (VideoAttachment) attachment.getContent();
@@ -265,10 +271,15 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                                 .dontAnimate().error(R.drawable.photo_loading_error)
                                 .into(((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
                         (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
+                        PhotoAttachment finalPhoto_attachment = photo_attachment;
                         (convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
+                                Intent intent = new Intent(ctx, PhotoViewerActivity.class);
+                                intent.putExtra("attachment", finalPhoto_attachment);
+                                intent.putExtra("author_id", item.author_id);
+                                intent.putExtra("photo_id", finalPhoto_attachment.id);
+                                ctx.startActivity(intent);
                             }
                         });
                         ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView().setAdjustViewBounds(true);
@@ -277,6 +288,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                     (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.GONE);
                 }
                 if(contains_video) {
+                    String video_player = PreferenceManager.getDefaultSharedPreferences(ctx)
+                            .getString("video_player", "built_in");
                     ((VideoAttachmentLayout) convertView.findViewById(R.id.video_attachment)).setAttachment(video_attachment);
                     (convertView.findViewById(R.id.video_attachment)).setVisibility(View.VISIBLE);
                     final int posFinal = position;

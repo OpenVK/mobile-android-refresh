@@ -59,8 +59,13 @@
 
     <string name="your_last_message">You: %s</string>
 
+    <string name="pref_application_category">Application</string>
+    <string name="pref_video">Video</string>
+    <string name="pref_video_player">Video player</string>
     <string name="pref_interface_category">Interface</string>
     <string name="pref_personalization">Personalization</string>
+    <string name="pref_more">More</string>
+    <string name="pref_appearance">Appearance</string>
     <string name="pref_accentcolor">Accent color</string>
     <string name="pref_darktheme">Dark theme</string>
     <string name="pref_darktheme_summary">Comfortable in the dark and for battery save</string>
@@ -71,7 +76,9 @@
     <string name="pref_logout">Logout</string>
     <string name="pref_others">Others</string>
     <string name="pref_about_app">About application</string>
+
     <string name="loading">Loading…</string>
+    <string name="error">Error</string>
 
     <string name="log_out_warning">Logging out will delete all data related to this account from this device. Continue?</string>
     <string name="sett_app_restart_required">The settings will take effect after restarting the application.</string>
@@ -141,4 +148,9 @@
     <string name="ovk_warning_title">Warning</string>
     <string name="ovk_warning"><![CDATA[You have launched a OpenVK Refresh FOSS client that ONLY works with <a href="https://github.com/openvk/openvk">OpenVK</a> instances, an open source network that is not compatible with VKontakte / VK.<br><br>Please log in ONLY to the registered OpenVK account in one of the existing instances.]]></string>
     <string name="dont_show_warn">Don\'t show again</string>
+    <string name="photo_title">Photo</string>
+    <string name="save">Save</string>
+    <string name="download">Download</string>
+    <string name="copy_link">Copy link</string>
+    <string name="photo_save_ok">The photo has been saved to the Device Memory</string>
 </resources>

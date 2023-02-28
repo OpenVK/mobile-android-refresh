@@ -1,4 +1,4 @@
-package uk.openvk.android.refresh.ui.core.fragments.app;
+package uk.openvk.android.refresh.ui.core.fragments.app.settings;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -57,6 +57,18 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     }
 
     public void setListeners() {
+        Preference video_settings = findPreference("video_settings");
+        assert video_settings != null;
+        video_settings.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(@NonNull Preference preference) {
+                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                    ((AppActivity) requireActivity()).switchFragment("video_settings");
+                }
+                return false;
+            }
+        });
+
         Preference person = findPreference("personalization");
         assert person != null;
         person.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -317,5 +329,8 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         PreferenceCategory account_category = findPreference("account_category");
         assert account_category != null;
         account_category.setVisible(false);
+        PreferenceCategory app_category = findPreference("application_category");
+        assert app_category != null;
+        app_category.setVisible(false);
     }
 }

@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.ui.core.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -120,13 +121,20 @@ public class VideoPlayerActivity extends MonetCompatActivity {
 
                 Uri uri = Uri.parse(url);
 
-                createMediaPlayer(uri);
-                ((ImageButton) findViewById(R.id.play_btn)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        playVideo();
-                    }
-                });
+                if(global_prefs.getString("video_player", "built_in").equals("built_in")) {
+                    createMediaPlayer(uri);
+                    ((ImageButton) findViewById(R.id.play_btn)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            playVideo();
+                        }
+                    });
+                } else {
+                    Intent openVideo = new Intent(Intent.ACTION_VIEW);
+                    openVideo.setDataAndType(Uri.parse(url), "video/*");
+                    startActivity(openVideo);
+                    finish();
+                }
             }
         } else {
             finish();
@@ -274,8 +282,12 @@ public class VideoPlayerActivity extends MonetCompatActivity {
 
     @Override
     protected void onDestroy() {
-        mp.stop();
-        mp.release();
+        try {
+            mp.stop();
+            mp.release();
+        } catch (Exception ignored) {
+
+        }
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onDestroy();
     }
