@@ -80,11 +80,14 @@ public class Global {
             case "teal":
                 ctx.setTheme(R.style.ApplicationTheme_Color6_NoActionBar);
                 break;
-            case "vk5x":
+            case "ocean":
                 ctx.setTheme(R.style.ApplicationTheme_Color7_NoActionBar);
                 break;
-            case "gray":
+            case "vk5x":
                 ctx.setTheme(R.style.ApplicationTheme_Color8_NoActionBar);
+                break;
+            case "gray":
+                ctx.setTheme(R.style.ApplicationTheme_Color9_NoActionBar);
                 break;
             case "monet":
                 ctx.setTheme(R.style.ApplicationTheme_NoActionBar);

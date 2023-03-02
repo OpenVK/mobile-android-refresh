@@ -193,14 +193,17 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
             case "teal":
                 valuePos = 5;
                 break;
-            case "vk5x":
+            case "ocean":
                 valuePos = 6;
                 break;
-            case "gray":
+            case "vk5x":
                 valuePos = 7;
                 break;
-            case "monet":
+            case "gray":
                 valuePos = 8;
+                break;
+            case "monet":
+                valuePos = 9;
                 break;
         }
         DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.theme_colors));
@@ -241,9 +244,6 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
         int valuePos = 0;
         String value = global_prefs.getString("interface_font", "system");
         switch (value) {
-            default:
-                valuePos = 0;
-                break;
             case "inter":
                 valuePos = 1;
                 break;
@@ -287,10 +287,12 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
             } else if(which == 5) {
                 editor.putString("theme_color", "teal");
             } else if(which == 6) {
-                editor.putString("theme_color", "vk5x");
+                editor.putString("theme_color", "ocean");
             } else if(which == 7) {
-                editor.putString("theme_color", "gray");
+                editor.putString("theme_color", "vk5x");
             } else if(which == 8) {
+                editor.putString("theme_color", "gray");
+            } else if(which == 9) {
                 editor.putString("theme_color", "monet");
             }
             editor.apply();

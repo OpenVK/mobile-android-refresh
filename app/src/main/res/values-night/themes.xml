@@ -205,6 +205,40 @@
     </style>
 
     <style name="ApplicationTheme.Color7" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primaryLightOcean</item>
+        <item name="colorPrimaryVariant">@color/primaryColorOcean</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorOcean</item>
+        <item name="rippleColor">@color/primaryLightOcean</item>
+        <item name="colorAccent">@color/primaryLightOcean</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColor</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+    </style>
+
+    <style name="ApplicationTheme.Color7.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryLightOcean</item>
+        <item name="colorPrimaryVariant">@color/primaryColorOcean</item>
+        <item name="colorPrimaryDark">@color/accentColorOcean_reserve</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightOcean</item>
+        <item name="colorAccent">@color/primaryLightOcean</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/primaryLightOcean</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+    </style>
+
+    <style name="ApplicationTheme.Color8" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/primaryLightVK5</item>
         <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorVK5</item>
@@ -223,7 +257,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
     </style>
 
-    <style name="ApplicationTheme.Color7.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color8.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryLightVK5</item>
         <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
@@ -238,7 +272,7 @@
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
-    <style name="ApplicationTheme.Color8" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color9" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/primaryLightGray</item>
         <item name="colorPrimaryVariant">@color/primaryColorGray</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
@@ -257,7 +291,7 @@
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
     </style>
 
-    <style name="ApplicationTheme.Color8.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color9.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryLightGray</item>
         <item name="colorPrimaryVariant">@color/primaryColorGray</item>

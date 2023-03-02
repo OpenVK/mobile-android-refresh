@@ -61,7 +61,16 @@
     <color name="accentColorTeal">#009688</color>
     <color name="accentColorTeal_reserve">#009688</color>
 
-    <!-- Theme attributes. Color #7 (VK 5.x) !-->
+    <!-- Theme attributes. Color #7 (ocean) !-->
+    <color name="primaryColorOcean">#03abc0</color>
+    <color name="primaryLightOcean">#62cddb</color>
+    <color name="primaryDarkColorOcean">#028d9f</color>
+    <color name="primaryRippleColorOcean">#1200bcd4</color>
+    <color name="statusBarColorOcean">#028d9f</color>
+    <color name="accentColorOcean">#03abc0</color>
+    <color name="accentColorOcean_reserve">#03abc0</color>
+
+    <!-- Theme attributes. Color #8 (VK 5.x) !-->
     <color name="primaryColorVK5">#5181b8</color>
     <color name="primaryLightVK5">#71b1fa</color>
     <color name="primaryDarkColorVK5">#5181b8</color>
@@ -69,7 +78,7 @@
     <color name="statusBarVK5">#5181b8</color>
     <color name="accentColorVK5">#2975cc</color>
 
-    <!-- Theme attributes. Color #8 (gray) !-->
+    <!-- Theme attributes. Color #9 (gray) !-->
     <color name="primaryColorGray">#5a5a5a</color>
     <color name="primaryLightGray">#8f8f8f</color>
     <color name="primaryDarkColorGray">#2a2a2a</color>

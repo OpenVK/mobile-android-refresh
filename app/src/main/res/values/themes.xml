@@ -227,14 +227,14 @@
 
     <style name="ApplicationTheme.Color7" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColorGray</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
-        <item name="colorPrimaryVariant">@color/primaryColorGray</item>
+        <item name="colorPrimary">@color/primaryColorOcean</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorOcean</item>
+        <item name="colorPrimaryVariant">@color/primaryColorOcean</item>
         <!-- Customize your theme here. -->
-        <item name="rippleColor">@color/primaryLightGray</item>
-        <item name="colorAccent">@color/accentColorGray</item>
+        <item name="rippleColor">@color/primaryLightOcean</item>
+        <item name="colorAccent">@color/accentColorOcean</item>
         <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
-        <item name="colorControlHighlight">@color/primaryRippleColorGray</item>
+        <item name="colorControlHighlight">@color/primaryRippleColorOcean</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -243,32 +243,24 @@
         <item name="android:textColorPrimary">@color/backgroundColor</item>
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
-        <item name="iconPreferenceColor">@color/primaryColorGray</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color7.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColorVK5</item>
-        <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorVK5</item>
+        <item name="colorPrimary">@color/primaryColorOcean</item>
+        <item name="colorPrimaryVariant">@color/primaryColorOcean</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorOcean</item>
         <!-- Customize your theme here. -->
-        <item name="rippleColor">@color/primaryLightVK5</item>
-        <item name="colorAccent">@color/accentColorVK5</item>
+        <item name="rippleColor">@color/primaryLightOcean</item>
+        <item name="colorAccent">@color/primaryColorOcean</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="colorOnSurface">@color/colorHintBlack</item>
-        <item name="iconPreferenceColor">@color/primaryColorVK5</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
-
-    <style name="ApplicationTheme.Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
-        <item name="android:tint">?attr/colorAccent</item>
-    </style>
-
 
     <style name="ApplicationTheme.Color8" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
@@ -289,10 +281,50 @@
         <item name="android:textColorSecondary">#86ffffff</item>
         <item name="buttonStyle">@style/ApplicationTheme.Button</item>
         <item name="iconPreferenceColor">@color/primaryColorGray</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <style name="ApplicationTheme.Color8.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColorVK5</item>
+        <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorVK5</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightVK5</item>
+        <item name="colorAccent">@color/accentColorVK5</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnSurface">@color/colorHintBlack</item>
+        <item name="iconPreferenceColor">@color/primaryColorVK5</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+    <style name="ApplicationTheme.Color9" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColorGray</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
+        <item name="colorPrimaryVariant">@color/primaryColorGray</item>
+        <!-- Customize your theme here. -->
+        <item name="rippleColor">@color/primaryLightGray</item>
+        <item name="colorAccent">@color/accentColorGray</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="colorControlHighlight">@color/primaryRippleColorGray</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="buttonStyle">@style/ApplicationTheme.Button</item>
+        <item name="iconPreferenceColor">@color/primaryColorGray</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+    <style name="ApplicationTheme.Color9.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorGray</item>
         <item name="colorPrimaryVariant">@color/primaryColorGray</item>
@@ -306,6 +338,10 @@
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+
+    <style name="ApplicationTheme.Preference" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:tint">?attr/colorAccent</item>
     </style>
 
     <style name="ApplicationTheme.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
@@ -354,6 +390,11 @@
     <style name="ShapeAppearanceOverlay.Circle" parent="">
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.Round8" parent="">
+        <item name="cornerSize">8dp</item>
+    </style>
+
     <style name="ShapeAppearanceOverlay.Round16" parent="">
         <item name="cornerSize">16dp</item>
     </style>
@@ -382,6 +423,11 @@
         <item name="buttonBarNegativeButtonStyle">@style/ApplicationTheme.AlertDialog.Button</item>
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="singleChoiceItemLayout">@layout/single_choice_item</item>
+        <item name="alertDialogStyle">@style/ApplicationTheme.AlertDialog.Container</item>
+    </style>
+
+    <style name="ApplicationTheme.AlertDialog.Container" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/ShapeAppearanceOverlay.Round8</item>
     </style>
 
     <style name="ApplicationTheme.AlertDialog.BodyText">
