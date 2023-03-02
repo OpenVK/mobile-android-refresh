@@ -102,6 +102,9 @@ public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
     }
 
     public void clearCheck(int position) {
-        ((CheckedTextView) dialog.getListView().getChildAt(position).findViewById(android.R.id.text1)).setChecked(false);
+        try {
+            ((CheckedTextView) dialog.getListView().getChildAt(position).findViewById(android.R.id.text1)).setChecked(false);
+        } catch (Exception ignored) {
+        }
     }
 }
