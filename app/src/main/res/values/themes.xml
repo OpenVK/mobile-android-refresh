@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="ApplicationTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
@@ -22,7 +22,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryColor</item>
@@ -38,7 +38,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color2" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color2" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorRed</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorRed</item>
@@ -60,7 +60,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color2.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color2.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorRed</item>
         <item name="colorPrimaryVariant">@color/primaryColorRed</item>
@@ -75,7 +75,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color3" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color3" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorGreen</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorGreen</item>
@@ -97,7 +97,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color3.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color3.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorGreen</item>
         <item name="colorPrimaryVariant">@color/primaryColorGreen</item>
@@ -113,7 +113,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color4" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color4" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorViolet</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorViolet</item>
@@ -135,7 +135,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color4.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color4.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorViolet</item>
         <item name="colorPrimaryVariant">@color/primaryColorViolet</item>
@@ -151,7 +151,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color5" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color5" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorOrange</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorOrange</item>
@@ -173,7 +173,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color5.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color5.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorOrange</item>
         <item name="colorPrimaryVariant">@color/primaryColorOrange</item>
@@ -188,7 +188,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color6" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color6" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorTeal</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorTeal</item>
@@ -210,7 +210,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color6.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color6.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorTeal</item>
         <item name="colorPrimaryVariant">@color/primaryColorTeal</item>
@@ -225,7 +225,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color7" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color7" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorOcean</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorOcean</item>
@@ -247,14 +247,14 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color7.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color7.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorOcean</item>
         <item name="colorPrimaryVariant">@color/primaryColorOcean</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorOcean</item>
         <!-- Customize your theme here. -->
         <item name="rippleColor">@color/primaryLightOcean</item>
-        <item name="colorAccent">@color/primaryColorOcean</item>
+        <item name="colorAccent">@color/accentColorOcean</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
@@ -262,7 +262,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color8" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color8" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorGray</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
@@ -285,7 +285,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color8.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color8.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorVK5</item>
         <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
@@ -302,7 +302,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color9" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="ApplicationTheme.Color9" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorGray</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
@@ -324,7 +324,7 @@
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="ApplicationTheme.Color9.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="ApplicationTheme.Color9.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColorGray</item>
         <item name="colorPrimaryVariant">@color/primaryColorGray</item>

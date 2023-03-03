@@ -255,42 +255,44 @@ public class Newsfeed implements Parcelable {
                     JSONObject photo = attachment.getJSONObject("photo");
                     PhotoAttachment photoAttachment = new PhotoAttachment();
                     photoAttachment.id = photo.getLong("id");
-                    JSONArray photo_sizes = photo.getJSONArray("sizes");
-                    photo_medium_size = photo_sizes.getJSONObject(5).getString("url");
-                    photo_high_size = photo_sizes.getJSONObject(8).getString("url");
-                    photo_original_size = photo_sizes.getJSONObject(10).getString("url");
-                    switch (quality) {
-                        case "medium":
-                            photoAttachment.url = photo_medium_size;
-                            break;
-                        case "high":
-                            photoAttachment.url = photo_high_size;
-                            break;
-                        case "original":
-                            photoAttachment.url = photo_original_size;
-                            break;
-                    }
-                    photoAttachment.original_url = photo_original_size;
-                    photoAttachment.filename = String.format("newsfeed_attachment_o%sp%s", owner_id, post_id);
-                    if (photo_medium_size.length() > 0 || photo_high_size.length() > 0) {
-                        attachment_status = "loading";
-                    } else {
-                        attachment_status = "none";
-                    }
-                    Attachment attachment_obj = new Attachment(attachment.getString("type"));
-                    attachment_obj.status = attachment_status;
-                    attachment_obj.setContent(photoAttachment);
-                    attachments_list.add(attachment_obj);
-                    switch (quality) {
-                        case "medium":
-                            photos_msize.add(photoAttachment);
-                            break;
-                        case "high":
-                            photos_hsize.add(photoAttachment);
-                            break;
-                        case "original":
-                            photos_osize.add(photoAttachment);
-                            break;
+                    if(!photo.isNull("sizes")) {
+                        JSONArray photo_sizes = photo.getJSONArray("sizes");
+                        photo_medium_size = photo_sizes.getJSONObject(5).getString("url");
+                        photo_high_size = photo_sizes.getJSONObject(8).getString("url");
+                        photo_original_size = photo_sizes.getJSONObject(10).getString("url");
+                        switch (quality) {
+                            case "medium":
+                                photoAttachment.url = photo_medium_size;
+                                break;
+                            case "high":
+                                photoAttachment.url = photo_high_size;
+                                break;
+                            case "original":
+                                photoAttachment.url = photo_original_size;
+                                break;
+                        }
+                        photoAttachment.original_url = photo_original_size;
+                        photoAttachment.filename = String.format("newsfeed_attachment_o%sp%s", owner_id, post_id);
+                        if (photo_medium_size.length() > 0 || photo_high_size.length() > 0) {
+                            attachment_status = "loading";
+                        } else {
+                            attachment_status = "none";
+                        }
+                        Attachment attachment_obj = new Attachment(attachment.getString("type"));
+                        attachment_obj.status = attachment_status;
+                        attachment_obj.setContent(photoAttachment);
+                        attachments_list.add(attachment_obj);
+                        switch (quality) {
+                            case "medium":
+                                photos_msize.add(photoAttachment);
+                                break;
+                            case "high":
+                                photos_hsize.add(photoAttachment);
+                                break;
+                            case "original":
+                                photos_osize.add(photoAttachment);
+                                break;
+                        }
                     }
                 } else if (attachment.getString("type").equals("poll")) {
                     JSONObject poll_attachment = attachment.getJSONObject("poll");

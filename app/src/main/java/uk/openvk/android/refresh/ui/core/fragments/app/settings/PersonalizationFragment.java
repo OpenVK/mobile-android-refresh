@@ -122,14 +122,17 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 case "teal":
                     pref.setSummary(getResources().getStringArray(R.array.theme_colors)[5]);
                     break;
-                case "vk5x":
+                case "ocean":
                     pref.setSummary(getResources().getStringArray(R.array.theme_colors)[6]);
                     break;
-                case "gray":
+                case "vk5x":
                     pref.setSummary(getResources().getStringArray(R.array.theme_colors)[7]);
                     break;
-                case "monet":
+                case "gray":
                     pref.setSummary(getResources().getStringArray(R.array.theme_colors)[8]);
+                    break;
+                case "monet":
+                    pref.setSummary(getResources().getStringArray(R.array.theme_colors)[9]);
                     break;
             }
         } else if(tag.equals("avatars_shape")) {

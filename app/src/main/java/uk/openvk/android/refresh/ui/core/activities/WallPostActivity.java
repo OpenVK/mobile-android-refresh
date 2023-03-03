@@ -84,31 +84,36 @@ public class WallPostActivity extends MonetCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(global_prefs.getBoolean("dark_theme", false)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-        instance_prefs = getSharedPreferences("instance", 0);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
-        Global.setInterfaceFont(this);
-        isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-        setContentView(R.layout.wall_post_watch);
-        if(savedInstanceState != null) {
-            wallPost = savedInstanceState.getParcelable("post");
-            wallPost.counters = savedInstanceState.getParcelable("counters");
-        } else {
-            if(getIntent().getExtras() != null) {account = getIntent().getExtras().getParcelable("account");
-               wallPost = getIntent().getExtras().getParcelable("post");
-               wallPost.counters = getIntent().getExtras().getParcelable("counters");
+        try {
+            if (global_prefs.getBoolean("dark_theme", false)) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
-        }
-        setMonetTheme();
-        setAPIWrapper();
-        setAppBar();
-        if(wallPost != null) {
-            openPost(wallPost);
-        } else {
+            instance_prefs = getSharedPreferences("instance", 0);
+            Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+            Global.setInterfaceFont(this);
+            isDarkTheme = global_prefs.getBoolean("dark_theme", false);
+            setContentView(R.layout.wall_post_watch);
+            if (savedInstanceState != null) {
+                wallPost = savedInstanceState.getParcelable("post");
+                wallPost.counters = savedInstanceState.getParcelable("counters");
+            } else {
+                if (getIntent().getExtras() != null) {
+                    account = getIntent().getExtras().getParcelable("account");
+                    wallPost = getIntent().getExtras().getParcelable("post");
+                    wallPost.counters = getIntent().getExtras().getParcelable("counters");
+                }
+            }
+            setMonetTheme();
+            setAPIWrapper();
+            setAppBar();
+            if (wallPost != null) {
+                openPost(wallPost);
+            } else {
+                finish();
+            }
+        } catch (Exception ignored) {
             finish();
         }
     }
