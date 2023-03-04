@@ -63,34 +63,34 @@ public class Global {
     public static void setColorTheme(Context ctx, String value, Window window) {
         switch (value) {
             case "blue":
-                ctx.setTheme(R.style.ApplicationTheme_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme);
                 break;
             case "red":
-                ctx.setTheme(R.style.ApplicationTheme_Color2_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme_Color2);
                 break;
             case "green":
-                ctx.setTheme(R.style.ApplicationTheme_Color3_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme_Color3);
                 break;
             case "violet":
-                ctx.setTheme(R.style.ApplicationTheme_Color4_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme_Color4);
                 break;
             case "orange":
-                ctx.setTheme(R.style.ApplicationTheme_Color5_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme_Color5);
                 break;
             case "teal":
-                ctx.setTheme(R.style.ApplicationTheme_Color6_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme_Color6);
                 break;
             case "ocean":
-                ctx.setTheme(R.style.ApplicationTheme_Color7_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme_Color7);
                 break;
             case "vk5x":
-                ctx.setTheme(R.style.ApplicationTheme_Color8_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme_Color8);
                 break;
             case "gray":
-                ctx.setTheme(R.style.ApplicationTheme_Color9_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme_Color9);
                 break;
             case "monet":
-                ctx.setTheme(R.style.ApplicationTheme_NoActionBar);
+                ctx.setTheme(R.style.ApplicationTheme);
                 MonetCompat.setup(ctx);
                 break;
         }

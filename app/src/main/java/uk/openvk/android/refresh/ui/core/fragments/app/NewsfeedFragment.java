@@ -160,11 +160,7 @@ public class NewsfeedFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public void select(int position, String item, int value) {
         if(item.equals("likes")) {
-            if(value == 1) {
-                wallPosts.get(position).counters.isLiked = true;
-            } else {
-                wallPosts.get(position).counters.isLiked = false;
-            }
+            wallPosts.get(position).counters.isLiked = value == 1;
             newsfeedAdapter.notifyDataSetChanged();
         }
     }
