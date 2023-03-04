@@ -90,7 +90,7 @@ public class Global {
                 ctx.setTheme(R.style.ApplicationTheme_Color9);
                 break;
             case "monet":
-                ctx.setTheme(R.style.ApplicationTheme);
+                ctx.setTheme(R.style.ApplicationTheme_Monet);
                 MonetCompat.setup(ctx);
                 break;
         }

@@ -262,8 +262,8 @@ public class AppActivity extends MonetCompatActivity {
         });
         toolbar.setTitle("");
         toolbar.setNavigationOnClickListener(v -> {
-            if(selectedFragment == mainSettingsFragment || selectedFragment == personalizationFragment
-                    || selectedFragment == aboutAppFragment) {
+            if(selectedFragment == mainSettingsFragment || selectedFragment == videoSettingsFragment
+                    || selectedFragment == personalizationFragment || selectedFragment == aboutAppFragment) {
                 onBackPressed();
             } else {
                 drawer.open();

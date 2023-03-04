@@ -105,6 +105,19 @@
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
     </style>
 
+    <style name="ApplicationTheme.Monet" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/material_dynamic_primary80</item>
+        <item name="colorPrimaryVariant">@color/material_dynamic_primary80</item>
+        <item name="colorPrimaryDark">@color/material_dynamic_primary80</item>
+        <item name="rippleColor">@color/material_dynamic_primary40</item>
+        <item name="colorAccent">@color/material_dynamic_primary80</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="iconPreferenceColor">@color/material_dynamic_primary80</item>
+        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
+        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
+        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
+    </style>
+
     <style name="ApplicationTheme.Color9" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/primaryLightGray</item>
         <item name="colorPrimaryVariant">@color/primaryColorGray</item>
@@ -113,19 +126,6 @@
         <item name="colorAccent">@color/primaryLightGray</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightGray</item>
-        <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
-        <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
-        <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
-    </style>
-
-    <style name="ApplicationTheme.Monet" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="colorPrimary">@color/primaryLightColor</item>
-        <item name="colorPrimaryVariant">@color/accentColor</item>
-        <item name="colorPrimaryDark">@color/primaryColorBlue</item>
-        <item name="rippleColor">@color/primaryLightColor</item>
-        <item name="colorAccent">@color/primaryLightColor</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="iconPreferenceColor">@color/primaryLightColor</item>
         <item name="preferenceTheme">@style/ApplicationTheme.Preference</item>
         <item name="bottomNavigationStyle">@style/ApplicationTheme.BottomNavigation</item>
         <item name="navigationViewStyle">@style/ApplicationTheme.Navigation</item>
