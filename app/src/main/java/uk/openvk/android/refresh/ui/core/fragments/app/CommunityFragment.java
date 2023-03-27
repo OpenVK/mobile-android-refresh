@@ -23,17 +23,19 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.api.Groups;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Group;
 import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.fragments.pub_pages.AboutFragment;
 import uk.openvk.android.refresh.ui.core.fragments.pub_pages.WallFragment;
@@ -57,6 +59,8 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
     private Group group;
     private ArrayList<PublicPageAboutItem> aboutItems;
     private PublicPageAboutAdapter aboutAdapter;
+
+    private int tabSetup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,14 +90,25 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
         return view;
     }
 
-    public void setData(Group group) {
+    public void setData(Group group, OvkAPIWrapper ovk) {
         this.group = group;
         if(group != null && group.name != null) {
-            setTabsView();
+            if(tabSetup == 0) setTabsView();
             header.setProfileName(group.name);
             header.setStatus(group.description);
             header.findViewById(R.id.last_seen).setVisibility(View.GONE);
             header.setVerified(group.verified, requireContext());
+            header.setJoinButtonVisibility(group.is_member);
+            header.setJoinButtonOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(group.is_member == 0) {
+                        group.join(ovk);
+                    } else {
+                        group.leave(ovk);
+                    }
+                }
+            });
             Context ctx = requireContext();
             Global.setAvatarShape(getContext(), view.findViewById(R.id.profile_avatar));
             Glide.with(ctx).load(
@@ -111,7 +126,8 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
     public void setTabsView() {
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         ViewPager2 viewPager = view.findViewById(R.id.pager);
-        pagerAdapter = new PublicPagerAdapter(this);
+        String[] frgData = {"A", "B"};
+        pagerAdapter = new PublicPagerAdapter(this, frgData, 2);
         pagerAdapter.createFragment(0);
         pagerAdapter.createFragment(1);
         viewPager.setAdapter(pagerAdapter);
@@ -141,6 +157,7 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
                 }
         );
         mediator.attach();
+        tabSetup = 1;
     }
 
     private void createAboutAdapter(Group group) {
@@ -238,11 +255,7 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
     @SuppressLint("NotifyDataSetChanged")
     public void wallSelect(int position, String item, int value) {
         if(item.equals("likes")) {
-            if(value == 1) {
-                wallPosts.get(position).counters.isLiked = true;
-            } else {
-                wallPosts.get(position).counters.isLiked = false;
-            }
+            wallPosts.get(position).counters.isLiked = value == 1;
             wallAdapter.notifyDataSetChanged();
         }
     }
@@ -250,11 +263,7 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
     @SuppressLint("NotifyDataSetChanged")
     public void wallSelect(int position, String item, String value) {
         if(item.equals("likes")) {
-            if(value.equals("add")) {
-                wallPosts.get(position).counters.isLiked = true;
-            } else {
-                wallPosts.get(position).counters.isLiked = false;
-            }
+            wallPosts.get(position).counters.isLiked = value.equals("add");
             wallAdapter.notifyDataSetChanged();
         }
     }
@@ -294,5 +303,11 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setEnabled(verticalOffset == 0);
+    }
+
+    public void setJoinStatus(Group group, int status) {
+        this.group = group;
+        this.group.is_member = status;
+        header.setJoinButtonVisibility(group.is_member);
     }
 }

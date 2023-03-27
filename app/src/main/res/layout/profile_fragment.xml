@@ -84,9 +84,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
+                            android:contentDescription="Profile Pager"
                             app:tabIndicatorColor="?attr/colorAccent"
                             app:tabIndicatorFullWidth="false"
-                            app:tabMode="scrollable" />
+                            app:tabMode="scrollable"
+                            tools:ignore="HardcodedText" />
 
                 </com.google.android.material.appbar.AppBarLayout>
 

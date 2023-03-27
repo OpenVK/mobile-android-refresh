@@ -52,6 +52,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -77,6 +79,7 @@ import uk.openvk.android.refresh.api.models.LongPollServer;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
+import uk.openvk.android.refresh.api.wrappers.JSONParser;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.longpoll_api.LongPollService;
 import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
@@ -485,7 +488,7 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("friends"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
-                profileFragment.setData(account.user, account);
+                profileFragment.setData(account.user, friends, account, ovk_api);
                 toolbar.setTitle(R.string.nav_friends);
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (friendsFragment.getFriendsCount() == 0) {
@@ -500,7 +503,7 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("groups"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
-                profileFragment.setData(account.user, account);
+                profileFragment.setData(account.user, friends, account, ovk_api);
                 toolbar.setTitle(R.string.nav_groups);
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (groups.getList() == null || groups.getList().size() == 0) {
@@ -515,7 +518,7 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
-                profileFragment.setData(account.user, account);
+                profileFragment.setData(account.user, friends, account, ovk_api);
                 toolbar.setTitle(R.string.nav_messages);
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (conversations == null) {
@@ -530,7 +533,7 @@ public class AppActivity extends MonetCompatActivity {
                 prevMenuItem = navView.getMenu().getItem(0);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
                 ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.GONE);
-                profileFragment.setData(account.user, account);
+                profileFragment.setData(account.user,friends, account, ovk_api);
                 profileFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, false);
                 profileFragment.header.setCountersVisibility(PublicPageCounters.FRIENDS, true);
                 if (wall.getWallItems() == null) {
@@ -740,14 +743,15 @@ public class AppActivity extends MonetCompatActivity {
                         newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
                     }
                 } else if(selectedFragment == profileFragment) {
-                    if(profileFragment.getWallAdapter() != null) {
-                        if (message == HandlerMessages.WALL_AVATARS) {
-                            profileFragment.getWallAdapter().setAvatarLoadState(true);
-                        } else {
-                            profileFragment.getWallAdapter().setPhotoLoadState(true);
-                        }
-                        profileFragment.refreshWallAdapter();
+                    if(profileFragment.getWallAdapter() == null) {
+                        profileFragment.createWallAdapter(this, wall.getWallItems());
                     }
+                    if (message == HandlerMessages.WALL_AVATARS) {
+                        profileFragment.getWallAdapter().setAvatarLoadState(true);
+                    } else {
+                        profileFragment.getWallAdapter().setPhotoLoadState(true);
+                    }
+                    profileFragment.refreshWallAdapter();
                 }
             } else if(message == HandlerMessages.ACCOUNT_AVATAR) {
                 Glide.with(this).load(
@@ -756,6 +760,26 @@ public class AppActivity extends MonetCompatActivity {
                         .into((ImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
             } else if (message == HandlerMessages.FRIEND_AVATARS) {
                 friendsFragment.refreshAdapter();
+            } else if(message == HandlerMessages.FRIENDS_ADD) {
+                if(selectedFragment == friendsFragment) {
+                    //friends.requests.remove(friendsFragment.requests_cursor_index);
+                } else {
+                    JSONObject response = new JSONParser().parseJSON(data.getString("response"));
+                    int status = response.getInt("response");
+                    if (status == 1) {
+                        user.friends_status = status;
+                    } else if (status == 2) {
+                        user.friends_status = 3;
+                    }
+                    profileFragment.setFriendStatus(account.user, user.friends_status);
+                }
+            } else if(message == HandlerMessages.FRIENDS_DELETE) {
+                JSONObject response = new JSONParser().parseJSON(data.getString("response"));
+                int status = response.getInt("response");
+                if(status == 1) {
+                    user.friends_status = 0;
+                }
+                profileFragment.setFriendStatus(account.user, user.friends_status);
             } else if(message < 0) {
                 newsfeedFragment.setError(true, message, new View.OnClickListener() {
                     @Override

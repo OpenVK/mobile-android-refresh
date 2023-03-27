@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.button.MaterialButton;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.text.SimpleDateFormat;
@@ -163,5 +165,35 @@ public class ProfileHeader extends LinearLayoutCompat {
                 findViewById(R.id.show_members_btn).setVisibility(GONE);
             }
         }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void setAddToFriendsButtonVisibility(int status) {
+        if(status == 3) {
+            findViewById(R.id.add_to_btn).setVisibility(GONE);
+        } else if(status == 2) {
+            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(getResources().getDrawable(R.drawable.ic_person_add));
+            findViewById(R.id.add_to_btn).setVisibility(VISIBLE);
+        } else if(status == 1) {
+            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(getResources().getDrawable(R.drawable.ic_person_remove));
+            findViewById(R.id.add_to_btn).setVisibility(VISIBLE);
+        } else {
+            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(getResources().getDrawable(R.drawable.ic_person_add));
+            findViewById(R.id.add_to_btn).setVisibility(VISIBLE);
+        }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void setJoinButtonVisibility(int status) {
+        if(status > 0) {
+            findViewById(R.id.add_to_btn).setVisibility(GONE);
+        } else {
+            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(getResources().getDrawable(R.drawable.ic_person_add));
+            findViewById(R.id.add_to_btn).setVisibility(VISIBLE);
+        }
+    }
+
+    public void setJoinButtonOnClickListener(OnClickListener onClickListener) {
+        findViewById(R.id.add_to_btn).setOnClickListener(onClickListener);
     }
 }

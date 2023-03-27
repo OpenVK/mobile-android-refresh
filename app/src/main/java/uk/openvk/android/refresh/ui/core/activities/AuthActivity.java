@@ -115,6 +115,12 @@ public class AuthActivity extends MonetCompatActivity {
         setAppBar();
     }
 
+    public void restart() {
+        Intent intent = new Intent(this, AuthActivity.class);
+        startActivity(intent);
+        finishActivity(1);
+    }
+
     private void showOvkWarning() {
         instance_prefs = getSharedPreferences("instance", 0);
         if ((instance_prefs.getString("server", "").length() == 0

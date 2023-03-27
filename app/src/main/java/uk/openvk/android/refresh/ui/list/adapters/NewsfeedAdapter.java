@@ -74,7 +74,11 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
     @Override
     public int getItemCount() {
-        return items.size();
+        try {
+            return items.size();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public WallPost getItem(int position) {
@@ -264,7 +268,12 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 poster_name.setOnClickListener(openProfileListener);
                 if(contains_photos) {
                     if(photo_loaded) {
-                        ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView().setImageBitmap(photo_attachment.photo);
+                        (((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
+                        Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
+                                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                                .placeholder(ctx.getDrawable(R.drawable.photo_placeholder))
+                                .dontAnimate().error(R.drawable.photo_loading_error)
+                                .into(((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
                         (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                         PhotoAttachment finalPhoto_attachment = photo_attachment;
                         (convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {

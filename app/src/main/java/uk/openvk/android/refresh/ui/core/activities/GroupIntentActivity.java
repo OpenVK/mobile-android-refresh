@@ -176,13 +176,13 @@ public class GroupIntentActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parseSearch(data.getString("response"));
                 group = groups.getList().get(0);
-                communityFragment.setData(group);
+                communityFragment.setData(group, ovk_api);
                 group.downloadAvatar(downloadManager, "high");
                 wall.get(ovk_api, -group.id, 50);
             } else if (message == HandlerMessages.GROUPS_GET_BY_ID) {
                 groups.parse(data.getString("response"));
                 group = groups.getList().get(0);
-                communityFragment.setData(group);
+                communityFragment.setData(group, ovk_api);
                 group.downloadAvatar(downloadManager, "high");
                 wall.get(ovk_api, -group.id, 50);
             } else if(message == HandlerMessages.GROUPS_SEARCH) {
@@ -198,7 +198,11 @@ public class GroupIntentActivity extends MonetCompatActivity {
                     communityFragment.wallAdapter.setPhotoLoadState(true);
                 }
             } else if(message == HandlerMessages.GROUP_AVATARS) {
-                communityFragment.setData(group);
+                communityFragment.setData(group, ovk_api);
+            } else if (message == HandlerMessages.GROUPS_JOIN) {
+                communityFragment.setJoinStatus(group, 1);
+            } else if (message == HandlerMessages.GROUPS_LEAVE) {
+                communityFragment.setJoinStatus(group, 0);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

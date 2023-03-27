@@ -41,9 +41,11 @@ import java.util.Objects;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
+import uk.openvk.android.refresh.api.Friends;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
 import uk.openvk.android.refresh.ui.core.fragments.pub_pages.AboutFragment;
@@ -69,6 +71,8 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
     private AppBarLayout appBar;
     public ArrayList<PublicPageAboutItem> aboutItems;
     private PublicPageAboutAdapter aboutAdapter;
+
+    private int tabSetup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,7 +107,8 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
     public void setTabsView() {
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         ViewPager2 viewPager = view.findViewById(R.id.pager);
-        pagerAdapter = new PublicPagerAdapter(this);
+        String[] frgData = {"A", "B"};
+        pagerAdapter = new PublicPagerAdapter(this, frgData, 2);
         pagerAdapter.createFragment(0);
         pagerAdapter.createFragment(1);
         viewPager.setAdapter(pagerAdapter);
@@ -133,6 +138,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                 }
         );
         mediator.attach();
+        tabSetup = 1;
     }
 
     private void setTheme() {
@@ -164,19 +170,32 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
         }
     }
 
-    public void setData(User user, Account account) {
+    public void setData(User user, Friends friends, Account account, OvkAPIWrapper ovk) {
         this.user = user;
         if(user != null && user.first_name != null && user.last_name != null) {
-            setTabsView();
+            if(tabSetup == 0) setTabsView();
             header.setProfileName(String.format("%s %s", user.first_name, user.last_name));
             header.setLastSeen(user.sex, user.ls_date, user.ls_platform);
             header.setStatus(user.status);
             header.setVerified(user.verified, requireContext());
             header.setOnline(user.online);
+            header.setJoinButtonOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(user.friends_status == 1 || user.friends_status == 3) {
+                        friends.delete(ovk, user.id);
+                    } else {
+                        friends.add(ovk, user.id);
+                    }
+                }
+            });
             if(account.id == user.id) {
                 header.findViewById(R.id.send_msg_btn).setVisibility(View.GONE);
+                header.findViewById(R.id.add_to_btn).setVisibility(View.GONE);
             } else {
                 header.findViewById(R.id.send_msg_btn).setVisibility(View.VISIBLE);
+                header.findViewById(R.id.add_to_btn).setVisibility(View.VISIBLE);
+                header.setAddToFriendsButtonVisibility(user.friends_status);
             }
             Context ctx = requireContext();
             Global.setAvatarShape(getContext(), view.findViewById(R.id.profile_avatar));
@@ -235,6 +254,12 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                 }
             });
         }
+    }
+
+    public void setFriendStatus(User user, int status) {
+        this.user = user;
+        this.user.friends_status = status;
+        header.setAddToFriendsButtonVisibility(this.user.friends_status);
     }
 
     private void createAboutAdapter(User user) {
@@ -307,15 +332,18 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             public void run() {
                 try {
                     // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
-                    ((WallFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
-                    ((WallFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
-                    ((WallFragment) pagerAdapter.getFragment(0)).createWallAdapter(ctx, posts);
-                    wallAdapter = ((WallFragment) pagerAdapter.getFragment(0)).getWallAdapter();
+                    WallFragment wallFragment = ((WallFragment) pagerAdapter.getFragment(0));
+                    wallFragment.view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                    wallFragment.view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
+                    if(wallFragment.getWallAdapter() == null) {
+                        wallFragment.createWallAdapter(ctx, posts);
+                    }
+                    ProfileFragment.this.wallAdapter = wallFragment.getWallAdapter();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
-        }, 200);
+        }, 40);
 
     }
 

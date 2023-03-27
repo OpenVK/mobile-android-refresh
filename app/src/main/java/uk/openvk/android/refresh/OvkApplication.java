@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.Locale;
@@ -28,6 +30,11 @@ public class OvkApplication extends Application {
         instance_prefs = getSharedPreferences("instance", 0);
         MonetCompat.enablePaletteCompat();
         createSettings();
+        if(global_prefs.getBoolean("dark_theme", false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
     private void createSettings() {

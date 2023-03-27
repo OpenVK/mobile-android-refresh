@@ -126,7 +126,20 @@
                         android:layout_height="wrap_content"
                         android:text="0 members"
                         tools:ignore="HardcodedText" />
+
                 </TableRow>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_to_btn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="Message"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    app:icon="@drawable/ic_person_add"
+                    tools:ignore="HardcodedText" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/send_msg_btn"

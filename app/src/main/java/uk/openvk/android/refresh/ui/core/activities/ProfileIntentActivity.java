@@ -23,6 +23,8 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -41,6 +43,7 @@ import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
+import uk.openvk.android.refresh.api.wrappers.JSONParser;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 import uk.openvk.android.refresh.ui.core.fragments.app.ProfileFragment;
@@ -181,7 +184,7 @@ public class ProfileIntentActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.USERS_GET) {
                 users.parse(data.getString("response"));
                 user = users.getList().get(0);
-                profileFragment.setData(user, account);
+                profileFragment.setData(user, friends, account, ovk_api);
                 user.downloadAvatar(downloadManager, "high", "profile_avatars");
                 wall.get(ovk_api, user.id, 50);
                 friends.get(ovk_api, user.id, 25, "profile_counter");
@@ -195,13 +198,32 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 wall.parse(this, downloadManager, "high", data.getString("response"));
                 profileFragment.createWallAdapter(this, wall.getWallItems());
             } else if(message == HandlerMessages.WALL_AVATARS || message == HandlerMessages.WALL_ATTACHMENTS) {
-                if(message == HandlerMessages.WALL_AVATARS) {
-                    profileFragment.wallAdapter.setAvatarLoadState(true);
-                } else {
-                    profileFragment.wallAdapter.setPhotoLoadState(true);
+                if (profileFragment.getWallAdapter() == null) {
+                    profileFragment.createWallAdapter(this, wall.getWallItems());
                 }
+                try {
+                    if (message == HandlerMessages.WALL_AVATARS) {
+                        profileFragment.getWallAdapter().setAvatarLoadState(true);
+                    } else {
+                        profileFragment.getWallAdapter().setPhotoLoadState(true);
+                    }
+                } catch (Exception ignored) {
+                }
+                profileFragment.refreshWallAdapter();
+            } else if(message == HandlerMessages.FRIENDS_ADD) {
+                JSONObject response = new JSONParser().parseJSON(data.getString("response"));
+                int status = response.getInt("response");
+                user.friends_status = status;
+                profileFragment.setFriendStatus(account.user, user.friends_status);
+            } else if(message == HandlerMessages.FRIENDS_DELETE) {
+                JSONObject response = new JSONParser().parseJSON(data.getString("response"));
+                int status = response.getInt("response");
+                if(status == 1) {
+                    user.friends_status = 0;
+                }
+                profileFragment.setFriendStatus(account.user, user.friends_status);
             } else if(message == HandlerMessages.PROFILE_AVATARS) {
-                profileFragment.setData(user, account);
+                profileFragment.setData(user, friends, account, ovk_api);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
