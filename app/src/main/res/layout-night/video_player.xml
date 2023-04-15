@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <org.videolan.libvlc.util.VLCVideoLayout
+            android:id="@+id/view_vlc_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="#7f7f7f">
+
+        </org.videolan.libvlc.util.VLCVideoLayout>
+
+    </FrameLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/loading_card"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="#8f000000"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="false">
+
+        <ProgressBar
+            android:id="@+id/loading_progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="?attr/rippleColor" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/player_controls"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="@drawable/bottom_shadow"
+            android:paddingTop="8dp">
+
+            <ImageButton
+                android:id="@+id/play_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:contentDescription="Play"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:contentDescription="Play"
+                app:srcCompat="@drawable/ic_play_large"
+                app:tint="?attr/colorPrimary"
+                tools:ignore="ContentDescription,HardcodedText" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                tools:ignore="InefficientWeight">
+
+                <TextView
+                    android:id="@+id/timecode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="00:00 / 00:00"
+                    android:textColor="#9fffffff"
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
+
+                <SeekBar
+                    android:id="@+id/seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:paddingStart="6dip"
+                    android:paddingEnd="6dip"
+                    android:progress="0"
+                    android:progressTint="?attr/colorPrimary"
+                    android:thumbTint="?attr/rippleColor" />
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/zoom_btn"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:contentDescription="Zoom"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:contentDescription="Zoom"
+                app:srcCompat="@drawable/ic_zoom_out_large"
+                app:tint="?attr/colorPrimary"
+                tools:ignore="ContentDescription,HardcodedText" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
