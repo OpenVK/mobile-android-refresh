@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:indeterminateTint="?attr/rippleColor" />
+            android:indeterminateTint="?attr/colorPrimary" />
 
     </com.google.android.material.card.MaterialCardView>
 
