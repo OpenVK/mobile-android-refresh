@@ -14,6 +14,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -697,7 +698,11 @@ public class AppActivity extends MonetCompatActivity {
                 longPollIntent.putExtra("server", longPollServer.address);
                 longPollIntent.putExtra("key", longPollServer.key);
                 longPollIntent.putExtra("ts", longPollServer.ts);
-                startService(longPollIntent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(longPollIntent);
+                } else {
+                    startService(longPollIntent);
+                }
                 bindService(longPollIntent, lpConnection, Context.BIND_AUTO_CREATE);
                 // Wake up service
                 mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,

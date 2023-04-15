@@ -37,14 +37,21 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -65,6 +72,8 @@ public class PhotoViewerActivity extends MonetCompatActivity {
     private String cache_path;
     public Handler handler;
     private MaterialToolbar toolbar;
+
+    private AppBarLayout appbar;
     private boolean isDarkTheme;
     private BitmapFactory.Options bfOptions;
     private Bitmap bitmap;
@@ -91,6 +100,7 @@ public class PhotoViewerActivity extends MonetCompatActivity {
 
     private void setAppBar() {
         toolbar = findViewById(R.id.app_toolbar);
+        appbar = findViewById(R.id.app_bar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(getResources().getString(R.string.photo_title));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -180,22 +190,22 @@ public class PhotoViewerActivity extends MonetCompatActivity {
                 ((ZoomableImageView) findViewById(R.id.image_view)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(toolbar.getVisibility() == View.VISIBLE) {
-                            toolbar.animate().translationY(-toolbar.getHeight()).alpha(0.0f)
+                        if(appbar.getVisibility() == View.VISIBLE) {
+                            appbar.animate().translationY(-appbar.getHeight()).alpha(0.0f)
                                     .setListener(new AnimatorListenerAdapter() {
                                         @Override
                                         public void onAnimationEnd(Animator animation) {
                                             super.onAnimationEnd(animation);
-                                            toolbar.setVisibility(View.GONE);
+                                            appbar.setVisibility(View.GONE);
                                         }
                                     });
                         } else {
-                            toolbar.setAlpha(1.0f);
-                            toolbar.animate().translationY(0).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                            appbar.setAlpha(1.0f);
+                            appbar.animate().translationY(0).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationStart(Animator animation) {
                                     super.onAnimationStart(animation);
-                                    toolbar.setVisibility(View.VISIBLE);
+                                    appbar.setVisibility(View.VISIBLE);
                                 }
                             });
                         }
@@ -243,19 +253,38 @@ public class PhotoViewerActivity extends MonetCompatActivity {
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         File file = new File(cache_path);
         String[] path_array = cache_path.split("/");
-        String dest = String.format("%s/OpenVK/%s", getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
+        String dest = String.format("%s/OpenVK/%s", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
                 path_array[path_array.length - 1]);
-        String dest_dir = String.format("%s/OpenVK", getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath());
+        String dest_dir = String.format("%s/OpenVK", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath());
         String mime = "image/jpeg";
         if (bitmap != null) {
             FileChannel sourceChannel = null;
             FileChannel destChannel = null;
+            //dest = dest + ".jpg";
             try {
-                dest = dest + ".jpg";
-
                 File dirDest = new File(dest_dir);
                 if(!dirDest.exists()) dirDest.mkdirs();
-                sourceChannel = new FileInputStream(file).getChannel();
+                FileInputStream fis = new FileInputStream(file);
+                sourceChannel = fis.getChannel();
+                BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+                StringBuilder sb = new StringBuilder();
+                char[] bytes = new char[64];
+                if(br.read(bytes, 0, 32) != 0) {
+                    sb.append(bytes);
+                }
+                fis.close();
+                // reset FIS state
+                fis = new FileInputStream(file);
+                sourceChannel = fis.getChannel();
+                // check file signature and returning valid MIME type
+                mime = checkFileType(sb);
+                if(mime.equals("image/jpeg")) {
+                    dest = dest + ".jpg";
+                } else if(mime.equals("image/png")) {
+                    dest = dest + ".png";
+                } else if(mime.equals("image/gif")) {
+                    dest = dest + ".gif";
+                }
                 destChannel = new FileOutputStream(dest).getChannel();
                 destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
                 handler.sendEmptyMessage(UiMessages.TOAST_SAVED_TO_MEMORY);
@@ -277,6 +306,31 @@ public class PhotoViewerActivity extends MonetCompatActivity {
             bitmap = null;
         } else {
             handler.sendEmptyMessage(UiMessages.TOAST_SAVE_PHOTO_ERROR);
+        }
+    }
+
+    private String checkFileType(StringBuilder sb) {
+        if(sb != null) {
+            if(sb.length() > 0) {
+                if (sb.toString().startsWith("ÿØÿÛ")
+                        || sb.toString().contains("JFIF")
+                        || sb.toString().startsWith("ÿØÿî")
+                        || sb.toString().startsWith("ÿØÿà")
+                        || sb.toString().startsWith("ÿØÿá")
+                ) {
+                    return "image/jpeg";
+                } else if (sb.toString().contains("PNG")) {
+                    return "image/png";
+                } else if (sb.toString().startsWith("GIF87a") || sb.toString().startsWith("GIF89a")) {
+                    return "image/gif";
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        } else {
+            return "";
         }
     }
 

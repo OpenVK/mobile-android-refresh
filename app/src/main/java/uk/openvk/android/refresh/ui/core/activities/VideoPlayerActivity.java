@@ -13,8 +13,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
@@ -155,10 +157,9 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     private void createMediaPlayer(Uri uri) {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         window = getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN);
         window.setStatusBarColor(Global.adjustAlpha(Color.BLACK, 0.5f));
         window.setNavigationBarColor(Color.BLACK);
         ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
@@ -249,19 +250,20 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     }
 
     private void showPlayControls() {
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         if(findViewById(R.id.player_controls).getVisibility() == View.VISIBLE) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             findViewById(R.id.player_controls).setVisibility(View.GONE);
             View decorView = getWindow().getDecorView();
         } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            findViewById(R.id.player_controls).setVisibility(View.VISIBLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             View decorView = getWindow().getDecorView();
+            findViewById(R.id.player_controls).setVisibility(View.VISIBLE);
             new Handler(Looper.myLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if(findViewById(R.id.player_controls).getVisibility() == View.VISIBLE) {
-                        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                         findViewById(R.id.player_controls).setVisibility(View.GONE);
                         View decorView = getWindow().getDecorView();
                     }
