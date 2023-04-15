@@ -162,6 +162,20 @@
         <item name="titleTextStyle">?attr/textAppearanceHeadline3</item>
     </style>
 
+    <style name="ApplicationTheme.Toolbar.Dark" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="backgroundColor">?attr/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/backgroundColor</item>
+        <item name="android:textColorSecondary">#86ffffff</item>
+        <item name="colorOnPrimary">@color/backgroundColor</item>
+        <item name="colorOnSecondary">#86ffffff</item>
+        <item name="titleTextStyle">?attr/textAppearanceHeadline3</item>
+        <item name="popupTheme">@style/ApplicationTheme.LightPopupMenuOverlay</item>
+    </style>
+
+    <style name="ApplicationTheme.LightPopupMenuOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="ApplicationTheme.SplashTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#ffffff</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_openvk_splash_logo</item>
