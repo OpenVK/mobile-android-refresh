@@ -155,4 +155,6 @@
     <string name="download">Скачать</string>
     <string name="copy_link">Скопировать ссылку</string>
     <string name="photo_save_ok">Фотография сохранена в память устройства</string>
+
+    <string name="global_search_hint">Глобальный поиск</string>
 </resources>

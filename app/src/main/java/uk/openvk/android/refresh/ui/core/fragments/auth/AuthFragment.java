@@ -36,6 +36,7 @@ public class AuthFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.auth_fragment, container, false);
         Button sign_in_btn = view.findViewById(R.id.sign_in_btn);
+        Button register_btn = view.findViewById(R.id.register_btn);
         AutoCompleteTextView instance_edit = view.findViewById(R.id.instance_edit);
         TextInputLayout password_layout = view.findViewById(R.id.password_layout);
         TextInputEditText username_edit = view.findViewById(R.id.username_edit);
@@ -50,6 +51,13 @@ public class AuthFragment extends Fragment {
                                 Objects.requireNonNull(password_edit.getText()).toString());
                     }
                 }
+            }
+        });
+
+        register_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openWebAddress(String.format("http://%s/reg", instance_edit.getText().toString()));
             }
         });
 

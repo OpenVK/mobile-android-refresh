@@ -153,4 +153,6 @@
     <string name="download">Download</string>
     <string name="copy_link">Copy link</string>
     <string name="photo_save_ok">The photo has been saved to the Device Memory</string>
+
+    <string name="global_search_hint">Global search</string>
 </resources>
