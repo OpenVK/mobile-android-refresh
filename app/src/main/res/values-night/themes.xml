@@ -17,8 +17,8 @@
     <style name="ApplicationTheme.Color2" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/primaryLightRed</item>
         <item name="colorPrimaryVariant">@color/primaryColorRed</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorRed</item>
-        <item name="rippleColor">@color/primaryLightRed</item>
+        <item name="colorPrimaryDark">@color/primaryColorRed</item>
+        <item name="rippleColor">@color/primaryDarkColorRed</item>
         <item name="colorAccent">@color/primaryLightRed</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightRed</item>
@@ -43,8 +43,8 @@
     <style name="ApplicationTheme.Color4" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/primaryLightViolet</item>
         <item name="colorPrimaryVariant">@color/primaryColorViolet</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorViolet</item>
-        <item name="rippleColor">@color/primaryLightViolet</item>
+        <item name="colorPrimaryDark">@color/primaryColorViolet</item>
+        <item name="rippleColor">@color/primaryDarkColorViolet</item>
         <item name="colorAccent">@color/primaryLightViolet</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightViolet</item>
@@ -57,7 +57,7 @@
         <item name="colorPrimary">@color/primaryLightOrange</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColorOrange</item>
         <item name="colorPrimaryDark">@color/primaryColorOrange</item>
-        <item name="rippleColor">@color/primaryLightOrange</item>
+        <item name="rippleColor">@color/primaryDarkColorOrange</item>
         <item name="colorAccent">@color/primaryLightOrange</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightOrange</item>
@@ -70,7 +70,7 @@
         <item name="colorPrimary">@color/primaryLightTeal</item>
         <item name="colorPrimaryVariant">@color/primaryColorTeal</item>
         <item name="colorPrimaryDark">@color/accentColorTeal_reserve</item>
-        <item name="rippleColor">@color/primaryLightTeal</item>
+        <item name="rippleColor">@color/primaryColorTeal</item>
         <item name="colorAccent">@color/primaryLightTeal</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightTeal</item>
@@ -83,7 +83,7 @@
         <item name="colorPrimary">@color/primaryLightOcean</item>
         <item name="colorPrimaryVariant">@color/primaryColorOcean</item>
         <item name="colorPrimaryDark">@color/accentColorOcean_reserve</item>
-        <item name="rippleColor">@color/primaryLightOcean</item>
+        <item name="rippleColor">@color/primaryDarkColorOcean</item>
         <item name="colorAccent">@color/primaryLightOcean</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightOcean</item>
@@ -95,8 +95,8 @@
     <style name="ApplicationTheme.Color8" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/primaryLightVK5</item>
         <item name="colorPrimaryVariant">@color/primaryColorVK5</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColorVK5</item>
-        <item name="rippleColor">@color/primaryLightVK5</item>
+        <item name="colorPrimaryDark">@color/primaryColorVK5</item>
+        <item name="rippleColor">@color/primaryDarkColorVK5</item>
         <item name="colorAccent">@color/primaryLightVK5</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightVK5</item>
@@ -109,7 +109,7 @@
         <item name="colorPrimary">@color/primaryLightGray</item>
         <item name="colorPrimaryVariant">@color/primaryColorGray</item>
         <item name="colorPrimaryDark">@color/primaryDarkColorGray</item>
-        <item name="rippleColor">@color/primaryLightGray</item>
+        <item name="rippleColor">@color/primaryDarkColorGray</item>
         <item name="colorAccent">@color/primaryLightGray</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightGray</item>
@@ -122,7 +122,7 @@
         <item name="colorPrimary">@color/primaryLightColor</item>
         <item name="colorPrimaryVariant">@color/accentColor</item>
         <item name="colorPrimaryDark">@color/primaryColorBlue</item>
-        <item name="rippleColor">@color/primaryLightColor</item>
+        <item name="rippleColor">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/primaryLightColor</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="iconPreferenceColor">@color/primaryLightColor</item>
@@ -151,20 +151,25 @@
         <item name="elevation">8dp</item>
     </style>
 
+    <style name="ApplicationTheme.Navigation" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextAppearance">?attr/textAppearanceSubtitle2</item>
+        <item name="listPreferredItemHeightSmall">36dp</item>
+    </style>
+
     <style name="ApplicationTheme.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="rippleColor">@color/primaryColor</item>
+        <item name="rippleColor">?attr/rippleColor</item>
         <item name="colorAccent">@color/primaryDarkColor</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="ApplicationTheme.Button.Borderless" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="rippleColor">?attr/colorPrimaryVariant</item>
+        <item name="rippleColor">?attr/rippleColor</item>
         <item name="colorAccent">?attr/colorAccent</item>
         <item name="android:letterSpacing">0</item>
     </style>
 
     <style name="ApplicationTheme.Button.Borderless.NoCaps"  parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="rippleColor">?attr/colorPrimaryVariant</item>
+        <item name="rippleColor">?attr/rippleColor</item>
         <item name="colorAccent">?attr/colorAccent</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:letterSpacing">0</item>

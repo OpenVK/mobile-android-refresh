@@ -91,6 +91,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:theme="@style/ApplicationTheme.Navigation"
         app:menu="@menu/app_nav_drawer"
         app:headerLayout="@layout/drawer_header"
         app:itemIconTint="@color/nv_items"

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -184,6 +185,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         dialog.setView(about_instance_view);
         dialog.setPositiveButton(android.R.string.ok, null);
         TextView server_name = (TextView) about_instance_view.findViewById(R.id.server_addr_label2);
+        server_name.setText(instance_prefs.getString("server", ""));
         ((TextView) about_instance_view.findViewById(R.id.connection_type_label2)).setText(getResources().getString(R.string.loading));
         ((TextView) about_instance_view.findViewById(R.id.instance_version_label2)).setText(getResources().getString(R.string.loading));
         ((LinearLayout) about_instance_view.findViewById(R.id.instance_version_ll)).setVisibility(View.GONE);
@@ -218,6 +220,9 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void openWebAddress(String address) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(address));
+        startActivity(i);
     }
 
     private void showLogoutConfirmDialog() {

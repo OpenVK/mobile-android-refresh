@@ -920,7 +920,8 @@ public class AppActivity extends MonetCompatActivity {
     public void onBackPressed() {
         FragmentManager fm = getSupportFragmentManager();
         if(selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("about_app"))
-                || selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("personalization"))) {
+                || selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("personalization"))
+                || selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("video_settings"))) {
             switchFragment("settings");
         } else if(selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("newsfeed"))) {
             finishAffinity();
