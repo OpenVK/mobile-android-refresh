@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.longpoll_api.MessageEvent;
+import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.MainActivity;
 
 public class NotificationManager {
@@ -35,7 +36,7 @@ public class NotificationManager {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notifMan = ctx.getSystemService(android.app.NotificationManager.class);
             int importance = android.app.NotificationManager.IMPORTANCE_DEFAULT;
-            notifChannel = new NotificationChannel("lp_updates", "LongPoll Updates", importance);
+            notifChannel = new NotificationChannel("direct_messages", ctx.getResources().getString(R.string.messages_notifch_title), importance);
             notifChannel.enableLights(ledIndicate);
             notifChannel.enableVibration(vibrate);
             if(playSound) {
@@ -75,6 +76,25 @@ public class NotificationManager {
                 notifMan.notify(notification_id, notification);
             }
         }
+    }
+
+    public Notification createServiceNotification(Context ctx) {
+        String CHANNEL_ID = "service_notifch";
+        NotificationChannel channel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(CHANNEL_ID,
+                    ctx.getResources().getString(R.string.service_notifch_title),
+                    android.app.NotificationManager.IMPORTANCE_NONE);
+
+
+            ((android.app.NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+            return new NotificationCompat.Builder(ctx, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_ovk_notif)
+                    .setStyle(new NotificationCompat.BigTextStyle())
+                    .setContentTitle(ctx.getResources().getString(R.string.longpoll_notification_title))
+                    .setContentText(ctx.getResources().getString(R.string.longpoll_notification_subtitle)).build();
+        }
+        return null;
     }
 
     public boolean isRepeat(String last_longpoll_response, String response) {

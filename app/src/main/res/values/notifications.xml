@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_notifch_title">Service notifications</string>
+    <string name="longpoll_notification_title">Direct Messages service running</string>
+    <string name="longpoll_notification_subtitle">Direct messages are constantly updated in the background</string>
+
+    <string name="messages_notifch_title">Direct Messages</string>
+</resources>

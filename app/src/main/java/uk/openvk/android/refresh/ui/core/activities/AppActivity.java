@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -85,6 +84,7 @@ import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.JSONParser;
+import uk.openvk.android.refresh.api.wrappers.NotificationManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.longpoll_api.LongPollService;
 import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
@@ -141,6 +141,7 @@ public class AppActivity extends MonetCompatActivity {
     private LongPollServer longPollServer;
     private Intent longPollIntent;
     private VideoSettingsFragment videoSettingsFragment;
+    private NotificationManager notifMan;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -155,7 +156,7 @@ public class AppActivity extends MonetCompatActivity {
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-
+        notifMan = new NotificationManager(this, true, true, true, "");
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
@@ -1065,17 +1066,7 @@ public class AppActivity extends MonetCompatActivity {
             longPollService = binder.getService();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 AppActivity.this.startForegroundService(longPollIntent);
-                String CHANNEL_ID = "lp_channel_01";
-                NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                        getResources().getString(R.string.longpoll_notifch_title),
-                        NotificationManager.IMPORTANCE_LOW);
-
-                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
-                Notification notification = new NotificationCompat.Builder(AppActivity.this, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_ovk_notif)
-                        .setStyle(new NotificationCompat.BigTextStyle())
-                        .setContentTitle(getResources().getString(R.string.longpoll_notification_title))
-                        .setContentText(getResources().getString(R.string.longpoll_notification_subtitle)).build();
+                Notification notification = notifMan.createServiceNotification(AppActivity.this);
                 longPollService.startForeground(180, notification);
             }
             longPollService.run(AppActivity.this, instance_prefs.getString("server", ""), longPollServer.address, longPollServer.key, longPollServer.ts, true);
