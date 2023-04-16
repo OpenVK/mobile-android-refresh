@@ -2,6 +2,9 @@ package uk.openvk.android.refresh.ui.core.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -32,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -713,15 +717,21 @@ public class AppActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager, true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createAdapter(this, friendsList, "friends");
+                friendsFragment.createFriendsAdapter(this, friendsList, "friends");
                 friendsFragment.disableUpdateState();
-                friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
+                //friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createAdapter(this, friendsList, "friends");
-                friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
+                friendsFragment.createFriendsAdapter(this, friendsList, "friends");
+                //friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
+            } else if (message == HandlerMessages.FRIENDS_REQUESTS) {
+                int old_friends_size = friends.getFriends().size();
+                friends.parse(data.getString("response"), downloadManager, true, false);
+                ArrayList<Friend> friendsList = friends.getFriends();
+                friendsFragment.createFriendsAdapter(this, friendsList, "requests");
+                //friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parse(data.getString("response"), downloadManager, global_prefs.getString("photos_quality", ""), true, true);
                 ArrayList<Group> groupsList = groups.getList();
@@ -1051,8 +1061,28 @@ public class AppActivity extends MonetCompatActivity {
 
     private ServiceConnection lpConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            longPollService = ((LongPollService.LongPollBinder) service).getService();
+            LongPollService.LongPollBinder binder = (LongPollService.LongPollBinder) service;
+            longPollService = binder.getService();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                AppActivity.this.startForegroundService(longPollIntent);
+                String CHANNEL_ID = "lp_channel_01";
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                        getResources().getString(R.string.longpoll_notifch_title),
+                        NotificationManager.IMPORTANCE_LOW);
+
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+                Notification notification = new NotificationCompat.Builder(AppActivity.this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_ovk_notif)
+                        .setStyle(new NotificationCompat.BigTextStyle())
+                        .setContentTitle(getResources().getString(R.string.longpoll_notification_title))
+                        .setContentText(getResources().getString(R.string.longpoll_notification_subtitle)).build();
+                longPollService.startForeground(180, notification);
+            }
             longPollService.run(AppActivity.this, instance_prefs.getString("server", ""), longPollServer.address, longPollServer.key, longPollServer.ts, true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                AppActivity.this.unbindService(this);
+            }
+
         }
 
         @Override

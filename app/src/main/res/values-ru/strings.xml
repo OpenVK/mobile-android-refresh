@@ -157,4 +157,10 @@
     <string name="photo_save_ok">Фотография сохранена в память устройства</string>
 
     <string name="global_search_hint">Глобальный поиск</string>
+
+    <string name="friends_tab">Друзья</string>
+    <string name="friend_requests_tab">Заявки</string>
+    <string name="longpoll_notifch_title">Служба ЛС (LongPoll)</string>
+    <string name="longpoll_notification_title">Служба личных сообщений активна</string>
+    <string name="longpoll_notification_subtitle">Личные сообщения постоянно обновляются в фоновом режиме</string>
 </resources>

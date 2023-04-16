@@ -1,4 +1,4 @@
-package uk.openvk.android.refresh.ui.core.fragments.pub_pages;
+package uk.openvk.android.refresh.ui.core.fragments.app.pub_pages;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.R;
@@ -45,7 +44,7 @@ public class WallFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.wall_tab, container, false);
+        view = inflater.inflate(R.layout.tab_wall, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
         wall_rv = view.findViewById(R.id.wall_rv);
         loading_layout.setVisibility(View.VISIBLE);

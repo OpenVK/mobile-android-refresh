@@ -1,4 +1,4 @@
-package uk.openvk.android.refresh.ui.core.fragments.pub_pages;
+package uk.openvk.android.refresh.ui.core.fragments.app.friends;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,54 +13,57 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.ui.list.adapters.PublicPageAboutAdapter;
+import uk.openvk.android.refresh.api.models.Friend;
+import uk.openvk.android.refresh.ui.list.adapters.FriendRequestsAdapter;
 import uk.openvk.android.refresh.ui.list.items.PublicPageAboutItem;
 
-public class AboutFragment extends Fragment {
+public class FriendRequestsFragment extends Fragment {
     public View view;
     private Context ctx;
     private ArrayList<PublicPageAboutItem> aboutItems;
-    private RecyclerView about_rv;
-    private RecyclerView aboutView;
+    private SwipeRefreshLayout friends_req_srl;
     private LinearLayoutManager llm;
-    private PublicPageAboutAdapter aboutAdapter;
+    private FriendRequestsAdapter requestsAdapter;
+    private RecyclerView requests_rv;
+    private ArrayList<Friend> friendRequests;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.about_page_tab, container, false);
+        view = inflater.inflate(R.layout.tab_friend_requests, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
-        about_rv = view.findViewById(R.id.about_rv);
+        friends_req_srl = view.findViewById(R.id.requests_swipe_layout);
+        requests_rv = view.findViewById(R.id.requests_rv);
         loading_layout.setVisibility(View.VISIBLE);
-        about_rv.setVisibility(View.GONE);
+        friends_req_srl.setVisibility(View.GONE);
         return view;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void createAboutAdapter(Context ctx, ArrayList<PublicPageAboutItem> items) {
+    public void createRequestsAdapter(Context ctx, ArrayList<Friend> items) {
         this.ctx = ctx;
-        this.aboutItems = items;
-        if(aboutAdapter == null) {
-            aboutView = about_rv;
+        this.friendRequests = items;
+        if(requestsAdapter == null) {
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            aboutView.setLayoutManager(llm);
-            aboutAdapter = new PublicPageAboutAdapter(ctx, this.aboutItems);
-            aboutView.setAdapter(aboutAdapter);
+            requests_rv.setLayoutManager(llm);
+            requestsAdapter = new FriendRequestsAdapter(ctx, this.friendRequests);
+            requests_rv.setAdapter(requestsAdapter);
         } else {
-            aboutAdapter.notifyDataSetChanged();
+            requestsAdapter.notifyDataSetChanged();
         }
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
-        @SuppressLint("CutPasteId") RecyclerView about_rv = view.findViewById(R.id.about_rv);
+        @SuppressLint("CutPasteId") RecyclerView requests_rv = view.findViewById(R.id.requests_rv);
         loading_layout.setVisibility(View.GONE);
-        about_rv.setVisibility(View.VISIBLE);
+        requests_rv.setVisibility(View.VISIBLE);
     }
 
-    public PublicPageAboutAdapter getAboutAdapter() {
-        return aboutAdapter;
+    public FriendRequestsAdapter getRequestsAdapter() {
+        return requestsAdapter;
     }
 }

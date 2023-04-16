@@ -155,4 +155,10 @@
     <string name="photo_save_ok">The photo has been saved to the Device Memory</string>
 
     <string name="global_search_hint">Global search</string>
+
+    <string name="friends_tab">Friends</string>
+    <string name="friend_requests_tab">Requests</string>
+    <string name="longpoll_notifch_title">DM Service (LongPoll)</string>
+    <string name="longpoll_notification_title">Direct Messages service running</string>
+    <string name="longpoll_notification_subtitle">Direct messages are constantly updated in the background</string>
 </resources>

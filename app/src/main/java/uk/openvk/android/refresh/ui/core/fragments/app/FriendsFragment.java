@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
@@ -25,16 +28,18 @@ import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.api.Friends;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
+import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendsListFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.WallFragment;
 import uk.openvk.android.refresh.ui.core.listeners.OnRecyclerScrollListener;
-import uk.openvk.android.refresh.ui.core.listeners.OnScrollListener;
 import uk.openvk.android.refresh.ui.view.InfinityRecyclerView;
-import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
 import uk.openvk.android.refresh.ui.list.adapters.FriendsAdapter;
+import uk.openvk.android.refresh.ui.view.pager.adapters.FriendsPagerAdapter;
 
 public class FriendsFragment extends Fragment {
     private View view;
@@ -44,6 +49,9 @@ public class FriendsFragment extends Fragment {
     private FriendsAdapter friendsAdapter;
     private SharedPreferences global_prefs;
     private boolean loading_more_friends;
+    private FriendsPagerAdapter pagerAdapter;
+    private int tabSetup;
+    private ArrayList<Friend> friendRequests;
 
     @Nullable
     @Override
@@ -51,10 +59,14 @@ public class FriendsFragment extends Fragment {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.friends_fragment, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+/*
+        Does not work yet!
+
+        setTheme();
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.GONE);
-        setTheme();
+
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -65,8 +77,46 @@ public class FriendsFragment extends Fragment {
                 }
             }
         });
+*/
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
+        setTabsView();
         return view;
+    }
+
+    public void setTabsView() {
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        ViewPager2 viewPager = view.findViewById(R.id.pager);
+        String[] frgData = {"A", "B"};
+        pagerAdapter = new FriendsPagerAdapter(this, frgData, 2);
+        pagerAdapter.createFragment(0);
+        pagerAdapter.createFragment(1);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setSaveEnabled(false);
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if(position == 1) {
+                    if (friendRequests != null) {
+                        createRequestsAdapter(friendRequests);
+                    }
+                }
+            }
+        });
+        TabLayoutMediator mediator = new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    if(position == 0) {
+                        tab.setText(getResources().getString(R.string.friends_tab));
+                    } else {
+                        tab.setText(getResources().getString(R.string.friend_requests_tab));
+                    }
+                }
+        );
+        mediator.attach();
+        tabSetup = 1;
+    }
+
+    private void createRequestsAdapter(ArrayList<Friend> friendRequests) {
     }
 
     private void setTheme() {
@@ -93,24 +143,33 @@ public class FriendsFragment extends Fragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void createAdapter(Context ctx, ArrayList<Friend> friends, String where) {
-        this.friends = friends;
-        friendsView = view.findViewById(R.id.friends_rv);
-        if(friendsAdapter == null) {
-            friendsAdapter = new FriendsAdapter(getContext(), this.friends);
-            llm = new LinearLayoutManager(ctx);
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            friendsView.setLayoutManager(llm);
-            friendsView.setAdapter(friendsAdapter);
-        } else {
-            friendsAdapter.notifyDataSetChanged();
-        }
+    public void createFriendsAdapter(Context ctx, ArrayList<Friend> friends, String where) {
         (view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-        (view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.friends_layout).setVisibility(View.VISIBLE);
+        this.friends = friends;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
+                    FriendsListFragment friendsListFragment = (FriendsListFragment) pagerAdapter.getFragment(0);
+                    friendsListFragment.view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                    friendsListFragment.view.findViewById(R.id.friends_rv).setVisibility(View.VISIBLE);
+                    if(friendsListFragment.getFriendsAdapter() == null) {
+                        friendsListFragment.createFriendsAdapter(ctx, friends);
+                    }
+                    FriendsFragment.this.friendsAdapter = friendsListFragment.getFriendsAdapter();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }, 120);
+        //(view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
+
     }
 
     public void disableUpdateState() {
-        ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setRefreshing(false);
+        //((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setRefreshing(false);
     }
 
     @SuppressLint("NotifyDataSetChanged")

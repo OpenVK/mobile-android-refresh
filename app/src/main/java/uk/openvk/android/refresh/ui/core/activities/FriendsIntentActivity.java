@@ -178,22 +178,17 @@ public class FriendsIntentActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager, true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createAdapter(this, friendsList, "friends");
+                friendsFragment.createFriendsAdapter(this, friendsList, "friends");
                 friendsFragment.disableUpdateState();
-                friendsFragment.setScrollingPositions(this, true);
-            } else if (message == HandlerMessages.FRIEND_AVATARS) {
-                friendsFragment.refreshAdapter();
+                //friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createAdapter(this, friendsList, "friends");
-                friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
-                //if(old_friends_size == friends.getFriends().size()) {
-                //    friendsFragment.setScrollingPositions(this, false);
-                //} else {
-                //    friendsFragment.setScrollingPositions(this, true);
-                //}
+                friendsFragment.createFriendsAdapter(this, friendsList, "friends");
+                //friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
+            } if (message == HandlerMessages.FRIEND_AVATARS) {
+                //friendsFragment.refreshAdapter();
             }
         } catch (Exception ex) {
             ex.printStackTrace();

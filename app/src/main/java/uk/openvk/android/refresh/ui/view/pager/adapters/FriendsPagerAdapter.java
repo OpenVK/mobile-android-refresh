@@ -8,22 +8,23 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendRequestsFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendsListFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.AboutFragment;
-import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.WallFragment;
 
-public class PublicPagerAdapter extends FragmentStateAdapter {
+public class FriendsPagerAdapter extends FragmentStateAdapter {
 
     private String[] frgData;
     private int pages_count;
 
     ArrayList<Fragment> fragments;
 
-    public PublicPagerAdapter(@NonNull Fragment fragment) {
+    public FriendsPagerAdapter(@NonNull Fragment fragment) {
         super(fragment);
         fragments = new ArrayList<>();
     }
 
-    public PublicPagerAdapter(@NonNull Fragment fragment, String[] frgData, int pages_count) {
+    public FriendsPagerAdapter(@NonNull Fragment fragment, String[] frgData, int pages_count) {
         super(fragment);
         fragments = new ArrayList<>();
         this.frgData = frgData;
@@ -37,9 +38,9 @@ public class PublicPagerAdapter extends FragmentStateAdapter {
         bundle.putString("key", frgData[position]);
         Fragment fragment;
         if(position == 0) {
-            fragment = new WallFragment();
+            fragment = new FriendsListFragment();
         } else {
-            fragment = new AboutFragment();
+            fragment = new FriendRequestsFragment();
         }
         fragment.setArguments(bundle);
         fragments.add(position, fragment);

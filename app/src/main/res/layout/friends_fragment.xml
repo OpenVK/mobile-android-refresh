@@ -5,6 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <uk.openvk.android.refresh.ui.view.layouts.ErrorLayout
+        android:id="@+id/wall_error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </uk.openvk.android.refresh.ui.view.layouts.ErrorLayout>
+
+    <LinearLayout
+        android:id="@+id/friends_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:contentDescription="Profile Pager"
+            app:tabIndicatorColor="?attr/colorAccent"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="scrollable"
+            tools:ignore="HardcodedText" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/newsfeedBackgroundColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+
+    </LinearLayout>
+
     <uk.openvk.android.refresh.ui.view.layouts.ProgressLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
@@ -21,26 +67,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/friends_swipe_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/newsfeedBackgroundColor"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <uk.openvk.android.refresh.ui.view.InfinityRecyclerView
-        android:id="@+id/friends_rv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </uk.openvk.android.refresh.ui.view.layouts.ErrorLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

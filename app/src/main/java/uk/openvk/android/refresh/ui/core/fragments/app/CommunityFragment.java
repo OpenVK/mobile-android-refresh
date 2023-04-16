@@ -29,16 +29,14 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.Global;
-import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Groups;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Group;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
-import uk.openvk.android.refresh.ui.core.fragments.pub_pages.AboutFragment;
-import uk.openvk.android.refresh.ui.core.fragments.pub_pages.WallFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.AboutFragment;
+import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.WallFragment;
 import uk.openvk.android.refresh.ui.list.adapters.PublicPageAboutAdapter;
 import uk.openvk.android.refresh.ui.list.items.PublicPageAboutItem;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
