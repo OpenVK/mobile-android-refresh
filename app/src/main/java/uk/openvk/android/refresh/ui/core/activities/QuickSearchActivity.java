@@ -30,7 +30,7 @@ public class QuickSearchActivity extends MonetCompatActivity {
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
-        setContentView(R.layout.search_activity);
+        setContentView(R.layout.activity_search);
         setMonetTheme();
     }
 

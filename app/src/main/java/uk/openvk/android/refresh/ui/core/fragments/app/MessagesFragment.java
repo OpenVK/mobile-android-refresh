@@ -41,7 +41,7 @@ public class MessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
-        view = inflater.inflate(R.layout.conversations_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_conversations, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setVisibility(View.GONE);
         TypedValue typedValue = new TypedValue();

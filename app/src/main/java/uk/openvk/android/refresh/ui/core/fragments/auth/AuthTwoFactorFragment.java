@@ -16,7 +16,7 @@ import uk.openvk.android.refresh.ui.core.activities.AuthActivity;
 public class AuthTwoFactorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.auth_2fa_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_auth_2fa, container, false);
         TextView twofactor_edit = view.findViewById(R.id.twofactor_edit);
         ((MaterialButton) view.findViewById(R.id.twofactor_confirm_btn)).setOnClickListener(new View.OnClickListener() {
             @Override

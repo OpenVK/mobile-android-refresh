@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.kieronquinn.monetcompat.core.MonetCompat;
@@ -28,10 +27,8 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
-import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
-import uk.openvk.android.refresh.ui.core.listeners.OnRecyclerScrollListener;
 import uk.openvk.android.refresh.ui.view.InfinityRecyclerView;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
@@ -51,7 +48,7 @@ public class NewsfeedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
-        view = inflater.inflate(R.layout.newsfeed_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_newsfeed, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
         setTheme();

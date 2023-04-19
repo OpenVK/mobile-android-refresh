@@ -62,7 +62,7 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.community_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_community, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         header = (ProfileHeader) view.findViewById(R.id.header);

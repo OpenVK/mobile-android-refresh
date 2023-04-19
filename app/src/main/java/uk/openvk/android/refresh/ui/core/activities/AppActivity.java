@@ -720,19 +720,19 @@ public class AppActivity extends MonetCompatActivity {
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList, "friends");
                 friendsFragment.disableUpdateState();
-                //friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
+                friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList, "friends");
-                //friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
+                friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
             } else if (message == HandlerMessages.FRIENDS_REQUESTS) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList, "requests");
-                //friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
+                friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parse(data.getString("response"), downloadManager, global_prefs.getString("photos_quality", ""), true, true);
                 ArrayList<Group> groupsList = groups.getList();
@@ -778,7 +778,7 @@ public class AppActivity extends MonetCompatActivity {
                 friendsFragment.refreshAdapter();
             } else if(message == HandlerMessages.FRIENDS_ADD) {
                 if(selectedFragment == friendsFragment) {
-                    //friends.requests.remove(friendsFragment.requests_cursor_index);
+                    friends.requests.remove(friendsFragment.requests_cursor_index);
                 } else {
                     JSONObject response = new JSONParser().parseJSON(data.getString("response"));
                     int status = response.getInt("response");

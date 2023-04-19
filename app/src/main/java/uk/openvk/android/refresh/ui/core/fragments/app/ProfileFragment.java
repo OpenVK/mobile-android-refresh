@@ -77,7 +77,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
-        view = inflater.inflate(R.layout.profile_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         header = (ProfileHeader) view.findViewById(R.id.header);
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);

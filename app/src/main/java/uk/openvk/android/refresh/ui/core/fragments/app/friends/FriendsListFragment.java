@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.ui.core.fragments.app.friends;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ public class FriendsListFragment extends Fragment {
     public View view;
     private Context ctx;
     private LinearLayoutManager llm;
-    private PublicPageAboutAdapter aboutAdapter;
     private SwipeRefreshLayout friends_srl;
     private RecyclerView friends_rv;
     private ArrayList<Friend> friends;
@@ -40,7 +40,7 @@ public class FriendsListFragment extends Fragment {
         friends_srl = view.findViewById(R.id.friends_swipe_layout);
         friends_rv = view.findViewById(R.id.friends_rv);
         loading_layout.setVisibility(View.VISIBLE);
-        friends_srl.setVisibility(View.GONE);
+        friends_rv.setVisibility(View.GONE);
         return view;
     }
 
@@ -48,12 +48,12 @@ public class FriendsListFragment extends Fragment {
     public void createFriendsAdapter(Context ctx, ArrayList<Friend> items) {
         this.ctx = ctx;
         this.friends = items;
-        if(aboutAdapter == null) {
+        if(friendsAdapter == null) {
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             friends_rv.setLayoutManager(llm);
             friendsAdapter = new FriendsAdapter(ctx, this.friends);
-            friends_rv.setAdapter(aboutAdapter);
+            friends_rv.setAdapter(friendsAdapter);
         } else {
             friendsAdapter.notifyDataSetChanged();
         }

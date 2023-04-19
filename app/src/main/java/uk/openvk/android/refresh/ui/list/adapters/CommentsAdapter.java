@@ -3,7 +3,6 @@ package uk.openvk.android.refresh.ui.list.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Comment;
-import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
 
 public class CommentsAdapter  extends RecyclerView.Adapter<CommentsAdapter.Holder> {
 
@@ -37,7 +35,7 @@ public class CommentsAdapter  extends RecyclerView.Adapter<CommentsAdapter.Holde
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new Holder(LayoutInflater.from(ctx).inflate(R.layout.comment_list_item, parent, false));
+        return new Holder(LayoutInflater.from(ctx).inflate(R.layout.list_item_comment, parent, false));
     }
 
     @Override

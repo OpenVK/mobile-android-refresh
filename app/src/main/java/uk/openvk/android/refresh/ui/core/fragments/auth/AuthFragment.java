@@ -17,7 +17,6 @@ import android.widget.Button;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kieronquinn.monetcompat.core.MonetCompat;
@@ -34,7 +33,7 @@ public class AuthFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.auth_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_auth, container, false);
         Button sign_in_btn = view.findViewById(R.id.sign_in_btn);
         Button register_btn = view.findViewById(R.id.register_btn);
         AutoCompleteTextView instance_edit = view.findViewById(R.id.instance_edit);

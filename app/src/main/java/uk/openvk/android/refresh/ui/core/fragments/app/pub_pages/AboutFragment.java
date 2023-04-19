@@ -45,12 +45,11 @@ public class AboutFragment extends Fragment {
         this.ctx = ctx;
         this.aboutItems = items;
         if(aboutAdapter == null) {
-            aboutView = about_rv;
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            aboutView.setLayoutManager(llm);
+            about_rv.setLayoutManager(llm);
             aboutAdapter = new PublicPageAboutAdapter(ctx, this.aboutItems);
-            aboutView.setAdapter(aboutAdapter);
+            about_rv.setAdapter(aboutAdapter);
         } else {
             aboutAdapter.notifyDataSetChanged();
         }

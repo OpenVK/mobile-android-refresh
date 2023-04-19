@@ -37,10 +37,10 @@ public class FriendRequestsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.tab_friend_requests, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
-        friends_req_srl = view.findViewById(R.id.requests_swipe_layout);
+        friends_req_srl = view.findViewById(R.id.friends_swipe_layout);
         requests_rv = view.findViewById(R.id.requests_rv);
         loading_layout.setVisibility(View.VISIBLE);
-        friends_req_srl.setVisibility(View.GONE);
+        requests_rv.setVisibility(View.GONE);
         return view;
     }
 

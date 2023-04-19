@@ -44,7 +44,7 @@ public class GroupsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
-        view = inflater.inflate(R.layout.groups_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_groups, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
