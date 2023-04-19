@@ -178,14 +178,14 @@ public class FriendsIntentActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager, true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createFriendsAdapter(this, friendsList, "friends");
+                friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.disableUpdateState();
                 //friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createFriendsAdapter(this, friendsList, "friends");
+                friendsFragment.createFriendsAdapter(this, friendsList);
                 //friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
             } if (message == HandlerMessages.FRIEND_AVATARS) {
                 //friendsFragment.refreshAdapter();

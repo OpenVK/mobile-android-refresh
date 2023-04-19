@@ -500,6 +500,9 @@ public class AppActivity extends MonetCompatActivity {
                 if (friendsFragment.getFriendsCount() == 0) {
                     friends.get(ovk_api, account.id, 25, "friends_list");
                 }
+                if(friendsFragment.getRequestsCount() == 0 && user.id == account.id) {
+                    friends.getRequests(ovk_api);
+                }
                 b_navView.getMenu().getItem(1).setChecked(true);
                 navView.getMenu().getItem(2).setChecked(true);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
@@ -718,20 +721,20 @@ public class AppActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager, true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createFriendsAdapter(this, friendsList, "friends");
+                friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.disableUpdateState();
                 friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createFriendsAdapter(this, friendsList, "friends");
+                friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
             } else if (message == HandlerMessages.FRIENDS_REQUESTS) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
-                friendsFragment.createFriendsAdapter(this, friendsList, "requests");
+                friendsFragment.createRequestsAdapter(this, friendsList);
                 friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parse(data.getString("response"), downloadManager, global_prefs.getString("photos_quality", ""), true, true);
@@ -844,6 +847,9 @@ public class AppActivity extends MonetCompatActivity {
 
     public void refreshFriendsList(boolean progress) {
         friends.get(ovk_api, account.id, 25, "friends_list");
+        if(user.id == account.id) {
+            friends.getRequests(ovk_api);
+        }
         if (progress) {
             friendsFragment.showProgress();
         }

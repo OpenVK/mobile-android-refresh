@@ -32,8 +32,10 @@ import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
+import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendRequestsFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendsListFragment;
 import uk.openvk.android.refresh.ui.core.listeners.OnRecyclerScrollListener;
+import uk.openvk.android.refresh.ui.list.adapters.FriendRequestsAdapter;
 import uk.openvk.android.refresh.ui.view.InfinityRecyclerView;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
 import uk.openvk.android.refresh.ui.list.adapters.FriendsAdapter;
@@ -51,6 +53,8 @@ public class FriendsFragment extends Fragment {
     private FriendsPagerAdapter pagerAdapter;
     private int tabSetup;
     private ArrayList<Friend> friendRequests;
+    private InfinityRecyclerView requestsView;
+    private FriendRequestsAdapter requestsAdapter;
 
     @Nullable
     @Override
@@ -94,7 +98,7 @@ public class FriendsFragment extends Fragment {
                 super.onPageSelected(position);
                 if(position == 1) {
                     if (friendRequests != null) {
-                        createRequestsAdapter(friendRequests);
+                        createRequestsAdapter(getContext(), friendRequests);
                     }
                 }
             }
@@ -110,9 +114,6 @@ public class FriendsFragment extends Fragment {
         );
         mediator.attach();
         tabSetup = 1;
-    }
-
-    private void createRequestsAdapter(ArrayList<Friend> friendRequests) {
     }
 
     private void setTheme() {
@@ -139,7 +140,7 @@ public class FriendsFragment extends Fragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void createFriendsAdapter(Context ctx, ArrayList<Friend> friends, String where) {
+    public void createFriendsAdapter(Context ctx, ArrayList<Friend> friends) {
         (view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
         view.findViewById(R.id.friends_layout).setVisibility(View.VISIBLE);
         this.friends = friends;
@@ -161,6 +162,30 @@ public class FriendsFragment extends Fragment {
         }, 120);
         (view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
 
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void createRequestsAdapter(Context ctx, ArrayList<Friend> friends) {
+        (view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
+        view.findViewById(R.id.friends_layout).setVisibility(View.VISIBLE);
+        this.friends = friends;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
+                    FriendRequestsFragment requestsFragment = (FriendRequestsFragment) pagerAdapter.getFragment(1);
+                    requestsView = requestsFragment.view.findViewById(R.id.requests_rv);
+                    if(requestsFragment.getRequestsAdapter() == null) {
+                        requestsFragment.createRequestsAdapter(ctx, friends);
+                    }
+                    FriendsFragment.this.requestsAdapter = requestsFragment.getRequestsAdapter();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }, 120);
+        (view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
     public void disableUpdateState() {
@@ -212,5 +237,13 @@ public class FriendsFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public int getRequestsCount() {
+        if(requestsAdapter != null) {
+            return requestsAdapter.getItemCount();
+        } else {
+            return 0;
+        }
     }
 }

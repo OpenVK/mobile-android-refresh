@@ -158,5 +158,5 @@
 
     <string name="friends_tab">Friends</string>
     <string name="friend_requests_tab">Requests</string>
-
+    <string name="add_friend_button">Add</string>
 </resources>
