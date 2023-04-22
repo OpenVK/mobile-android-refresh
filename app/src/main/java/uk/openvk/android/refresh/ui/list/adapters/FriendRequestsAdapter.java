@@ -77,6 +77,10 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
                     .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                     .dontAnimate().centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.friend_avatar));
+
+            convertView.findViewById(R.id.group_avatar).setFocusable(false);
+            friend_title.setFocusable(false);
+            convertView.findViewById(R.id.friend_avatar).setFocusable(false);
             View.OnClickListener openProfileListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,8 +101,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
                 }
             });
             setTheme(convertView);
-            ((ImageView) convertView.findViewById(R.id.friend_avatar)).setOnClickListener(openProfileListener);
-            friend_title.setOnClickListener(openProfileListener);
+            convertView.setOnClickListener(openProfileListener);
         }
     }
 
