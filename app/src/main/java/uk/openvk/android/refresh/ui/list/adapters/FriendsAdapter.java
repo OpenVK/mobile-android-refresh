@@ -78,6 +78,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
                     .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                     .dontAnimate().centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.friend_avatar));
+            verified_icon.setFocusable(false);
+            convertView.findViewById(R.id.friend_avatar).setFocusable(false);
+            friend_title.setFocusable(false);
             if(item.verified) {
                 verified_icon.setVisibility(View.VISIBLE);
             } else {
@@ -94,8 +97,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
                 }
             };
             setTheme(convertView);
-            ((ImageView) convertView.findViewById(R.id.friend_avatar)).setOnClickListener(openProfileListener);
-            friend_title.setOnClickListener(openProfileListener);
+            convertView.setOnClickListener(openProfileListener);
         }
     }
 

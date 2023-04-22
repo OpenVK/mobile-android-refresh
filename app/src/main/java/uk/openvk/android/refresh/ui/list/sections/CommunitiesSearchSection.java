@@ -14,6 +14,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Group;
 import uk.openvk.android.refresh.api.models.User;
+import uk.openvk.android.refresh.ui.core.activities.QuickSearchActivity;
 
 public class CommunitiesSearchSection extends Section {
     private Context ctx;
@@ -53,12 +54,23 @@ public class CommunitiesSearchSection extends Section {
         Holder itemHolder = (Holder) holder;
         Group item = items.get(position);
         itemHolder.title.setText(item.name);
+        itemHolder.title.setFocusable(false);
+        itemHolder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ctx instanceof QuickSearchActivity) {
+                    ((QuickSearchActivity) ctx).openGroup(position);
+                }
+            }
+        });
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
         public TextView title;
+        public View view;
         public Holder(@NonNull View view) {
             super(view);
+            this.view = view;
             title = view.findViewById(R.id.search_result_title);
         }
     }

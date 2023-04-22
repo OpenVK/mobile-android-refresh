@@ -16,6 +16,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.User;
+import uk.openvk.android.refresh.ui.core.activities.QuickSearchActivity;
 
 public class PeopleSearchSection extends Section {
     private Context ctx;
@@ -55,12 +56,23 @@ public class PeopleSearchSection extends Section {
         Holder itemHolder = (Holder) holder;
         User item = items.get(position);
         itemHolder.title.setText(String.format("%s %s", item.first_name, item.last_name));
+        itemHolder.title.setFocusable(false);
+        itemHolder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ctx instanceof QuickSearchActivity) {
+                    ((QuickSearchActivity) ctx).openProfile(position);
+                }
+            }
+        });
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
         public TextView title;
+        public View view;
         public Holder(@NonNull View view) {
             super(view);
+            this.view = view;
             title = view.findViewById(R.id.search_result_title);
         }
     }

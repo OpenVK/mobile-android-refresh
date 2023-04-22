@@ -3,7 +3,11 @@ package uk.openvk.android.refresh.ui.core.activities;
 import static java.security.AccessController.getContext;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,12 +22,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
+import java.util.List;
+
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Groups;
 import uk.openvk.android.refresh.api.Users;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
+import uk.openvk.android.refresh.api.models.Group;
+import uk.openvk.android.refresh.api.models.User;
+import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.list.sections.CommunitiesSearchSection;
@@ -126,5 +135,47 @@ public class QuickSearchActivity extends MonetCompatActivity {
     }
 
     private void setMonetTheme() {
+    }
+
+    public void openProfile(int position) {
+        User user = users.getList().get(position);
+        String url = "";
+        if(user.id > 0) {
+            url = String.format("openvk://profile/id%s", user.id);
+        }
+        if(url.length() > 0) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            final PackageManager pm = getPackageManager();
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            for (int index = 0; index < activityList.size(); index++) {
+                ResolveInfo app = activityList.get(index);
+                if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                    i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                }
+            }
+            startActivity(i);
+        }
+    }
+
+    public void openGroup(int position) {
+        Group group = groups.getList().get(position);
+        String url = "";
+        if(group.id > 0) {
+            url = String.format("openvk://group/club%s", group.id);
+        }
+        if(url.length() > 0) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            final PackageManager pm = getPackageManager();
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            for (int index = 0; index < activityList.size(); index++) {
+                ResolveInfo app = activityList.get(index);
+                if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                    i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                }
+            }
+            startActivity(i);
+        }
     }
 }

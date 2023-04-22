@@ -75,6 +75,10 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.Holder>  {
                     .dontAnimate().centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.group_avatar));
 
+            convertView.findViewById(R.id.group_avatar).setFocusable(false);
+            group_title.setFocusable(false);
+            group_summary.setFocusable(false);
+
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
