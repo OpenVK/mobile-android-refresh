@@ -101,7 +101,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
                 }
             });
             setTheme(convertView);
-            convertView.setOnClickListener(openProfileListener);
+            convertView.findViewById(R.id.card).setOnClickListener(openProfileListener);
         }
     }
 

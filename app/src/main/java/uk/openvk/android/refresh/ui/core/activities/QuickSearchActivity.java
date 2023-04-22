@@ -75,6 +75,11 @@ public class QuickSearchActivity extends MonetCompatActivity {
             @Override
             public void onSearchConfirmed(CharSequence text) {
                 String query = text.toString();
+                if(sectionAdapter != null) {
+                    sectionAdapter.removeAllSections();
+                    peopleSection = null;
+                    commsSection = null;
+                }
                 groups.search(ovk_api, query);
                 users.search(ovk_api, query);
             }
@@ -96,13 +101,17 @@ public class QuickSearchActivity extends MonetCompatActivity {
         if(commsSection == null) {
             commsSection = new CommunitiesSearchSection(QuickSearchActivity.this, groups.getList());
             sectionAdapter.addSection(commsSection);
+        } else {
+            commsSection = new CommunitiesSearchSection(QuickSearchActivity.this, groups.getList());
         }
         if(peopleSection == null) {
             peopleSection = new PeopleSearchSection(QuickSearchActivity.this, users.getList());
             sectionAdapter.addSection(peopleSection);
+        } else {
+            peopleSection = new PeopleSearchSection(QuickSearchActivity.this, users.getList());
         }
-
         sectionAdapter.notifyDataSetChanged();
+
     }
 
     private void setAPIWrapper() {
