@@ -99,6 +99,8 @@
     <string name="posting_access_denied">Вы не имеете права публиковать запись на этой стене.</string>
     <string name="posted_successfully">Запись опубликована.</string>
 
+    <string name="video_err_decode">Ваше устройство не может воспроизвести это видео. Попробуйте выбрать более низкое качество или воспроизвести видео в стороннем плеере.</string>
+
     <string name="profile_title">Профиль</string>
     <string name="community_title">Сообщество</string>
     <string name="owner_wall_tab">Стена</string>
@@ -162,4 +164,8 @@
     <string name="friend_requests_tab">Заявки</string>
 
     <string name="add_friend_button">Добавить</string>
+    <string name="retry_dialog_btn">Повтор</string>
+
+    <string name="people_section">Люди (%d)</string>
+    <string name="communities_section">Сообщества (%d)</string>
 </resources>

@@ -50,4 +50,6 @@
     <color name="primaryDarkColorGray">#6f6f6f</color>
     <color name="warningColor">#cffbe684</color>
     <color name="accentColorGray">#8f8f8f</color>
+
+    <color name="searchbar_background">#242424</color>
 </resources>

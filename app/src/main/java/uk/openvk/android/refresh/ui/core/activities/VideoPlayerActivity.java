@@ -1,41 +1,26 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
-import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.preference.PreferenceManager;
 
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
@@ -43,17 +28,12 @@ import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
-import org.videolan.libvlc.media.VideoView;
 import org.videolan.libvlc.util.VLCVideoLayout;
-
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ResourceBundle;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.VideoAttachment;
+import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
 
 public class VideoPlayerActivity extends MonetCompatActivity {
     private VideoAttachment video;
@@ -75,7 +55,7 @@ public class VideoPlayerActivity extends MonetCompatActivity {
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         window = getWindow();
-        setContentView(R.layout.video_player);
+        setContentView(R.layout.activity_video_player);
         resizeControlPanel();
         findViewById(R.id.loading_card).setVisibility(View.GONE);
         loadVideo();
@@ -191,10 +171,9 @@ public class VideoPlayerActivity extends MonetCompatActivity {
                 }
 
                 if(event.type == MediaPlayer.Event.EncounteredError) {
+                    showVideoPlayerErrorDialog();
                     mp.release();
-                    finish();
                 }
-
             }
         });
         vlc_vl = findViewById(R.id.view_vlc_layout);
@@ -247,6 +226,29 @@ public class VideoPlayerActivity extends MonetCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showVideoPlayerErrorDialog() {
+        OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(this, R.style.ApplicationTheme_AlertDialog);
+        dialog.setTitle(R.string.error);
+        dialog.setMessage(R.string.video_err_decode);
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        dialog.setNeutralButton(R.string.retry_dialog_btn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent openVideo = new Intent(Intent.ACTION_VIEW);
+                openVideo.setDataAndType(Uri.parse(url), "video/*");
+                startActivity(openVideo);
+                finish();
+            }
+        });
+        dialog.show();
     }
 
     private void showPlayControls() {

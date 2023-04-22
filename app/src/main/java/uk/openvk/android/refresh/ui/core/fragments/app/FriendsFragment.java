@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ public class FriendsFragment extends Fragment {
     private ArrayList<Friend> friendRequests;
     private InfinityRecyclerView requestsView;
     private FriendRequestsAdapter requestsAdapter;
+    private Bundle args;
 
     @Nullable
     @Override
@@ -62,7 +64,7 @@ public class FriendsFragment extends Fragment {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.fragment_friends, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-
+        args = getArguments();
         setTheme();
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
@@ -86,10 +88,19 @@ public class FriendsFragment extends Fragment {
     public void setTabsView() {
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         ViewPager2 viewPager = view.findViewById(R.id.pager);
-        String[] frgData = {"A", "B"};
-        pagerAdapter = new FriendsPagerAdapter(this, frgData, 2);
-        pagerAdapter.createFragment(0);
-        pagerAdapter.createFragment(1);
+        args = getArguments();
+        if(args != null && (args.getLong("user_id") != args.getLong("account_id"))) {
+            String[] frgData = {"A"};
+            pagerAdapter = new FriendsPagerAdapter(this, frgData, 1);
+            pagerAdapter.createFragment(0);
+            tabLayout.setVisibility(View.GONE);
+        } else {
+            String[] frgData = {"A", "B"};
+            pagerAdapter = new FriendsPagerAdapter(this, frgData, 2);
+            pagerAdapter.createFragment(0);
+            pagerAdapter.createFragment(1);
+            viewPager.setOffscreenPageLimit(2);
+        }
         viewPager.setAdapter(pagerAdapter);
         viewPager.setSaveEnabled(false);
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -141,9 +152,11 @@ public class FriendsFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void createFriendsAdapter(Context ctx, ArrayList<Friend> friends) {
+
+        this.friends = friends;
         (view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
         view.findViewById(R.id.friends_layout).setVisibility(View.VISIBLE);
-        this.friends = friends;
+        (view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -159,8 +172,8 @@ public class FriendsFragment extends Fragment {
                     ex.printStackTrace();
                 }
             }
-        }, 120);
-        (view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
+        }, 100);
+
 
     }
 
@@ -169,22 +182,24 @@ public class FriendsFragment extends Fragment {
         (view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
         view.findViewById(R.id.friends_layout).setVisibility(View.VISIBLE);
         this.friends = friends;
-        new Handler().postDelayed(new Runnable() {
+        FriendRequestsFragment requestsFragment = (FriendRequestsFragment) pagerAdapter.getFragment(1);
+        requestsFragment.handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
                     // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
-                    FriendRequestsFragment requestsFragment = (FriendRequestsFragment) pagerAdapter.getFragment(1);
                     requestsView = requestsFragment.view.findViewById(R.id.requests_rv);
                     if(requestsFragment.getRequestsAdapter() == null) {
-                        requestsFragment.createRequestsAdapter(ctx, friends);
+                        requestsFragment.createRequestsAdapter(FriendsFragment.this, ctx, friends);
+                    } else {
+                        requestsFragment.getRequestsAdapter().notifyDataSetChanged();
                     }
                     FriendsFragment.this.requestsAdapter = requestsFragment.getRequestsAdapter();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
-        }, 120);
+        }, 200);
         (view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
@@ -221,22 +236,28 @@ public class FriendsFragment extends Fragment {
 
     public void setScrollingPositions(final Context ctx, final boolean infinity_scroll) {
         loading_more_friends = !infinity_scroll;
-        friendsView = ((FriendsListFragment) pagerAdapter.getFragment(0)).requireView().findViewById(R.id.friends_rv);
-        friendsView.setOnScrollListener((recyclerView, x, y, old_x, old_y) -> {
-            View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
-            int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
-            if (!loading_more_friends) {
-                if (diff == 0) {
-                    if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        loading_more_friends = true;
-                        ((AppActivity) ctx).loadMoreFriends();
-                    } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
-                        loading_more_friends = true;
-                        ((FriendsIntentActivity) ctx).loadMoreFriends();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                friendsView = ((FriendsListFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.friends_rv);
+                friendsView.setOnScrollListener((recyclerView, x, y, old_x, old_y) -> {
+                    View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
+                    int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
+                    if (!loading_more_friends) {
+                        if (diff == 0) {
+                            if (ctx.getClass().getSimpleName().equals("AppActivity")) {
+                                loading_more_friends = true;
+                                ((AppActivity) ctx).loadMoreFriends();
+                            } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
+                                loading_more_friends = true;
+                                ((FriendsIntentActivity) ctx).loadMoreFriends();
+                            }
+                        }
                     }
-                }
+                });
             }
-        });
+        }, 1000);
+
     }
 
     public int getRequestsCount() {

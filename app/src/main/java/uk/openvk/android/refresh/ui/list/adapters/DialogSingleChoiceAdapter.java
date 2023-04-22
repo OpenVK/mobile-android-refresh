@@ -88,7 +88,7 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
         if(convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.single_choice_item, null);
+            convertView = layoutInflater.inflate(R.layout.list_item_single_choice, null);
             viewHolder = new ViewHolder();
             viewHolder.view = convertView;
             viewHolder.position = position;

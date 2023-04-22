@@ -52,6 +52,9 @@ public class PublicPagerAdapter extends FragmentStateAdapter {
     }
 
     public Fragment getFragment(int position) {
+        if(position == 1 && fragments.get(position) instanceof WallFragment) {
+            fragments.set(position, AboutFragment.createInstance(position));
+        }
         return fragments.get(position);
     }
 }

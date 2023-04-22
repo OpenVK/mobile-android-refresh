@@ -20,7 +20,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import androidx.preference.PreferenceScreen;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -180,7 +179,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     @SuppressLint("InflateParams")
     private void showAboutInstanceDialog() {
         OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
-        about_instance_view = getLayoutInflater().inflate(R.layout.about_instance, null);
+        about_instance_view = getLayoutInflater().inflate(R.layout.dialog_about_instance, null);
         dialog.setTitle(getResources().getString(R.string.pref_about_instance));
         dialog.setView(about_instance_view);
         dialog.setPositiveButton(android.R.string.ok, null);

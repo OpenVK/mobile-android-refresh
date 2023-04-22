@@ -61,7 +61,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.friend_title = (TextView) view.findViewById(R.id.conversation_title);
+            this.friend_title = (TextView) view.findViewById(R.id.friend_title);
             this.verified_icon = (ImageView) view.findViewById(R.id.verified_icon);
         }
 
@@ -87,7 +87,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
                 @Override
                 public void onClick(View v) {
                     if(ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        ((AppActivity) ctx).openProfileFromFriends(position);
+                        ((AppActivity) ctx).openProfileFromFriends(position, false);
                     } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
                         ((FriendsIntentActivity) ctx).openProfileFromFriends(position);
                     }

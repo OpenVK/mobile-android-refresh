@@ -64,7 +64,7 @@ public class FriendsIntentActivity extends MonetCompatActivity {
     private Friends friends;
     private boolean isDarkTheme;
     private FriendsFragment friendsFragment;
-    private int user_id;
+    private long user_id;
     private Users users;
 
     @Override
@@ -86,8 +86,8 @@ public class FriendsIntentActivity extends MonetCompatActivity {
             }
             try {
                 setAPIWrapper();
-                createFragments();
                 setAppBar();
+                createFragment();
                 setMonetTheme();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -129,10 +129,16 @@ public class FriendsIntentActivity extends MonetCompatActivity {
         account.getProfileInfo(ovk_api);
     }
 
-    private void createFragments() {
-        friendsFragment = new FriendsFragment();
-        setAPIWrapper();
+    private void createFragment() {
         setAppBar();
+    }
+
+    private void applyFragment() {
+        friendsFragment = new FriendsFragment();
+        Bundle args = new Bundle();
+        args.putLong("user_id", user_id);
+        args.putLong("account_id", account.id);
+        friendsFragment.setArguments(args);
         FragmentManager fm = getSupportFragmentManager();
         ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_screen, friendsFragment, "friends");
@@ -165,6 +171,7 @@ public class FriendsIntentActivity extends MonetCompatActivity {
     private void receiveState(int message, Bundle data) {
         try {
             if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
+                account.parse(data.getString("response"), ovk_api);
                 if (args.startsWith("id")) {
                     try {
                         user_id = Integer.parseInt(args.substring(2));
@@ -175,6 +182,7 @@ public class FriendsIntentActivity extends MonetCompatActivity {
                 } else {
                     users.search(ovk_api, args);
                 }
+                applyFragment();
             } else if (message == HandlerMessages.FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager, true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();

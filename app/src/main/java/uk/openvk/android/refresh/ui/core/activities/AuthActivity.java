@@ -346,7 +346,7 @@ public class AuthActivity extends MonetCompatActivity {
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
         } else if(message == UiMessages.SHOW_WARNING_DIALOG) {
-            View warn_view = getLayoutInflater().inflate(R.layout.warn_message, null, false);
+            View warn_view = getLayoutInflater().inflate(R.layout.layout_warn_message, null, false);
             OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(this, R.style.ApplicationTheme_AlertDialog);
             builder.setTitle(R.string.ovk_warning_title);
             builder.setView(warn_view);

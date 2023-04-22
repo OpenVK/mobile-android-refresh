@@ -17,7 +17,7 @@ public class ErrorLayout extends LinearLayoutCompat {
     public ErrorLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         @SuppressLint("InflateParams") View view =  LayoutInflater.from(getContext()).inflate(
-                R.layout.error_layout, null);
+                R.layout.layout_error, null);
         this.addView(view);
         LinearLayoutCompat.LayoutParams layoutParams = (LinearLayoutCompat.LayoutParams) view.getLayoutParams();
         layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;

@@ -153,6 +153,15 @@
             tools:ignore="RedundantLabel">
         </activity>
 
+        <activity android:name=".ui.core.activities.QuickSearchActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/global_search_hint"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|mcc|mnc|uiMode"
+            android:theme="@style/ApplicationTheme"
+            tools:ignore="RedundantLabel">
+        </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

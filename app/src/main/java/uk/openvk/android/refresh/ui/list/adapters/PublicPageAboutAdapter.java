@@ -28,7 +28,7 @@ public class PublicPageAboutAdapter extends RecyclerView.Adapter<PublicPageAbout
     @NonNull
     @Override
     public PublicPageAboutAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PublicPageAboutAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.pubpage_about_item, parent, false));
+        return new PublicPageAboutAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.list_item_pubpage_about, parent, false));
     }
 
     @Override

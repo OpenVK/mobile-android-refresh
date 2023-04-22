@@ -3,6 +3,8 @@ package uk.openvk.android.refresh.ui.core.fragments.app.friends;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +33,21 @@ public class FriendRequestsFragment extends Fragment {
     private FriendRequestsAdapter requestsAdapter;
     private RecyclerView requests_rv;
     private ArrayList<Friend> friendRequests;
+    public Handler handler;
+
+    public static FriendRequestsFragment createInstance(int page) {
+        FriendRequestsFragment fragment = new FriendRequestsFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        fragment.setArguments(args);
+        fragment.handler = new Handler();
+        return fragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        handler = new Handler();
         view = inflater.inflate(R.layout.tab_friend_requests, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
         requests_rv = view.findViewById(R.id.requests_rv);
@@ -44,14 +57,14 @@ public class FriendRequestsFragment extends Fragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void createRequestsAdapter(Context ctx, ArrayList<Friend> items) {
+    public void createRequestsAdapter(Fragment fragment, Context ctx, ArrayList<Friend> items) {
         this.ctx = ctx;
         this.friendRequests = items;
         if(requestsAdapter == null) {
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             requests_rv.setLayoutManager(llm);
-            requestsAdapter = new FriendRequestsAdapter(ctx, this.friendRequests);
+            requestsAdapter = new FriendRequestsAdapter(ctx, this.friendRequests, ((Fragment) fragment));
             requests_rv.setAdapter(requestsAdapter);
         } else {
             requestsAdapter.notifyDataSetChanged();

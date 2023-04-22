@@ -3,7 +3,6 @@ package uk.openvk.android.refresh.ui.core.activities;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -34,7 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.core.app.NotificationCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -165,7 +164,7 @@ public class AppActivity extends MonetCompatActivity {
         } else {
             current_fragment = savedInstanceState.getString("current_fragment");
         }
-        setContentView(R.layout.app);
+        setContentView(R.layout.activity_app);
         instance_prefs = getSharedPreferences("instance", 0);
         createFragments();
     }
@@ -364,11 +363,17 @@ public class AppActivity extends MonetCompatActivity {
                 }
             });
         }
+        ConstraintLayout header = (ConstraintLayout) navView.getHeaderView(0);
+        header.findViewById(R.id.search_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startQuickSearchActivity();
+            }
+        });
         if(account == null || account.user == null) {
             String profile_name = getResources().getString(R.string.loading);
-            ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name)).setText(profile_name);
-            ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
-                    .setVisibility(View.GONE);
+            ((TextView) header.findViewById(R.id.profile_name)).setText(profile_name);
+            header.findViewById(R.id.screen_name).setVisibility(View.GONE);
         }
         @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
         Global.setAvatarShape(this, avatar);
@@ -378,6 +383,15 @@ public class AppActivity extends MonetCompatActivity {
 
             }
         });
+    }
+
+    private void startQuickSearchActivity() {
+        Intent intent = new Intent(getApplicationContext(), QuickSearchActivity.class);
+        try {
+            startActivity(intent);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /*
@@ -499,9 +513,6 @@ public class AppActivity extends MonetCompatActivity {
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (friendsFragment.getFriendsCount() == 0) {
                     friends.get(ovk_api, account.id, 25, "friends_list");
-                }
-                if(friendsFragment.getRequestsCount() == 0 && user.id == account.id) {
-                    friends.getRequests(ovk_api);
                 }
                 b_navView.getMenu().getItem(1).setChecked(true);
                 navView.getMenu().getItem(2).setChecked(true);
@@ -724,6 +735,7 @@ public class AppActivity extends MonetCompatActivity {
                 friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.disableUpdateState();
                 friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
+                friends.getRequests(ovk_api);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true, false);
@@ -732,10 +744,13 @@ public class AppActivity extends MonetCompatActivity {
                 friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
             } else if (message == HandlerMessages.FRIENDS_REQUESTS) {
                 int old_friends_size = friends.getFriends().size();
-                friends.parse(data.getString("response"), downloadManager, true, false);
-                ArrayList<Friend> friendsList = friends.getFriends();
+                friends.parseRequests(data.getString("response"), downloadManager, true);
+                ArrayList<Friend> friendsList = friends.requests;
                 friendsFragment.createRequestsAdapter(this, friendsList);
                 friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
+            } else if (message == HandlerMessages.FRIENDS_ADD) {
+                friends.requests.remove(friendsFragment.requests_cursor_index);
+                friendsFragment.createRequestsAdapter(this, friends.requests);
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parse(data.getString("response"), downloadManager, global_prefs.getString("photos_quality", ""), true, true);
                 ArrayList<Group> groupsList = groups.getList();
@@ -1028,12 +1043,17 @@ public class AppActivity extends MonetCompatActivity {
         }
     }
 
-    public void openProfileFromFriends(int position) {
-        Friend friend = friends.getFriends().get(position);
+    public void openProfileFromFriends(int position, boolean isRequest) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
         String url = "";
+        Friend friend;
+        if(isRequest) {
+            friend = friends.requests.get(position);
+        } else {
+            friend = friends.getFriends().get(position);
+        }
         url = String.format("openvk://profile/id%s", friend.id);
         if(url.length() > 0) {
-            Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = getPackageManager();
             @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
@@ -1135,6 +1155,12 @@ public class AppActivity extends MonetCompatActivity {
             } else {
                 newsfeed.getGlobal(ovk_api, 25, newsfeed.next_from);
             }
+        }
+    }
+
+    public void addToFriends(int user_id) {
+        if(user_id != account.id) {
+            friends.add(ovk_api, user_id);
         }
     }
 }

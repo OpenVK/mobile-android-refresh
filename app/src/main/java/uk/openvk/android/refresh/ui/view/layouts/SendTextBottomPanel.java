@@ -20,7 +20,7 @@ public class SendTextBottomPanel extends ConstraintLayout {
     public SendTextBottomPanel(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         View view =  LayoutInflater.from(getContext()).inflate(
-                R.layout.sendtext_bottom_panel, null);
+                R.layout.panel_sendtext_bottom, null);
 
         this.addView(view);
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) view.getLayoutParams();

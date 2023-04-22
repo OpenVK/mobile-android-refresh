@@ -35,7 +35,7 @@ public class AboutApplicationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
-        view = inflater.inflate(R.layout.about_app_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_about_app, container, false);
         ((ShapeableImageView) view.findViewById(R.id.ovk_logo)).setImageTintList(null);
         ((TextView) view.findViewById(R.id.version_subtitle)).setText(getResources().getString(R.string.version_subtitle, BuildConfig.VERSION_NAME));
         ((TextView) view.findViewById(R.id.app_license)).setMovementMethod(LinkMovementMethod.getInstance());

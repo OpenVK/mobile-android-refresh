@@ -245,7 +245,7 @@
         <item name="buttonBarNeutralButtonStyle">@style/ApplicationTheme.AlertDialog.Button</item>
         <item name="buttonBarNegativeButtonStyle">@style/ApplicationTheme.AlertDialog.Button</item>
         <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="singleChoiceItemLayout">@layout/single_choice_item</item>
+        <item name="singleChoiceItemLayout">@layout/list_item_single_choice</item>
         <item name="alertDialogStyle">@style/ApplicationTheme.AlertDialog.Container</item>
     </style>
 

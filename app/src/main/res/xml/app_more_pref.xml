@@ -3,5 +3,5 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <Preference
         app:key="restart_required"
-        app:layout="@layout/pref_notif_layout" />
+        app:layout="@layout/layout_pref_notif" />
 </PreferenceScreen>

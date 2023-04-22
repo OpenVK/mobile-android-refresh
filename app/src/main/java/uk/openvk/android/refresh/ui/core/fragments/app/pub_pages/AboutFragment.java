@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.ui.core.fragments.app.pub_pages;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendRequestsFragment;
 import uk.openvk.android.refresh.ui.list.adapters.PublicPageAboutAdapter;
 import uk.openvk.android.refresh.ui.list.items.PublicPageAboutItem;
 
@@ -28,10 +30,21 @@ public class AboutFragment extends Fragment {
     private RecyclerView aboutView;
     private LinearLayoutManager llm;
     private PublicPageAboutAdapter aboutAdapter;
+    public Handler handler;
+
+    public static AboutFragment createInstance(int page) {
+        AboutFragment fragment = new AboutFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        fragment.setArguments(args);
+        fragment.handler = new Handler();
+        return fragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        handler = new Handler();
         view = inflater.inflate(R.layout.tab_about_page, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
         about_rv = view.findViewById(R.id.about_rv);

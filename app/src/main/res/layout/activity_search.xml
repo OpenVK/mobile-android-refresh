@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -18,13 +19,43 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
-        <SearchView
+        <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/search_bar"
+            style="@style/MaterialSearchBarLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/global_search_hint"
-            tools:ignore="MissingConstraints" />
+            app:mt_backIconDrawable="@drawable/ic_arrow_back"
+            app:mt_backIconTint="?attr/colorOnBackground"
+            app:mt_borderlessRippleEnabled="false"
+            app:mt_clearIconTint="?attr/colorOnBackground"
+            app:mt_clearIconUseTint="true"
+            app:mt_highlightedTextColor="?attr/colorPrimaryDark"
+            app:mt_hint="@android:string/search_go"
+            app:mt_hintColor="?android:attr/textColorHint"
+            app:mt_maxSuggestionsCount="10"
+            app:mt_navIconEnabled="false"
+            app:mt_navIconTint="?attr/colorOnBackground"
+            app:mt_navIconUseTint="true"
+            app:mt_placeholder="@string/global_search_hint"
+            app:mt_placeholderColor="?android:attr/textColorHint"
+            app:mt_roundedSearchBarEnabled="false"
+            app:mt_searchBarColor="@color/searchbar_background"
+            app:mt_searchIconTint="?attr/colorOnBackground"
+            app:mt_searchIconUseTint="true"
+            app:mt_textColor="?attr/colorOnBackground"
+            app:mt_textCursorTint="?attr/colorAccent" />
 
     </com.google.android.material.card.MaterialCardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/results_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

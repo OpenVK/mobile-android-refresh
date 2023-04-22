@@ -3,7 +3,6 @@ package uk.openvk.android.refresh.ui.core.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
@@ -88,7 +86,7 @@ public class ConversationActivity extends MonetCompatActivity {
             conv_title = (String) savedInstanceState.getSerializable("conv_title");
             peer_online = savedInstanceState.getInt("online");
         }
-        setContentView(R.layout.conversation);
+        setContentView(R.layout.activity_conversation);
         setMonetTheme();
         history = new ArrayList<uk.openvk.android.refresh.api.models.Message>();
         setAPIWrapper();

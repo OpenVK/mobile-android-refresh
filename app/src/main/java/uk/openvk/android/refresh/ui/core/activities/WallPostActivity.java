@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
@@ -33,33 +32,21 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 import uk.openvk.android.refresh.Global;
-import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
-import uk.openvk.android.refresh.api.Friends;
-import uk.openvk.android.refresh.api.Groups;
-import uk.openvk.android.refresh.api.Likes;
-import uk.openvk.android.refresh.api.Messages;
-import uk.openvk.android.refresh.api.Newsfeed;
-import uk.openvk.android.refresh.api.Users;
 import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Comment;
-import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.list.adapters.CommentsAdapter;
-import uk.openvk.android.refresh.ui.list.adapters.MessagesAdapter;
 import uk.openvk.android.refresh.ui.view.layouts.SendTextBottomPanel;
 
 public class WallPostActivity extends MonetCompatActivity {
@@ -94,7 +81,7 @@ public class WallPostActivity extends MonetCompatActivity {
             Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
             Global.setInterfaceFont(this);
             isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-            setContentView(R.layout.wall_post_watch);
+            setContentView(R.layout.activity_wall_post_watch);
             if (savedInstanceState != null) {
                 wallPost = savedInstanceState.getParcelable("post");
                 wallPost.counters = savedInstanceState.getParcelable("counters");

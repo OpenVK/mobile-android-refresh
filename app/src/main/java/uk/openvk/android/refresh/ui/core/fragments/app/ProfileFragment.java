@@ -113,6 +113,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
         pagerAdapter.createFragment(1);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setSaveEnabled(false);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -127,11 +128,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
         TabLayoutMediator mediator = new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     if(position == 0) {
-                        if(user != null) {
-                            tab.setText(getResources().getString(R.string.owner_wall_tab));
-                        } else {
-                            tab.setText("Tab 1");
-                        }
+                        tab.setText(getResources().getString(R.string.owner_wall_tab));
                     } else {
                         tab.setText(getResources().getString(R.string.info_tab));
                     }
@@ -177,7 +174,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             header.setProfileName(String.format("%s %s", user.first_name, user.last_name));
             header.setLastSeen(user.sex, user.ls_date, user.ls_platform);
             header.setStatus(user.status);
-            header.setVerified(user.verified, requireContext());
+            header.setVerified(user.verified, requireActivity());
             header.setOnline(user.online);
             header.setJoinButtonOnClickListener(new View.OnClickListener() {
                 @Override
@@ -277,20 +274,21 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
         if(user.books != null && user.books.length() > 0)
             aboutItems.add(new PublicPageAboutItem(getResources().getString(R.string.profile_books), user.books));
         ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setRefreshing(false);
-        new Handler().postDelayed(new Runnable() {
+        AboutFragment aboutFragment = ((AboutFragment) pagerAdapter.getFragment(1));
+        aboutFragment.handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
                 try {
-                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
-                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.about_rv).setVisibility(View.VISIBLE);
-                    ((AboutFragment) pagerAdapter.getFragment(1)).createAboutAdapter(requireActivity(), aboutItems);
+                    aboutFragment.view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                    aboutFragment.view.findViewById(R.id.about_rv).setVisibility(View.VISIBLE);
+                    aboutFragment.createAboutAdapter(requireActivity(), aboutItems);
                     aboutAdapter = ((AboutFragment) pagerAdapter.getFragment(1)).getAboutAdapter();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
-        }, 1000);
+        }, 200);
     }
 
     public void disableUpdateState() {

@@ -32,6 +32,14 @@ public class FriendsListFragment extends Fragment {
     private ArrayList<Friend> friends;
     private FriendsAdapter friendsAdapter;
 
+    public static FriendsListFragment createInstance(int page) {
+        FriendsListFragment fragment = new FriendsListFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", page);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

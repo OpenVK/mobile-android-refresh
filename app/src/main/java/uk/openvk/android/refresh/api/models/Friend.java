@@ -64,6 +64,10 @@ public class Friend implements Parcelable {
         }
     };
 
+    public Friend() {
+
+    }
+
     public void parse(JSONObject user) {
         try {
             if(user != null) {

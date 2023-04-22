@@ -1,18 +1,33 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
+import static java.security.AccessController.getContext;
+
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.api.Groups;
+import uk.openvk.android.refresh.api.Users;
+import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.list.sections.CommunitiesSearchSection;
+import uk.openvk.android.refresh.ui.list.sections.PeopleSearchSection;
 
 public class QuickSearchActivity extends MonetCompatActivity {
     private SharedPreferences global_prefs;
@@ -21,6 +36,12 @@ public class QuickSearchActivity extends MonetCompatActivity {
     private OvkAPIWrapper ovk_api;
     private DownloadManager downloadManager;
     private boolean isDarkTheme;
+    private Users users;
+    private Groups groups;
+    private MaterialSearchBar searchBar;
+    private SectionedRecyclerViewAdapter sectionAdapter;
+    private PeopleSearchSection peopleSection;
+    private CommunitiesSearchSection commsSection;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +53,76 @@ public class QuickSearchActivity extends MonetCompatActivity {
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.activity_search);
         setMonetTheme();
+        searchBar = ((MaterialSearchBar) findViewById(R.id.search_bar));
+        searchBar.openSearch();
+        searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+                if(!searchBar.isSearchOpened()) {
+                    finish();
+                }
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                String query = text.toString();
+                groups.search(ovk_api, query);
+                users.search(ovk_api, query);
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+            }
+        });
+        setAPIWrapper();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void createSearchResultsAdapter(RecyclerView rv) {
+        if(sectionAdapter == null) {
+            sectionAdapter = new SectionedRecyclerViewAdapter();
+            rv.setLayoutManager(new LinearLayoutManager(this));
+            rv.setAdapter(sectionAdapter);
+        }
+        if(commsSection == null) {
+            commsSection = new CommunitiesSearchSection(QuickSearchActivity.this, groups.getList());
+            sectionAdapter.addSection(commsSection);
+        }
+        if(peopleSection == null) {
+            peopleSection = new PeopleSearchSection(QuickSearchActivity.this, users.getList());
+            sectionAdapter.addSection(peopleSection);
+        }
+
+        sectionAdapter.notifyDataSetChanged();
+    }
+
+    private void setAPIWrapper() {
+        ovk_api = new OvkAPIWrapper(this);
+        downloadManager = new DownloadManager(this);
+        ovk_api.setServer(instance_prefs.getString("server", ""));
+        ovk_api.setAccessToken(instance_prefs.getString("access_token", ""));
+        users = new Users();
+        groups = new Groups();
+        handler = new Handler(Looper.myLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                Log.d("OpenVK", String.format("Handling API message: %s", msg.what));
+                receiveState(msg.what, msg.getData());
+            }
+        };
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void receiveState(int message, Bundle data) {
+        if(message == HandlerMessages.USERS_SEARCH) {
+            users.parseSearch(data.getString("response"));
+            final RecyclerView searchResultsView = findViewById(R.id.results_rv);
+            createSearchResultsAdapter(searchResultsView);
+        } else if(message == HandlerMessages.GROUPS_SEARCH) {
+            groups.parseSearch(data.getString("response"));
+            final RecyclerView searchResultsView = findViewById(R.id.results_rv);
+            createSearchResultsAdapter(searchResultsView);
+        }
     }
 
     private void setMonetTheme() {

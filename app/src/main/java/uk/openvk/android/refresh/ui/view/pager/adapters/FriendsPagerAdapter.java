@@ -49,10 +49,17 @@ public class FriendsPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2;
+        return pages_count;
     }
 
     public Fragment getFragment(int position) {
+        try {
+            if (position == 1 && fragments.get(position) instanceof FriendsListFragment) {
+                fragments.set(position, FriendRequestsFragment.createInstance(position));
+            }
+        } catch (Exception ignored) {
+
+        }
         return fragments.get(position);
     }
 }
