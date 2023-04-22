@@ -78,7 +78,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
                     .dontAnimate().centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.friend_avatar));
 
-            convertView.findViewById(R.id.group_avatar).setFocusable(false);
+            convertView.findViewById(R.id.friend_avatar).setFocusable(false);
             friend_title.setFocusable(false);
             convertView.findViewById(R.id.friend_avatar).setFocusable(false);
             View.OnClickListener openProfileListener = new View.OnClickListener() {
