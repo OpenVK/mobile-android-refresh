@@ -20,7 +20,7 @@ _OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.c
 5. [OkHttp](https://square.github.io/okhttp/) (Apache License 2.0)
 6. [libVLC](https://www.videolan.org/vlc/libvlc.html) (LGPL 2.1)
 7. [MaterialSearchBar](https://github.com/mancj/MaterialSearchBar) (X11 License)
-8. [SectionedRecyclerViewAdapter](https://github.com/luizgrp/SectionedRecyclerViewAdapter)
+8. [SectionedRecyclerViewAdapter](https://github.com/luizgrp/SectionedRecyclerViewAdapter) (X11 License)
 
 ## OpenVK Refresh License
 [GNU (Affero) GPL v3.0](https://github.com/openvk/mobile-android-refresh/blob/main/COPYING) or later version.
