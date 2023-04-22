@@ -23,6 +23,8 @@ import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import uk.openvk.android.refresh.Global;
@@ -35,6 +37,7 @@ import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.enumerations.UiMessages;
 import uk.openvk.android.refresh.ui.list.sections.CommunitiesSearchSection;
 import uk.openvk.android.refresh.ui.list.sections.PeopleSearchSection;
 
@@ -110,8 +113,6 @@ public class QuickSearchActivity extends MonetCompatActivity {
         } else {
             peopleSection = new PeopleSearchSection(QuickSearchActivity.this, users.getList());
         }
-        sectionAdapter.notifyDataSetChanged();
-
     }
 
     private void setAPIWrapper() {
@@ -134,12 +135,14 @@ public class QuickSearchActivity extends MonetCompatActivity {
     private void receiveState(int message, Bundle data) {
         if(message == HandlerMessages.USERS_SEARCH) {
             users.parseSearch(data.getString("response"));
-            final RecyclerView searchResultsView = findViewById(R.id.results_rv);
-            createSearchResultsAdapter(searchResultsView);
+            handler.sendEmptyMessage(UiMessages.UPTIME_QUICK_SEARCH);
         } else if(message == HandlerMessages.GROUPS_SEARCH) {
             groups.parseSearch(data.getString("response"));
+            handler.sendEmptyMessage(UiMessages.UPTIME_QUICK_SEARCH);
+        } else if(message == UiMessages.UPTIME_QUICK_SEARCH) {
             final RecyclerView searchResultsView = findViewById(R.id.results_rv);
             createSearchResultsAdapter(searchResultsView);
+            sectionAdapter.notifyDataSetChanged();
         }
     }
 
