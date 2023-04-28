@@ -41,17 +41,13 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -92,7 +88,7 @@ public class PhotoViewerActivity extends MonetCompatActivity {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-        setContentView(R.layout.photo_viewer);
+        setContentView(R.layout.activity_photo_viewer);
         setAppBar();
         setMonetTheme();
         loadPhoto();

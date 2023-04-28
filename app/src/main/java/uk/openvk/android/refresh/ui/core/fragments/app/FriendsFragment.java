@@ -239,22 +239,25 @@ public class FriendsFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                friendsView = ((FriendsListFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.friends_rv);
-                friendsView.setOnScrollListener((recyclerView, x, y, old_x, old_y) -> {
-                    View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
-                    int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
-                    if (!loading_more_friends) {
-                        if (diff == 0) {
-                            if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                                loading_more_friends = true;
-                                ((AppActivity) ctx).loadMoreFriends();
-                            } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
-                                loading_more_friends = true;
-                                ((FriendsIntentActivity) ctx).loadMoreFriends();
+                try {
+                    friendsView = ((FriendsListFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.friends_rv);
+                    friendsView.setOnScrollListener((recyclerView, x, y, old_x, old_y) -> {
+                        View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
+                        int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
+                        if (!loading_more_friends) {
+                            if (diff == 0) {
+                                if (ctx.getClass().getSimpleName().equals("AppActivity")) {
+                                    loading_more_friends = true;
+                                    ((AppActivity) ctx).loadMoreFriends();
+                                } else if (ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
+                                    loading_more_friends = true;
+                                    ((FriendsIntentActivity) ctx).loadMoreFriends();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                } catch (Exception ignored) {
+                }
             }
         }, 1000);
 

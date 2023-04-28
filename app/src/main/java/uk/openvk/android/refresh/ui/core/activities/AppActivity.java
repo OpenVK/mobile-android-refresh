@@ -277,11 +277,15 @@ public class AppActivity extends MonetCompatActivity {
                 onBackPressed();
             } else {
                 if(OvkApplication.isTablet && screenOrientation == Configuration.ORIENTATION_LANDSCAPE){
-                    NavigationView navView = findViewById(R.id.nav_view);
-                    if(navView.getVisibility() == View.VISIBLE) {
-                        navView.setVisibility(View.GONE);
-                    } else {
-                        navView.setVisibility(View.VISIBLE);
+                    try {
+                        NavigationView navView = findViewById(R.id.nav_view);
+                        if (navView.getVisibility() == View.VISIBLE) {
+                            navView.setVisibility(View.GONE);
+                        } else {
+                            navView.setVisibility(View.VISIBLE);
+                        }
+                    } catch (Exception ignored) {
+
                     }
                 } else {
                     drawer.open();
