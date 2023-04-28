@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.WallPost;
@@ -51,7 +52,9 @@ public class NewsfeedFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_newsfeed, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
-        view.findViewById(R.id.newsfeed_layout).setVisibility(View.GONE);
+        if(OvkApplication.isTablet) {
+            view.findViewById(R.id.newsfeed_layout).setVisibility(View.GONE);
+        }
         setTheme();
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
