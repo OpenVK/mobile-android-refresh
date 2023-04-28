@@ -112,7 +112,9 @@ public class NewsfeedFragment extends Fragment {
             newsfeedAdapter.notifyDataSetChanged();
         }
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-        view.findViewById(R.id.newsfeed_layout).setVisibility(View.VISIBLE);
+        if(OvkApplication.isTablet) {
+            view.findViewById(R.id.newsfeed_layout).setVisibility(View.VISIBLE);
+        }
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
