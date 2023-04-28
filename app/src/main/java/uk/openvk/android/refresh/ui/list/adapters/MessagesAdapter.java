@@ -41,9 +41,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
     @Override
     public MessagesAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == 0) {
-            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.incoming_msg, parent, false));
+            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.msg_incoming, parent, false));
         } else if(viewType == 1) {
-            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.outcoming_msg, parent, false));
+            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.msg_outcoming, parent, false));
         } else {
             return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.messages_history_datestamp, parent, false));
         }

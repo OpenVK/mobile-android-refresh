@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <uk.openvk.android.refresh.ui.view.layouts.ErrorLayout
+        android:id="@+id/error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/newsfeed_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/newsfeedBackgroundColor"
+        android:orientation="vertical">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/newsfeed_swipe_layout"
+            android:layout_width="540dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:visibility="visible">
+
+            <uk.openvk.android.refresh.ui.view.InfinityRecyclerView
+                android:id="@+id/newsfeed_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </uk.openvk.android.refresh.ui.view.InfinityRecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+    <uk.openvk.android.refresh.ui.view.layouts.ProgressLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+    </uk.openvk.android.refresh.ui.view.layouts.ProgressLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

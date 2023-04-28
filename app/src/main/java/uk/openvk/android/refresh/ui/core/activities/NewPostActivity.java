@@ -30,7 +30,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
-import com.kieronquinn.monetcompat.extensions.views.ViewExtensions_EditTextKt;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -66,7 +65,7 @@ public class NewPostActivity extends MonetCompatActivity {
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
-        setContentView(R.layout.new_post);
+        setContentView(R.layout.activity_new_post);
         setAPIWrapper();
         setAppBar();
 

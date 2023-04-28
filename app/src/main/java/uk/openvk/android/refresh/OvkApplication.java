@@ -3,6 +3,7 @@ package uk.openvk.android.refresh;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
@@ -16,6 +17,7 @@ import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.longpoll_api.LongPollService;
 
 public class OvkApplication extends Application {
+    public static boolean isTablet;
     public String version;
     public LongPollService longPollService;
     private SharedPreferences global_prefs;
@@ -34,6 +36,13 @@ public class OvkApplication extends Application {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        boolean xlarge = ((getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
+        boolean large = ((getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        if(xlarge || large) {
+            isTablet = true;
         }
     }
 

@@ -141,6 +141,7 @@ public class AppActivity extends MonetCompatActivity {
     private Intent longPollIntent;
     private VideoSettingsFragment videoSettingsFragment;
     private NotificationManager notifMan;
+    private int screenOrientation;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -152,6 +153,7 @@ public class AppActivity extends MonetCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+        screenOrientation = getResources().getConfiguration().orientation;
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
@@ -274,7 +276,16 @@ public class AppActivity extends MonetCompatActivity {
                     || selectedFragment == personalizationFragment || selectedFragment == aboutAppFragment) {
                 onBackPressed();
             } else {
-                drawer.open();
+                if(OvkApplication.isTablet && screenOrientation == Configuration.ORIENTATION_LANDSCAPE){
+                    NavigationView navView = findViewById(R.id.nav_view);
+                    if(navView.getVisibility() == View.VISIBLE) {
+                        navView.setVisibility(View.GONE);
+                    } else {
+                        navView.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    drawer.open();
+                }
             }
         });
     }
@@ -1106,6 +1117,12 @@ public class AppActivity extends MonetCompatActivity {
     @Override
     public void recreate() {
 
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        screenOrientation = newConfig.orientation;
     }
 
     @Override

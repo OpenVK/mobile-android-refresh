@@ -79,7 +79,11 @@ public class Newsfeed implements Parcelable {
             JSONObject json = jsonParser.parseJSON(response);
             if(json != null) {
                 JSONObject newsfeed = json.getJSONObject("response");
-                next_from = newsfeed.getLong("next_from");
+                if(newsfeed.get("next_from") instanceof Long) {
+                    next_from = newsfeed.getLong("next_from");
+                } else {
+                    next_from = 0;
+                }
                 JSONArray items = newsfeed.getJSONArray("items");
                 for(int i = 0; i < items.length(); i++) {
                     JSONObject post = items.getJSONObject(i);
