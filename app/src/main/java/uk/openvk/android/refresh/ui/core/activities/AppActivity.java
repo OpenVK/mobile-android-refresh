@@ -748,9 +748,6 @@ public class AppActivity extends MonetCompatActivity {
                 ArrayList<Friend> friendsList = friends.requests;
                 friendsFragment.createRequestsAdapter(this, friendsList);
                 friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
-            } else if (message == HandlerMessages.FRIENDS_ADD) {
-                friends.requests.remove(friendsFragment.requests_cursor_index);
-                friendsFragment.createRequestsAdapter(this, friends.requests);
             } else if (message == HandlerMessages.GROUPS_GET) {
                 groups.parse(data.getString("response"), downloadManager, global_prefs.getString("photos_quality", ""), true, true);
                 ArrayList<Group> groupsList = groups.getList();
@@ -794,19 +791,9 @@ public class AppActivity extends MonetCompatActivity {
                         .into((ImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
             } else if (message == HandlerMessages.FRIEND_AVATARS) {
                 friendsFragment.refreshAdapter();
-            } else if(message == HandlerMessages.FRIENDS_ADD) {
-                if(selectedFragment == friendsFragment) {
-                    friends.requests.remove(friendsFragment.requests_cursor_index);
-                } else {
-                    JSONObject response = new JSONParser().parseJSON(data.getString("response"));
-                    int status = response.getInt("response");
-                    if (status == 1) {
-                        user.friends_status = status;
-                    } else if (status == 2) {
-                        user.friends_status = 3;
-                    }
-                    profileFragment.setFriendStatus(account.user, user.friends_status);
-                }
+            } else if (message == HandlerMessages.FRIENDS_ADD) {
+                friends.requests.remove(friendsFragment.requests_cursor_index);
+                friendsFragment.createRequestsAdapter(this, friends.requests);
             } else if(message == HandlerMessages.FRIENDS_DELETE) {
                 JSONObject response = new JSONParser().parseJSON(data.getString("response"));
                 int status = response.getInt("response");
