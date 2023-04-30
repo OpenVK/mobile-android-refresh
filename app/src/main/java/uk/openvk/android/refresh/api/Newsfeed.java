@@ -110,53 +110,72 @@ public class Newsfeed implements Parcelable {
                     } else {
                         isLiked = false;
                     }
-                    PostCounters counters = new PostCounters(likes.getInt("count"), comments.getInt("count"), reposts.getInt("count"), isLiked, false);
+                    PostCounters counters = new PostCounters(likes.getInt("count"),
+                            comments.getInt("count"), reposts.getInt("count"), isLiked,
+                            false);
 
-                    ArrayList<Attachment> attachments_list = createAttachmentsList(owner_id, post_id, quality, attachments);
+                    ArrayList<Attachment> attachments_list = createAttachmentsList(owner_id,
+                            post_id, quality, attachments);
 
-                    WallPost item = new WallPost(String.format("(Unknown author: %s)", author_id), dt_sec, null, content, counters, "", attachments_list, owner_id, post_id, ctx);
+                    WallPost item = new WallPost(String.format("(Unknown author: %s)",
+                            author_id), dt_sec, null, content, counters, "",
+                            attachments_list, owner_id, post_id, ctx);
                     if(post.has("post_source") && !post.isNull("post_source")) {
                         if(post.getJSONObject("post_source").getString("type").equals("api")) {
-                            item.post_source = new WallPostSource(post.getJSONObject("post_source").getString("type"), post.getJSONObject("post_source").getString("platform"));
+                            item.post_source = new WallPostSource(post
+                                    .getJSONObject("post_source").getString("type"),
+                                    post.getJSONObject("post_source").getString("platform"));
                         } else {
-                            item.post_source = new WallPostSource(post.getJSONObject("post_source").getString("type"), null);
+                            item.post_source = new WallPostSource(post
+                                    .getJSONObject("post_source").getString("type"), null);
                         }
                     }
                     if(post.getJSONArray("copy_history").length() > 0) {
-                        JSONObject repost = post.getJSONArray("copy_history").getJSONObject(0);
-                        WallPost repost_item = new WallPost(String.format("(Unknown author: %s)", repost.getLong("from_id")), repost.getLong("date"), null, repost.getString("text"), null, "",
-                                null, repost.getLong("owner_id"), repost.getLong("id"), ctx);
-                        RepostInfo repostInfo = new RepostInfo(String.format("(Unknown author: %s)", repost.getLong("from_id")), repost.getLong("date"), ctx);
+                        JSONObject repost = post.getJSONArray("copy_history")
+                                .getJSONObject(0);
+                        WallPost repost_item = new WallPost(String.format("(Unknown author: %s)",
+                                repost.getLong("from_id")), repost.getLong("date"),
+                                null, repost.getString("text"), null, "",
+                                null, repost.getLong("owner_id"),
+                                repost.getLong("id"), ctx);
+                        RepostInfo repostInfo = new RepostInfo(String.format("(Unknown author: %s)",
+                                repost.getLong("from_id")), repost.getLong("date"), ctx);
                         repostInfo.newsfeed_item = repost_item;
                         item.repost = repostInfo;
                         JSONArray repost_attachments = repost.getJSONArray("attachments");
-                        attachments_list = createAttachmentsList(owner_id, post_id, quality, repost_attachments);
+                        attachments_list = createAttachmentsList(owner_id, post_id, quality,
+                                repost_attachments);
                         repost_item.attachments = attachments_list;
                     }
                     item.author_id = author_id;
                     if(author_id > 0) {
                         if(newsfeed.has("profiles")) {
                             JSONArray profiles = newsfeed.getJSONArray("profiles");
-                            for (int profiles_index = 0; profiles_index < profiles.length(); profiles_index++) {
+                            for (int profiles_index = 0; profiles_index < profiles.length();
+                                 profiles_index++) {
                                 JSONObject profile = profiles.getJSONObject(profiles_index);
                                 if (profile.getLong("id") == author_id) {
-                                    author_name = String.format("%s %s", profile.getString("first_name"), profile.getString("last_name"));
+                                    author_name = String.format("%s %s",
+                                            profile.getString("first_name"),
+                                            profile.getString("last_name"));
                                     author_avatar_url = profile.getString("photo_100");
                                     if(profile.has("verified")) {
-                                        if (profile.getInt("verified") == 1) {
-                                            verified_author = true;
+                                        if(profile.get("verified") instanceof Integer) {
+                                            verified_author = profile.getInt("verified") == 1;
                                         } else {
-                                            verified_author = false;
+                                            verified_author = profile.getBoolean("verified");
                                         }
                                     }
                                 } else if (profile.getInt("id") == owner_id) {
-                                    owner_name = String.format("%s %s", profile.getString("first_name"), profile.getString("last_name"));
+                                    owner_name = String.format("%s %s",
+                                            profile.getString("first_name"),
+                                            profile.getString("last_name"));
                                     owner_avatar_url = profile.getString("photo_100");
                                     if(profile.has("verified")) {
-                                        if (profile.getInt("verified") == 1) {
-                                            verified_author = true;
+                                        if(profile.get("verified") instanceof Integer) {
+                                            verified_author = profile.getInt("verified") == 1;
                                         } else {
-                                            verified_author = false;
+                                            verified_author = profile.getBoolean("verified");
                                         }
                                     }
                                 }
@@ -166,16 +185,25 @@ public class Newsfeed implements Parcelable {
                         if(owner_id < 0) {
                             if(newsfeed.has("groups")) {
                                 JSONArray groups = newsfeed.getJSONArray("groups");
-                                for (int groups_index = 0; groups_index < groups.length(); groups_index++) {
+                                for (int groups_index = 0; groups_index < groups.length();
+                                     groups_index++) {
                                     JSONObject group = groups.getJSONObject(groups_index);
                                     if (-group.getLong("id") == owner_id) {
                                         owner_name = group.getString("name");
                                         avatar_url = group.getString("photo_100");
                                         if(group.has("verified")) {
-                                            if (group.getInt("verified") == 1) {
-                                                verified_author = true;
+                                            if(group.get("verified") instanceof Integer) {
+                                                if (group.getInt("verified") == 1) {
+                                                    verified_author = true;
+                                                } else {
+                                                    verified_author = false;
+                                                }
                                             } else {
-                                                verified_author = false;
+                                                if (group.getBoolean("verified")) {
+                                                    verified_author = true;
+                                                } else {
+                                                    verified_author = false;
+                                                }
                                             }
                                         }
                                     }
@@ -199,10 +227,18 @@ public class Newsfeed implements Parcelable {
                                     item.name = group.getString("name");
                                     avatar_url = group.getString("photo_100");
                                     if(group.has("verified")) {
-                                        if (group.getInt("verified") == 1) {
-                                            verified_author = true;
+                                        if(group.get("verified") instanceof Integer) {
+                                            if (group.getInt("verified") == 1) {
+                                                verified_author = true;
+                                            } else {
+                                                verified_author = false;
+                                            }
                                         } else {
-                                            verified_author = false;
+                                            if (group.getBoolean("verified")) {
+                                                verified_author = true;
+                                            } else {
+                                                verified_author = false;
+                                            }
                                         }
                                     }
                                 }
@@ -217,11 +253,14 @@ public class Newsfeed implements Parcelable {
                     this.items.add(item);
                 }
                 if(quality.equals("medium")) {
-                    downloadManager.downloadPhotosToCache(photos_msize, "newsfeed_photo_attachments");
+                    downloadManager.downloadPhotosToCache(photos_msize,
+                            "newsfeed_photo_attachments");
                 } else if(quality.equals("high")) {
-                    downloadManager.downloadPhotosToCache(photos_hsize, "newsfeed_photo_attachments");
+                    downloadManager.downloadPhotosToCache(photos_hsize,
+                            "newsfeed_photo_attachments");
                 } else if(quality.equals("original")) {
-                    downloadManager.downloadPhotosToCache(photos_osize, "newsfeed_photo_attachments");
+                    downloadManager.downloadPhotosToCache(photos_osize,
+                            "newsfeed_photo_attachments");
                 }
                 downloadManager.downloadPhotosToCache(avatars, "newsfeed_avatars");
             }
@@ -235,7 +274,8 @@ public class Newsfeed implements Parcelable {
     }
 
     public void get(OvkAPIWrapper ovk, int count, long start_from) {
-        ovk.sendAPIMethod("Newsfeed.get", String.format("count=%s&start_from=%s&extended=1", count, start_from), "more_news");
+        ovk.sendAPIMethod("Newsfeed.get", String.format("count=%s&start_from=%s&extended=1",
+                count, start_from), "more_news");
     }
 
     public void getGlobal(OvkAPIWrapper ovk, int count) {
@@ -243,10 +283,12 @@ public class Newsfeed implements Parcelable {
     }
 
     public void getGlobal(OvkAPIWrapper ovk, int count, long start_from) {
-        ovk.sendAPIMethod("Newsfeed.getGlobal", String.format("count=%s&start_from=%s&extended=1", count, start_from), "more_news");
+        ovk.sendAPIMethod("Newsfeed.getGlobal", String.format("count=%s&start_from=%s&extended=1",
+                count, start_from), "more_news");
     }
 
-    public ArrayList<Attachment> createAttachmentsList(long owner_id, long post_id, String quality, JSONArray attachments) {
+    public ArrayList<Attachment> createAttachmentsList(long owner_id, long post_id, String quality,
+                                                       JSONArray attachments) {
         ArrayList<Attachment> attachments_list = new ArrayList<>();
         try {
             for (int attachments_index = 0; attachments_index < attachments.length(); attachments_index++) {
@@ -300,7 +342,12 @@ public class Newsfeed implements Parcelable {
                     }
                 } else if (attachment.getString("type").equals("poll")) {
                     JSONObject poll_attachment = attachment.getJSONObject("poll");
-                    PollAttachment pollAttachment = new PollAttachment(poll_attachment.getString("question"), poll_attachment.getInt("id"), poll_attachment.getLong("end_date"), poll_attachment.getBoolean("multiple"), poll_attachment.getBoolean("can_vote"),
+                    PollAttachment pollAttachment = new PollAttachment(
+                            poll_attachment.getString("question"),
+                            poll_attachment.getInt("id"),
+                            poll_attachment.getLong("end_date"),
+                            poll_attachment.getBoolean("multiple"),
+                            poll_attachment.getBoolean("can_vote"),
                             poll_attachment.getBoolean("anonymous"));
                     JSONArray answers = poll_attachment.getJSONArray("answers");
                     JSONArray votes = poll_attachment.getJSONArray("answer_ids");
@@ -310,7 +357,9 @@ public class Newsfeed implements Parcelable {
                     pollAttachment.votes = poll_attachment.getInt("votes");
                     for (int answers_index = 0; answers_index < answers.length(); answers_index++) {
                         JSONObject answer = answers.getJSONObject(answers_index);
-                        PollAnswer pollAnswer = new PollAnswer(answer.getInt("id"), answer.getInt("rate"), answer.getInt("votes"), answer.getString("text"));
+                        PollAnswer pollAnswer = new PollAnswer(answer.getInt("id"),
+                                answer.getInt("rate"),
+                                answer.getInt("votes"), answer.getString("text"));
                         for (int votes_index = 0; votes_index < votes.length(); votes_index++) {
                             if (answer.getInt("id") == votes.getInt(votes_index)) {
                                 pollAnswer.is_voted = true;
@@ -351,7 +400,8 @@ public class Newsfeed implements Parcelable {
                     if(video.has("image")) {
                         JSONArray thumb_array = video.getJSONArray("image");
                         videoAttachment.url_thumb = thumb_array.getJSONObject(0).getString("url");
-                        dlm.downloadOnePhotoToCache(videoAttachment.url_thumb, String.format("thumbnail_%s", video.getLong("id")), "video_thumbnails");
+                        dlm.downloadOnePhotoToCache(videoAttachment.url_thumb, String.format("thumbnail_%s",
+                                video.getLong("id")), "video_thumbnails");
                     }
                     videoAttachment.duration = video.getInt("duration");
                     attachment_status = "done";

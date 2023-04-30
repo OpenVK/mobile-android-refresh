@@ -55,7 +55,8 @@ public class VideoSettingsFragment extends PreferenceFragmentCompat {
         }
         DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos,
                 getResources().getStringArray(R.array.video_player));
-        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(),
+                R.style.ApplicationTheme_AlertDialog);
         builder.setTitle(R.string.pref_video_player);
         builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);
         builder.setNegativeButton(android.R.string.cancel, null);

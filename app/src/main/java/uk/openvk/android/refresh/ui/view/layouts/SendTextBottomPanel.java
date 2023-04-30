@@ -34,7 +34,8 @@ public class SendTextBottomPanel extends ConstraintLayout {
     }
 
     public String getText() {
-        return Objects.requireNonNull(((TextInputEditText) findViewById(R.id.send_text)).getText()).toString();
+        return Objects.requireNonNull(((TextInputEditText) findViewById(R.id.send_text))
+                .getText()).toString();
     }
 
     public void clearText() {

@@ -52,7 +52,8 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
+                getWindow());
         Global.setInterfaceFont(this);
         window = getWindow();
         setContentView(R.layout.activity_video_player);
@@ -103,9 +104,11 @@ public class VideoPlayerActivity extends MonetCompatActivity {
 
                 Uri uri = Uri.parse(url);
 
-                if(global_prefs.getString("video_player", "built_in").equals("built_in")) {
+                if(global_prefs.getString("video_player", "built_in")
+                        .equals("built_in")) {
                     createMediaPlayer(uri);
-                    ((ImageButton) findViewById(R.id.play_btn)).setOnClickListener(new View.OnClickListener() {
+                    ((ImageButton) findViewById(R.id.play_btn)).setOnClickListener(
+                            new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             playVideo();
@@ -139,10 +142,12 @@ public class VideoPlayerActivity extends MonetCompatActivity {
         window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_FULLSCREEN);
         window.setStatusBarColor(Global.adjustAlpha(Color.BLACK, 0.5f));
         window.setNavigationBarColor(Color.BLACK);
-        ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
+        ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d",
+                pos / 60, pos % 60, duration / 60, duration % 60));
         vlc = new LibVLC(this);
         mp = new MediaPlayer(vlc);
         showPlayControls();
@@ -156,13 +161,16 @@ public class VideoPlayerActivity extends MonetCompatActivity {
                     findViewById(R.id.loading_card).setVisibility(View.GONE);
                 }
                 if(event.type == MediaPlayer.Event.Paused) {
-                    ((ImageButton) findViewById(R.id.play_btn)).setImageDrawable(getResources().getDrawable(R.drawable.ic_play_large));
+                    ((ImageButton) findViewById(R.id.play_btn)).setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_play_large));
                 } else if(event.type == MediaPlayer.Event.Playing) {
-                    ((ImageButton) findViewById(R.id.play_btn)).setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_large));
+                    ((ImageButton) findViewById(R.id.play_btn)).setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_pause_large));
                 }
                 if(event.type == MediaPlayer.Event.EndReached) {
                     mp.stop();
-                    ((ImageButton) findViewById(R.id.play_btn)).setImageDrawable(getResources().getDrawable(R.drawable.ic_play_large));
+                    ((ImageButton) findViewById(R.id.play_btn)).setImageDrawable(
+                            getResources().getDrawable(R.drawable.ic_play_large));
                 }
 
                 if(event.type == MediaPlayer.Event.LengthChanged) {
@@ -187,7 +195,8 @@ public class VideoPlayerActivity extends MonetCompatActivity {
             mp.setMedia(media);
             media.release();
             playVideo();
-            ((SeekBar) findViewById(R.id.seekbar)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            ((SeekBar) findViewById(R.id.seekbar)).setOnSeekBarChangeListener(
+                    new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if(fromUser) {
@@ -216,7 +225,9 @@ public class VideoPlayerActivity extends MonetCompatActivity {
                             if (!seekPressed) {
                                 ((SeekBar) findViewById(R.id.seekbar)).setProgress(pos);
                             }
-                            ((TextView) findViewById(R.id.timecode)).setText(String.format("%d:%02d / %d:%02d", pos / 60, pos % 60, duration / 60, duration % 60));
+                            ((TextView) findViewById(R.id.timecode)).setText(
+                                    String.format("%d:%02d / %d:%02d", pos / 60,
+                                            pos % 60, duration / 60, duration % 60));
                         }
                         new Handler(Looper.myLooper()).postDelayed(this, 200);
                     } catch (Exception ignored) {
@@ -229,7 +240,8 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     }
 
     private void showVideoPlayerErrorDialog() {
-        OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(this, R.style.ApplicationTheme_AlertDialog);
+        OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(this,
+                R.style.ApplicationTheme_AlertDialog);
         dialog.setTitle(R.string.error);
         dialog.setMessage(R.string.video_err_decode);
         dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

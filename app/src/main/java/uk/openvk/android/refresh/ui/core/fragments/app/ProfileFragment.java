@@ -85,7 +85,8 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
         Global.setAvatarShape(requireContext(), header.findViewById(R.id.profile_avatar));
         setTheme();
         appBar = view.findViewById(R.id.app_bar);
-        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout))
+                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -141,29 +142,43 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
     private void setTheme() {
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
-        int unselectedColor = MaterialColors.getColor(requireContext(), com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
-        int accentColor = MaterialColors.getColor(requireContext(), com.google.android.material.R.attr.colorAccent, Color.BLACK);
+        int unselectedColor = MaterialColors.getColor(requireContext(),
+                com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
+        int accentColor = MaterialColors.getColor(requireContext(),
+                com.google.android.material.R.attr.colorAccent, Color.BLACK);
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8();
+                accentColor = Objects.requireNonNull(monet.getMonetColors()
+                        .getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8();
             } else {
-                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                accentColor = Objects.requireNonNull(monet.getMonetColors()
+                        .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
             }
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(accentColor);
-            ((TabLayout) view.findViewById(R.id.tab_layout)).setSelectedTabIndicatorColor(accentColor);
-            ((TabLayout) view.findViewById(R.id.tab_layout)).setTabTextColors(Global.adjustAlpha(unselectedColor, 0.6f), accentColor);
+            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout))
+                    .setColorSchemeColors(accentColor);
+            ((TabLayout) view.findViewById(R.id.tab_layout))
+                    .setSelectedTabIndicatorColor(accentColor);
+            ((TabLayout) view.findViewById(R.id.tab_layout))
+                    .setTabTextColors(Global.adjustAlpha(unselectedColor, 0.6f), accentColor);
         } else {
-            ((TabLayout) view.findViewById(R.id.tab_layout)).setSelectedTabIndicatorColor(accentColor);
-            ((TabLayout) view.findViewById(R.id.tab_layout)).setTabTextColors(Global.adjustAlpha(unselectedColor, 0.6f), accentColor);
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setColorSchemeColors(typedValue.data);
+            ((TabLayout) view.findViewById(R.id.tab_layout))
+                    .setSelectedTabIndicatorColor(accentColor);
+            ((TabLayout) view.findViewById(R.id.tab_layout))
+                    .setTabTextColors(Global.adjustAlpha(unselectedColor, 0.6f), accentColor);
+            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout))
+                    .setColorSchemeColors(typedValue.data);
         }
 
         if(global_prefs.getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources()
+                            .getColor(com.google.android.material.R.color.background_material_dark));
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+            ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources()
+                            .getColor(android.R.color.white));
         }
     }
 
@@ -222,7 +237,8 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(String.format("openvk://friends/id%s", user.id)));
                     final PackageManager pm = requireContext().getPackageManager();
-                    @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+                    @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList
+                            = pm.queryIntentActivities(i, 0);
                     for (int index = 0; index < activityList.size(); index++) {
                         ResolveInfo app = activityList.get(index);
                         if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
@@ -238,7 +254,8 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                     Intent intent = new Intent(getContext(), ConversationActivity.class);
                     try {
                         intent.putExtra("peer_id", user.id);
-                        intent.putExtra("conv_title", String.format("%s %s", user.first_name, user.last_name));
+                        intent.putExtra("conv_title", String.format("%s %s",
+                                user.first_name, user.last_name));
                         if(user.online) {
                             intent.putExtra("online", 1);
                         } else {
@@ -278,12 +295,14 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
         aboutFragment.handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
+                // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                // so this is only possible with a delay.
                 try {
                     aboutFragment.view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
                     aboutFragment.view.findViewById(R.id.about_rv).setVisibility(View.VISIBLE);
                     aboutFragment.createAboutAdapter(requireActivity(), aboutItems);
-                    aboutAdapter = ((AboutFragment) pagerAdapter.getFragment(1)).getAboutAdapter();
+                    aboutAdapter = ((AboutFragment) pagerAdapter.getFragment(1))
+                            .getAboutAdapter();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -303,14 +322,20 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
             if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_no_internet);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_no_internet);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle);
             } else if(message == HandlerMessages.INTERNAL_ERROR || message == HandlerMessages.UNKNOWN_ERROR) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance_failure);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_instance_failure);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle_instance);
             } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle_instance);
             }
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout)).setVisibility(View.GONE);
@@ -329,7 +354,8 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             @Override
             public void run() {
                 try {
-                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                    // so this is only possible with a delay.
                     WallFragment wallFragment = ((WallFragment) pagerAdapter.getFragment(0));
                     wallFragment.view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
                     wallFragment.view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
@@ -351,10 +377,14 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             @Override
             public void run() {
                 try {
-                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
-                    ((WallFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
-                    ((WallFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
-                    ((WallFragment) pagerAdapter.getFragment(0)).createWallAdapter(requireActivity(), wallPosts);
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                    // so this is only possible with a delay.
+                    ((WallFragment) pagerAdapter.getFragment(0))
+                            .view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                    ((WallFragment) pagerAdapter.getFragment(0))
+                            .view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
+                    ((WallFragment) pagerAdapter.getFragment(0))
+                            .createWallAdapter(requireActivity(), wallPosts);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -401,11 +431,16 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             @Override
             public void run() {
                 try {
-                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
-                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
-                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.about_rv).setVisibility(View.VISIBLE);
-                    ((AboutFragment) pagerAdapter.getFragment(1)).createAboutAdapter(requireActivity(), aboutItems);
-                    aboutAdapter = ((AboutFragment) pagerAdapter.getFragment(1)).getAboutAdapter();
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                    // so this is only possible with a delay.
+                    ((AboutFragment) pagerAdapter.getFragment(1)).view
+                            .findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                    ((AboutFragment) pagerAdapter.getFragment(1)).view
+                            .findViewById(R.id.about_rv).setVisibility(View.VISIBLE);
+                    ((AboutFragment) pagerAdapter.getFragment(1))
+                            .createAboutAdapter(requireActivity(), aboutItems);
+                    aboutAdapter = ((AboutFragment) pagerAdapter.getFragment(1))
+                            .getAboutAdapter();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

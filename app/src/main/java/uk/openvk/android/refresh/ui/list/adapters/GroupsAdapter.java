@@ -64,12 +64,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.Holder>  {
             group_title.setText(item.name);
             group_title.setTypeface(Global.getFlexibleTypeface(ctx, 500));
             if(item.members_count > 0) {
-                group_summary.setText(String.format(ctx.getResources().getStringArray(R.array.members_count)[2], item.members_count));
+                group_summary.setText(String.format(ctx.getResources().getStringArray(R.array.members_count)[2]
+                        , item.members_count));
             }
             Global.setAvatarShape(ctx, convertView.findViewById(R.id.group_avatar));
             ((ImageView) convertView.findViewById(R.id.group_avatar)).setImageTintList(null);
             GlideApp.with(ctx)
-                    .load(String.format("%s/photos_cache/group_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.id))
+                    .load(String.format("%s/photos_cache/group_avatars/avatar_%s",
+                            ctx.getCacheDir().getAbsolutePath(), item.id))
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
                     .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                     .dontAnimate().centerCrop()

@@ -144,8 +144,11 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                 valuePos = 3;
                 break;
         }
-        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.ui_languages));
-        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(
+                requireContext(), this,
+                valuePos, getResources().getStringArray(R.array.ui_languages));
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(),
+                R.style.ApplicationTheme_AlertDialog);
         builder.setTitle(R.string.pref_language);
         builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -178,36 +181,51 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
 
     @SuppressLint("InflateParams")
     private void showAboutInstanceDialog() {
-        OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(requireContext(),
+                R.style.ApplicationTheme_AlertDialog);
         about_instance_view = getLayoutInflater().inflate(R.layout.dialog_about_instance, null);
         dialog.setTitle(getResources().getString(R.string.pref_about_instance));
         dialog.setView(about_instance_view);
         dialog.setPositiveButton(android.R.string.ok, null);
         TextView server_name = (TextView) about_instance_view.findViewById(R.id.server_addr_label2);
         server_name.setText(instance_prefs.getString("server", ""));
-        ((TextView) about_instance_view.findViewById(R.id.connection_type_label2)).setText(getResources().getString(R.string.loading));
-        ((TextView) about_instance_view.findViewById(R.id.instance_version_label2)).setText(getResources().getString(R.string.loading));
-        ((LinearLayout) about_instance_view.findViewById(R.id.instance_version_ll)).setVisibility(View.GONE);
-        ((LinearLayout) about_instance_view.findViewById(R.id.instance_statistics_ll)).setVisibility(View.GONE);
-        ((LinearLayout) about_instance_view.findViewById(R.id.instance_links_ll)).setVisibility(View.GONE);
-        ((TextView) about_instance_view.findViewById(R.id.rules_link)).setOnClickListener(new View.OnClickListener() {
+        ((TextView) about_instance_view.findViewById(R.id.connection_type_label2))
+                .setText(getResources().getString(R.string.loading));
+        ((TextView) about_instance_view.findViewById(R.id.instance_version_label2))
+                .setText(getResources().getString(R.string.loading));
+        ((LinearLayout) about_instance_view.findViewById(R.id.instance_version_ll))
+                .setVisibility(View.GONE);
+        ((LinearLayout) about_instance_view.findViewById(R.id.instance_statistics_ll))
+                .setVisibility(View.GONE);
+        ((LinearLayout) about_instance_view.findViewById(R.id.instance_links_ll))
+                .setVisibility(View.GONE);
+        ((TextView) about_instance_view.findViewById(R.id.rules_link))
+                .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWebAddress(String.format("http://%s/about", instance_prefs.getString("server", "")));
+                openWebAddress(String.format("http://%s/about",
+                        instance_prefs.getString("server", "")));
             }
         });
-        ((TextView) about_instance_view.findViewById(R.id.privacy_link)).setOnClickListener(new View.OnClickListener() {
+        ((TextView) about_instance_view.findViewById(R.id.privacy_link))
+                .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWebAddress(String.format("http://%s/privacy", instance_prefs.getString("server", "")));
+                openWebAddress(String.format("http://%s/privacy",
+                        instance_prefs.getString("server", "")));
             }
         });
 
-        ((TextView) about_instance_view.findViewById(R.id.server_addr_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
-        ((TextView) about_instance_view.findViewById(R.id.connection_type_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
-        ((TextView) about_instance_view.findViewById(R.id.instance_version_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
-        ((TextView) about_instance_view.findViewById(R.id.instance_statistics_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
-        ((TextView) about_instance_view.findViewById(R.id.instance_links_label)).setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.server_addr_label))
+                .setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.connection_type_label))
+                .setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.instance_version_label))
+                .setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.instance_statistics_label))
+                .setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
+        ((TextView) about_instance_view.findViewById(R.id.instance_links_label))
+                .setTypeface(Global.getFlexibleTypeface(requireActivity(), 500));
 
         dialog.show();
         if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -225,7 +243,8 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void showLogoutConfirmDialog() {
-        OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(requireContext(),
+                R.style.ApplicationTheme_AlertDialog);
         dialog.setMessage(R.string.log_out_warning);
         dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -239,7 +258,8 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                         Runnable runnable = new Runnable() {
                             @Override
                             public void run() {
-                                Intent activity = new Intent(requireContext().getApplicationContext(), MainActivity.class);
+                                Intent activity = new Intent(requireContext().getApplicationContext(),
+                                        MainActivity.class);
                                 activity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(activity);
                                 System.exit(0);
@@ -256,52 +276,78 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         if(where.equals("stats")) {
             try {
                 ovk.parseAboutInstance(response);
-                TextView users_counter = (TextView) about_instance_view.findViewById(R.id.instance_users_count);
+                TextView users_counter = (TextView) about_instance_view
+                        .findViewById(R.id.instance_users_count);
                 users_counter.setText(getResources().getString(R.string.instance_users_count, ovk.instance_stats.users_count));
-                TextView online_users_counter = (TextView) about_instance_view.findViewById(R.id.instance_online_users_count);
+                TextView online_users_counter = (TextView) about_instance_view
+                        .findViewById(R.id.instance_online_users_count);
                 online_users_counter.setText(getResources().getString(R.string.instance_online_users_count, ovk.instance_stats.online_users_count));
-                TextView active_users_counter = (TextView) about_instance_view.findViewById(R.id.instance_active_users_count);
+                TextView active_users_counter = (TextView) about_instance_view.
+                        findViewById(R.id.instance_active_users_count);
                 active_users_counter.setText(getResources().getString(R.string.instance_active_users_count, ovk.instance_stats.active_users_count));
-                TextView groups_counter = (TextView) about_instance_view.findViewById(R.id.instance_groups_count);
+                TextView groups_counter = (TextView) about_instance_view.
+                        findViewById(R.id.instance_groups_count);
                 groups_counter.setText(getResources().getString(R.string.instance_groups_count, ovk.instance_stats.groups_count));
-                TextView wall_posts_counter = (TextView) about_instance_view.findViewById(R.id.instance_wall_posts_count);
+                TextView wall_posts_counter = (TextView) about_instance_view.
+                        findViewById(R.id.instance_wall_posts_count);
                 wall_posts_counter.setText(getResources().getString(R.string.instance_wall_posts_count, ovk.instance_stats.wall_posts_count));
-                TextView admins_counter = (TextView) about_instance_view.findViewById(R.id.instance_admins_count);
+                TextView admins_counter = (TextView) about_instance_view.
+                        findViewById(R.id.instance_admins_count);
                 admins_counter.setText(getResources().getString(R.string.instance_admins_count, ovk.instance_admins.size()));
-                ((LinearLayout) about_instance_view.findViewById(R.id.instance_statistics_ll)).setVisibility(View.VISIBLE);
-                ((TextView) about_instance_view.findViewById(R.id.instance_links_label2)).setVisibility(View.GONE);
-                ((TextView) about_instance_view.findViewById(R.id.instance_links_label3)).setVisibility(View.GONE);
-                ((TextView) about_instance_view.findViewById(R.id.instance_links_label4)).setVisibility(View.GONE);
-                ((TextView) about_instance_view.findViewById(R.id.instance_links_label5)).setVisibility(View.GONE);
-                ((TextView) about_instance_view.findViewById(R.id.instance_links_label6)).setVisibility(View.GONE);
-                ((TextView) about_instance_view.findViewById(R.id.instance_links_label7)).setVisibility(View.GONE);
-                ((TextView) about_instance_view.findViewById(R.id.instance_links_label8)).setVisibility(View.GONE);
-                ((TextView) about_instance_view.findViewById(R.id.instance_links_label9)).setVisibility(View.GONE);
+                ((LinearLayout) about_instance_view.
+                        findViewById(R.id.instance_statistics_ll)).setVisibility(View.VISIBLE);
+                ((TextView) about_instance_view.
+                        findViewById(R.id.instance_links_label2)).setVisibility(View.GONE);
+                ((TextView) about_instance_view.
+                        findViewById(R.id.instance_links_label3)).setVisibility(View.GONE);
+                ((TextView) about_instance_view.
+                        findViewById(R.id.instance_links_label4)).setVisibility(View.GONE);
+                ((TextView) about_instance_view.
+                        findViewById(R.id.instance_links_label5)).setVisibility(View.GONE);
+                ((TextView) about_instance_view.
+                        findViewById(R.id.instance_links_label6)).setVisibility(View.GONE);
+                ((TextView) about_instance_view.
+                        findViewById(R.id.instance_links_label7)).setVisibility(View.GONE);
+                ((TextView) about_instance_view.
+                        findViewById(R.id.instance_links_label8)).setVisibility(View.GONE);
+                ((TextView) about_instance_view.
+                        findViewById(R.id.instance_links_label9)).setVisibility(View.GONE);
                 for (int i = 0; i < ovk.instance_links.size(); i++) {
                     InstanceLink link = ovk.instance_links.get(i);
                     TextView textView = null;
                     if (i == 0) {
-                        textView = ((TextView) about_instance_view.findViewById(R.id.instance_links_label2));
+                        textView = ((TextView) about_instance_view.
+                                findViewById(R.id.instance_links_label2));
                     } else if (i == 1) {
-                        textView = ((TextView) about_instance_view.findViewById(R.id.instance_links_label3));
+                        textView = ((TextView) about_instance_view.
+                                findViewById(R.id.instance_links_label3));
                     } else if (i == 2) {
-                        textView = ((TextView) about_instance_view.findViewById(R.id.instance_links_label4));
+                        textView = ((TextView) about_instance_view.
+                                findViewById(R.id.instance_links_label4));
                     } else if (i == 3) {
-                        textView = ((TextView) about_instance_view.findViewById(R.id.instance_links_label5));
+                        textView = ((TextView) about_instance_view.
+                                findViewById(R.id.instance_links_label5));
                     } else if (i == 4) {
-                        textView = ((TextView) about_instance_view.findViewById(R.id.instance_links_label6));
+                        textView = ((TextView) about_instance_view.
+                                findViewById(R.id.instance_links_label6));
                     } else if (i == 5) {
-                        textView = ((TextView) about_instance_view.findViewById(R.id.instance_links_label7));
+                        textView = ((TextView) about_instance_view.
+                                findViewById(R.id.instance_links_label7));
                     } else if (i == 6) {
-                        textView = ((TextView) about_instance_view.findViewById(R.id.instance_links_label8));
+                        textView = ((TextView) about_instance_view.
+                                findViewById(R.id.instance_links_label8));
                     } else if (i == 7) {
-                        textView = ((TextView) about_instance_view.findViewById(R.id.instance_links_label9));
+                        textView = ((TextView) about_instance_view.
+                                findViewById(R.id.instance_links_label9));
                     }
                     if (textView != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            textView.setText(Html.fromHtml(String.format("<a href=\"%s\">%s</a>", link.url, link.name), Html.FROM_HTML_MODE_COMPACT));
+                            textView.setText(Html.fromHtml(
+                                    String.format("<a href=\"%s\">%s</a>", link.url, link.name),
+                                    Html.FROM_HTML_MODE_COMPACT));
                         } else {
-                            textView.setText(Html.fromHtml(String.format("<a href=\"%s\">%s</a>", link.url, link.name)));
+                            textView.setText(Html.fromHtml(String.format("<a href=\"%s\">%s</a>",
+                                    link.url, link.name)));
                         }
                         textView.setVisibility(View.VISIBLE);
                         textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -312,17 +358,20 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                 ex.printStackTrace();
             }
         } else if(where.equals("checkHTTP")) {
-            TextView connection_type = (TextView) about_instance_view.findViewById(R.id.connection_type_label2);
+            TextView connection_type = (TextView) about_instance_view
+                    .findViewById(R.id.connection_type_label2);
             connection_type.setText(getResources().getString(R.string.secured_connection));
         } else if(where.equals("instanceVersion")) {
             ovk.parseVersion(response);
-            TextView openvk_version_tv = (TextView) about_instance_view.findViewById(R.id.instance_version_label2);
+            TextView openvk_version_tv = (TextView) about_instance_view
+                    .findViewById(R.id.instance_version_label2);
             if(ovk.version.startsWith("OpenVK")) {
                 openvk_version_tv.setText(ovk.version);
             } else {
                 openvk_version_tv.setText(String.format("OpenVK %s", ovk.version));
             }
-            ((LinearLayout) about_instance_view.findViewById(R.id.instance_version_ll)).setVisibility(View.VISIBLE);
+            ((LinearLayout) about_instance_view.findViewById(R.id.instance_version_ll))
+                    .setVisibility(View.VISIBLE);
         }
     }
 

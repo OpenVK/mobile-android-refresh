@@ -34,7 +34,8 @@ public class NewsfeedToolbarSpinnerAdapter implements SpinnerAdapter {
         View view = convertView;
         ToolbarSpinnerItem item = getItem(position);
         if(convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) ctx.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) ctx.
+                    getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(R.layout.actionbar_spinner_dropdown_item, null);
         }
         ((TextView) view.findViewById(R.id.appbar_subtitle)).setText(item.name);
@@ -83,11 +84,13 @@ public class NewsfeedToolbarSpinnerAdapter implements SpinnerAdapter {
         } else {
             ((TextView) view.findViewById(R.id.appbar_subtitle)).setText(item.name);
         }
-        ((TextView) view.findViewById(R.id.appbar_title)).setTypeface(Global.getFlexibleTypeface(ctx, 500));
+        ((TextView) view.findViewById(R.id.appbar_title)).setTypeface(Global.getFlexibleTypeface(
+                ctx, 500));
         ((TextView) view.findViewById(R.id.appbar_title)).setTextColor(
                 ctx.getResources().getColor(R.color.onPrimaryTextColor));
         ((TextView) view.findViewById(R.id.appbar_subtitle)).setText(item.name);
-        ((TextView) view.findViewById(R.id.appbar_subtitle)).setTypeface(Global.getFlexibleTypeface(ctx, 400));
+        ((TextView) view.findViewById(R.id.appbar_subtitle)).setTypeface(Global.getFlexibleTypeface(
+                ctx, 400));
         ((TextView) view.findViewById(R.id.appbar_subtitle)).setTextColor(
                 ctx.getResources().getColor(R.color.onSecondaryTextColor));
         return view;

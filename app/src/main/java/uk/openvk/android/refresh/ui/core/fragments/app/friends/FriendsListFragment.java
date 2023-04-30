@@ -12,12 +12,14 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.ui.list.adapters.FriendsAdapter;
@@ -31,6 +33,7 @@ public class FriendsListFragment extends Fragment {
     private RecyclerView friends_rv;
     private ArrayList<Friend> friends;
     private FriendsAdapter friendsAdapter;
+    private GridLayoutManager glm;
 
     public static FriendsListFragment createInstance(int page) {
         FriendsListFragment fragment = new FriendsListFragment();
@@ -42,7 +45,8 @@ public class FriendsListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.tab_friends, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
         friends_srl = view.findViewById(R.id.friends_swipe_layout);
@@ -59,7 +63,12 @@ public class FriendsListFragment extends Fragment {
         if(friendsAdapter == null) {
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            friends_rv.setLayoutManager(llm);
+            if(OvkApplication.isTablet) {
+                glm = new GridLayoutManager(getContext(), 2);
+                friends_rv.setLayoutManager(glm);
+            } else {
+                friends_rv.setLayoutManager(llm);
+            }
             friendsAdapter = new FriendsAdapter(ctx, this.friends);
             friends_rv.setAdapter(friendsAdapter);
         } else {

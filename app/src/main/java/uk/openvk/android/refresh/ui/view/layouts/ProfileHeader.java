@@ -42,22 +42,27 @@ public class ProfileHeader extends LinearLayoutCompat {
         layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         view.setLayoutParams(layoutParams);
         setTheme();
-        ((Button) findViewById(R.id.show_friends_btn)).setTypeface(Global.getFlexibleTypeface(context, 500));
-        ((TextView) findViewById(R.id.profile_name)).setTypeface(Global.getFlexibleTypeface(getContext(), 500));
+        ((Button) findViewById(R.id.show_friends_btn)).setTypeface(
+                Global.getFlexibleTypeface(context, 500));
+        ((TextView) findViewById(R.id.profile_name)).setTypeface(
+                Global.getFlexibleTypeface(getContext(), 500));
     }
 
     private void setTheme() {
         if(Global.checkMonet(getContext())) {
             MonetCompat monet = MonetCompat.getInstance();
-            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((ImageView) findViewById(R.id.verified_icon)).setImageTintList(
                         ColorStateList.valueOf(Objects.requireNonNull(
-                                monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
+                                monet.getMonetColors().getAccent1().get(200)).toLinearSrgb()
+                                .toSrgb().quantize8()));
             } else {
                 ((ImageView) findViewById(R.id.verified_icon)).setImageTintList(
                         ColorStateList.valueOf(Objects.requireNonNull(
-                                monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+                                monet.getMonetColors().getAccent1().get(500)).toLinearSrgb()
+                                .toSrgb().quantize8()));
             }
         }
     }
@@ -87,51 +92,66 @@ public class ProfileHeader extends LinearLayoutCompat {
             Date dt = new Date(dt_sec);
             if((calendar.getTimeInMillis() - dt_sec) < 60000) {
                 if(sex == 1) {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, getResources().getString(R.string.date_just_now)));
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_f, getResources().getString(R.string.date_just_now)));
                 } else {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_m, getResources().getString(R.string.date_just_now)));
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_m, getResources().getString(R.string.date_just_now)));
                 }
             } else if((calendar.getTimeInMillis() - dt_sec) < 86400000) {
                 if(sex == 1) {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, new SimpleDateFormat("HH:mm").format(dt)));
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_f, new SimpleDateFormat("HH:mm").format(dt)));
                 } else {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_m, new SimpleDateFormat("HH:mm").format(dt)));
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_m, new SimpleDateFormat("HH:mm").format(dt)));
                 }
             } else if((calendar.getTimeInMillis() - dt_sec) < (86400000 * 2)) {
                 if(sex == 1) {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s",
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s",
                             getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt))));
                 } else {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s",
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s",
                             getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt))));
                 }
             } else if((calendar.getTimeInMillis() - dt_sec) < 31536000000L) {
                 if(sex == 1) {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s %s",
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s %s",
                             new SimpleDateFormat("d MMMM").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
                 } else {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s %s",
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s %s",
                             new SimpleDateFormat("d MMMM").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
                 }
             } else {
                 if(sex == 1) {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s %s",
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s %s",
                             new SimpleDateFormat("d MMMM yyyy").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
                 } else {
-                    ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s %s",
+                    ((TextView) findViewById(R.id.last_seen))
+                            .setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s %s",
                             new SimpleDateFormat("d MMMM").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
                 }
             }
         }
-//        ((ImageView) findViewById(R.id.profile_api_indicator)).setVisibility(VISIBLE);
+//        ((ImageView) findViewById(R.id.profile_api_indicator))
+//        .setVisibility(VISIBLE);
 //        if(ls_platform == 4) {
-//            ((ImageView) findViewById(R.id.profile_api_indicator)).setImageDrawable(getResources().getDrawable(R.drawable.ic_api_android_app_indicator));
+//            ((ImageView) findViewById(R.id.profile_api_indicator))
+//            .setImageDrawable(getResources().getDrawable(R.drawable.ic_api_android_app_indicator));
 //        } else if(ls_platform == 2) {
-//            ((ImageView) findViewById(R.id.profile_api_indicator)).setImageDrawable(getResources().getDrawable(R.drawable.ic_api_ios_app_indicator));
+//            ((ImageView) findViewById(R.id.profile_api_indicator))
+//            .setImageDrawable(getResources().getDrawable(R.drawable.ic_api_ios_app_indicator));
 //        } else if(ls_platform == 1) {
-//            ((ImageView) findViewById(R.id.profile_api_indicator)).setImageDrawable(getResources().getDrawable(R.drawable.ic_api_mobile_indicator));
+//            ((ImageView) findViewById(R.id.profile_api_indicator))
+//            .setImageDrawable(getResources().getDrawable(R.drawable.ic_api_mobile_indicator));
 //        } else {
-//            ((ImageView) findViewById(R.id.profile_api_indicator)).setVisibility(GONE);
+//            ((ImageView) findViewById(R.id.profile_api_indicator))
+//            .setVisibility(GONE);
 //        }
     }
 
@@ -172,13 +192,16 @@ public class ProfileHeader extends LinearLayoutCompat {
         if(status == 3) {
             findViewById(R.id.add_to_btn).setVisibility(GONE);
         } else if(status == 2) {
-            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(getResources().getDrawable(R.drawable.ic_person_add));
+            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(
+                    getResources().getDrawable(R.drawable.ic_person_add));
             findViewById(R.id.add_to_btn).setVisibility(VISIBLE);
         } else if(status == 1) {
-            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(getResources().getDrawable(R.drawable.ic_person_remove));
+            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(
+                    getResources().getDrawable(R.drawable.ic_person_remove));
             findViewById(R.id.add_to_btn).setVisibility(VISIBLE);
         } else {
-            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(getResources().getDrawable(R.drawable.ic_person_add));
+            ((MaterialButton) findViewById(R.id.add_to_btn)).setIcon(
+                    getResources().getDrawable(R.drawable.ic_person_add));
             findViewById(R.id.add_to_btn).setVisibility(VISIBLE);
         }
     }

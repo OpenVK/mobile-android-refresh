@@ -56,7 +56,8 @@ public class NewsfeedFragment extends Fragment {
             view.findViewById(R.id.newsfeed_layout).setVisibility(View.GONE);
         }
         setTheme();
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -76,18 +77,24 @@ public class NewsfeedFragment extends Fragment {
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                                .get(100)).toLinearSrgb().toSrgb().quantize8());
             } else {
                 ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                                .get(500)).toLinearSrgb().toSrgb().quantize8());
             }
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeColors(typedValue.data);
+            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                    .setColorSchemeColors(typedValue.data);
         }
         if(global_prefs.getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(
+                            com.google.android.material.R.color.background_material_dark));
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
     }
 
@@ -97,11 +104,14 @@ public class NewsfeedFragment extends Fragment {
         newsfeedView = view.findViewById(R.id.newsfeed_rv);
         if(newsfeedAdapter == null) {
             if(ctx instanceof AppActivity) {
-                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts, ((AppActivity) ctx).account);
+                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts,
+                        ((AppActivity) ctx).account);
             } else if(ctx instanceof ProfileIntentActivity) {
-                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts, ((ProfileIntentActivity) ctx).account);
+                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts,
+                        ((ProfileIntentActivity) ctx).account);
             } else if(ctx instanceof GroupIntentActivity) {
-                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts, ((GroupIntentActivity) ctx).account);
+                newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts,
+                        ((GroupIntentActivity) ctx).account);
             }
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -131,17 +141,25 @@ public class NewsfeedFragment extends Fragment {
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
             if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_no_internet);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_no_internet);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle);
             } else if(message == HandlerMessages.CONNECTION_TIMEOUT) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance_nrps);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_instance_nrps);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle_instance);
             } else if(message == HandlerMessages.INTERNAL_ERROR || message == HandlerMessages.UNKNOWN_ERROR) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance_failure);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_instance_failure);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle_instance);
             } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle_instance);
             }
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);

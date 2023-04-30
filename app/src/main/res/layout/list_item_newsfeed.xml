@@ -46,16 +46,31 @@
                 app:layout_constraintStart_toEndOf="@+id/profile_avatar"
                 app:layout_constraintTop_toTopOf="@+id/profile_avatar">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/post_author_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:singleLine="true"
-                    android:text="Post author"
-                    android:textColor="@color/primaryTextColor"
-                    android:textSize="16sp"
-                    tools:ignore="HardcodedText" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/post_author_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:singleLine="true"
+                        android:text="Post author"
+                        android:textColor="@color/primaryTextColor"
+                        android:textSize="16sp"
+                        tools:ignore="HardcodedText" />
+
+                    <ImageView
+                        android:id="@+id/verified_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="4dp"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_verified" />
+                </LinearLayout>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/post_info"

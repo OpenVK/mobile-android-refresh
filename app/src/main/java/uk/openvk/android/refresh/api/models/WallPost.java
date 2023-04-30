@@ -35,7 +35,9 @@ public class WallPost implements Parcelable {
     public WallPostSource post_source;
 
     @SuppressLint("SimpleDateFormat")
-    public WallPost(String author, long dt_sec, RepostInfo repostInfo, String post_text, PostCounters nICI, String avatar_url, ArrayList<Attachment> attachments, long o_id, long p_id, Context ctx) {
+    public WallPost(String author, long dt_sec, RepostInfo repostInfo, String post_text,
+                    PostCounters nICI, String avatar_url, ArrayList<Attachment> attachments,
+                    long o_id, long p_id, Context ctx) {
         name = author;
         Date dt = new Date(TimeUnit.SECONDS.toMillis(dt_sec));
         Date dt_midnight = new Date(System.currentTimeMillis() + 86400000);
@@ -51,9 +53,11 @@ public class WallPost implements Parcelable {
         } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(dt_sec))) < (86400000 * 2)) {
             info = String.format("%s %s", ctx.getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt));
         } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(dt_sec))) < 31536000000L) {
-            info = String.format("%s %s %s", new SimpleDateFormat("d MMMM").format(dt), ctx.getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt));
+            info = String.format("%s %s %s", new SimpleDateFormat("d MMMM").format(dt), ctx.getResources().getString(R.string.date_at),
+                    new SimpleDateFormat("HH:mm").format(dt));
         } else {
-            info = String.format("%s %s %s", new SimpleDateFormat("d MMMM yyyy").format(dt), ctx.getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt));
+            info = String.format("%s %s %s", new SimpleDateFormat("d MMMM yyyy").format(dt), ctx.getResources().getString(R.string.date_at),
+                    new SimpleDateFormat("HH:mm").format(dt));
         }
         repost = repostInfo;
         counters = nICI;

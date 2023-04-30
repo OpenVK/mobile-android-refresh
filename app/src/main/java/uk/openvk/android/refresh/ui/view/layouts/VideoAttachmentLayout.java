@@ -51,9 +51,13 @@ public class VideoAttachmentLayout extends ConstraintLayout {
         if(attachment != null) {
             ((TextView) findViewById(R.id.video_title)).setText(attachment.title);
             if (attachment.duration >= 3600) {
-                ((TextView) findViewById(R.id.video_duration)).setText(String.format("%d:%02d:%02d", attachment.duration / 3600, (attachment.duration % 3600) / 60, (attachment.duration % 60)));
+                ((TextView) findViewById(R.id.video_duration)).setText(
+                        String.format("%d:%02d:%02d",
+                        attachment.duration / 3600, (attachment.duration % 3600) / 60, (attachment.duration % 60)));
             } else {
-                ((TextView) findViewById(R.id.video_duration)).setText(String.format("%d:%02d", attachment.duration / 60, (attachment.duration % 60)));
+                ((TextView) findViewById(R.id.video_duration)).setText(
+                        String.format("%d:%02d",
+                        attachment.duration / 60, (attachment.duration % 60)));
             }
         }
     }

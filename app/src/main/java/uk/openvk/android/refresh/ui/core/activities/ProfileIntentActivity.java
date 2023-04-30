@@ -105,8 +105,12 @@ public class ProfileIntentActivity extends MonetCompatActivity {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(600)
+                ).toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(700)
+                ).toLinearSrgb().toSrgb().quantize8());
             }
         }
     }
@@ -156,11 +160,14 @@ public class ProfileIntentActivity extends MonetCompatActivity {
         });
         if(!Global.checkMonet(this)) {
             TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
             if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background,
+                        typedValue, true);
             } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark,
+                        typedValue, true);
             }
             getWindow().setStatusBarColor(typedValue.data);
         }
@@ -189,7 +196,8 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 wall.get(ovk_api, user.id, 50);
                 friends.get(ovk_api, user.id, 25, "profile_counter");
             } else if (message == HandlerMessages.FRIENDS_GET_ALT) {
-                friends.parse(data.getString("response"), downloadManager, false, true);
+                friends.parse(data.getString("response"), downloadManager,
+                        false, true);
                 profileFragment.setFriendsCount(friends.count);
             } else if(message == HandlerMessages.USERS_SEARCH) {
                 users.parseSearch(data.getString("response"));
@@ -249,7 +257,8 @@ public class ProfileIntentActivity extends MonetCompatActivity {
     }
 
     @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
+                                     boolean isInitialChange) {
         super.onMonetColorsChanged(monet, monetColors, isInitialChange);
         getMonet().updateMonetColors();
         setMonetTheme();

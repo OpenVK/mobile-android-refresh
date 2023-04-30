@@ -74,7 +74,8 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
         } else {
             Objects.requireNonNull(darkTheme).setChecked(false);
         }
-        Objects.requireNonNull(darkTheme).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Objects.requireNonNull(darkTheme).setOnPreferenceClickListener(
+                new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = global_prefs.edit();
@@ -88,7 +89,8 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                     ((AppActivity) requireActivity()).restart();
                 } else {
-                    Preference restart_required = Objects.requireNonNull(findPreference("restart_required"));
+                    Preference restart_required = Objects.requireNonNull(
+                            findPreference("restart_required"));
                     restart_required.setVisible(true);
                 }
                 return true;
@@ -209,8 +211,11 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 valuePos = 9;
                 break;
         }
-        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.theme_colors));
-        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        DialogSingleChoiceAdapter singleChoiceAdapter =
+                new DialogSingleChoiceAdapter(requireContext(), this,
+                        valuePos, getResources().getStringArray(R.array.theme_colors));
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(),
+                R.style.ApplicationTheme_AlertDialog);
         builder.setTitle(R.string.pref_accentcolor);
         builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -233,8 +238,11 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 valuePos = 3;
                 break;
         }
-        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.avatars_shape));
-        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        DialogSingleChoiceAdapter singleChoiceAdapter =
+                new DialogSingleChoiceAdapter(requireContext(), this,
+                        valuePos, getResources().getStringArray(R.array.avatars_shape));
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(),
+                R.style.ApplicationTheme_AlertDialog);
         builder.setTitle(R.string.pref_avatars_shape);
         builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -263,8 +271,11 @@ public class PersonalizationFragment extends PreferenceFragmentCompat {
                 valuePos = 5;
                 break;
         }
-        DialogSingleChoiceAdapter singleChoiceAdapter = new DialogSingleChoiceAdapter(requireContext(), this, valuePos, getResources().getStringArray(R.array.fonts));
-        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(), R.style.ApplicationTheme_AlertDialog);
+        DialogSingleChoiceAdapter singleChoiceAdapter =
+                new DialogSingleChoiceAdapter(requireContext(), this,
+                        valuePos, getResources().getStringArray(R.array.fonts));
+        OvkAlertDialogBuilder builder = new OvkAlertDialogBuilder(requireContext(),
+                R.style.ApplicationTheme_AlertDialog);
         builder.setTitle(R.string.pref_font);
         AlertDialog dialog = null;
         builder.setSingleChoiceItems(singleChoiceAdapter, 0, null);

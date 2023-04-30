@@ -11,7 +11,8 @@ public class PostCounters implements Parcelable {
     public boolean isReposted;
     public boolean enabled = true;
 
-    public PostCounters(int likes_count, int comments_count, int reposts_count, boolean likes_selected, boolean reposts_selected) {
+    public PostCounters(int likes_count, int comments_count, int reposts_count, boolean likes_selected,
+                        boolean reposts_selected) {
         likes = likes_count;
         comments = comments_count;
         reposts = reposts_count;

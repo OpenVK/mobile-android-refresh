@@ -60,7 +60,8 @@ public class QuickSearchActivity extends MonetCompatActivity {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
+                getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.activity_search);
@@ -102,16 +103,20 @@ public class QuickSearchActivity extends MonetCompatActivity {
             rv.setAdapter(sectionAdapter);
         }
         if(commsSection == null) {
-            commsSection = new CommunitiesSearchSection(QuickSearchActivity.this, groups.getList());
+            commsSection = new CommunitiesSearchSection(QuickSearchActivity.this,
+                    groups.getList());
             sectionAdapter.addSection(commsSection);
         } else {
-            commsSection = new CommunitiesSearchSection(QuickSearchActivity.this, groups.getList());
+            commsSection = new CommunitiesSearchSection(QuickSearchActivity.this,
+                    groups.getList());
         }
         if(peopleSection == null) {
-            peopleSection = new PeopleSearchSection(QuickSearchActivity.this, users.getList());
+            peopleSection = new PeopleSearchSection(QuickSearchActivity.this,
+                    users.getList());
             sectionAdapter.addSection(peopleSection);
         } else {
-            peopleSection = new PeopleSearchSection(QuickSearchActivity.this, users.getList());
+            peopleSection = new PeopleSearchSection(QuickSearchActivity.this,
+                    users.getList());
         }
     }
 
@@ -159,7 +164,8 @@ public class QuickSearchActivity extends MonetCompatActivity {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = getPackageManager();
-            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList =
+                    pm.queryIntentActivities(i, 0);
             for (int index = 0; index < activityList.size(); index++) {
                 ResolveInfo app = activityList.get(index);
                 if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
@@ -180,7 +186,8 @@ public class QuickSearchActivity extends MonetCompatActivity {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = getPackageManager();
-            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList =
+                    pm.queryIntentActivities(i, 0);
             for (int index = 0; index < activityList.size(); index++) {
                 ResolveInfo app = activityList.get(index);
                 if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {

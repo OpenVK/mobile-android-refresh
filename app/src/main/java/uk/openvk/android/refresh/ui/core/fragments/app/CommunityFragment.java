@@ -72,12 +72,17 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
         if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+            ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources()
+                            .getColor(com.google.android.material.R.color.background_material_dark));
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+            ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
-        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setColorSchemeColors(typedValue.data);
-        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout))
+                .setColorSchemeColors(typedValue.data);
+        ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout))
+                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -170,10 +175,14 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
             public void run() {
                 // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
                 try {
-                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
-                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.about_rv).setVisibility(View.VISIBLE);
-                    ((AboutFragment) pagerAdapter.getFragment(1)).createAboutAdapter(requireActivity(), aboutItems);
-                    aboutAdapter = ((AboutFragment) pagerAdapter.getFragment(1)).getAboutAdapter();
+                    ((AboutFragment) pagerAdapter.getFragment(1))
+                            .view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                    ((AboutFragment) pagerAdapter.getFragment(1))
+                            .view.findViewById(R.id.about_rv).setVisibility(View.VISIBLE);
+                    ((AboutFragment) pagerAdapter.getFragment(1))
+                            .createAboutAdapter(requireActivity(), aboutItems);
+                    aboutAdapter = ((AboutFragment) pagerAdapter
+                            .getFragment(1)).getAboutAdapter();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -194,14 +203,20 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
             if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_no_internet);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_no_internet);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle);
             } else if(message == HandlerMessages.INTERNAL_ERROR || message == HandlerMessages.UNKNOWN_ERROR) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance_failure);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_instance_failure);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).
+                        setText(R.string.error_subtitle_instance);
             } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
-                ((TextView) errorLayout.findViewById(R.id.error_title)).setText(R.string.error_instance);
-                ((TextView) errorLayout.findViewById(R.id.error_subtitle)).setText(R.string.error_subtitle_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_title))
+                        .setText(R.string.error_instance);
+                ((TextView) errorLayout.findViewById(R.id.error_subtitle))
+                        .setText(R.string.error_subtitle_instance);
             }
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout)).setVisibility(View.GONE);
@@ -220,10 +235,14 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
             @Override
             public void run() {
                 try {
-                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
-                    ((WallFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
-                    ((WallFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
-                    ((WallFragment) pagerAdapter.getFragment(0)).createWallAdapter(ctx, posts);
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                    // so this is only possible with a delay.
+                    ((WallFragment) pagerAdapter.getFragment(0))
+                            .view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                    ((WallFragment) pagerAdapter.getFragment(0))
+                            .view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
+                    ((WallFragment) pagerAdapter.getFragment(0))
+                            .createWallAdapter(ctx, posts);
                     wallAdapter = ((WallFragment) pagerAdapter.getFragment(0)).getWallAdapter();
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -239,10 +258,14 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
             @Override
             public void run() {
                 try {
-                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
-                    ((WallFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
-                    ((WallFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
-                    ((WallFragment) pagerAdapter.getFragment(0)).createWallAdapter(requireActivity(), wallPosts);
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                    // so this is only possible with a delay.
+                    ((WallFragment) pagerAdapter.getFragment(0)).
+                            view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                    ((WallFragment) pagerAdapter.getFragment(0)).
+                            view.findViewById(R.id.wall_rv).setVisibility(View.VISIBLE);
+                    ((WallFragment) pagerAdapter.getFragment(0)).
+                            createWallAdapter(requireActivity(), wallPosts);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -282,10 +305,14 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
             @Override
             public void run() {
                 try {
-                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
-                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
-                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.about_rv).setVisibility(View.VISIBLE);
-                    ((AboutFragment) pagerAdapter.getFragment(1)).createAboutAdapter(requireActivity(), aboutItems);
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                    // so this is only possible with a delay.
+                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.loading_layout)
+                            .setVisibility(View.GONE);
+                    ((AboutFragment) pagerAdapter.getFragment(1)).view.findViewById(R.id.about_rv)
+                            .setVisibility(View.VISIBLE);
+                    ((AboutFragment) pagerAdapter.getFragment(1))
+                            .createAboutAdapter(requireActivity(), aboutItems);
                     aboutAdapter = ((AboutFragment) pagerAdapter.getFragment(1)).getAboutAdapter();
                 } catch (Exception ex) {
                     ex.printStackTrace();

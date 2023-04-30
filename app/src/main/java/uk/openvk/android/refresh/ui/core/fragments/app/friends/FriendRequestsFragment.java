@@ -13,12 +13,14 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.ui.list.adapters.FriendRequestsAdapter;
@@ -34,6 +36,7 @@ public class FriendRequestsFragment extends Fragment {
     private RecyclerView requests_rv;
     private ArrayList<Friend> friendRequests;
     public Handler handler;
+    private GridLayoutManager glm;
 
     public static FriendRequestsFragment createInstance(int page) {
         FriendRequestsFragment fragment = new FriendRequestsFragment();
@@ -46,7 +49,8 @@ public class FriendRequestsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         handler = new Handler();
         view = inflater.inflate(R.layout.tab_friend_requests, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
@@ -63,7 +67,12 @@ public class FriendRequestsFragment extends Fragment {
         if(requestsAdapter == null) {
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            requests_rv.setLayoutManager(llm);
+            if(OvkApplication.isTablet) {
+                glm = new GridLayoutManager(getContext(), 2);
+                requests_rv.setLayoutManager(glm);
+            } else {
+                requests_rv.setLayoutManager(llm);
+            }
             requestsAdapter = new FriendRequestsAdapter(ctx, this.friendRequests, ((Fragment) fragment));
             requests_rv.setAdapter(requestsAdapter);
         } else {

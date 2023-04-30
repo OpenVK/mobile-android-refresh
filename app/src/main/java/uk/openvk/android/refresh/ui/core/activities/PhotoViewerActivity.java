@@ -80,7 +80,8 @@ public class PhotoViewerActivity extends MonetCompatActivity {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         instance_prefs = getSharedPreferences("instance", 0);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
+                getWindow());
         Global.setInterfaceFont(this);
         if(global_prefs.getBoolean("dark_theme", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -111,8 +112,10 @@ public class PhotoViewerActivity extends MonetCompatActivity {
                 if(item.getItemId() == R.id.download) {
                     savePhotoFromCache();
                 } else if(item.getItemId() == R.id.copy_link) {
-                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    android.content.ClipData clip = android.content.ClipData.newPlainText("Photo URL", photo.original_url);
+                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
+                            getSystemService(Context.CLIPBOARD_SERVICE);
+                    android.content.ClipData clip =
+                            android.content.ClipData.newPlainText("Photo URL", photo.original_url);
                     clipboard.setPrimaryClip(clip);
                 }
                 return false;
@@ -120,11 +123,14 @@ public class PhotoViewerActivity extends MonetCompatActivity {
         });
         if(!Global.checkMonet(this)) {
             TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
             if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background,
+                        typedValue, true);
             } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark,
+                        typedValue, true);
             }
             getWindow().setStatusBarColor(typedValue.data);
         }
@@ -134,8 +140,12 @@ public class PhotoViewerActivity extends MonetCompatActivity {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(600))
+                        .toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700))
+                                .toLinearSrgb().toSrgb().quantize8());
             }
         }
     }
@@ -148,11 +158,13 @@ public class PhotoViewerActivity extends MonetCompatActivity {
         if(data != null) {
             createDownloadManager();
             cache_path = String.format("%s/photos_cache/original_photos/original_photo_a%s_%s",
-                    getCacheDir().getAbsolutePath(), data.getLong("author_id"), data.getLong("photo_id"));
+                    getCacheDir().getAbsolutePath(), data.getLong("author_id"),
+                    data.getLong("photo_id"));
             if(data.containsKey("attachment")) {
                 photo = data.getParcelable("attachment");
                 assert photo != null;
-                downloadManager.downloadOnePhotoToCache(photo.original_url, String.format("original_photo_a%s_%s",
+                downloadManager.downloadOnePhotoToCache(photo.original_url,
+                        String.format("original_photo_a%s_%s",
                         data.getLong("author_id"), data.getLong("photo_id")), "original_photos");
             }
         }
@@ -164,7 +176,8 @@ public class PhotoViewerActivity extends MonetCompatActivity {
             @Override
             public void handleMessage(Message message) {
                 Bundle data = message.getData();
-                if(!BuildConfig.BUILD_TYPE.equals("release")) Log.d("OpenVK", String.format("Handling API message: %s", message.what));
+                if(!BuildConfig.BUILD_TYPE.equals("release")) Log.d("OpenVK",
+                        String.format("Handling API message: %s", message.what));
                 receiveState(message.what, data);
             }
         };
@@ -183,7 +196,8 @@ public class PhotoViewerActivity extends MonetCompatActivity {
                         .placeholder(getDrawable(R.drawable.photo_placeholder))
                         .dontAnimate().error(R.drawable.photo_loading_error)
                         .into((ZoomableImageView) findViewById(R.id.image_view));
-                ((ZoomableImageView) findViewById(R.id.image_view)).setOnClickListener(new View.OnClickListener() {
+                ((ZoomableImageView) findViewById(R.id.image_view)).setOnClickListener(
+                        new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(appbar.getVisibility() == View.VISIBLE) {
@@ -197,7 +211,8 @@ public class PhotoViewerActivity extends MonetCompatActivity {
                                     });
                         } else {
                             appbar.setAlpha(1.0f);
-                            appbar.animate().translationY(0).alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                            appbar.animate().translationY(0).alpha(1.0f)
+                                    .setListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationStart(Animator animation) {
                                     super.onAnimationStart(animation);
@@ -211,7 +226,8 @@ public class PhotoViewerActivity extends MonetCompatActivity {
                 finish();
             }
         } else if(message == UiMessages.TOAST_SAVED_TO_MEMORY) {
-            Toast.makeText(getApplicationContext(), R.string.photo_save_ok, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.photo_save_ok,
+                    Toast.LENGTH_LONG).show();
         } else if(message == UiMessages.TOAST_SAVE_PHOTO_ERROR) {
             Toast.makeText(getApplicationContext(), R.string.error, Toast.LENGTH_LONG).show();
         }
@@ -249,9 +265,11 @@ public class PhotoViewerActivity extends MonetCompatActivity {
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         File file = new File(cache_path);
         String[] path_array = cache_path.split("/");
-        String dest = String.format("%s/OpenVK/%s", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
+        String dest = String.format("%s/OpenVK/%s", Environment.
+                        getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
                 path_array[path_array.length - 1]);
-        String dest_dir = String.format("%s/OpenVK", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath());
+        String dest_dir = String.format("%s/OpenVK", Environment.
+                getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath());
         String mime = "image/jpeg";
         if (bitmap != null) {
             FileChannel sourceChannel = null;
@@ -317,7 +335,8 @@ public class PhotoViewerActivity extends MonetCompatActivity {
                     return "image/jpeg";
                 } else if (sb.toString().contains("PNG")) {
                     return "image/png";
-                } else if (sb.toString().startsWith("GIF87a") || sb.toString().startsWith("GIF89a")) {
+                } else if (sb.toString().startsWith("GIF87a")
+                        || sb.toString().startsWith("GIF89a")) {
                     return "image/gif";
                 } else {
                     return "";
@@ -337,7 +356,8 @@ public class PhotoViewerActivity extends MonetCompatActivity {
                     try {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                         intent.addCategory("android.intent.category.DEFAULT");
-                        intent.setData(Uri.parse(String.format("package:%s", getApplicationContext().getPackageName())));
+                        intent.setData(Uri.parse(String.format("package:%s",
+                                getApplicationContext().getPackageName())));
                         startActivity(intent);
                     } catch (Exception e) {
                         Intent intent = new Intent();
@@ -349,12 +369,15 @@ public class PhotoViewerActivity extends MonetCompatActivity {
             } else {
                 int perm_r = ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE);
                 int perm_w = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE);
-                if(perm_r != PackageManager.PERMISSION_GRANTED && perm_w != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, 1);
+                if(perm_r != PackageManager.PERMISSION_GRANTED
+                        && perm_w != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{
+                            READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, 1);
                     perm_r = ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE);
                     perm_w = ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE);
                 }
-                return perm_r == PackageManager.PERMISSION_GRANTED && perm_w == PackageManager.PERMISSION_GRANTED;
+                return perm_r == PackageManager.PERMISSION_GRANTED && perm_w ==
+                        PackageManager.PERMISSION_GRANTED;
             }
         } else {
             return true;

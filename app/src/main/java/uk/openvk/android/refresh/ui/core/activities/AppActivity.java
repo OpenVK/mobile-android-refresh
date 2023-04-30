@@ -254,12 +254,17 @@ public class AppActivity extends MonetCompatActivity {
     private void setAppBar() {
         MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
         tbSpinnerItems = new ArrayList<>();
-        tbSpinnerItems.add(new ToolbarSpinnerItem(getResources().getString(R.string.nav_news), getResources().getString(R.string.my_news_item), 60));
-        tbSpinnerItems.add(new ToolbarSpinnerItem(getResources().getString(R.string.nav_news), getResources().getString(R.string.all_news_item), 61));
+        tbSpinnerItems.add(new ToolbarSpinnerItem(
+                getResources().getString(R.string.nav_news),
+                getResources().getString(R.string.my_news_item), 60));
+        tbSpinnerItems.add(new ToolbarSpinnerItem(
+                getResources().getString(R.string.nav_news),
+                getResources().getString(R.string.all_news_item), 61));
         tbSpinnerAdapter = new NewsfeedToolbarSpinnerAdapter(this, tbSpinnerItems);
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setAdapter(tbSpinnerAdapter);
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
-        ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 refreshNewsfeed(true);
@@ -272,11 +277,14 @@ public class AppActivity extends MonetCompatActivity {
         });
         toolbar.setTitle("");
         toolbar.setNavigationOnClickListener(v -> {
-            if(selectedFragment == mainSettingsFragment || selectedFragment == videoSettingsFragment
-                    || selectedFragment == personalizationFragment || selectedFragment == aboutAppFragment) {
+            if(selectedFragment == mainSettingsFragment
+                    || selectedFragment == videoSettingsFragment
+                    || selectedFragment == personalizationFragment
+                    || selectedFragment == aboutAppFragment) {
                 onBackPressed();
             } else {
-                if(OvkApplication.isTablet && screenOrientation == Configuration.ORIENTATION_LANDSCAPE){
+                if(OvkApplication.isTablet
+                        && screenOrientation == Configuration.ORIENTATION_LANDSCAPE){
                     try {
                         NavigationView navView = findViewById(R.id.nav_view);
                         if (navView.getVisibility() == View.VISIBLE) {
@@ -324,20 +332,27 @@ public class AppActivity extends MonetCompatActivity {
     private void setNavDrawer() {
         try {
             BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
-            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_screen);
-            NavController navController = Objects.requireNonNull(navHostFragment).getNavController();
-            @SuppressLint("CutPasteId") AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.fragment_screen);
+            NavController navController = Objects.requireNonNull(navHostFragment)
+                    .getNavController();
+            @SuppressLint("CutPasteId") AppBarConfiguration appBarConfiguration =
+                    new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(
                     ((DrawerLayout) findViewById(R.id.drawer_layout))).build();
             NavigationUI.setupWithNavController(navView, navController);
             drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            toggle = new ActionBarDrawerToggle(this, drawer, android.R.string.ok, android.R.string.cancel);
+            toggle = new ActionBarDrawerToggle(this, drawer, android.R.string.ok,
+                    android.R.string.cancel);
             drawer.addDrawerListener(toggle);
             TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
             if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background,
+                        typedValue, true);
             } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark,
+                        typedValue, true);
             }
             drawer.setStatusBarBackgroundColor(typedValue.data);
             toggle.syncState();
@@ -349,14 +364,16 @@ public class AppActivity extends MonetCompatActivity {
     public void setNavView() {
         NavigationView navView = findViewById(R.id.nav_view);
         BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
-        b_navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        b_navView.setOnItemSelectedListener(
+                new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 return true;
             }
         });
         for(int i = 0; i < b_navView.getMenu().size(); i++) {
-            b_navView.getMenu().getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            b_navView.getMenu().getItem(i).setOnMenuItemClickListener(
+                    new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
                     switchNavItem(item);
@@ -365,7 +382,8 @@ public class AppActivity extends MonetCompatActivity {
             });
         }
         for(int i = 0; i < navView.getMenu().size(); i++) {
-            navView.getMenu().getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            navView.getMenu().getItem(i).setOnMenuItemClickListener(
+                    new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(@NonNull MenuItem item) {
                     try {
@@ -390,9 +408,12 @@ public class AppActivity extends MonetCompatActivity {
             ((TextView) header.findViewById(R.id.profile_name)).setText(profile_name);
             header.findViewById(R.id.screen_name).setVisibility(View.GONE);
         }
-        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
+        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView)
+                ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
+                        .findViewById(R.id.profile_avatar));
         Global.setAvatarShape(this, avatar);
-        ((FloatingActionButton) findViewById(R.id.fab_newpost)).setOnClickListener(new View.OnClickListener() {
+        ((FloatingActionButton) findViewById(R.id.fab_newpost)).setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -419,10 +440,13 @@ public class AppActivity extends MonetCompatActivity {
             if (Global.checkMonet(this)) {
                 MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
                 if (!isDarkTheme) {
-                    toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                    drawer.setStatusBarBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                    toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors()
+                            .getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
+                    drawer.setStatusBarBackgroundColor(Objects.requireNonNull(getMonet()
+                            .getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
                 }
-                int colorOnSurface = MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
+                int colorOnSurface = MaterialColors.getColor(this,
+                        com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
                 NavigationView navView = findViewById(R.id.nav_view);
                 int[][] states = new int[][]{
                         new int[]{android.R.attr.state_checked}, new int[]{}
@@ -430,12 +454,14 @@ public class AppActivity extends MonetCompatActivity {
                 int[] colors;
                 if (isDarkTheme) {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
+                            Objects.requireNonNull(getMonet().getMonetColors()
+                                    .getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 } else {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
+                            Objects.requireNonNull(getMonet().getMonetColors()
+                                    .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 }
@@ -446,12 +472,14 @@ public class AppActivity extends MonetCompatActivity {
                 BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
                 if (isDarkTheme) {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8(),
+                            Objects.requireNonNull(getMonet().getMonetColors()
+                                    .getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8(),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 } else {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
+                            Objects.requireNonNull(getMonet().getMonetColors()
+                                    .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 }
@@ -461,12 +489,18 @@ public class AppActivity extends MonetCompatActivity {
                 b_navView.setItemRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this, isDarkTheme)));
                 FloatingActionButton fab = findViewById(R.id.fab_newpost);
                 if (isDarkTheme) {
-                    fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8()));
+                    fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
+                            getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb()
+                            .toSrgb().quantize8()));
                 } else {
-                    fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8()));
+                    fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
+                            getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb()
+                            .toSrgb().quantize8()));
                 }
-                fab.setImageTintList(ColorStateList.valueOf(getMonet().getAccentColor(this, isDarkTheme)));
-                fab.setRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this, isDarkTheme)));
+                fab.setImageTintList(ColorStateList.valueOf(getMonet().getAccentColor(this,
+                        isDarkTheme)));
+                fab.setRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this,
+                        isDarkTheme)));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -643,24 +677,32 @@ public class AppActivity extends MonetCompatActivity {
                 int accentColor;
                 if(Global.checkMonet(this)) {
                     if(isDarkTheme) {
-                        accentColor = Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
+                        accentColor = Objects.requireNonNull(getMonet().getMonetColors()
+                                .getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
                     } else {
-                        accentColor = Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                        accentColor = Objects.requireNonNull(getMonet().getMonetColors()
+                                .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
                     }
                 } else {
-                    accentColor = MaterialColors.getColor(this, com.kieronquinn.monetcompat.R.attr.colorAccent,
+                    accentColor = MaterialColors.getColor(this, com.kieronquinn
+                                    .monetcompat.R.attr.colorAccent,
                             getResources().getColor(R.color.accentColorRed));
                 }
                 if(account.counters.friends_requests > 0) {
-                    b_navView.getOrCreateBadge(R.id.friends).setNumber(account.counters.friends_requests);
-                    b_navView.getOrCreateBadge(R.id.friends).setBackgroundColor(accentColor);
+                    b_navView.getOrCreateBadge(R.id.friends)
+                            .setNumber(account.counters.friends_requests);
+                    b_navView.getOrCreateBadge(R.id.friends)
+                            .setBackgroundColor(accentColor);
                 }
                 if(account.counters.new_messages > 0) {
-                    b_navView.getOrCreateBadge(R.id.messages).setNumber(account.counters.new_messages);
-                    b_navView.getOrCreateBadge(R.id.messages).setBackgroundColor(accentColor);
+                    b_navView.getOrCreateBadge(R.id.messages)
+                            .setNumber(account.counters.new_messages);
+                    b_navView.getOrCreateBadge(R.id.messages)
+                            .setBackgroundColor(accentColor);
                 }
             } else if (message == HandlerMessages.NEWSFEED_GET) {
-                newsfeed.parse(this, downloadManager, data.getString("response"), "high", true);
+                newsfeed.parse(this, downloadManager, data.getString("response"),
+                        "high", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.disableUpdateState();
                 if(selectedFragment == newsfeedFragment) {
@@ -668,16 +710,19 @@ public class AppActivity extends MonetCompatActivity {
                 }
                 newsfeedFragment.setScrollingPositions(this, true);
             } else if (message == HandlerMessages.NEWSFEED_GET_GLOBAL) {
-                newsfeed.parse(this, downloadManager, data.getString("response"), "high", true);
+                newsfeed.parse(this, downloadManager, data.getString("response"),
+                        "high", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.setScrollingPositions(this, true);
                 newsfeedFragment.disableUpdateState();
             } else if (message == HandlerMessages.NEWSFEED_GET_MORE) {
-                newsfeed.parse(this, downloadManager, data.getString("response"), global_prefs.getString("photos_quality", ""), false);
+                newsfeed.parse(this, downloadManager, data.getString("response"),
+                        global_prefs.getString("photos_quality", ""), false);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.setScrollingPositions(this, true);
             } else if (message == HandlerMessages.NEWSFEED_GET_MORE_GLOBAL) {
-                newsfeed.parse(this, downloadManager, data.getString("response"),  global_prefs.getString("photos_quality", ""), false);
+                newsfeed.parse(this, downloadManager, data.getString("response"),
+                        global_prefs.getString("photos_quality", ""), false);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.setScrollingPositions(this, true);
             } else if(message == HandlerMessages.LIKES_ADD) {
@@ -700,20 +745,25 @@ public class AppActivity extends MonetCompatActivity {
                 account.user = users.getList().get(0);
                 account.user.downloadAvatar(downloadManager, "high", "account_avatar");
                 String profile_name = String.format("%s %s", account.first_name, account.last_name);
-                ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_name))
+                ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
+                        .findViewById(R.id.profile_name))
                         .setText(profile_name);
                 if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
-                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
+                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
+                            .findViewById(R.id.screen_name))
                             .setText(String.format("@%s", account.user.screen_name));
-                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
+                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
+                            .findViewById(R.id.screen_name))
                             .setVisibility(View.VISIBLE);
                 } else {
-                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.screen_name))
+                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
+                            .findViewById(R.id.screen_name))
                             .setVisibility(View.GONE);
                 }
                 friends.get(ovk_api, account.user.id, 25, "profile_counter");
             } else if(message == HandlerMessages.MESSAGES_CONVERSATIONS) {
-                conversations = messages.parseConversationsList(data.getString("response"), downloadManager);
+                conversations = messages.parseConversationsList(data.getString("response"),
+                        downloadManager);
                 messagesFragment.createAdapter(this, conversations, account);
                 messagesFragment.disableUpdateState();
             } else if (message == HandlerMessages.MESSAGES_GET_LONGPOLL_SERVER) {
@@ -722,7 +772,8 @@ public class AppActivity extends MonetCompatActivity {
                 longPollIntent = new Intent(this, LongPollService.class);
                 PendingIntent pendingIntent = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                    pendingIntent = PendingIntent.getService(this, 0, longPollIntent, PendingIntent.FLAG_MUTABLE);
+                    pendingIntent = PendingIntent.getService(this, 0, longPollIntent,
+                            PendingIntent.FLAG_MUTABLE);
                 } else {
                     pendingIntent = PendingIntent.getService(this, 0, longPollIntent, 0);
                 }
@@ -742,10 +793,12 @@ public class AppActivity extends MonetCompatActivity {
                 mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                         System.currentTimeMillis(), 60 * 1000, pendingIntent);
             } else if (message == HandlerMessages.FRIENDS_GET_ALT) {
-                friends.parse(data.getString("response"), downloadManager, false, true);
+                friends.parse(data.getString("response"), downloadManager, false,
+                        true);
                 profileFragment.setFriendsCount(friends.count);
             } else if (message == HandlerMessages.FRIENDS_GET) {
-                friends.parse(data.getString("response"), downloadManager, true, true);
+                friends.parse(data.getString("response"), downloadManager, true,
+                        true);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.disableUpdateState();
@@ -753,18 +806,22 @@ public class AppActivity extends MonetCompatActivity {
                 friends.getRequests(ovk_api);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
-                friends.parse(data.getString("response"), downloadManager, true, false);
+                friends.parse(data.getString("response"), downloadManager, true,
+                        false);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList);
-                friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
+                friendsFragment.setScrollingPositions(this, old_friends_size !=
+                        friends.getFriends().size());
             } else if (message == HandlerMessages.FRIENDS_REQUESTS) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parseRequests(data.getString("response"), downloadManager, true);
                 ArrayList<Friend> friendsList = friends.requests;
                 friendsFragment.createRequestsAdapter(this, friendsList);
-                friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
+                friendsFragment.setScrollingPositions(this, old_friends_size !=
+                        friends.getFriends().size());
             } else if (message == HandlerMessages.GROUPS_GET) {
-                groups.parse(data.getString("response"), downloadManager, global_prefs.getString("photos_quality", ""), true, true);
+                groups.parse(data.getString("response"), downloadManager,
+                        global_prefs.getString("photos_quality", ""), true, true);
                 ArrayList<Group> groupsList = groups.getList();
                 if (selectedFragment == groupsFragment) {
                     groupsFragment.createAdapter(this, groups.getList(), "groups_list");
@@ -780,8 +837,10 @@ public class AppActivity extends MonetCompatActivity {
                 mainSettingsFragment.getInstanceInfo("instanceVersion", data.getString("response"));
             } else if(message == HandlerMessages.CONVERSATIONS_AVATARS) {
                 messagesFragment.loadAvatars(conversations);
-            } else if(message == HandlerMessages.NEWSFEED_AVATARS || message == HandlerMessages.NEWSFEED_ATTACHMENTS
-                    || message == HandlerMessages.WALL_AVATARS || message == HandlerMessages.WALL_ATTACHMENTS) {
+            } else if(message == HandlerMessages.NEWSFEED_AVATARS
+                    || message == HandlerMessages.NEWSFEED_ATTACHMENTS
+                    || message == HandlerMessages.WALL_AVATARS
+                    || message == HandlerMessages.WALL_ATTACHMENTS) {
                 if(selectedFragment == newsfeedFragment) {
                     if(message == HandlerMessages.NEWSFEED_AVATARS) {
                         newsfeedFragment.newsfeedAdapter.setAvatarLoadState(true);
@@ -803,7 +862,8 @@ public class AppActivity extends MonetCompatActivity {
                 Glide.with(this).load(
                                 String.format("%s/photos_cache/account_avatar/avatar_%s",
                                         getCacheDir().getAbsolutePath(), account.user.id))
-                        .into((ImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
+                        .into((ImageView) ((NavigationView) findViewById(R.id.nav_view))
+                                .getHeaderView(0).findViewById(R.id.profile_avatar));
             } else if (message == HandlerMessages.FRIEND_AVATARS) {
                 friendsFragment.refreshAdapter();
             } else if (message == HandlerMessages.FRIENDS_ADD) {
@@ -840,14 +900,16 @@ public class AppActivity extends MonetCompatActivity {
             else if(selectedFragment == friendsFragment)
                 account.addQueue("Friends.get", "count=25&extended=1");
             else if(selectedFragment == profileFragment)
-                account.addQueue("Wall.get", String.format("owner_id=%s&count=50", account.id));
+                account.addQueue("Wall.get", String.format("owner_id=%s&count=50",
+                        account.id));
             account.getProfileInfo(ovk_api);
         }
     }
 
     public void refreshNewsfeed(boolean progress) {
         if(newsfeed.getWallPosts() != null) {
-            int pos = ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar)).findViewById(R.id.spinner)).getSelectedItemPosition();
+            int pos = ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                    .findViewById(R.id.spinner)).getSelectedItemPosition();
 
             if (account != null) {
                 if (pos == 0) {
@@ -915,7 +977,8 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .setNavigationIcon(R.drawable.ic_arrow_back);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
                 break;
             case "video_settings":
@@ -924,7 +987,8 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("video_settings"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_video);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .setNavigationIcon(R.drawable.ic_arrow_back);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
                 break;
             case "personalization":
@@ -933,7 +997,8 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("personalization"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .setNavigationIcon(R.drawable.ic_arrow_back);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
                 break;
             case "about_app":
@@ -942,7 +1007,8 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("about_app"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_about_app);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                        .setNavigationIcon(R.drawable.ic_arrow_back);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
                 break;
         }
@@ -990,7 +1056,9 @@ public class AppActivity extends MonetCompatActivity {
     }
 
     public void setAvatarShape() {
-        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.profile_avatar));
+        @SuppressLint("CutPasteId") ShapeableImageView avatar =
+                ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view))
+                        .getHeaderView(0).findViewById(R.id.profile_avatar));
         Global.setAvatarShape(this, avatar);
     }
 
@@ -1020,7 +1088,8 @@ public class AppActivity extends MonetCompatActivity {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 final PackageManager pm = getPackageManager();
-                @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+                @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo>
+                        activityList = pm.queryIntentActivities(i, 0);
                 for (int index = 0; index < activityList.size(); index++) {
                     ResolveInfo app = activityList.get(index);
                     if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
@@ -1058,7 +1127,8 @@ public class AppActivity extends MonetCompatActivity {
         if(url.length() > 0) {
             i.setData(Uri.parse(url));
             final PackageManager pm = getPackageManager();
-            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo>
+                    activityList = pm.queryIntentActivities(i, 0);
             for (int index = 0; index < activityList.size(); index++) {
                 ResolveInfo app = activityList.get(index);
                 if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
@@ -1077,7 +1147,8 @@ public class AppActivity extends MonetCompatActivity {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = getPackageManager();
-            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo>
+                    activityList = pm.queryIntentActivities(i, 0);
             for (int index = 0; index < activityList.size(); index++) {
                 ResolveInfo app = activityList.get(index);
                 if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
@@ -1097,7 +1168,8 @@ public class AppActivity extends MonetCompatActivity {
                 Notification notification = notifMan.createServiceNotification(AppActivity.this);
                 longPollService.startForeground(180, notification);
             }
-            longPollService.run(AppActivity.this, instance_prefs.getString("server", ""), longPollServer.address, longPollServer.key, longPollServer.ts, true);
+            longPollService.run(AppActivity.this, instance_prefs.getString("server", ""),
+                    longPollServer.address, longPollServer.key, longPollServer.ts, true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 AppActivity.this.unbindService(this);
             }
@@ -1130,7 +1202,8 @@ public class AppActivity extends MonetCompatActivity {
     }
 
     @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
+                                     boolean isInitialChange) {
         try {
             super.onMonetColorsChanged(monet, monetColors, isInitialChange);
             getMonet().updateMonetColors();
@@ -1157,7 +1230,8 @@ public class AppActivity extends MonetCompatActivity {
 
     public void loadMoreNews() {
         if(newsfeed != null) {
-            int pos = ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar)).findViewById(R.id.spinner)).getSelectedItemPosition();
+            int pos = ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+                    .findViewById(R.id.spinner)).getSelectedItemPosition();
             if(pos == 0) {
                 newsfeed.get(ovk_api, 25, newsfeed.next_from);
             } else {

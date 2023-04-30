@@ -51,6 +51,7 @@ public class LongPollWrapper {
     private boolean logging_enabled = true;
 
     private OkHttpClient httpClient = null;
+    private boolean looper_prepared;
 
 
     public LongPollWrapper(Context ctx, boolean use_https) {
@@ -64,14 +65,16 @@ public class LongPollWrapper {
         String version_name = "";
         String user_agent = "";
         try {
-            PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(ctx.getApplicationContext().getPackageName(), 0);
+            PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(
+                    ctx.getApplicationContext().getPackageName(), 0);
             version_name = packageInfo.versionName;
         } catch (Exception e) {
             OvkApplication app = ((OvkApplication) ctx.getApplicationContext());
             version_name = app.version;
         } finally {
             user_agent = String.format("OpenVK Refresh/%s (Android %s; SDK %s; %s; %s %s; %s)", version_name,
-                    Build.VERSION.RELEASE, Build.VERSION.SDK_INT, Build.SUPPORTED_ABIS[0], Build.MANUFACTURER, Build.MODEL, System.getProperty("user.language"));
+                    Build.VERSION.RELEASE, Build.VERSION.SDK_INT, Build.SUPPORTED_ABIS[0],
+                    Build.MANUFACTURER, Build.MODEL, System.getProperty("user.language"));
         }
         return user_agent;
     }
@@ -116,15 +119,19 @@ public class LongPollWrapper {
                         response_body = response.body().string();
                         response_code = response.code();
                         if (response_code == 200) {
-                            if(logging_enabled) Log.v("OpenVK LPW", String.format("Getting response from %s (%s): [%s]", server, response_code, response_body));
+                            if(logging_enabled) Log.v("OpenVK LPW",
+                                    String.format("Getting response from %s (%s): [%s]",
+                                            server, response_code, response_body));
                             sendLongPollMessageToActivity(response_body);
                         } else {
-                            if(logging_enabled) Log.v("OpenVK LPW", String.format("Getting response from %s (%s)", server, response_code));
+                            if(logging_enabled) Log.v("OpenVK LPW",
+                                    String.format("Getting response from %s (%s)", server, response_code));
                         }
                         Thread.sleep(2000);
                     }
                 } catch(ConnectException | SocketTimeoutException | UnknownHostException ex) {
-                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s", ex.getMessage()));
+                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s",
+                            ex.getMessage()));
                     try {
                         if(logging_enabled) Log.v("OpenVK LPW", "Retrying in 60 seconds...");
                         Thread.sleep(60000);
@@ -133,15 +140,18 @@ public class LongPollWrapper {
                         e.printStackTrace();
                     }
                 } catch(SSLProtocolException ex) {
-                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s", ex.getMessage()));
+                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s",
+                            ex.getMessage()));
                     isActivated = false;
                     if(logging_enabled) Log.v("OpenVK LPW", "LongPoll service stopped.");
                 } catch(SSLHandshakeException ex) {
-                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s", ex.getMessage()));
+                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s",
+                            ex.getMessage()));
                     if(logging_enabled) Log.v("OpenVK LPW", "LongPoll service stopped.");
                     isActivated = false;
                 } catch(SSLException ex) {
-                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s", ex.getMessage()));
+                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s",
+                            ex.getMessage()));
                     Log.v("OpenVK LPW", "LongPoll service stopped.");
                     isActivated = false;
                 } catch (Exception ex) {
@@ -159,9 +169,12 @@ public class LongPollWrapper {
             if(useProxy) {
                 String[] address_array = address.split(":");
                 if (address_array.length == 2) {
-                    httpClient = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
-                            .retryOnConnectionFailure(false).proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(address_array[0],
-                                    Integer.valueOf(address_array[1])))).build();
+                    httpClient = new OkHttpClient.Builder().connectTimeout(30,
+                                    TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS)
+                            .readTimeout(30, TimeUnit.SECONDS)
+                            .retryOnConnectionFailure(false).proxy(new Proxy(Proxy.Type.HTTP,
+                                    new InetSocketAddress(address_array[0],
+                                    Integer.parseInt(address_array[1])))).build();
                 }
             }
         } catch (Exception ex) {
@@ -170,7 +183,11 @@ public class LongPollWrapper {
     }
 
     private void sendLongPollMessageToActivity(final String response) {
-        handler = new Handler();
+        if(!looper_prepared) {
+            Looper.prepare();
+            handler = new Handler();
+            looper_prepared = true;
+        }
         Log.d("OK", "OK! LongPolling 1...");
         Runnable sendLongPoll = new Runnable() {
             @Override

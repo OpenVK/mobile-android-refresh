@@ -82,8 +82,12 @@ public class MainSettingsActivity extends MonetCompatActivity {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600))
+                                .toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(
+                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700))
+                                .toLinearSrgb().toSrgb().quantize8());
             }
         }
     }
@@ -119,18 +123,22 @@ public class MainSettingsActivity extends MonetCompatActivity {
         });
         if(!Global.checkMonet(this)) {
             TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
             if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue,
+                        true);
             } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue,
+                        true);
             }
             getWindow().setStatusBarColor(typedValue.data);
         }
     }
 
     @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
+                                     boolean isInitialChange) {
         super.onMonetColorsChanged(monet, monetColors, isInitialChange);
         getMonet().updateMonetColors();
         setMonetTheme();
@@ -149,21 +157,24 @@ public class MainSettingsActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(
+                        R.drawable.ic_arrow_back);
                 break;
             case "personalization":
                 ft.hide(selectedFragment);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("personalization"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(
+                        R.drawable.ic_arrow_back);
                 break;
             case "about_app":
                 ft.hide(selectedFragment);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("about_app"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_about_app);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
+                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(
+                        R.drawable.ic_arrow_back);
                 break;
         }
         ft.commit();

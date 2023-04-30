@@ -26,7 +26,8 @@ public class XConstraintLayout extends ConstraintLayout {
         this.listener = listener;
         final int MIN_KEYBOARD_HEIGHT_PX = 150;
         final View decorView = ((Activity)getContext()).getWindow().getDecorView();
-        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver
+                .OnGlobalLayoutListener() {
             private final Rect windowVisibleDisplayFrame = new Rect();
             private int lastVisibleDecorViewHeight;
 
@@ -36,9 +37,11 @@ public class XConstraintLayout extends ConstraintLayout {
                 final int visibleDecorViewHeight = windowVisibleDisplayFrame.height();
 
                 if (lastVisibleDecorViewHeight != 0) {
-                    if (lastVisibleDecorViewHeight > visibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX) {
+                    if (lastVisibleDecorViewHeight > visibleDecorViewHeight +
+                            MIN_KEYBOARD_HEIGHT_PX) {
                         onKeyboardStateChanged(true);
-                    } else if (lastVisibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX < visibleDecorViewHeight) {
+                    } else if (lastVisibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX <
+                            visibleDecorViewHeight) {
                         onKeyboardStateChanged(false);
                     }
                 }

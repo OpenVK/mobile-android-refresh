@@ -1,5 +1,6 @@
 package uk.openvk.android.refresh.ui.wrappers;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -19,6 +20,7 @@ public class LocaleContextWrapper extends ContextWrapper {
         super(base);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @TargetApi(Build.VERSION_CODES.N)
     public static ContextWrapper wrap(Context context, Locale newLocale) {
         Resources res = context.getResources();

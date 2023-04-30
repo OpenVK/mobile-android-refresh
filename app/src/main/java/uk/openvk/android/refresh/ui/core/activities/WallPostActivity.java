@@ -78,7 +78,8 @@ public class WallPostActivity extends MonetCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
             instance_prefs = getSharedPreferences("instance", 0);
-            Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+            Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
+                    getWindow());
             Global.setInterfaceFont(this);
             isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             setContentView(R.layout.activity_wall_post_watch);
@@ -160,8 +161,12 @@ public class WallPostActivity extends MonetCompatActivity {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(600))
+                        .toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(700)
+                ).toLinearSrgb().toSrgb().quantize8());
             }
         }
     }
@@ -178,11 +183,14 @@ public class WallPostActivity extends MonetCompatActivity {
         });
         if(!Global.checkMonet(this)) {
             TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
             if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue,
+                        true);
             } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue,
+                        true);
             }
             getWindow().setStatusBarColor(typedValue.data);
         }
@@ -196,15 +204,19 @@ public class WallPostActivity extends MonetCompatActivity {
             public void onClick(View v) {
                 if(bottomPanel.getText().length() > 0) {
                     try {
-                        last_sended_comment = new Comment(0, account.id, String.format("%s %s", account.first_name, account.last_name),
-                                (int) (System.currentTimeMillis() / 1000), bottomPanel.getText());
-                        wall.createComment(ovk_api, wallPost.owner_id, wallPost.post_id, bottomPanel.getText());
+                        last_sended_comment = new Comment(0, account.id,
+                                String.format("%s %s", account.first_name, account.last_name),
+                                (int) (System.currentTimeMillis() / 1000),
+                                bottomPanel.getText());
+                        wall.createComment(ovk_api, wallPost.owner_id,
+                                wallPost.post_id, bottomPanel.getText());
                         if(comments == null) {
                             comments = new ArrayList<>();
                         }
                         comments.add(last_sended_comment);
                         if(commentsAdapter == null) {
-                            commentsAdapter = new CommentsAdapter(WallPostActivity.this, comments);
+                            commentsAdapter = new CommentsAdapter(
+                                    WallPostActivity.this, comments);
                             comments_rv.setAdapter(commentsAdapter);
                         } else {
                             commentsAdapter.notifyDataSetChanged();
@@ -217,7 +229,8 @@ public class WallPostActivity extends MonetCompatActivity {
                 }
             }
         });
-        ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).addTextChangedListener(new TextWatcher() {
+        ((TextInputEditText) bottomPanel.findViewById(R.id.send_text))
+                .addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -238,7 +251,9 @@ public class WallPostActivity extends MonetCompatActivity {
                 if(((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).getLineCount() > 4) {
                     ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(4);
                 } else {
-                    ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).getLineCount());
+                    ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(
+                            ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).
+                                    getLineCount());
                 }
             }
         });
@@ -287,7 +302,8 @@ public class WallPostActivity extends MonetCompatActivity {
         post_likes.setTextColor(color);
         setTextViewDrawableColor(post_likes, color);
 
-        setTextViewDrawableColor(post_repost, MaterialColors.getColor(this, androidx.appcompat.R.attr.colorControlNormal, Color.BLACK));
+        setTextViewDrawableColor(post_repost, MaterialColors.getColor(this,
+                androidx.appcompat.R.attr.colorControlNormal, Color.BLACK));
     }
 
     private void setTextViewDrawableColor(TextView textView, int color) {

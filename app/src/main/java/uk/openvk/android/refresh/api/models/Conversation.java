@@ -40,7 +40,8 @@ public class Conversation {
 
     public void getHistory(OvkAPIWrapper ovk, long peer_id) {
         this.peer_id = peer_id;
-        ovk.sendAPIMethod("Messages.getHistory", String.format("peer_id=%s&count=150&rev=1", peer_id));
+        ovk.sendAPIMethod("Messages.getHistory",
+                String.format("peer_id=%s&count=150&rev=1", peer_id));
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -63,7 +64,8 @@ public class Conversation {
                         type = 0;
                     }
                     if(prevItem != null) {
-                        Date startOfDay = new Date(TimeUnit.SECONDS.toMillis(item.getLong("date")));
+                        Date startOfDay = new Date(TimeUnit.SECONDS.toMillis(
+                                item.getLong("date")));
                         Calendar startOfDay_calendar = Calendar.getInstance();
                         startOfDay_calendar.setTime(startOfDay);
                         startOfDay_calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -73,7 +75,8 @@ public class Conversation {
                         Date prev_startOfDay = null;
                         Calendar prevStartOfDay_calendar = Calendar.getInstance();
                         if (i > 1) {
-                            prevStartOfDay_calendar.setTime(new Date(TimeUnit.SECONDS.toMillis(prevItem.getLong("date"))));
+                            prevStartOfDay_calendar.setTime(new Date(TimeUnit.SECONDS.toMillis(
+                                    prevItem.getLong("date"))));
                             prevStartOfDay_calendar.set(Calendar.HOUR_OF_DAY, 0);
                             prevStartOfDay_calendar.set(Calendar.MINUTE, 0);
                             prevStartOfDay_calendar.set(Calendar.SECOND, 0);
@@ -82,17 +85,24 @@ public class Conversation {
                         if(prev_startOfDay != null) {
                             Log.d("compare", String.format("%s", startOfDay.compareTo(prev_startOfDay)));
                             if (startOfDay.compareTo(prev_startOfDay) > 0) {
-                                history.add(new Message(2, 0, false, false, item.getLong("date"), new SimpleDateFormat("d MMMM yyyy").format(startOfDay), ctx));
+                                history.add(new Message(2, 0, false, false,
+                                        item.getLong("date"), new SimpleDateFormat("d MMMM yyyy")
+                                        .format(startOfDay), ctx));
                             }
                         } else {
-                            history.add(new Message(2, 0, false, false, item.getLong("date"), new SimpleDateFormat("d MMMM yyyy").format(startOfDay), ctx));
+                            history.add(new Message(2, 0, false, false,
+                                    item.getLong("date"), new SimpleDateFormat("d MMMM yyyy")
+                                    .format(startOfDay), ctx));
                         }
                     } else {
-                        history.add(new Message(2, 0, false, false, item.getLong("date"), new SimpleDateFormat("d MMMM yyyy").format(
+                        history.add(new Message(2, 0, false, false,
+                                item.getLong("date"), new SimpleDateFormat("d MMMM yyyy").format(
                                 new Date(TimeUnit.SECONDS.toMillis(item.getLong("date")))), ctx));
                     }
-                    Message message = new Message(type, item.getLong("id"), incoming, false, item.getLong("date"), item.getString("text"), ctx);
-                    message.timestamp = new SimpleDateFormat("HH:mm").format(TimeUnit.SECONDS.toMillis(item.getLong("date")));
+                    Message message = new Message(type, item.getLong("id"), incoming, false,
+                            item.getLong("date"), item.getString("text"), ctx);
+                    message.timestamp = new SimpleDateFormat("HH:mm").format(TimeUnit.SECONDS.toMillis(
+                            item.getLong("date")));
                     message.author_id = item.getLong("from_id");
                     prevItem = item;
                     history.add(message);
@@ -105,6 +115,7 @@ public class Conversation {
     }
 
     public void sendMessage(OvkAPIWrapper ovk, String text) {
-        ovk.sendAPIMethod("Messages.send", String.format("peer_id=%s&message=%s", peer_id, Strings.urlEncode(text)));
+        ovk.sendAPIMethod("Messages.send", String.format("peer_id=%s&message=%s", peer_id,
+                Strings.urlEncode(text)));
     }
 }

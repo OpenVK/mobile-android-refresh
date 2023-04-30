@@ -35,7 +35,8 @@ public class CommentsAdapter  extends RecyclerView.Adapter<CommentsAdapter.Holde
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new Holder(LayoutInflater.from(ctx).inflate(R.layout.list_item_comments, parent, false));
+        return new Holder(LayoutInflater.from(ctx).inflate(R.layout.list_item_comments, parent,
+                false));
     }
 
     @Override
@@ -86,7 +87,8 @@ public class CommentsAdapter  extends RecyclerView.Adapter<CommentsAdapter.Holde
             comment_author.setText(item.author);
             Date date = new Date(TimeUnit.SECONDS.toMillis(item.date));
             comment_info.setText(String.format(
-                    ctx.getResources().getStringArray(R.array.date_differences)[3], new SimpleDateFormat("dd.MM.yyyy")
+                    ctx.getResources().getStringArray(R.array.date_differences)[3],
+                    new SimpleDateFormat("dd.MM.yyyy")
                             .format(TimeUnit.SECONDS.toMillis(item.date)),
                     new SimpleDateFormat("HH:mm").format(TimeUnit.SECONDS.toMillis(item.date))));
             reply_btn.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +96,8 @@ public class CommentsAdapter  extends RecyclerView.Adapter<CommentsAdapter.Holde
                 public void onClick(View v) {
                     if(ctx.getClass().getSimpleName().equals("WallPostActivity")) {
                         //((WallPostActivity) ctx).addAuthorMention(position);
-                        Toast.makeText(ctx, R.string.not_implemented, Toast.LENGTH_LONG).show();
+                        Toast.makeText(ctx, R.string.not_implemented,
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             });

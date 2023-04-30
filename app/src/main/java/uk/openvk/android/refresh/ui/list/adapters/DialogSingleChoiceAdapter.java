@@ -100,12 +100,15 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
         CheckedTextView checkedTv = ((CheckedTextView) convertView.findViewById(android.R.id.text1));
         if(Global.checkMonet(ctx)) {
             MonetCompat monet = MonetCompat.getInstance();
-            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx)
+                    .getBoolean("dark_theme", false);
             int accentColor;
             if (isDarkTheme) {
-                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
+                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                        .get(200)).toLinearSrgb().toSrgb().quantize8();
             } else {
-                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                        .get(500)).toLinearSrgb().toSrgb().quantize8();
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkedTv.setCompoundDrawableTintList(ColorStateList.valueOf(accentColor));

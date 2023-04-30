@@ -39,7 +39,8 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
     @NonNull
     @Override
     public FriendRequestsAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FriendRequestsAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.list_item_friend_requests, parent, false));
+        return new FriendRequestsAdapter.Holder(LayoutInflater.from(ctx).inflate(
+                R.layout.list_item_friend_requests, parent, false));
     }
 
     @Override
@@ -72,7 +73,8 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
             Global.setAvatarShape(ctx, convertView.findViewById(R.id.friend_avatar));
             ((ImageView) convertView.findViewById(R.id.friend_avatar)).setImageTintList(null);
             GlideApp.with(ctx)
-                    .load(String.format("%s/photos_cache/friend_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.id))
+                    .load(String.format("%s/photos_cache/friend_avatars/avatar_%s",
+                            ctx.getCacheDir().getAbsolutePath(), item.id))
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
                     .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                     .dontAnimate().centerCrop()

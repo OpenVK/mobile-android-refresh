@@ -21,7 +21,8 @@ public class PhotoAttachmentLayout extends ConstraintLayout {
                 R.layout.attachment_photo, null);
 
         this.addView(view);
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams)
+                view.getLayoutParams();
         layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         view.setLayoutParams(layoutParams);
@@ -33,7 +34,8 @@ public class PhotoAttachmentLayout extends ConstraintLayout {
                 R.layout.attachment_photo, null);
 
         this.addView(view);
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams)
+                view.getLayoutParams();
         layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         layoutParams.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         view.setLayoutParams(layoutParams);

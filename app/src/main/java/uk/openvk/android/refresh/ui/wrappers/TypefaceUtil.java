@@ -39,7 +39,8 @@ public class TypefaceUtil {
             }
         } else {
             try {
-                final Field defaultFontTypefaceField = Typeface.class.getDeclaredField(defaultFontNameToOverride);
+                final Field defaultFontTypefaceField = Typeface.class.
+                        getDeclaredField(defaultFontNameToOverride);
                 defaultFontTypefaceField.setAccessible(true);
                 defaultFontTypefaceField.set(null, customFontTypeface);
             } catch (Exception e) {

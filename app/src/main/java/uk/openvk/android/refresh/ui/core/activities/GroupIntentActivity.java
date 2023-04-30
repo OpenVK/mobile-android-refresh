@@ -64,7 +64,8 @@ public class GroupIntentActivity extends MonetCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
+                getWindow());
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         instance_prefs = getSharedPreferences("instance", 0);
@@ -98,8 +99,10 @@ public class GroupIntentActivity extends MonetCompatActivity {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors()
+                        .getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors()
+                        .getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
             }
         }
     }
@@ -148,11 +151,14 @@ public class GroupIntentActivity extends MonetCompatActivity {
         });
         if(!Global.checkMonet(this)) {
             TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
             if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background,
+                        typedValue, true);
             } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark,
+                        typedValue, true);
             }
             getWindow().setStatusBarColor(typedValue.data);
         }
@@ -191,7 +197,8 @@ public class GroupIntentActivity extends MonetCompatActivity {
             } else if (message == HandlerMessages.WALL_GET) {
                 wall.parse(this, downloadManager, "high", data.getString("response"));
                 communityFragment.createWallAdapter(this, wall.getWallItems());
-            } else if(message == HandlerMessages.WALL_AVATARS || message == HandlerMessages.WALL_ATTACHMENTS) {
+            } else if(message == HandlerMessages.WALL_AVATARS
+                    || message == HandlerMessages.WALL_ATTACHMENTS) {
                 if(message == HandlerMessages.WALL_AVATARS) {
                     communityFragment.wallAdapter.setAvatarLoadState(true);
                 } else {
@@ -233,7 +240,8 @@ public class GroupIntentActivity extends MonetCompatActivity {
     }
 
     @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
+                                     boolean isInitialChange) {
         super.onMonetColorsChanged(monet, monetColors, isInitialChange);
         getMonet().updateMonetColors();
         setMonetTheme();

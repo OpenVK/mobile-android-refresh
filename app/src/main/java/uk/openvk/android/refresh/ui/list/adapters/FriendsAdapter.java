@@ -73,7 +73,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
             Global.setAvatarShape(ctx, convertView.findViewById(R.id.friend_avatar));
             ((ImageView) convertView.findViewById(R.id.friend_avatar)).setImageTintList(null);
             GlideApp.with(ctx)
-                    .load(String.format("%s/photos_cache/friend_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.id))
+                    .load(String.format("%s/photos_cache/friend_avatars/avatar_%s",
+                            ctx.getCacheDir().getAbsolutePath(), item.id))
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
                     .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                     .dontAnimate().centerCrop()
@@ -104,16 +105,21 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
     private void setTheme(View view) {
         if(Global.checkMonet(ctx)) {
             MonetCompat monet = MonetCompat.getInstance();
-            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx)
+                    .getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((ImageView) view.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                                .get(200)).toLinearSrgb().toSrgb().quantize8()));
             } else {
                 ((ImageView) view.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                                .get(500)).toLinearSrgb().toSrgb().quantize8()));
             }
         } else {
-            ((ImageView)view.findViewById(R.id.verified_icon)).setImageTintList(ColorStateList.valueOf(MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent, Color.BLACK)));
+            ((ImageView)view.findViewById(R.id.verified_icon)).setImageTintList(
+                    ColorStateList.valueOf(MaterialColors.getColor(ctx,
+                            androidx.appcompat.R.attr.colorAccent, Color.BLACK)));
         }
     }
 

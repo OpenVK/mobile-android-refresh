@@ -41,11 +41,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
     @Override
     public MessagesAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == 0) {
-            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.msg_incoming, parent, false));
+            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(
+                    R.layout.msg_incoming, parent, false));
         } else if(viewType == 1) {
-            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.msg_outcoming, parent, false));
+            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(
+                    R.layout.msg_outcoming, parent, false));
         } else {
-            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(R.layout.messages_history_datestamp, parent, false));
+            return new MessagesAdapter.Holder(LayoutInflater.from(ctx).inflate(
+                    R.layout.messages_history_datestamp, parent, false));
         }
     }
 
@@ -97,37 +100,45 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
                 msg_timestamp.setText(item.timestamp);
                 if(item.type == 1) {
                     if(item.isError) {
-                        ((ImageView) convertView.findViewById(R.id.error_image)).setVisibility(View.VISIBLE);
+                        ((ImageView) convertView.findViewById(R.id.error_image))
+                                .setVisibility(View.VISIBLE);
                     } else {
-                        ((ImageView) convertView.findViewById(R.id.error_image)).setVisibility(View.GONE);
+                        ((ImageView) convertView.findViewById(R.id.error_image))
+                                .setVisibility(View.GONE);
                     }
                     if(item.sending) {
-                        ((ProgressBar) convertView.findViewById(R.id.sending_progress)).setVisibility(View.VISIBLE);
+                        ((ProgressBar) convertView.findViewById(R.id.sending_progress))
+                                .setVisibility(View.VISIBLE);
                     } else {
-                        ((ProgressBar) convertView.findViewById(R.id.sending_progress)).setVisibility(View.GONE);
+                        ((ProgressBar) convertView.findViewById(R.id.sending_progress))
+                                .setVisibility(View.GONE);
                     }
                 } else {
                     if(getItem(position - 1).type != item.type) {
                         Global.setAvatarShape(ctx, convertView.findViewById(R.id.companion_avatar));
                         ((ImageView) convertView.findViewById(R.id.companion_avatar)).setImageTintList(null);
                         GlideApp.with(ctx)
-                                .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.id))
+                                .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s",
+                                        ctx.getCacheDir().getAbsolutePath(), item.id))
                                 .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
                                 .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                                 .dontAnimate().centerCrop()
                                 .into((ImageView) convertView.findViewById(R.id.companion_avatar));
                     } else {
-                        ((ImageView) convertView.findViewById(R.id.companion_avatar)).setVisibility(View.INVISIBLE);
+                        ((ImageView) convertView.findViewById(R.id.companion_avatar))
+                                .setVisibility(View.INVISIBLE);
                     }
                 }
                 CardView cardView;
-                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", false);
+                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx)
+                        .getBoolean("dark_theme", false);
                 if(item.type == 0) {
                     cardView = ((CardView) convertView.findViewById(R.id.incoming_msg_layout));
                     if (Global.checkMonet(ctx)) {
                         MonetCompat monet = MonetCompat.getInstance();
                         cardView.setCardBackgroundColor(
-                                Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                                Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500))
+                                        .toLinearSrgb().toSrgb().quantize8());
                     } else {
                         if (isDarkTheme) {
                             cardView.setCardBackgroundColor(

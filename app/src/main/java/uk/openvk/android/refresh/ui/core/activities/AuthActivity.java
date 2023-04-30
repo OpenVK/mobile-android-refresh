@@ -137,7 +137,8 @@ public class AuthActivity extends MonetCompatActivity {
     }
 
     private void setAppBar() {
-        ((Toolbar) findViewById(R.id.app_toolbar)).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        ((Toolbar) findViewById(R.id.app_toolbar)).setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId() == R.id.settings) {
@@ -225,9 +226,11 @@ public class AuthActivity extends MonetCompatActivity {
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
-            snackbar = Snackbar.make(auth_layout, R.string.invalid_email_or_password, Snackbar.LENGTH_LONG);
+            snackbar = Snackbar.make(auth_layout, R.string.invalid_email_or_password,
+                    Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
-            TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            TextView snackTextView = (TextView) snackbarView.findViewById(
+                    com.google.android.material.R.id.snackbar_text);
             snackTextView.setMaxLines(3);
             snackTextView.setTextColor(getResources().getColor(R.color.primaryTextColor));
             if(global_prefs.getBoolean("dark_theme", false)) {
@@ -238,16 +241,20 @@ public class AuthActivity extends MonetCompatActivity {
             if(Global.checkMonet(this)) {
                 if(global_prefs.getBoolean("dark_theme", false)) {
                     snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                            getMonet().getMonetColors().getAccent1().get(100))
+                            .toLinearSrgb().toSrgb().quantize8());
                 } else {
                     snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                            getMonet().getMonetColors().getAccent1().get(500))
+                            .toLinearSrgb().toSrgb().quantize8());
                 }
             } else {
-                snackbar.setActionTextColor(MaterialColors.getColor(this, androidx.appcompat.R.attr.colorAccent,
+                snackbar.setActionTextColor(MaterialColors.getColor(this,
+                        androidx.appcompat.R.attr.colorAccent,
                         getResources().getColor(R.color.accentColor)));
             }
-            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
+            Button snackActionBtn = (Button) snackbarView.findViewById(
+                    com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
         } else if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
@@ -255,14 +262,16 @@ public class AuthActivity extends MonetCompatActivity {
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
-            snackbar = Snackbar.make(auth_layout, R.string.auth_error_network, Snackbar.LENGTH_INDEFINITE).setAction(R.string.retry_btn, new View.OnClickListener() {
+            snackbar = Snackbar.make(auth_layout, R.string.auth_error_network,
+                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.retry_btn, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     signIn(instance, username, password);
                 }
             });
             View snackbarView = snackbar.getView();
-            TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            TextView snackTextView = (TextView) snackbarView.findViewById(
+                    com.google.android.material.R.id.snackbar_text);
             snackTextView.setMaxLines(3);
             snackTextView.setTextColor(getResources().getColor(R.color.primaryTextColor));
             if(global_prefs.getBoolean("dark_theme", false)) {
@@ -273,16 +282,20 @@ public class AuthActivity extends MonetCompatActivity {
             if(Global.checkMonet(this)) {
                 if(global_prefs.getBoolean("dark_theme", false)) {
                     snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                            getMonet().getMonetColors().getAccent1().get(100))
+                            .toLinearSrgb().toSrgb().quantize8());
                 } else {
                     snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                            getMonet().getMonetColors().getAccent1().get(500))
+                            .toLinearSrgb().toSrgb().quantize8());
                 }
             } else {
-                snackbar.setActionTextColor(MaterialColors.getColor(this, androidx.appcompat.R.attr.colorAccent,
+                snackbar.setActionTextColor(MaterialColors.getColor(this,
+                        androidx.appcompat.R.attr.colorAccent,
                         getResources().getColor(R.color.accentColor)));
             }
-            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
+            Button snackActionBtn = (Button) snackbarView.findViewById(
+                    com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
         } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
@@ -290,9 +303,11 @@ public class AuthActivity extends MonetCompatActivity {
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
-            snackbar = Snackbar.make(auth_layout, R.string.auth_instance_unavailable, Snackbar.LENGTH_LONG);
+            snackbar = Snackbar.make(auth_layout, R.string.auth_instance_unavailable,
+                    Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
-            TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            TextView snackTextView = (TextView) snackbarView.findViewById(
+                    com.google.android.material.R.id.snackbar_text);
             if(global_prefs.getBoolean("dark_theme", false)) {
                 snackbar.setBackgroundTint(getResources().getColor(R.color.navbarColor));
             } else {
@@ -303,16 +318,20 @@ public class AuthActivity extends MonetCompatActivity {
             if(Global.checkMonet(this)) {
                 if(global_prefs.getBoolean("dark_theme", false)) {
                     snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                            getMonet().getMonetColors().getAccent1().get(100))
+                            .toLinearSrgb().toSrgb().quantize8());
                 } else {
                     snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                            getMonet().getMonetColors().getAccent1().get(500))
+                            .toLinearSrgb().toSrgb().quantize8());
                 }
             } else {
-                snackbar.setActionTextColor(MaterialColors.getColor(this, androidx.appcompat.R.attr.colorAccent,
+                snackbar.setActionTextColor(MaterialColors.getColor(this,
+                        androidx.appcompat.R.attr.colorAccent,
                         getResources().getColor(R.color.accentColor)));
             }
-            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
+            Button snackActionBtn = (Button) snackbarView.findViewById(
+                    com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
         } else if(message == HandlerMessages.UNKNOWN_ERROR) {
@@ -320,9 +339,11 @@ public class AuthActivity extends MonetCompatActivity {
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
-            snackbar = Snackbar.make(auth_layout, R.string.auth_unknown_error, Snackbar.LENGTH_LONG);
+            snackbar = Snackbar.make(auth_layout,
+                    R.string.auth_unknown_error, Snackbar.LENGTH_LONG);
             View snackbarView = snackbar.getView();
-            TextView snackTextView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            TextView snackTextView = (TextView) snackbarView
+                    .findViewById(com.google.android.material.R.id.snackbar_text);
             snackTextView.setMaxLines(3);
             if(global_prefs.getBoolean("dark_theme", false)) {
                 snackbar.setBackgroundTint(getResources().getColor(R.color.navbarColor));
@@ -333,16 +354,20 @@ public class AuthActivity extends MonetCompatActivity {
             if(Global.checkMonet(this)) {
                 if(global_prefs.getBoolean("dark_theme", false)) {
                     snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                            getMonet().getMonetColors().getAccent1().get(100))
+                            .toLinearSrgb().toSrgb().quantize8());
                 } else {
                     snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                            getMonet().getMonetColors().getAccent1().get(500))
+                            .toLinearSrgb().toSrgb().quantize8());
                 }
             } else {
-                snackbar.setActionTextColor(MaterialColors.getColor(this, androidx.appcompat.R.attr.colorAccent,
+                snackbar.setActionTextColor(MaterialColors.getColor(this,
+                        androidx.appcompat.R.attr.colorAccent,
                         getResources().getColor(R.color.accentColor)));
             }
-            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.material.R.id.snackbar_action);
+            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.
+                    material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
         } else if(message == UiMessages.SHOW_WARNING_DIALOG) {
@@ -354,12 +379,17 @@ public class AuthActivity extends MonetCompatActivity {
             builder.show();
             AlertDialog dialog = builder.getDialog();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                ((TextView) warn_view.findViewById(R.id.warn_message_text)).setText(Html.fromHtml(getResources().getString(R.string.ovk_warning), Html.FROM_HTML_MODE_COMPACT));
+                ((TextView) warn_view.findViewById(R.id.warn_message_text)).setText(
+                        Html.fromHtml(getResources().getString(R.string.ovk_warning),
+                                Html.FROM_HTML_MODE_COMPACT));
             } else {
-                ((TextView) warn_view.findViewById(R.id.warn_message_text)).setText(Html.fromHtml(getResources().getString(R.string.ovk_warning)));
+                ((TextView) warn_view.findViewById(R.id.warn_message_text)).setText(
+                        Html.fromHtml(getResources().getString(R.string.ovk_warning)));
             }
-            ((TextView) warn_view.findViewById(R.id.warn_message_text)).setMovementMethod(LinkMovementMethod.getInstance());
-            ((MaterialCheckBox) warn_view.findViewById(R.id.do_not_show_messages)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            ((TextView) warn_view.findViewById(R.id.warn_message_text)).setMovementMethod(
+                    LinkMovementMethod.getInstance());
+            ((MaterialCheckBox) warn_view.findViewById(R.id.do_not_show_messages))
+                    .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     SharedPreferences.Editor global_prefs_editor = global_prefs.edit();
@@ -385,7 +415,8 @@ public class AuthActivity extends MonetCompatActivity {
     }
 
     @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
+                                     boolean isInitialChange) {
         super.onMonetColorsChanged(monet, monetColors, isInitialChange);
         getMonet().updateMonetColors();
     }

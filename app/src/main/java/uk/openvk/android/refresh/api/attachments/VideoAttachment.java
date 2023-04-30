@@ -22,7 +22,8 @@ public class VideoAttachment implements Parcelable {
 
     }
 
-    public VideoAttachment(long id, String title, VideoFiles files, String url_thumb, int duration, String filename) {
+    public VideoAttachment(long id, String title, VideoFiles files, String url_thumb, int duration,
+                           String filename) {
         this.id = id;
         this.title = title;
         this.files = files;

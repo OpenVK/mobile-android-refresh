@@ -14,7 +14,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 
-public class ZoomableImageView extends AppCompatImageView implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
+public class ZoomableImageView extends AppCompatImageView implements GestureDetector.OnGestureListener,
+        GestureDetector.OnDoubleTapListener {
 
     Matrix matrix;
 

@@ -47,43 +47,55 @@ public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
         }
         // setting medium fonts for buttons
         if(dialog.getButton(BUTTON_NEGATIVE) != null) {
-            dialog.getButton(BUTTON_NEGATIVE).setTypeface(Global.getFlexibleTypeface(getContext(), 500));
+            dialog.getButton(BUTTON_NEGATIVE).setTypeface(Global.getFlexibleTypeface(
+                    getContext(), 500));
             if(Global.checkMonet(getContext())) {
                 MonetCompat monet = MonetCompat.getInstance();
-                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
+                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(
+                        getContext()).getBoolean("dark_theme", false);
                 int accentColor;
                 if(isDarkTheme) {
-                    accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
+                    accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                            .get(200)).toLinearSrgb().toSrgb().quantize8();
                 } else {
-                    accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                    accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                            .get(500)).toLinearSrgb().toSrgb().quantize8();
                 }
                 dialog.getButton(BUTTON_NEGATIVE).setTextColor(accentColor);
             }
         }
         if(dialog.getButton(BUTTON_NEUTRAL) != null) {
-            dialog.getButton(BUTTON_NEUTRAL).setTypeface(Global.getFlexibleTypeface(getContext(), 500));
+            dialog.getButton(BUTTON_NEUTRAL).setTypeface(Global.getFlexibleTypeface(
+                    getContext(), 500));
             if(Global.checkMonet(getContext())) {
                 MonetCompat monet = MonetCompat.getInstance();
-                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
+                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(
+                        getContext()).getBoolean("dark_theme", false);
                 int accentColor;
                 if(isDarkTheme) {
-                    accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
+                    accentColor = Objects.requireNonNull(monet.getMonetColors()
+                            .getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
                 } else {
-                    accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                    accentColor = Objects.requireNonNull(monet.getMonetColors()
+                            .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
                 }
                 dialog.getButton(BUTTON_NEUTRAL).setTextColor(accentColor);
             }
         }
         if(dialog.getButton(BUTTON_POSITIVE) != null) {
-            dialog.getButton(BUTTON_POSITIVE).setTypeface(Global.getFlexibleTypeface(getContext(), 500));
+            dialog.getButton(BUTTON_POSITIVE).setTypeface(Global.getFlexibleTypeface(
+                    getContext(), 500));
             if(Global.checkMonet(getContext())) {
                 MonetCompat monet = MonetCompat.getInstance();
-                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
+                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(
+                        getContext()).getBoolean("dark_theme", false);
                 int accentColor;
                 if(isDarkTheme) {
-                    accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
+                    accentColor = Objects.requireNonNull(monet.getMonetColors()
+                            .getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
                 } else {
-                    accentColor = Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                    accentColor = Objects.requireNonNull(monet.getMonetColors()
+                            .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
                 }
                 dialog.getButton(BUTTON_POSITIVE).setTextColor(accentColor);
             }
@@ -103,7 +115,8 @@ public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
 
     public void clearCheck(int position) {
         try {
-            ((CheckedTextView) dialog.getListView().getChildAt(position).findViewById(android.R.id.text1)).setChecked(false);
+            ((CheckedTextView) dialog.getListView().getChildAt(position)
+                    .findViewById(android.R.id.text1)).setChecked(false);
         } catch (Exception ignored) {
         }
     }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.models.Conversation;
@@ -37,6 +39,7 @@ public class MessagesFragment extends Fragment {
     private ConversationsAdapter conversationsAdapter;
     private LinearLayoutManager llm;
     private SharedPreferences global_prefs;
+    private GridLayoutManager glm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,20 +54,28 @@ public class MessagesFragment extends Fragment {
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                                .get(100)).toLinearSrgb().toSrgb().quantize8());
             } else {
                 ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                                .get(500)).toLinearSrgb().toSrgb().quantize8());
             }
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(typedValue.data);
+            ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(
+                    typedValue.data);
         }
-        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+        if(PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .getBoolean("dark_theme", false)) {
+            ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(
+                            com.google.android.material.R.color.background_material_dark));
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+            ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
-        ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout))
+                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -84,7 +95,12 @@ public class MessagesFragment extends Fragment {
             conversationsAdapter = new ConversationsAdapter(requireActivity(), this.conversations, account);
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            conversationsView.setLayoutManager(llm);
+            if(OvkApplication.isTablet) {
+                glm = new GridLayoutManager(getContext(), 2);
+                conversationsView.setLayoutManager(glm);
+            } else {
+                conversationsView.setLayoutManager(llm);
+            }
             conversationsView.setAdapter(conversationsAdapter);
         } else {
             //conversationsAdapter.setArray(wallPosts);

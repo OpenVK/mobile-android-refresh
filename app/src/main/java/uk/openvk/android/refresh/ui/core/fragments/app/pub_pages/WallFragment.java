@@ -43,7 +43,8 @@ public class WallFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.tab_wall, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);
         wall_rv = view.findViewById(R.id.wall_rv);
@@ -67,11 +68,14 @@ public class WallFragment extends Fragment {
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             wallView.setLayoutManager(llm);
             if(ctx instanceof AppActivity) {
-                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts, ((AppActivity) ctx).account);
+                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts,
+                        ((AppActivity) ctx).account);
             } else if(ctx instanceof ProfileIntentActivity) {
-                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts, ((ProfileIntentActivity) ctx).account);
+                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts,
+                        ((ProfileIntentActivity) ctx).account);
             } else if(ctx instanceof GroupIntentActivity) {
-                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts, ((GroupIntentActivity) ctx).account);
+                wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts,
+                        ((GroupIntentActivity) ctx).account);
             }
             wallView.setAdapter(wallAdapter);
         } else {

@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.models.Conversation;
 import uk.openvk.android.refresh.api.models.Group;
@@ -39,10 +41,12 @@ public class GroupsFragment extends Fragment {
     private RecyclerView groupsView;
     private GroupsAdapter groupsAdapter;
     private LinearLayoutManager llm;
+    private GridLayoutManager glm;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.fragment_groups, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
@@ -50,7 +54,8 @@ public class GroupsFragment extends Fragment {
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
         ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setVisibility(View.GONE);
         setTheme();
-        ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -70,18 +75,22 @@ public class GroupsFragment extends Fragment {
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100))
+                                .toLinearSrgb().toSrgb().quantize8());
             } else {
                 ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500))
+                                .toLinearSrgb().toSrgb().quantize8());
             }
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setColorSchemeColors(typedValue.data);
         }
         if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+            ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+            ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
     }
 
@@ -93,7 +102,12 @@ public class GroupsFragment extends Fragment {
             groupsAdapter = new GroupsAdapter(getContext(), this.groups);
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            groupsView.setLayoutManager(llm);
+            if(OvkApplication.isTablet) {
+                glm = new GridLayoutManager(getContext(), 2);
+                groupsView.setLayoutManager(glm);
+            } else {
+                groupsView.setLayoutManager(llm);
+            }
             groupsView.setAdapter(groupsAdapter);
         } else {
             groupsAdapter.notifyDataSetChanged();

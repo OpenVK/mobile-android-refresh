@@ -71,7 +71,8 @@ public class FriendsIntentActivity extends MonetCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
+                getWindow());
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         instance_prefs = getSharedPreferences("instance", 0);
@@ -105,8 +106,12 @@ public class FriendsIntentActivity extends MonetCompatActivity {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(600))
+                        .toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(700))
+                        .toLinearSrgb().toSrgb().quantize8());
             }
         }
     }
@@ -158,11 +163,14 @@ public class FriendsIntentActivity extends MonetCompatActivity {
         });
         if(!Global.checkMonet(this)) {
             TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
             if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background,
+                        typedValue, true);
             } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark,
+                        typedValue, true);
             }
             getWindow().setStatusBarColor(typedValue.data);
         }
@@ -175,7 +183,8 @@ public class FriendsIntentActivity extends MonetCompatActivity {
                 if (args.startsWith("id")) {
                     try {
                         user_id = Integer.parseInt(args.substring(2));
-                        friends.get(ovk_api, Integer.parseInt(args.substring(2)), 25, "friends_list");
+                        friends.get(ovk_api, Integer.parseInt(args.substring(2)),
+                                25, "friends_list");
                     } catch (Exception ex) {
                         users.search(ovk_api, args);
                     }
@@ -184,14 +193,16 @@ public class FriendsIntentActivity extends MonetCompatActivity {
                 }
                 applyFragment();
             } else if (message == HandlerMessages.FRIENDS_GET) {
-                friends.parse(data.getString("response"), downloadManager, true, true);
+                friends.parse(data.getString("response"), downloadManager,
+                        true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.disableUpdateState();
                 //friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
-                friends.parse(data.getString("response"), downloadManager, true, false);
+                friends.parse(data.getString("response"), downloadManager,
+                        true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList);
                 //friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
@@ -219,7 +230,8 @@ public class FriendsIntentActivity extends MonetCompatActivity {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = getPackageManager();
-            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList = pm.queryIntentActivities(i, 0);
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList =
+                    pm.queryIntentActivities(i, 0);
             for (int index = 0; index < activityList.size(); index++) {
                 ResolveInfo app = activityList.get(index);
                 if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {

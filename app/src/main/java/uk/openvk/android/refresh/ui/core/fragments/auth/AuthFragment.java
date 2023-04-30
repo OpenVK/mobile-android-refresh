@@ -46,7 +46,8 @@ public class AuthFragment extends Fragment {
             public void onClick(View view) {
                 if(getActivity() != null) {
                     if (getActivity().getClass().getSimpleName().equals("AuthActivity")) {
-                        ((AuthActivity) getActivity()).signIn(instance_edit.getText().toString(), Objects.requireNonNull(username_edit.getText()).toString(),
+                        ((AuthActivity) getActivity()).signIn(instance_edit.getText().toString(),
+                                Objects.requireNonNull(username_edit.getText()).toString(),
                                 Objects.requireNonNull(password_edit.getText()).toString());
                     }
                 }
@@ -62,7 +63,8 @@ public class AuthFragment extends Fragment {
 
         ((LinearLayoutCompat) view.findViewById(R.id.auth_layout)).setGravity(Gravity.CENTER);
         instance_edit.setAdapter(
-                new ArrayAdapter<String>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                new ArrayAdapter<String>(getContext(),
+                        androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                         getResources().getStringArray(R.array.avaliable_instances)));
         TextInputLayout instance_layout = (view.findViewById(R.id.instance_input_layout));
         instance_edit.setThreshold(25000000);
@@ -81,16 +83,21 @@ public class AuthFragment extends Fragment {
         Button register_btn = view.findViewById(R.id.register_btn);
         if(Global.checkMonet(getContext())) {
             MonetCompat monet = MonetCompat.getInstance();
-            if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false)) {
+            if(PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getBoolean("dark_theme", false)) {
                 sign_in_btn.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
+                        monet.getMonetColors().getAccent1().get(200))
+                        .toLinearSrgb().toSrgb().quantize8()));
                 register_btn.setTextColor(ColorStateList.valueOf(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8()));
+                        monet.getMonetColors().getAccent1().get(200))
+                        .toLinearSrgb().toSrgb().quantize8()));
             } else {
                 sign_in_btn.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+                        monet.getMonetColors().getAccent1().get(500))
+                        .toLinearSrgb().toSrgb().quantize8()));
                 register_btn.setTextColor(ColorStateList.valueOf(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8()));
+                        monet.getMonetColors().getAccent1().get(500))
+                        .toLinearSrgb().toSrgb().quantize8()));
             }
         }
     }

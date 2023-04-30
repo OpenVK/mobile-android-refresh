@@ -43,7 +43,8 @@ public class AboutFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         handler = new Handler();
         view = inflater.inflate(R.layout.tab_about_page, container, false);
         LinearLayout loading_layout = view.findViewById(R.id.loading_layout);

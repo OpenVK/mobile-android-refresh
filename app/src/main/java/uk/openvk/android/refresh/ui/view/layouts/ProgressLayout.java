@@ -33,13 +33,18 @@ public class ProgressLayout extends LinearLayoutCompat {
         view.setLayoutParams(layoutParams);
         if(Global.checkMonet(getContext())) {
             MonetCompat monet = MonetCompat.getInstance();
-            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8());
+                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(
+                        Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb()
+                        .quantize8());
             } else {
-                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(
+                        Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb()
+                        .quantize8());
             }
         }
     }
@@ -56,13 +61,18 @@ public class ProgressLayout extends LinearLayoutCompat {
         view.setLayoutParams(layoutParams);
         if(Global.checkMonet(getContext())) {
             MonetCompat monet = MonetCompat.getInstance();
-            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("dark_theme", false);
+            boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(
+                    getContext()).getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(
+                        Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb()
+                                .quantize8());
             } else {
-                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(
+                        Objects.requireNonNull(
+                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb()
+                                .quantize8());
             }
         } else {
             ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(

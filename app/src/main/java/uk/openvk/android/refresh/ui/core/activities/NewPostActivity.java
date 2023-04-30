@@ -62,7 +62,8 @@ public class NewPostActivity extends MonetCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+        Global.setColorTheme(this,
+                global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.activity_new_post);
@@ -127,35 +128,51 @@ public class NewPostActivity extends MonetCompatActivity {
                     new int[] { android.R.attr.state_selected}, new int[] { }
             };
             int[] colors;
-            int colorOnSurface = MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
+            int colorOnSurface = MaterialColors.getColor(this,
+                    com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(600)
+                ).toLinearSrgb().toSrgb().quantize8());
+                getWindow().setStatusBarColor(Objects.requireNonNull(
+                        getMonet().getMonetColors().getAccent1().get(700)
+                ).toLinearSrgb().toSrgb().quantize8());
 
                 colors = new int[]{
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8(),
+                        Objects.requireNonNull(
+                                getMonet().getMonetColors().getAccent1().get(600)
+                        ).toLinearSrgb().toSrgb().quantize8(),
                         Global.adjustAlpha(colorOnSurface, 0.6f)
                 };
                 Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
                         .setHighlightColor(
-                                Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8());
+                                Objects.requireNonNull(
+                                        getMonet().getMonetColors().getAccent1().get(200)
+                                ).toLinearSrgb().toSrgb().quantize8());
             } else {
                 colors = new int[]{
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8(),
+                        Objects.requireNonNull(
+                                getMonet().getMonetColors().getAccent1().get(200)
+                        ).toLinearSrgb().toSrgb().quantize8(),
                         Global.adjustAlpha(colorOnSurface, 0.6f)
                 };
                 Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
                         .setHighlightColor(
-                                Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                                Objects.requireNonNull(
+                                        getMonet().getMonetColors().getAccent1().get(500)
+                                ).toLinearSrgb().toSrgb().quantize8());
             }
             Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
                     .setHintTextColor(ColorStateList.valueOf(colors[0]));
             Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
                     .setBoxStrokeColor(colors[0]);
         } else {
-            int rippleColor = MaterialColors.getColor(this, com.google.android.material.R.attr.rippleColor, Color.GRAY);
-            int accentColor = MaterialColors.getColor(this, com.google.android.material.R.attr.colorAccent, Color.BLACK);
-            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
+            int rippleColor = MaterialColors.getColor(this,
+                    com.google.android.material.R.attr.rippleColor, Color.GRAY);
+            int accentColor = MaterialColors.getColor(this,
+                    com.google.android.material.R.attr.colorAccent, Color.BLACK);
+            Objects.requireNonNull(((TextInputLayout)
+                            findViewById(R.id.status_edit_layout)).getEditText())
                     .setHighlightColor(rippleColor);
             Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
                     .setHintTextColor(ColorStateList.valueOf(accentColor));
@@ -188,11 +205,14 @@ public class NewPostActivity extends MonetCompatActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
             if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.background,
+                        typedValue, true);
             } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true);
+                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark,
+                        typedValue, true);
             }
             window.setStatusBarColor(typedValue.data);
         }
@@ -226,12 +246,17 @@ public class NewPostActivity extends MonetCompatActivity {
     private void receiveState(int message, Bundle data) {
         try {
             if(message == HandlerMessages.WALL_POST) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.posted_successfully), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.posted_successfully), Toast.LENGTH_LONG).show();
                 finish();
             } else if(message == HandlerMessages.ACCESS_DENIED){
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.posting_access_denied), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.posting_access_denied),
+                        Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.posting_error), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.posting_error),
+                        Toast.LENGTH_LONG).show();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -244,7 +269,8 @@ public class NewPostActivity extends MonetCompatActivity {
     }
 
     @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
+    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
+                                     boolean isInitialChange) {
         super.onMonetColorsChanged(monet, monetColors, isInitialChange);
         getMonet().updateMonetColors();
         setMonetTheme();

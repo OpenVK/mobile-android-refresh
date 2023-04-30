@@ -6,11 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +61,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new Holder(LayoutInflater.from(ctx).inflate(R.layout.wall_post, parent, false));
+        return new Holder(LayoutInflater.from(ctx).inflate(R.layout.list_item_newsfeed, parent, false));
     }
 
     @Override
@@ -97,6 +94,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         private final TextView post_likes;
         private final TextView post_comments;
         private final TextView post_repost;
+        private final ImageView verified_icon;
         private boolean likeAdded = false;
         private boolean likeDeleted = false;
 
@@ -109,6 +107,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             this.post_likes = (TextView) view.findViewById(R.id.like_btn);
             this.post_comments = (TextView) view.findViewById(R.id.comment_btn);
             this.post_repost = (TextView) view.findViewById(R.id.repost_btn);
+            this.verified_icon = (ImageView) view.findViewById(R.id.verified_icon);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -124,17 +123,28 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 86400000) {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[1], new SimpleDateFormat("HH:mm").format(dt));
+                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[1],
+                        new SimpleDateFormat("HH:mm").format(dt));
             } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < (86400000 * 2)) {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[2], new SimpleDateFormat("HH:mm").format(dt));
+                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[2],
+                        new SimpleDateFormat("HH:mm").format(dt));
             } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 31536000000L) {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[3], new SimpleDateFormat("d MMMM").format(dt),
+                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[3],
+                        new SimpleDateFormat("d MMMM").format(dt),
                         new SimpleDateFormat("HH:mm").format(dt));
             } else {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[3], new SimpleDateFormat("d MMMM yyyy").format(dt),
+                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[3],
+                        new SimpleDateFormat("d MMMM yyyy").format(dt),
                         new SimpleDateFormat("HH:mm").format(dt));
             }
             post_info.setText(item.info);
+
+            if(item.verified_author) {
+                verified_icon.setVisibility(View.VISIBLE);
+            } else {
+                verified_icon.setVisibility(View.GONE);
+            }
+
             if(item.text.length() > 0) {
                 post_text.setVisibility(View.VISIBLE);
                 String text = item.text.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
@@ -163,7 +173,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             post_likes.setTextColor(color);
             setTextViewDrawableColor(post_likes, color);
 
-            setTextViewDrawableColor(post_repost, MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorControlNormal, Color.BLACK));
+            setTextViewDrawableColor(post_repost, MaterialColors.getColor(ctx,
+                    androidx.appcompat.R.attr.colorControlNormal, Color.BLACK));
 
             if(item.counters.enabled) {
                 post_likes.setEnabled(true);

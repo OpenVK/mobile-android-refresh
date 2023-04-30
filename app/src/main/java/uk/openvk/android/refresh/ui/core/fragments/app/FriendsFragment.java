@@ -68,9 +68,11 @@ public class FriendsFragment extends Fragment {
         setTheme();
         ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
                 .setProgressBackgroundColorSchemeResource(R.color.navbarColor);
-        ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setVisibility(View.GONE);
+        ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
+                .setVisibility(View.GONE);
 
-        ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
+                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
@@ -129,24 +131,33 @@ public class FriendsFragment extends Fragment {
 
     private void setTheme() {
         TypedValue typedValue = new TypedValue();
-        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent,
+                typedValue, true);
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8());
+                ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
+                        .setColorSchemeColors(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                                .get(100)).toLinearSrgb().toSrgb().quantize8());
             } else {
-                ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8());
+                ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
+                        .setColorSchemeColors(
+                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
+                                .get(500)).toLinearSrgb().toSrgb().quantize8());
             }
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setColorSchemeColors(typedValue.data);
+            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
+                    .setColorSchemeColors(typedValue.data);
         }
-        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+        if(PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .getBoolean("dark_theme", false)) {
+            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout)).setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+            ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
         }
     }
 
@@ -161,8 +172,10 @@ public class FriendsFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
-                    FriendsListFragment friendsListFragment = (FriendsListFragment) pagerAdapter.getFragment(0);
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                    // so this is only possible with a delay.
+                    FriendsListFragment friendsListFragment = (FriendsListFragment)
+                            pagerAdapter.getFragment(0);
                     friendsView = friendsListFragment.view.findViewById(R.id.friends_rv);
                     if(friendsListFragment.getFriendsAdapter() == null) {
                         friendsListFragment.createFriendsAdapter(ctx, friends);
@@ -182,15 +195,18 @@ public class FriendsFragment extends Fragment {
         (view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
         view.findViewById(R.id.friends_layout).setVisibility(View.VISIBLE);
         this.friends = friends;
-        FriendRequestsFragment requestsFragment = (FriendRequestsFragment) pagerAdapter.getFragment(1);
+        FriendRequestsFragment requestsFragment = (FriendRequestsFragment)
+                pagerAdapter.getFragment(1);
         requestsFragment.handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
-                    // It is not immediately possible to get the RecyclerView from the embedded fragment, so this is only possible with a delay.
+                    // It is not immediately possible to get the RecyclerView from the embedded fragment,
+                    // so this is only possible with a delay.
                     requestsView = requestsFragment.view.findViewById(R.id.requests_rv);
                     if(requestsFragment.getRequestsAdapter() == null) {
-                        requestsFragment.createRequestsAdapter(FriendsFragment.this, ctx, friends);
+                        requestsFragment.createRequestsAdapter(FriendsFragment.this,
+                                ctx, friends);
                     } else {
                         requestsFragment.getRequestsAdapter().notifyDataSetChanged();
                     }
@@ -240,7 +256,8 @@ public class FriendsFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    friendsView = ((FriendsListFragment) pagerAdapter.getFragment(0)).view.findViewById(R.id.friends_rv);
+                    friendsView = ((FriendsListFragment) pagerAdapter
+                            .getFragment(0)).view.findViewById(R.id.friends_rv);
                     friendsView.setOnScrollListener((recyclerView, x, y, old_x, old_y) -> {
                         View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
                         int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
