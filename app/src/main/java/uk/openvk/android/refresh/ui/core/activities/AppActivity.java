@@ -662,6 +662,7 @@ public class AppActivity extends MonetCompatActivity {
         return selectedFragment;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void receiveState(int message, Bundle data) {
         // Handling OpenVK API and UI messages
         try {
@@ -847,6 +848,7 @@ public class AppActivity extends MonetCompatActivity {
                     } else {
                         newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
                     }
+                    newsfeedFragment.refreshAdapter();
                 } else if(selectedFragment == profileFragment) {
                     if(profileFragment.getWallAdapter() == null) {
                         profileFragment.createWallAdapter(this, wall.getWallItems());

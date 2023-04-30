@@ -118,7 +118,6 @@ public class NewsfeedFragment extends Fragment {
             newsfeedView.setLayoutManager(llm);
             newsfeedView.setAdapter(newsfeedAdapter);
         } else {
-            newsfeedAdapter.setArray(wallPosts);
             newsfeedAdapter.notifyDataSetChanged();
         }
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
@@ -170,7 +169,10 @@ public class NewsfeedFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void refreshAdapter() {
-        if(newsfeedAdapter != null) newsfeedAdapter.notifyDataSetChanged();
+        if(newsfeedAdapter != null) {
+            newsfeedAdapter.setArray(wallPosts);
+            newsfeedAdapter.notifyDataSetChanged();
+        }
     }
 
     public void showProgress() {
@@ -183,7 +185,7 @@ public class NewsfeedFragment extends Fragment {
     public void select(int position, String item, int value) {
         if(item.equals("likes")) {
             wallPosts.get(position).counters.isLiked = value == 1;
-            newsfeedAdapter.notifyDataSetChanged();
+            newsfeedAdapter.notifyItemChanged(position, false);
         }
     }
 
@@ -195,7 +197,7 @@ public class NewsfeedFragment extends Fragment {
             } else {
                 wallPosts.get(position).counters.isLiked = false;
             }
-            newsfeedAdapter.notifyDataSetChanged();
+            newsfeedAdapter.notifyItemChanged(position, false);
         }
     }
 
@@ -207,8 +209,8 @@ public class NewsfeedFragment extends Fragment {
             if (!loading_more_posts) {
                 if (diff == 0) {
                     if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        loading_more_posts = true;
                         ((AppActivity) ctx).loadMoreNews();
+                        loading_more_posts = true;
                     }
                 }
             }
