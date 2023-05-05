@@ -12,11 +12,13 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendRequestsFragment;
 import uk.openvk.android.refresh.ui.list.adapters.PublicPageAboutAdapter;
@@ -59,9 +61,14 @@ public class AboutFragment extends Fragment {
         this.ctx = ctx;
         this.aboutItems = items;
         if(aboutAdapter == null) {
-            llm = new LinearLayoutManager(getContext());
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            about_rv.setLayoutManager(llm);
+            if(OvkApplication.isTablet && getResources().getConfiguration().smallestScreenWidthDp >= 760) {
+                GridLayoutManager glm = new GridLayoutManager(getContext(), 2);
+                about_rv.setLayoutManager(glm);
+            } else {
+                llm = new LinearLayoutManager(getContext());
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+                about_rv.setLayoutManager(llm);
+            }
             aboutAdapter = new PublicPageAboutAdapter(ctx, this.aboutItems);
             about_rv.setAdapter(aboutAdapter);
         } else {

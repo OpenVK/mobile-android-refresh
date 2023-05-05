@@ -96,7 +96,7 @@ public class Wall implements Parcelable {
                     String author_avatar_url = "";
                     String content = post.getString("text");
                     boolean isLiked = false;
-                    boolean verified_author;
+                    boolean verified_author = false;
                     if(likes.getInt("user_likes") > 0) {
                         isLiked = true;
                     } else {
@@ -173,11 +173,7 @@ public class Wall implements Parcelable {
                                     if (-group.getInt("id") == owner_id) {
                                         owner_name = group.getString("name");
                                         avatar_url = group.getString("photo_50");
-                                        if (group.getBoolean("verified")) {
-                                            verified_author = true;
-                                        } else {
-                                            verified_author = false;
-                                        }
+                                        verified_author = group.getBoolean("verified");
                                     }
                                 }
                             }
@@ -196,11 +192,7 @@ public class Wall implements Parcelable {
                                 if (-group.getInt("id") == author_id) {
                                     item.name = group.getString("name");
                                     avatar_url = group.getString("photo_50");
-                                    if (group.getBoolean("verified")) {
-                                        verified_author = true;
-                                    } else {
-                                        verified_author = false;
-                                    }
+                                    verified_author = group.getBoolean("verified");
                                 }
                             }
                         }
@@ -209,6 +201,7 @@ public class Wall implements Parcelable {
                     avatar.url = avatar_url;
                     avatar.filename = String.format("avatar_%s", author_id);
                     avatars.add(avatar);
+                    item.verified_author = verified_author;
                     this.items.add(item);
                 }
                 switch (quality) {

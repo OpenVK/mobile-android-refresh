@@ -63,7 +63,10 @@ public class FriendsListFragment extends Fragment {
         if(friendsAdapter == null) {
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            if(OvkApplication.isTablet) {
+            if(OvkApplication.isTablet && getResources().getConfiguration().smallestScreenWidthDp >= 760) {
+                glm = new GridLayoutManager(getContext(), 3);
+                friends_rv.setLayoutManager(glm);
+            } else if(OvkApplication.isTablet) {
                 glm = new GridLayoutManager(getContext(), 2);
                 friends_rv.setLayoutManager(glm);
             } else {

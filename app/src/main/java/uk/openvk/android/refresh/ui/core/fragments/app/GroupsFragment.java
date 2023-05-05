@@ -102,7 +102,10 @@ public class GroupsFragment extends Fragment {
             groupsAdapter = new GroupsAdapter(getContext(), this.groups);
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            if(OvkApplication.isTablet) {
+            if(OvkApplication.isTablet && getResources().getConfiguration().smallestScreenWidthDp >= 760) {
+                glm = new GridLayoutManager(getContext(), 3);
+                groupsView.setLayoutManager(glm);
+            } else if(OvkApplication.isTablet) {
                 glm = new GridLayoutManager(getContext(), 2);
                 groupsView.setLayoutManager(glm);
             } else {

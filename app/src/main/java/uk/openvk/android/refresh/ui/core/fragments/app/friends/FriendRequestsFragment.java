@@ -67,7 +67,10 @@ public class FriendRequestsFragment extends Fragment {
         if(requestsAdapter == null) {
             llm = new LinearLayoutManager(getContext());
             llm.setOrientation(LinearLayoutManager.VERTICAL);
-            if(OvkApplication.isTablet) {
+            if(OvkApplication.isTablet && getResources().getConfiguration().smallestScreenWidthDp >= 760) {
+                glm = new GridLayoutManager(getContext(), 3);
+                requests_rv.setLayoutManager(glm);
+            } else if(OvkApplication.isTablet) {
                 glm = new GridLayoutManager(getContext(), 2);
                 requests_rv.setLayoutManager(glm);
             } else {

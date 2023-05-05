@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -41,7 +42,8 @@ public class OvkApplication extends Application {
                 Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
         boolean large = ((getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
-        if(xlarge || large) {
+        int swdp = (int)(getResources().getConfiguration().smallestScreenWidthDp);
+        if((xlarge || large) && swdp >= 600) {
             isTablet = true;
         }
     }

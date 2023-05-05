@@ -296,7 +296,11 @@ public class AppActivity extends MonetCompatActivity {
 
                     }
                 } else {
-                    drawer.open();
+                    try {
+                        drawer.open();
+                    } catch (Exception ignored) {
+
+                    }
                 }
             }
         });
@@ -1201,6 +1205,9 @@ public class AppActivity extends MonetCompatActivity {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         screenOrientation = newConfig.orientation;
+        if(getResources().getConfiguration().smallestScreenWidthDp != newConfig.smallestScreenWidthDp) {
+            restart();
+        }
     }
 
     @Override
