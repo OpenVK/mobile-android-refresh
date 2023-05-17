@@ -3,6 +3,7 @@ package uk.openvk.android.refresh;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -104,7 +105,7 @@ public class Global {
         }
     }
 
-    private static boolean checkDarkTheme(Context ctx) {
+    public static boolean checkDarkTheme(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("dark_theme", true);
     }
 
@@ -305,5 +306,59 @@ public class Global {
             return Objects.requireNonNull(monet.getMonetColors()
                     .getAccent1().get(brightness)).toLinearSrgb().toSrgb().quantize8();
         }
+    }
+
+    public static ColorStateList getMonetRippleColorList(
+            MonetCompat monet, int inactiveColor, boolean isDarkTheme, int count
+    ) {
+        int[][] states = new int[0][];
+        int[] colors = new int[0];
+        if(count == 1) {
+            if(isDarkTheme) {
+                return ColorStateList.valueOf(
+                        Global.getMonetIntColor(monet, "accent", 500)
+                );
+            } else {
+                return ColorStateList.valueOf(
+                        Global.getMonetIntColor(monet, "accent", 200)
+                );
+            }
+        } else if(count == 2) {
+            if (isDarkTheme) {
+                colors = new int[]{
+                        Global.getMonetIntColor(monet, "accent", 200),
+                        Global.adjustAlpha(inactiveColor, 0.6f)
+                };
+            } else {
+                colors = new int[]{
+                        Global.getMonetIntColor(monet, "accent", 500),
+                        Global.adjustAlpha(inactiveColor, 0.6f)
+                };
+            }
+        } else if(count == 4) {
+            states = new int[][]
+                    {
+                            new int[]{android.R.attr.state_pressed},
+                            new int[]{android.R.attr.state_focused},
+                            new int[]{android.R.attr.state_activated},
+                            new int[]{}
+                    };
+            if (isDarkTheme) {
+                colors = new int[]{
+                        Global.getMonetIntColor(monet, "accent", 200),
+                        Global.getMonetIntColor(monet, "accent", 200),
+                        Global.getMonetIntColor(monet, "accent", 200),
+                        Global.adjustAlpha(inactiveColor, 0.6f)
+                };
+            } else {
+                colors = new int[]{
+                        Global.getMonetIntColor(monet, "accent", 500),
+                        Global.getMonetIntColor(monet, "accent", 500),
+                        Global.getMonetIntColor(monet, "accent", 500),
+                        Global.adjustAlpha(inactiveColor, 0.6f)
+                };
+            }
+        }
+        return new ColorStateList(states, colors);
     }
 }

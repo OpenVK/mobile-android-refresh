@@ -65,7 +65,7 @@
 
             </LinearLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/source_code_btn"
                 style="@style/ApplicationTheme.Button.Borderless.NoCaps"
                 android:layout_width="wrap_content"

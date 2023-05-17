@@ -14,6 +14,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -68,7 +70,6 @@ public class PhotoViewerActivity extends MonetCompatActivity {
     private String cache_path;
     public Handler handler;
     private MaterialToolbar toolbar;
-
     private AppBarLayout appbar;
     private boolean isDarkTheme;
     private BitmapFactory.Options bfOptions;
@@ -134,18 +135,20 @@ public class PhotoViewerActivity extends MonetCompatActivity {
             }
             getWindow().setStatusBarColor(typedValue.data);
         }
+        toolbar.getBackground().setAlpha(200);
+        findViewById(R.id.app_bar).setBackgroundColor(Color.TRANSPARENT);
+        findViewById(R.id.app_bar).setOutlineProvider(null);
     }
 
     private void setMonetTheme() {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(
-                        getMonet().getMonetColors().getAccent1().get(600))
-                        .toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor
+                        (Global.getMonetIntColor(getMonet(), "accent", 600));
                 getWindow().setStatusBarColor(
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700))
-                                .toLinearSrgb().toSrgb().quantize8());
+                        Global.getMonetIntColor(getMonet(), "accent", 700));
+                toolbar.getBackground().setAlpha(200);
             }
         }
     }

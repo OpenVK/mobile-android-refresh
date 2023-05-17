@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
@@ -78,17 +79,16 @@ public class ProfileHeader extends LinearLayoutCompat {
     public void setLastSeen(int sex, long date, int ls_platform) {
         if(online) {
             ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.online));
-        } else {
+        } else if(date > 0){
             Date dt_midnight = new Date(System.currentTimeMillis() + 86400000);
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(dt_midnight);
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
+            calendar.setTimeInMillis(dt_midnight.getTime());
+            calendar.set(Calendar.HOUR, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
-            long dt_sec = (calendar.getTimeInMillis());
-            Date dt = new Date(dt_sec);
-            if((calendar.getTimeInMillis() - dt_sec) < 60000) {
+            long dt_ms = (TimeUnit.SECONDS.toMillis(date));
+            Date dt = new Date(dt_ms);
+            if((calendar.getTimeInMillis() - dt_ms) < 60000) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
                             .setText(getResources().getString(R.string.last_seen_profile_f, getResources().getString(R.string.date_just_now)));
@@ -96,7 +96,7 @@ public class ProfileHeader extends LinearLayoutCompat {
                     ((TextView) findViewById(R.id.last_seen))
                             .setText(getResources().getString(R.string.last_seen_profile_m, getResources().getString(R.string.date_just_now)));
                 }
-            } else if((calendar.getTimeInMillis() - dt_sec) < 86400000) {
+            } else if((calendar.getTimeInMillis() - dt_ms) < 86400000) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
                             .setText(getResources().getString(R.string.last_seen_profile_f, new SimpleDateFormat("HH:mm").format(dt)));
@@ -104,7 +104,7 @@ public class ProfileHeader extends LinearLayoutCompat {
                     ((TextView) findViewById(R.id.last_seen))
                             .setText(getResources().getString(R.string.last_seen_profile_m, new SimpleDateFormat("HH:mm").format(dt)));
                 }
-            } else if((calendar.getTimeInMillis() - dt_sec) < (86400000 * 2)) {
+            } else if((calendar.getTimeInMillis() - dt_ms) < (86400000 * 2)) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
                             .setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s",
@@ -114,7 +114,7 @@ public class ProfileHeader extends LinearLayoutCompat {
                             .setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s",
                             getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt))));
                 }
-            } else if((calendar.getTimeInMillis() - dt_sec) < 31536000000L) {
+            } else if((calendar.getTimeInMillis() - dt_ms) < 31536000000L) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
                             .setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s %s",
@@ -135,6 +135,8 @@ public class ProfileHeader extends LinearLayoutCompat {
                             new SimpleDateFormat("d MMMM").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
                 }
             }
+        } else {
+            ((TextView) findViewById(R.id.last_seen)).setText("");
         }
 //        ((ImageView) findViewById(R.id.profile_api_indicator))
 //        .setVisibility(VISIBLE);

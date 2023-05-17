@@ -1,8 +1,13 @@
 package uk.openvk.android.refresh.ui.core.fragments.app;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
@@ -33,6 +40,7 @@ public class AboutApplicationFragment extends Fragment {
     private View view;
     private SharedPreferences global_prefs;
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,11 +65,22 @@ public class AboutApplicationFragment extends Fragment {
             if(isDarkTheme) {
                 ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(
                         Global.getMonetIntColor(monet, "accent", 200));
+                ((MaterialButton) view.findViewById(R.id.source_code_btn))
+                        .setRippleColor(
+                                ColorStateList.valueOf(
+                                        Global.getMonetIntColor(monet, "accent", 500)
+                                )
+                        );
             } else {
                 ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(
                         Global.getMonetIntColor(monet, "accent", 500)
                 );
             }
+            ((MaterialButton) view.findViewById(R.id.source_code_btn))
+                    .setRippleColor(
+                            Global.getMonetRippleColorList(monet, 0, isDarkTheme, 1)
+                    );
+
         }
         ((Button) view.findViewById(R.id.source_code_btn)).setOnClickListener(new View.OnClickListener() {
             @Override

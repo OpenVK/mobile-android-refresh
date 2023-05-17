@@ -29,7 +29,11 @@ public class InfinityRecyclerView extends RecyclerView {
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         if(onScrollListener != null) {
-            onScrollListener.onScroll(this, l, t, oldl, oldt);
+            try {
+                onScrollListener.onScroll(this, l, t, oldl, oldt);
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

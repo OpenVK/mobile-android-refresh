@@ -79,8 +79,14 @@ public class QuickSearchActivity extends MonetCompatActivity {
         searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
+                searchBar.setEnabled(false);
                 if(!searchBar.isSearchOpened()) {
-                    finish();
+                    new Handler(Looper.myLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 200);
                 }
             }
 

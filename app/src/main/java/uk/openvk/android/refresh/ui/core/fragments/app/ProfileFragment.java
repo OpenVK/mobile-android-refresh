@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -161,6 +163,14 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                     .setSelectedTabIndicatorColor(accentColor);
             ((TabLayout) view.findViewById(R.id.tab_layout))
                     .setTabTextColors(Global.adjustAlpha(unselectedColor, 0.6f), accentColor);
+            ((MaterialButton) view.findViewById(R.id.show_friends_btn))
+                    .setRippleColor(
+                            Global.getMonetRippleColorList(monet, 0, isDarkTheme, 1)
+                    );
+            ((MaterialButton) view.findViewById(R.id.show_friends_btn)).setTextColor(accentColor);
+            ((MaterialButton) view.findViewById(R.id.add_to_btn)).setIconTint(
+                    ColorStateList.valueOf(accentColor));
+            ((MaterialButton) view.findViewById(R.id.send_msg_btn)).setBackgroundColor(accentColor);
         } else {
             ((TabLayout) view.findViewById(R.id.tab_layout))
                     .setSelectedTabIndicatorColor(accentColor);
@@ -179,6 +189,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                     .setProgressBackgroundColorSchemeColor(getResources()
                             .getColor(android.R.color.white));
         }
+
     }
 
     public void setData(User user, Friends friends, Account account, OvkAPIWrapper ovk) {

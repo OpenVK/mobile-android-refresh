@@ -3,11 +3,15 @@ package uk.openvk.android.refresh.ui.core.fragments.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +21,7 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.button.MaterialButton;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
@@ -80,14 +85,15 @@ public class NewsfeedFragment extends Fragment {
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
+            int accentColor = 0;
             if(isDarkTheme) {
+                accentColor = Global.getMonetIntColor(monet, "accent", 200);
                 ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
-                        .setColorSchemeColors(
-                                Global.getMonetIntColor(monet, "accent", 200));
+                        .setColorSchemeColors(accentColor);
             } else {
+                accentColor = Global.getMonetIntColor(monet, "accent", 500);
                 ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
-                        .setColorSchemeColors(
-                                Global.getMonetIntColor(monet, "accent", 500));
+                        .setColorSchemeColors(accentColor);
             }
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
@@ -132,11 +138,17 @@ public class NewsfeedFragment extends Fragment {
     }
 
     public void disableLoadState() {
-        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-        if(OvkApplication.isTablet) {
-            view.findViewById(R.id.newsfeed_layout).setVisibility(View.VISIBLE);
-        }
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.VISIBLE);
+        new Handler(Looper.myLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
+                if(OvkApplication.isTablet) {
+                    view.findViewById(R.id.newsfeed_layout).setVisibility(View.VISIBLE);
+                }
+                ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.VISIBLE);
+            }
+        }, 200);
+
     }
 
     public void setError(boolean visible, int message, View.OnClickListener listener) {
@@ -218,12 +230,14 @@ public class NewsfeedFragment extends Fragment {
         loading_more_posts = !infinity_scroll;
         newsfeedView.setOnScrollListener((recyclerView, x, y, old_x, old_y) -> {
             View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
-            int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
-            if (!loading_more_posts) {
-                if (diff == 0) {
-                    if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        ((AppActivity) ctx).loadMoreNews();
-                        loading_more_posts = true;
+            if(recyclerView.getChildCount() > 2) {
+                int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
+                if (!loading_more_posts) {
+                    if (diff == 0) {
+                        if (ctx.getClass().getSimpleName().equals("AppActivity")) {
+                            ((AppActivity) ctx).loadMoreNews();
+                            loading_more_posts = true;
+                        }
                     }
                 }
             }

@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.ui.list.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -23,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -128,12 +130,14 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < (86400000 * 2)) {
                 item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[2],
                         new SimpleDateFormat("HH:mm").format(dt));
-            } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 31536000000L) {
+            } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec)))
+                    < 31536000000L) {
                 item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[3],
                         new SimpleDateFormat("d MMMM").format(dt),
                         new SimpleDateFormat("HH:mm").format(dt));
             } else {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[3],
+                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)
+                                [3],
                         new SimpleDateFormat("d MMMM yyyy").format(dt),
                         new SimpleDateFormat("HH:mm").format(dt));
             }
@@ -147,8 +151,10 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
             if(item.text.length() > 0) {
                 post_text.setVisibility(View.VISIBLE);
-                String text = item.text.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
-                        .replaceAll("&amp;", "&").replaceAll("&quot;", "\"");
+                String text = item.text.replaceAll("&lt;", "<")
+                        .replaceAll("&gt;", ">")
+                        .replaceAll("&amp;", "&")
+                        .replaceAll("&quot;", "\"");
                 post_text.setText(Global.formatLinksAsHtml(text));
             } else {
                 post_text.setVisibility(View.GONE);
@@ -159,23 +165,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             post_likes.setText(String.format("%s", item.counters.likes));
             post_comments.setText(String.format("%s", item.counters.comments));
             post_repost.setText(String.format("%s", item.counters.reposts));
-
-            TypedValue accentColor = new TypedValue();
-            ctx.getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, accentColor, true);
-            int color;
-            if(item.counters.isLiked) {
-                color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent, Color.BLACK);
-                post_likes.setSelected(true);
-            } else {
-                color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorControlNormal, Color.BLACK);
-                post_likes.setSelected(false);
-            }
-            post_likes.setTextColor(color);
-            setTextViewDrawableColor(post_likes, color);
-
-            setTextViewDrawableColor(post_repost, MaterialColors.getColor(ctx,
-                    androidx.appcompat.R.attr.colorControlNormal, Color.BLACK));
-
+            setTheme(item);
             if(item.counters.enabled) {
                 post_likes.setEnabled(true);
                 if(item.counters.isLiked && likeAdded) {
@@ -242,27 +232,35 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         }
                     }
                 }
-                Global.setAvatarShape(ctx, ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)));
+                Global.setAvatarShape(ctx, ((ShapeableImageView) convertView
+                        .findViewById(R.id.profile_avatar)));
                 String local_avatar_frm;
                 String local_photo_frm;
                 if(ctx.getClass().getSimpleName().equals("AppActivity")) {
                     if(((AppActivity) ctx).getSelectedFragment() != null &&
-                            ((AppActivity) ctx).getSelectedFragment().getClass().getSimpleName().equals("NewsfeedFragment")) {
+                            ((AppActivity) ctx).getSelectedFragment().getClass()
+                                    .getSimpleName().equals("NewsfeedFragment")) {
                         local_avatar_frm = "%s/photos_cache/newsfeed_avatars/avatar_%s";
-                        local_photo_frm = "%s/photos_cache/newsfeed_photo_attachments/newsfeed_attachment_o%sp%s";
+                        local_photo_frm = "%s/photos_cache/newsfeed_photo_attachments/" +
+                                "newsfeed_attachment_o%sp%s";
                     } else {
                         local_avatar_frm = "%s/photos_cache/wall_avatars/avatar_%s";
-                        local_photo_frm = "%s/photos_cache/wall_photo_attachments/wall_attachment_o%sp%s";
+                        local_photo_frm = "%s/photos_cache/wall_photo_attachments/" +
+                                "wall_attachment_o%sp%s";
                     }
                 } else {
                     local_avatar_frm = "%s/photos_cache/wall_avatars/avatar_%s";
-                    local_photo_frm = "%s/photos_cache/wall_photo_attachments/wall_attachment_o%sp%s";
+                    local_photo_frm = "%s/photos_cache/wall_photo_attachments/" +
+                            "wall_attachment_o%sp%s";
                 }
                 if(avatar_loaded)
-                    Glide.with(ctx).load(String.format(local_avatar_frm, ctx.getCacheDir().getAbsolutePath(), item.author_id))
+                    Glide.with(ctx).load(String.format(local_avatar_frm, ctx.getCacheDir().
+                                    getAbsolutePath(), item.author_id))
                             .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                            .dontAnimate().centerCrop().error(R.drawable.circular_avatar).into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
-                ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)).setImageTintList(null);
+                            .dontAnimate().centerCrop().error(R.drawable.circular_avatar)
+                            .into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
+                ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar))
+                        .setImageTintList(null);
                 View.OnClickListener openProfileListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -275,19 +273,24 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         }
                     }
                 };
-                ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar)).setOnClickListener(openProfileListener);
+                ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar))
+                        .setOnClickListener(openProfileListener);
                 poster_name.setOnClickListener(openProfileListener);
                 if(contains_photos) {
                     if(photo_loaded) {
-                        (((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView()).setImageTintList(null);
-                        Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir().getAbsolutePath(), item.owner_id, item.post_id))
+                        (((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment))
+                                .getImageView()).setImageTintList(null);
+                        Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir()
+                                        .getAbsolutePath(), item.owner_id, item.post_id))
                                 .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                                 .placeholder(ctx.getDrawable(R.drawable.photo_placeholder))
                                 .dontAnimate().error(R.drawable.photo_loading_error)
-                                .into(((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView());
+                                .into(((PhotoAttachmentLayout) convertView
+                                        .findViewById(R.id.photo_attachment)).getImageView());
                         (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                         PhotoAttachment finalPhoto_attachment = photo_attachment;
-                        (convertView.findViewById(R.id.photo_attachment)).setOnClickListener(new View.OnClickListener() {
+                        (convertView.findViewById(R.id.photo_attachment))
+                                .setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(ctx, PhotoViewerActivity.class);
@@ -297,7 +300,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                                 ctx.startActivity(intent);
                             }
                         });
-                        ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment)).getImageView().setAdjustViewBounds(true);
+                        ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment))
+                                .getImageView().setAdjustViewBounds(true);
                     }
                 } else {
                     (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.GONE);
@@ -305,11 +309,13 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 if(contains_video) {
                     String video_player = PreferenceManager.getDefaultSharedPreferences(ctx)
                             .getString("video_player", "built_in");
-                    ((VideoAttachmentLayout) convertView.findViewById(R.id.video_attachment)).setAttachment(video_attachment);
+                    ((VideoAttachmentLayout) convertView.findViewById(R.id.video_attachment))
+                            .setAttachment(video_attachment);
                     (convertView.findViewById(R.id.video_attachment)).setVisibility(View.VISIBLE);
                     final int posFinal = position;
                     VideoAttachment finalVideo_attachment = video_attachment;
-                    (convertView.findViewById(R.id.video_attachment)).setOnClickListener(new View.OnClickListener() {
+                    (convertView.findViewById(R.id.video_attachment))
+                            .setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(ctx, VideoPlayerActivity.class);
@@ -325,6 +331,39 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             } catch (Exception ignored) {
 
             }
+        }
+
+        private void setTheme(WallPost item) {
+            TypedValue accentColor = new TypedValue();
+            ctx.getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, accentColor,
+                    true);
+            int color;
+            if(item.counters.isLiked) {
+                color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorAccent,
+                        Color.BLACK);
+                post_likes.setSelected(true);
+            } else {
+                color = MaterialColors.getColor(ctx, androidx.appcompat.R.attr.colorControlNormal,
+                        Color.BLACK);
+                post_likes.setSelected(false);
+            }
+            post_likes.setTextColor(color);
+            setTextViewDrawableColor(post_likes, color);
+
+            setTextViewDrawableColor(post_repost, MaterialColors.getColor(ctx,
+                    androidx.appcompat.R.attr.colorControlNormal, Color.BLACK));
+            if(Global.checkMonet(ctx)) {
+                if (Global.checkDarkTheme(ctx)) {
+                    ((ImageView) verified_icon).setImageTintList(
+                            ColorStateList.valueOf(Global.getMonetIntColor(MonetCompat.getInstance(),
+                                    "accent", 200)));
+                } else {
+                    ((ImageView) verified_icon).setImageTintList(
+                            ColorStateList.valueOf(Global.getMonetIntColor(MonetCompat.getInstance(),
+                                    "accent", 500)));
+                }
+            }
+
         }
     }
 

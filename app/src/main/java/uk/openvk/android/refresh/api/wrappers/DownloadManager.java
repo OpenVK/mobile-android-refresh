@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +44,6 @@ import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "StatementWithEmptyBody"})
 public class DownloadManager {
-
     public String server;
     public boolean use_https;
     public boolean legacy_mode;
@@ -55,7 +55,6 @@ public class DownloadManager {
 
     public DownloadManager(Context ctx) {
         this.ctx = ctx;
-        this.use_https = use_https;
         if(BuildConfig.BUILD_TYPE.equals("release")) {
             logging_enabled = false;
         }
@@ -140,8 +139,10 @@ public class DownloadManager {
     }
 
 
-    public void downloadPhotosToCache(final ArrayList<PhotoAttachment> photoAttachments, final String where) {
-        Log.v("DownloadManager", String.format("Downloading %d photos...", photoAttachments.size()));
+    public void downloadPhotosToCache(final ArrayList<PhotoAttachment> photoAttachments,
+                                      final String where) {
+        Log.v("DownloadManager", String.format("Downloading %d photos...",
+                photoAttachments.size()));
         Runnable httpRunnable = new Runnable() {
             private Request request = null;
             StatusLine statusLine = null;
@@ -165,18 +166,31 @@ public class DownloadManager {
                 }
                 for (int i = 0; i < photoAttachments.size(); i++) {
                     filesize = 0;
+                    filename = photoAttachments.get(i).filename;
+                    File downloadedFile = new File(String.format("%s/photos_cache/%s",
+                            ctx.getCacheDir(), where), filename);
                     PhotoAttachment photoAttachment = photoAttachments.get(i);
                     if(photoAttachment.url == null) {
                         photoAttachment.url = "";
                     }
-                    if(filename.equals(photoAttachment.filename)) {
-                        //Log.e("DownloadManager", "Duplicated filename. Skipping...");
+                    Date lastModDate;
+                    if(downloadedFile.exists()) {
+                        lastModDate = new Date(downloadedFile.lastModified());
+                    } else {
+                        lastModDate = new Date(0);
+                    }
+                    long time_diff = System.currentTimeMillis() - lastModDate.getTime();
+                    TimeUnit timeUnit = TimeUnit.MILLISECONDS;
+                    if(downloadedFile.exists() && downloadedFile.length() >= 5120 &&
+                            timeUnit.convert(time_diff,TimeUnit.MILLISECONDS) >= 60000L &&
+                            timeUnit.convert(time_diff,TimeUnit.MILLISECONDS) < 259200000L) {
+                        if(logging_enabled) Log.e("OVK DL", "Duplicated filename. Skipping..." +
+                                "\r\nTimeDiff: " + timeUnit.convert(time_diff,TimeUnit.MILLISECONDS)
+                                + " ms | Filesize: " + downloadedFile.length() + " bytes");
                     } else if (photoAttachment.url.length() == 0) {
                         filename = photoAttachment.filename;
                         //Log.e("DownloadManager", "Invalid address. Skipping...");
                         try {
-                            File downloadedFile = new File(String.format("%s/photos_cache/%s",
-                                    ctx.getCacheDir(), where), filename);
                             if(downloadedFile.exists()) {
                                 FileOutputStream fos = new FileOutputStream(downloadedFile);
                                 byte[] bytes = new byte[1];
@@ -205,8 +219,6 @@ public class DownloadManager {
                             Response response = httpClient.newCall(request).execute();
                             response_code = response.code();
                             content_length = Objects.requireNonNull(response.body()).contentLength();
-                            File downloadedFile = new File(String.format("%s/photos_cache/%s",
-                                    ctx.getCacheDir(), where), filename);
                             if(!downloadedFile.exists() || content_length != downloadedFile.length()) {
                                 FileOutputStream fos = new FileOutputStream(downloadedFile);
                                 int inByte;
