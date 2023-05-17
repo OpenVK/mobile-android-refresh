@@ -70,8 +70,10 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
         Global.setAvatarShape(requireContext(), header.findViewById(R.id.profile_avatar));
         TypedValue typedValue = new TypedValue();
-        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
-        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
+        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent,
+                typedValue, true);
+        if(PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .getBoolean("dark_theme", false)) {
             ((SwipeRefreshLayout) view.findViewById(R.id.group_swipe_layout))
                     .setProgressBackgroundColorSchemeColor(getResources()
                             .getColor(com.google.android.material.R.color.background_material_dark));

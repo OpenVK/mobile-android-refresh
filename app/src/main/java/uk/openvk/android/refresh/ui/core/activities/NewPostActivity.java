@@ -96,7 +96,8 @@ public class NewPostActivity extends MonetCompatActivity {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         try {
-                            if (statusEditText.getText().toString().length() > 0) {
+                            if (Objects.requireNonNull(statusEditText.getText())
+                                    .toString().length() > 0) {
                                 toolbar.getMenu().getItem(0).setEnabled(true);
                             } else {
                                 toolbar.getMenu().getItem(0).setEnabled(false);
@@ -131,36 +132,26 @@ public class NewPostActivity extends MonetCompatActivity {
             int colorOnSurface = MaterialColors.getColor(this,
                     com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(
-                        getMonet().getMonetColors().getAccent1().get(600)
-                ).toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(
-                        getMonet().getMonetColors().getAccent1().get(700)
-                ).toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(
+                        Global.getMonetIntColor(getMonet(), "accent", 600));
+                getWindow().setStatusBarColor(
+                        Global.getMonetIntColor(getMonet(), "accent", 700));
 
                 colors = new int[]{
-                        Objects.requireNonNull(
-                                getMonet().getMonetColors().getAccent1().get(600)
-                        ).toLinearSrgb().toSrgb().quantize8(),
+                        Global.getMonetIntColor(getMonet(), "accent", 600),
                         Global.adjustAlpha(colorOnSurface, 0.6f)
                 };
-                Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
-                        .setHighlightColor(
-                                Objects.requireNonNull(
-                                        getMonet().getMonetColors().getAccent1().get(200)
-                                ).toLinearSrgb().toSrgb().quantize8());
+                Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout))
+                                .getEditText()).setHighlightColor(
+                        Global.getMonetIntColor(getMonet(), "accent", 200));
             } else {
                 colors = new int[]{
-                        Objects.requireNonNull(
-                                getMonet().getMonetColors().getAccent1().get(200)
-                        ).toLinearSrgb().toSrgb().quantize8(),
+                        Global.getMonetIntColor(getMonet(), "accent", 200),
                         Global.adjustAlpha(colorOnSurface, 0.6f)
                 };
                 Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
                         .setHighlightColor(
-                                Objects.requireNonNull(
-                                        getMonet().getMonetColors().getAccent1().get(500)
-                                ).toLinearSrgb().toSrgb().quantize8());
+                                Global.getMonetIntColor(getMonet(), "accent", 500));
             }
             Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
                     .setHintTextColor(ColorStateList.valueOf(colors[0]));
@@ -219,7 +210,7 @@ public class NewPostActivity extends MonetCompatActivity {
     }
 
     private void sendPost() {
-        if (statusEditText.getText().toString().length() > 0) {
+        if (Objects.requireNonNull(statusEditText.getText()).toString().length() > 0) {
             try {
                 wall.post(ovk_api, owner_id, statusEditText.getText().toString());
             } catch (Exception e) {

@@ -37,14 +37,10 @@ public class ProgressLayout extends LinearLayoutCompat {
                     .getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(
-                        Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb()
-                        .quantize8());
+                        Global.getMonetIntColor(monet, "accent", 200));
             } else {
                 ((CircularProgressIndicator) findViewById(R.id.progressBar)).setIndicatorColor(
-                        Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb()
-                        .quantize8());
+                        Global.getMonetIntColor(monet, "accent", 500));
             }
         }
     }

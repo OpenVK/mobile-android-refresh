@@ -15,6 +15,7 @@ public class MainActivity extends MonetCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Splash screen code
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         app = ((OvkApplication) getApplicationContext());

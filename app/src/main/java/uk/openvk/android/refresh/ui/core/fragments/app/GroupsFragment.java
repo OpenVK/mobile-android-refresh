@@ -69,25 +69,27 @@ public class GroupsFragment extends Fragment {
 
     private void setTheme() {
         TypedValue typedValue = new TypedValue();
-        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent,
+                typedValue, true);
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(100))
-                                .toLinearSrgb().toSrgb().quantize8());
+                        Global.getMonetIntColor(monet, "accent", 200));
             } else {
                 ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500))
-                                .toLinearSrgb().toSrgb().quantize8());
+                        Global.getMonetIntColor(monet, "accent", 500));
             }
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout)).setColorSchemeColors(typedValue.data);
-        }
-        if(PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("dark_theme", false)) {
             ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout))
-                    .setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+                    .setColorSchemeColors(typedValue.data);
+        }
+        if(PreferenceManager.getDefaultSharedPreferences(
+                requireContext()).getBoolean("dark_theme", false)) {
+            ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout))
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(
+                            com.google.android.material.R.color.background_material_dark));
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.groups_swipe_layout))
                     .setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));

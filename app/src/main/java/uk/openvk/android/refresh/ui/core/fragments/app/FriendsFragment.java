@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.ui.core.fragments.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.kieronquinn.monetcompat.core.MonetCompat;
@@ -60,7 +62,8 @@ public class FriendsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.fragment_friends, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
@@ -77,7 +80,8 @@ public class FriendsFragment extends Fragment {
             public void onRefresh() {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
                     ((AppActivity) requireActivity()).refreshFriendsList(false);
-                } else if(requireActivity().getClass().getSimpleName().equals("FriendsIntentActivity")) {
+                } else if(requireActivity().getClass().getSimpleName()
+                        .equals("FriendsIntentActivity")) {
                     ((FriendsIntentActivity) requireActivity()).refreshFriendsList(false);
                 }
             }
@@ -133,20 +137,24 @@ public class FriendsFragment extends Fragment {
         TypedValue typedValue = new TypedValue();
         requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent,
                 typedValue, true);
+        int unselectedColor = MaterialColors.getColor(requireContext(),
+                com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
+            int accentColor = Global.getMonetIntColor(monet, "accent", 500);
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
+                accentColor = Global.getMonetIntColor(monet, "accent", 200);
                 ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
-                        .setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
-                                .get(100)).toLinearSrgb().toSrgb().quantize8());
+                        .setColorSchemeColors(accentColor);
             } else {
                 ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
-                        .setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
-                                .get(500)).toLinearSrgb().toSrgb().quantize8());
+                        .setColorSchemeColors(accentColor);
             }
+            ((TabLayout) view.findViewById(R.id.tab_layout))
+                    .setSelectedTabIndicatorColor(accentColor);
+            ((TabLayout) view.findViewById(R.id.tab_layout))
+                    .setTabTextColors(Global.adjustAlpha(unselectedColor, 0.6f), accentColor);
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
                     .setColorSchemeColors(typedValue.data);
@@ -154,10 +162,12 @@ public class FriendsFragment extends Fragment {
         if(PreferenceManager.getDefaultSharedPreferences(requireContext())
                 .getBoolean("dark_theme", false)) {
             ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
-                    .setProgressBackgroundColorSchemeColor(getResources().getColor(com.google.android.material.R.color.background_material_dark));
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(
+                            com.google.android.material.R.color.background_material_dark));
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.friends_swipe_layout))
-                    .setProgressBackgroundColorSchemeColor(getResources().getColor(android.R.color.white));
+                    .setProgressBackgroundColorSchemeColor(getResources().getColor(
+                            android.R.color.white));
         }
     }
 

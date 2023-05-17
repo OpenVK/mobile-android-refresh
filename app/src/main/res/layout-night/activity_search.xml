@@ -21,7 +21,7 @@
 
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/search_bar"
-            style="@style/MaterialSearchBarLight"
+            style="@style/MaterialSearchBarDark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:mt_backIconDrawable="@drawable/ic_arrow_back"

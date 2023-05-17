@@ -141,7 +141,8 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
 
     private void setTheme() {
         TypedValue typedValue = new TypedValue();
-        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent,
+                typedValue, true);
         int unselectedColor = MaterialColors.getColor(requireContext(),
                 com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
         int accentColor = MaterialColors.getColor(requireContext(),
@@ -150,11 +151,9 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                accentColor = Objects.requireNonNull(monet.getMonetColors()
-                        .getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8();
+                accentColor = Global.getMonetIntColor(monet, "accent", 200);
             } else {
-                accentColor = Objects.requireNonNull(monet.getMonetColors()
-                        .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                accentColor = Global.getMonetIntColor(monet, "accent", 500);
             }
             ((SwipeRefreshLayout) view.findViewById(R.id.profile_swipe_layout))
                     .setColorSchemeColors(accentColor);

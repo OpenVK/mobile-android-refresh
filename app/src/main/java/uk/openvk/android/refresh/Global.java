@@ -26,6 +26,7 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -294,5 +295,15 @@ public class Global {
         intent.putExtra("post", post);
         intent.putExtra("counters", post.counters);
         ctx.startActivity(intent);
+    }
+
+    public static int getMonetIntColor(MonetCompat monet, String type, int brightness) {
+        if(type.equals("neutral1")) {
+            return Objects.requireNonNull(monet.getMonetColors()
+                    .getNeutral1().get(brightness)).toLinearSrgb().toSrgb().quantize8();
+        } else {
+            return Objects.requireNonNull(monet.getMonetColors()
+                    .getAccent1().get(brightness)).toLinearSrgb().toSrgb().quantize8();
+        }
     }
 }

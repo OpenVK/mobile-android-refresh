@@ -48,18 +48,19 @@ public class MessagesFragment extends Fragment {
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setVisibility(View.GONE);
         TypedValue typedValue = new TypedValue();
-        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent,
+                typedValue, true);
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
-                                .get(100)).toLinearSrgb().toSrgb().quantize8());
+                ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout))
+                        .setColorSchemeColors(
+                                Global.getMonetIntColor(monet, "accent", 200));
             } else {
-                ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
-                                .get(500)).toLinearSrgb().toSrgb().quantize8());
+                ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout))
+                        .setColorSchemeColors(
+                                Global.getMonetIntColor(monet, "accent", 500));
             }
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setColorSchemeColors(
@@ -92,7 +93,8 @@ public class MessagesFragment extends Fragment {
         this.conversations = conversations;
         conversationsView = (RecyclerView) view.findViewById(R.id.conversations_rv);
         if(conversationsAdapter == null) {
-            conversationsAdapter = new ConversationsAdapter(requireActivity(), this.conversations, account);
+            conversationsAdapter = new ConversationsAdapter(requireActivity(), this.conversations,
+                    account);
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             if(OvkApplication.isTablet) {

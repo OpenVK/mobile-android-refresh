@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,20 +39,28 @@ public class AboutApplicationFragment extends Fragment {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.fragment_about_app, container, false);
         ((ShapeableImageView) view.findViewById(R.id.ovk_logo)).setImageTintList(null);
-        ((TextView) view.findViewById(R.id.version_subtitle)).setText(getResources().getString(R.string.version_subtitle, BuildConfig.VERSION_NAME));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            ((TextView) view.findViewById(R.id.version_subtitle)).setText(
+                    Html.fromHtml(String.format(getResources().getString(R.string.version_subtitle),
+                            BuildConfig.VERSION_NAME, BuildConfig.GITHUB_COMMIT),
+                            Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            ((TextView) view.findViewById(R.id.version_subtitle)).setText(
+                    Html.fromHtml(String.format(getResources().getString(R.string.version_subtitle),
+                            BuildConfig.VERSION_NAME, BuildConfig.GITHUB_COMMIT)));
+        }
         ((TextView) view.findViewById(R.id.app_license)).setMovementMethod(LinkMovementMethod.getInstance());
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     .getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.
-                        valueOf(Objects.requireNonNull(monet.getMonetColors().getAccent1().get(200))
-                                .toLinearSrgb().toSrgb().quantize8()));
+                ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(
+                        Global.getMonetIntColor(monet, "accent", 200));
             } else {
-                ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(ColorStateList.
-                        valueOf(Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500))
-                                .toLinearSrgb().toSrgb().quantize8()));
+                ((Button) view.findViewById(R.id.source_code_btn)).setTextColor(
+                        Global.getMonetIntColor(monet, "accent", 500)
+                );
             }
         }
         ((Button) view.findViewById(R.id.source_code_btn)).setOnClickListener(new View.OnClickListener() {

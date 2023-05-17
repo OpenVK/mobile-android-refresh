@@ -142,6 +142,7 @@ public class AppActivity extends MonetCompatActivity {
     private VideoSettingsFragment videoSettingsFragment;
     private NotificationManager notifMan;
     private int screenOrientation;
+    private int navBarHeight;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -247,7 +248,7 @@ public class AppActivity extends MonetCompatActivity {
             }
         }
         startActivity(intent);
-        finishActivity(1);
+        finishAffinity();
     }
 
     // Setting Application Bar (by default, newsfeed fragment using custom layout with combo-box)
@@ -265,6 +266,7 @@ public class AppActivity extends MonetCompatActivity {
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 refreshNewsfeed(true);
@@ -444,10 +446,10 @@ public class AppActivity extends MonetCompatActivity {
             if (Global.checkMonet(this)) {
                 MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
                 if (!isDarkTheme) {
-                    toolbar.setBackgroundColor(Objects.requireNonNull(getMonet().getMonetColors()
-                            .getAccent1().get(600)).toLinearSrgb().toSrgb().quantize8());
-                    drawer.setStatusBarBackgroundColor(Objects.requireNonNull(getMonet()
-                            .getMonetColors().getAccent1().get(700)).toLinearSrgb().toSrgb().quantize8());
+                    toolbar.setBackgroundColor(
+                            Global.getMonetIntColor(getMonet(), "accent", 600));
+                    drawer.setStatusBarBackgroundColor(
+                            Global.getMonetIntColor(getMonet(), "accent", 700));
                 }
                 int colorOnSurface = MaterialColors.getColor(this,
                         com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
@@ -458,14 +460,12 @@ public class AppActivity extends MonetCompatActivity {
                 int[] colors;
                 if (isDarkTheme) {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors()
-                                    .getAccent1().get(100)).toLinearSrgb().toSrgb().quantize8(),
+                            Global.getMonetIntColor(getMonet(), "accent", 100),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 } else {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors()
-                                    .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
+                            Global.getMonetIntColor(getMonet(), "accent", 500),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 }
@@ -476,35 +476,27 @@ public class AppActivity extends MonetCompatActivity {
                 BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
                 if (isDarkTheme) {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors()
-                                    .getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8(),
+                            Global.getMonetIntColor(getMonet(), "accent", 200),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 } else {
                     colors = new int[]{
-                            Objects.requireNonNull(getMonet().getMonetColors()
-                                    .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8(),
+                            Global.getMonetIntColor(getMonet(), "accent", 500),
                             Global.adjustAlpha(colorOnSurface, 0.6f)
                     };
                 }
                 csl = new ColorStateList(states, colors);
                 b_navView.setItemTextColor(csl);
                 b_navView.setItemIconTintList(csl);
-                b_navView.setItemRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this, isDarkTheme)));
+                b_navView.setItemRippleColor(ColorStateList.valueOf(
+                        getMonet().getPrimaryColor(this, isDarkTheme)));
                 FloatingActionButton fab = findViewById(R.id.fab_newpost);
-                if (isDarkTheme) {
-                    fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(600)).toLinearSrgb()
-                            .toSrgb().quantize8()));
-                } else {
-                    fab.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100)).toLinearSrgb()
-                            .toSrgb().quantize8()));
-                }
-                fab.setImageTintList(ColorStateList.valueOf(getMonet().getAccentColor(this,
-                        isDarkTheme)));
-                fab.setRippleColor(ColorStateList.valueOf(getMonet().getPrimaryColor(this,
-                        isDarkTheme)));
+                fab.setBackgroundTintList(ColorStateList.valueOf(
+                        Global.getMonetIntColor(getMonet(), "accent", 700)));
+                fab.setImageTintList(ColorStateList.valueOf(
+                        Global.getMonetIntColor(getMonet(), "accent", 100)));
+                fab.setRippleColor(ColorStateList.valueOf(
+                        Global.getMonetIntColor(getMonet(), "accent", 400)));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -680,13 +672,13 @@ public class AppActivity extends MonetCompatActivity {
                 account.parseCounters(data.getString("response"));
                 BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
                 int accentColor;
-                if(Global.checkMonet(this)) {
+                if(Global.checkMonet(this) && !OvkApplication.isTablet) {
                     if(isDarkTheme) {
-                        accentColor = Objects.requireNonNull(getMonet().getMonetColors()
-                                .getAccent1().get(200)).toLinearSrgb().toSrgb().quantize8();
+                        accentColor = Global.getMonetIntColor(
+                                MonetCompat.getInstance(), "accent", 200);
                     } else {
-                        accentColor = Objects.requireNonNull(getMonet().getMonetColors()
-                                .getAccent1().get(500)).toLinearSrgb().toSrgb().quantize8();
+                        accentColor = Global.getMonetIntColor(
+                                MonetCompat.getInstance(), "accent", 500);
                     }
                 } else {
                     accentColor = MaterialColors.getColor(this, com.kieronquinn
@@ -851,6 +843,7 @@ public class AppActivity extends MonetCompatActivity {
                         newsfeedFragment.newsfeedAdapter.setAvatarLoadState(true);
                     } else {
                         newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
+                        newsfeedFragment.disableLoadState();
                     }
                     newsfeedFragment.refreshAdapter();
                 } else if(selectedFragment == profileFragment) {
@@ -912,12 +905,17 @@ public class AppActivity extends MonetCompatActivity {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void refreshNewsfeed(boolean progress) {
         if(newsfeed.getWallPosts() != null) {
             int pos = ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                     .findViewById(R.id.spinner)).getSelectedItemPosition();
-
+            if(newsfeed != null) {
+                newsfeed.getWallPosts().clear();
+                newsfeedFragment.newsfeedAdapter.notifyDataSetChanged();
+            }
             if (account != null) {
+                assert newsfeed != null;
                 if (pos == 0) {
                     newsfeed.get(ovk_api, 25);
                 } else {
@@ -1205,10 +1203,33 @@ public class AppActivity extends MonetCompatActivity {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         screenOrientation = newConfig.orientation;
-        if(getResources().getConfiguration().smallestScreenWidthDp != newConfig.smallestScreenWidthDp) {
+        float dp = getResources().getDisplayMetrics().density;
+
+        BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
+        Configuration oldConfig = getResources().getConfiguration();
+        // Layout adaptation under configurations
+        if(oldConfig.smallestScreenWidthDp != newConfig.smallestScreenWidthDp) {
+            restart();
+        } else if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE &&
+                !OvkApplication.isTablet) {
+            b_navView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_UNLABELED);
+            navBarHeight = (int) (38 * (dp));
+            b_navView.getLayoutParams().height = navBarHeight;
+        } else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT &&
+                !OvkApplication.isTablet) {
+            b_navView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
+            b_navView.getLayoutParams().height = DrawerLayout.LayoutParams.WRAP_CONTENT;
+            b_navView.post(new Runnable() {
+                @Override
+                public void run() {
+                    navBarHeight = b_navView.getMeasuredHeight();
+                }
+            });
+        } else {
             restart();
         }
     }
+
 
     @Override
     public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,

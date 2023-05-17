@@ -106,15 +106,15 @@ public class FriendsIntentActivity extends MonetCompatActivity {
         if(Global.checkMonet(this)) {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(
-                        getMonet().getMonetColors().getAccent1().get(600))
-                        .toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(
-                        getMonet().getMonetColors().getAccent1().get(700))
-                        .toLinearSrgb().toSrgb().quantize8());
+                toolbar.setBackgroundColor(
+                        Global.getMonetIntColor(getMonet(), "accent", 600));
+                getWindow().setStatusBarColor(
+                        Global.getMonetIntColor(getMonet(), "accent", 700));
             }
         }
     }
+
+
 
     private void setAPIWrapper() {
         ovk_api = new OvkAPIWrapper(this);

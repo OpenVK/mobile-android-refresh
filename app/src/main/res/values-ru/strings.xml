@@ -86,7 +86,9 @@
     <string name="not_implemented">На данный момент такая функция не реализована. Следите за обновлениями.</string>
     <string name="not_supported">На данный момент такая функция не поддерживается. Следите за обновлениями.</string>
 
-    <string name="version_subtitle">Версия %s</string>
+    <string name="version_subtitle"><![CDATA[
+    Версия: %s<br>Коммит: %s
+    ]]></string>
     <string name="app_license_text">Эта программа является свободным програмнным обеспечением: вы можете распространять и/или изменять его в соответствии с условиями GNU (Affero) General Public License версии 3.0 (https://www.gnu.org/licenses/agpl.txt) или поздней версии, опубликованной Фондом свободного программного обеспечения.\n\nБЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ВКЛЮЧАЯ КОММЕРЧЕСКУЮ ЦЕННОСТЬ ИЛИ ПРИГОДНОСТЬ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</string>
     <string name="source_code_btn">Исходный код</string>
 

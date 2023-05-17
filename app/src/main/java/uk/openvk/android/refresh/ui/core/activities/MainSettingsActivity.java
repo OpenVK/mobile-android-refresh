@@ -83,11 +83,9 @@ public class MainSettingsActivity extends MonetCompatActivity {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
                 toolbar.setBackgroundColor(
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600))
-                                .toLinearSrgb().toSrgb().quantize8());
+                        Global.getMonetIntColor(getMonet(), "accent", 600));
                 getWindow().setStatusBarColor(
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(700))
-                                .toLinearSrgb().toSrgb().quantize8());
+                        Global.getMonetIntColor(getMonet(), "accent", 700));
             }
         }
     }

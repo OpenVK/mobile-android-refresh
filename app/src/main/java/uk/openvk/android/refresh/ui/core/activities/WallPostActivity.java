@@ -144,13 +144,15 @@ public class WallPostActivity extends MonetCompatActivity {
         this.comments = comments;
         commentsAdapter = new CommentsAdapter(this, comments);
         comments_rv = (RecyclerView) findViewById(R.id.comments_rv);
-//        if(comments.size() > 0) {
-//            no_comments_text.setVisibility(GONE);
-//            commentsView.setVisibility(VISIBLE);
-//        } else {
-//            no_comments_text.setVisibility(VISIBLE);
-//            commentsView.setVisibility(GONE);
-//        }
+        /* not working yet xdddd
+                if(comments.size() > 0) {
+                    no_comments_text.setVisibility(GONE);
+                    commentsView.setVisibility(VISIBLE);
+                } else {
+                    no_comments_text.setVisibility(VISIBLE);
+                    commentsView.setVisibility(GONE);
+                }
+        */
         llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         comments_rv.setLayoutManager(llm);

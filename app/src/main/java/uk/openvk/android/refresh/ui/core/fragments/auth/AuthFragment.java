@@ -85,19 +85,15 @@ public class AuthFragment extends Fragment {
             MonetCompat monet = MonetCompat.getInstance();
             if(PreferenceManager.getDefaultSharedPreferences(getContext())
                     .getBoolean("dark_theme", false)) {
-                sign_in_btn.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(200))
-                        .toLinearSrgb().toSrgb().quantize8()));
-                register_btn.setTextColor(ColorStateList.valueOf(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(200))
-                        .toLinearSrgb().toSrgb().quantize8()));
+                sign_in_btn.setBackgroundTintList(ColorStateList.valueOf(
+                        Global.getMonetIntColor(monet, "accent", 200)));
+                register_btn.setTextColor(ColorStateList.valueOf(
+                        Global.getMonetIntColor(monet, "accent", 200)));
             } else {
-                sign_in_btn.setBackgroundTintList(ColorStateList.valueOf(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(500))
-                        .toLinearSrgb().toSrgb().quantize8()));
-                register_btn.setTextColor(ColorStateList.valueOf(Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(500))
-                        .toLinearSrgb().toSrgb().quantize8()));
+                sign_in_btn.setBackgroundTintList(ColorStateList.valueOf(
+                        Global.getMonetIntColor(monet, "accent", 500)));
+                register_btn.setTextColor(ColorStateList.valueOf(
+                        Global.getMonetIntColor(monet, "accent", 500)));
             }
         }
     }

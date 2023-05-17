@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +16,8 @@ import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,6 +69,11 @@ public class QuickSearchActivity extends MonetCompatActivity {
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.activity_search);
         setMonetTheme();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isDarkTheme) {
+            WindowInsetsControllerCompat windowInsetsController =
+                    WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+            windowInsetsController.setAppearanceLightStatusBars(true);
+        }
         searchBar = ((MaterialSearchBar) findViewById(R.id.search_bar));
         searchBar.openSearch();
         searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {

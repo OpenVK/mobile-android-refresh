@@ -106,11 +106,9 @@ public class ConversationActivity extends MonetCompatActivity {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             if (!isDarkTheme) {
                 toolbar.setBackgroundColor(
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(600))
-                                .toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(
-                        getMonet().getMonetColors().getAccent1().get(700)).
-                        toLinearSrgb().toSrgb().quantize8());
+                        Global.getMonetIntColor(getMonet(), "accent", 600));
+                getWindow().setStatusBarColor(Global.getMonetIntColor(getMonet(), "accent",
+                        700));
             }
             int[] colors;
             int colorOnSurface = MaterialColors.getColor(this,
@@ -125,19 +123,16 @@ public class ConversationActivity extends MonetCompatActivity {
                 Objects.requireNonNull(((TextInputEditText) findViewById(R.id.sendTextBottomPanel).
                                 findViewById(R.id.send_text)))
                         .setHighlightColor(
-                                Objects.requireNonNull(getMonet().getMonetColors().getAccent1()
-                                        .get(500)).toLinearSrgb().toSrgb().quantize8());
+                                Global.getMonetIntColor(getMonet(), "accent", 500));
             } else {
                 colors = new int[]{
-                        Objects.requireNonNull(getMonet().getMonetColors().getAccent1().get(500))
-                                .toLinearSrgb().toSrgb().quantize8(),
+                        Global.getMonetIntColor(getMonet(), "accent", 500),
                         Global.adjustAlpha(colorOnSurface, 0.6f)
                 };
                 Objects.requireNonNull(((TextInputEditText) findViewById(R.id.sendTextBottomPanel)
                                 .findViewById(R.id.send_text)))
                         .setHighlightColor(
-                                Objects.requireNonNull(getMonet().getMonetColors().getAccent1()
-                                        .get(200)).toLinearSrgb().toSrgb().quantize8());
+                                Global.getMonetIntColor(getMonet(), "accent", 200));
             }
         }
     }

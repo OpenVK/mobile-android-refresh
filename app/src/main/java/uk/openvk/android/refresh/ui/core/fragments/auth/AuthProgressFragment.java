@@ -27,13 +27,9 @@ public class AuthProgressFragment extends Fragment {
             int accentColor;
             MonetCompat monet = MonetCompat.getInstance();
             if (isDarkTheme) {
-                accentColor = Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(200)).toLinearSrgb().toSrgb()
-                        .quantize8();
+                accentColor = Global.getMonetIntColor(monet, "accent", 200);
             } else {
-                accentColor = Objects.requireNonNull(
-                        monet.getMonetColors().getAccent1().get(500)).toLinearSrgb().toSrgb()
-                        .quantize8();
+                accentColor = Global.getMonetIntColor(monet, "accent", 500);
             }
             ((ProgressBar) view.findViewById(R.id.auth_progress)).setProgressTintList(ColorStateList
                     .valueOf(accentColor));

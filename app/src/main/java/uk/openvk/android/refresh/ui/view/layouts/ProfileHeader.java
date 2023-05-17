@@ -55,14 +55,12 @@ public class ProfileHeader extends LinearLayoutCompat {
                     .getBoolean("dark_theme", false);
             if(isDarkTheme) {
                 ((ImageView) findViewById(R.id.verified_icon)).setImageTintList(
-                        ColorStateList.valueOf(Objects.requireNonNull(
-                                monet.getMonetColors().getAccent1().get(200)).toLinearSrgb()
-                                .toSrgb().quantize8()));
+                        ColorStateList.valueOf(
+                                Global.getMonetIntColor(monet, "accent", 200)));
             } else {
                 ((ImageView) findViewById(R.id.verified_icon)).setImageTintList(
-                        ColorStateList.valueOf(Objects.requireNonNull(
-                                monet.getMonetColors().getAccent1().get(500)).toLinearSrgb()
-                                .toSrgb().quantize8()));
+                        ColorStateList.valueOf(
+                                Global.getMonetIntColor(monet, "accent", 500)));
             }
         }
     }

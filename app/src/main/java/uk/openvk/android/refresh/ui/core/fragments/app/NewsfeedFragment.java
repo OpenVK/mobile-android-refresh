@@ -75,18 +75,19 @@ public class NewsfeedFragment extends Fragment {
 
     private void setTheme() {
         TypedValue typedValue = new TypedValue();
-        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent, typedValue, true);
+        requireContext().getTheme().resolveAttribute(androidx.appcompat.R.attr.colorAccent,
+                typedValue, true);
         if(Global.checkMonet(requireContext())) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             if(isDarkTheme) {
-                ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
-                                .get(100)).toLinearSrgb().toSrgb().quantize8());
+                ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                        .setColorSchemeColors(
+                                Global.getMonetIntColor(monet, "accent", 200));
             } else {
-                ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setColorSchemeColors(
-                        Objects.requireNonNull(monet.getMonetColors().getAccent1()
-                                .get(500)).toLinearSrgb().toSrgb().quantize8());
+                ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                        .setColorSchemeColors(
+                                Global.getMonetIntColor(monet, "accent", 500));
             }
         } else {
             ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
@@ -124,6 +125,13 @@ public class NewsfeedFragment extends Fragment {
         } else {
             newsfeedAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void disableUpdateState() {
+        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setRefreshing(false);
+    }
+
+    public void disableLoadState() {
         ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
         if(OvkApplication.isTablet) {
             view.findViewById(R.id.newsfeed_layout).setVisibility(View.VISIBLE);
@@ -131,15 +139,13 @@ public class NewsfeedFragment extends Fragment {
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
-    public void disableUpdateState() {
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setRefreshing(false);
-    }
-
     public void setError(boolean visible, int message, View.OnClickListener listener) {
         ErrorLayout errorLayout = view.findViewById(R.id.error_layout);
         if(visible) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
+            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                    .setVisibility(View.GONE);
+            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                    .setVisibility(View.GONE);
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
@@ -153,7 +159,8 @@ public class NewsfeedFragment extends Fragment {
                         .setText(R.string.error_instance_nrps);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))
                         .setText(R.string.error_subtitle_instance);
-            } else if(message == HandlerMessages.INTERNAL_ERROR || message == HandlerMessages.UNKNOWN_ERROR) {
+            } else if(message == HandlerMessages.INTERNAL_ERROR
+                    || message == HandlerMessages.UNKNOWN_ERROR) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_instance_failure);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))
@@ -165,9 +172,11 @@ public class NewsfeedFragment extends Fragment {
                         .setText(R.string.error_subtitle_instance);
             }
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
+            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+                    .setVisibility(View.GONE);
             errorLayout.setVisibility(View.GONE);
-            ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
+            ((ProgressLayout) view.findViewById(R.id.progress_layout))
+                    .setVisibility(View.VISIBLE);
         }
     }
 
