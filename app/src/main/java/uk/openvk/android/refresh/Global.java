@@ -1,5 +1,6 @@
 package uk.openvk.android.refresh;
 
+import android.app.LocaleManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,8 +15,10 @@ import android.view.Window;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.TypefaceCompat;
+import androidx.core.os.LocaleListCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.preference.PreferenceManager;
 
@@ -34,6 +37,7 @@ import java.util.regex.Pattern;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.models.OvkLink;
 import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
 
 public class Global {
@@ -360,5 +364,13 @@ public class Global {
             }
         }
         return new ColorStateList(states, colors);
+    }
+
+    public static void setPerAppLanguage(Context ctx) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            LocaleManager localeManager =
+                    (LocaleManager) ctx.getSystemService(Context.LOCALE_SERVICE);
+            AppCompatDelegate.setApplicationLocales(OvkApplication.getLocaleList(ctx));
+        }
     }
 }

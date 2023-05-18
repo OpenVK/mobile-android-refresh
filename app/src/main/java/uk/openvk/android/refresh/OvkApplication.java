@@ -1,14 +1,17 @@
 package uk.openvk.android.refresh;
 
 import android.app.Application;
+import android.app.LocaleManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.LocaleList;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
@@ -91,22 +94,53 @@ public class OvkApplication extends Application {
         SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         String language = global_prefs.getString("ui_language", "System");
         String language_code = "en";
-        if(language.equals("English")) {
-            language_code = "en";
-        } else if(language.equals("Русский")) {
-            language_code = "ru";
-//        } else if(language.equals("Украïнська")) {
-//            language_code = "uk"; (later)
-        } else {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                language_code = ctx.getResources().getConfiguration().getLocales().get(0).getLanguage();
-            } else {
-                language_code = ctx.getResources().getConfiguration().locale.getLanguage();
-            }
+        switch (language) {
+            case "English":
+                language_code = "en";
+                break;
+            case "Русский":
+                language_code = "ru";
+                break;
+            case "Украïнська":
+                language_code = "uk";
+                break;
+            default:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    language_code = ctx.getResources().getConfiguration().getLocales().get(0).getLanguage();
+                } else {
+                    language_code = ctx.getResources().getConfiguration().locale.getLanguage();
+                }
+                break;
         }
 
 
         return new Locale(language_code);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public static LocaleListCompat getLocaleList(Context ctx) {
+        SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        LocaleList currentAppLocales =
+                ctx.getSystemService(LocaleManager.class).getApplicationLocales();
+        SharedPreferences.Editor editor = global_prefs.edit();
+        if(currentAppLocales.toLanguageTags().startsWith("en")) {
+            editor.putString("ui_language", "English");
+        } else if(currentAppLocales.toLanguageTags().startsWith("ru")) {
+            editor.putString("ui_language", "Russian");
+        } else if(currentAppLocales.toLanguageTags().startsWith("uk")) {
+            editor.putString("ui_language", "Украïнська");
+        } else if(currentAppLocales.toLanguageTags().startsWith("und")) {
+            editor.putString("ui_language", "System");
+        }
+
+        editor.apply();
+        if(!currentAppLocales.toLanguageTags().startsWith("und")) {
+            return LocaleListCompat.wrap(
+                    new LocaleList(Locale.forLanguageTag(currentAppLocales.toLanguageTags())));
+        } else {
+            return LocaleListCompat.wrap(
+                    new LocaleList(ctx.getResources().getConfiguration().locale));
+        }
     }
 
 }

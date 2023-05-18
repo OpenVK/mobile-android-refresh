@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -87,8 +88,15 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         assert ui_language != null;
         ui_language.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceClick(Preference preference) {
-                showUiLanguageSelectionDialog();
+            public boolean onPreferenceClick(@NonNull Preference preference) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    Intent intent = new Intent(Settings.ACTION_APP_LOCALE_SETTINGS);
+                    Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                } else {
+                    showUiLanguageSelectionDialog();
+                }
                 return false;
             }
         });
@@ -140,7 +148,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             case "Русский":
                 valuePos = 2;
                 break;
-            case "Українська":
+            case "Украïнська":
                 valuePos = 3;
                 break;
         }
@@ -167,7 +175,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             } else if(which == 2) {
                 editor.putString("ui_language", "Русский");
             } else if(which == 3) {
-                editor.putString("ui_language", "Українська");
+                editor.putString("ui_language", "Украïнська");
             }
             editor.apply();
         }

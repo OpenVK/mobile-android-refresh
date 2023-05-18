@@ -37,13 +37,6 @@
         <item>Rubik</item>
     </string-array>
 
-    <string-array name="ui_languages" translatable="false">
-        <item>System</item>
-        <item>English</item>
-        <item>Русский</item>
-        <!-- <item>Українська</item> later !-->
-    </string-array>
-
     <string-array name="video_player">
         <item>Built-in (libVLC)</item>
         <item>3rd-party</item>

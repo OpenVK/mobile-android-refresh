@@ -2,6 +2,7 @@ package uk.openvk.android.refresh.ui.core.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.LocaleManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -34,6 +35,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.os.LocaleListCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -158,6 +160,7 @@ public class AppActivity extends MonetCompatActivity {
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
+
         notifMan = new NotificationManager(this, true, true, true, "");
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -176,6 +179,7 @@ public class AppActivity extends MonetCompatActivity {
     protected void attachBaseContext(Context newBase) {
         Locale languageType = OvkApplication.getLocale(newBase);
         super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
+        Global.setPerAppLanguage(this);
     }
 
     private void createFragments() {
@@ -839,13 +843,15 @@ public class AppActivity extends MonetCompatActivity {
                     || message == HandlerMessages.WALL_AVATARS
                     || message == HandlerMessages.WALL_ATTACHMENTS) {
                 if(selectedFragment == newsfeedFragment) {
-                    if(message == HandlerMessages.NEWSFEED_AVATARS) {
-                        newsfeedFragment.newsfeedAdapter.setAvatarLoadState(true);
-                    } else {
-                        newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
-                        newsfeedFragment.disableLoadState();
+                    if(newsfeedFragment.newsfeedAdapter != null) {
+                        if (message == HandlerMessages.NEWSFEED_AVATARS) {
+                            newsfeedFragment.newsfeedAdapter.setAvatarLoadState(true);
+                        } else {
+                            newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
+                            newsfeedFragment.disableLoadState();
+                        }
+                        newsfeedFragment.refreshAdapter();
                     }
-                    newsfeedFragment.refreshAdapter();
                 } else if(selectedFragment == profileFragment) {
                     if(profileFragment.getWallAdapter() == null) {
                         profileFragment.createWallAdapter(this, wall.getWallItems());
@@ -1163,7 +1169,7 @@ public class AppActivity extends MonetCompatActivity {
         }
     }
 
-    private ServiceConnection lpConnection = new ServiceConnection() {
+    private final ServiceConnection lpConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             LongPollService.LongPollBinder binder = (LongPollService.LongPollBinder) service;
             longPollService = binder.getService();

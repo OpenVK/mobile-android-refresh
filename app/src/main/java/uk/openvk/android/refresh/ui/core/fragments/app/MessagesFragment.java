@@ -90,26 +90,28 @@ public class MessagesFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void createAdapter(Context ctx, ArrayList<Conversation> conversations, Account account) {
-        this.conversations = conversations;
-        conversationsView = (RecyclerView) view.findViewById(R.id.conversations_rv);
-        if(conversationsAdapter == null) {
-            conversationsAdapter = new ConversationsAdapter(requireActivity(), this.conversations,
-                    account);
-            llm = new LinearLayoutManager(ctx);
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            if(OvkApplication.isTablet) {
-                glm = new GridLayoutManager(getContext(), 2);
-                conversationsView.setLayoutManager(glm);
+        if(view != null) {
+            this.conversations = conversations;
+            conversationsView = (RecyclerView) view.findViewById(R.id.conversations_rv);
+            if (conversationsAdapter == null) {
+                conversationsAdapter = new ConversationsAdapter(requireActivity(), this.conversations,
+                        account);
+                llm = new LinearLayoutManager(ctx);
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+                if (OvkApplication.isTablet) {
+                    glm = new GridLayoutManager(getContext(), 2);
+                    conversationsView.setLayoutManager(glm);
+                } else {
+                    conversationsView.setLayoutManager(llm);
+                }
+                conversationsView.setAdapter(conversationsAdapter);
             } else {
-                conversationsView.setLayoutManager(llm);
+                //conversationsAdapter.setArray(wallPosts);
+                conversationsAdapter.notifyDataSetChanged();
             }
-            conversationsView.setAdapter(conversationsAdapter);
-        } else {
-            //conversationsAdapter.setArray(wallPosts);
-            conversationsAdapter.notifyDataSetChanged();
+            ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
+            ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setVisibility(View.VISIBLE);
         }
-        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-        ((SwipeRefreshLayout) view.findViewById(R.id.messages_swipe_layout)).setVisibility(View.VISIBLE);
     }
 
     public void disableUpdateState() {
@@ -118,8 +120,10 @@ public class MessagesFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void loadAvatars(ArrayList<Conversation> conversations) {
-        Context ctx = requireContext();
-        conversationsAdapter.notifyDataSetChanged();
+        if(view != null) {
+            Context ctx = requireContext();
+            conversationsAdapter.notifyDataSetChanged();
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

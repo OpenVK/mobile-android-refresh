@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenVK</string>
+    <string name="title_activity_auth">Екран авторизації</string>
+    <string name="prompt_email">Електронна пошта</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Увійти або зареєструватися</string>
+    <string name="action_sign_in_short">Увійти</string>
+    <string name="welcome">Добро пожаловать!</string>
+    <string name="invalid_username">Неправильне ім\'я користувача</string>
+    <string name="invalid_password">Невірний пароль</string>
+    <string name="login_failed">Не вдалося увійти</string>
+    <string name="auth_instance">Iнстанцiя</string>
+    <string name="auth_email">Електронна пошта</string>
+    <string name="invalid_email_or_password">Неправильна адреса електронної пошти або пароль.</string>
+    <string name="auth_error_not_openvk_instance">Вказаний сервер не є інстанцією OpenVK-сумісної.</string>
+    <string name="auth_error_network">Немає підключення до Інтернету.</string>
+    <string name="auth_unknown_error">Не вдалося підключитись до інстанції з невідомих причин.</string>
+    <string name="auth_instance_unavailable">На даний момент ця інстанція недоступна.</string>
+    <string name="twofactor_text">У вас включено двофакторну автентифікацію.</string>
+    <string name="auth_twofactor_code">Код 2FA</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_sign_in">Вхід</string>
+    <string name="auth_register">Реєстрація</string>
+    <string name="auth_forgot_btn">Забули пароль?</string>
+    <string name="auth_wait">Зачекайте</string>
+    <string name="retry_btn">Повторити</string>
+    <string name="bottom_nav_home">Головна</string>
+    <string name="bottom_nav_messages">Месенджер</string>
+    <string name="bottom_nav_profile">Профіль</string>
+    <string name="nav_profile">Профіль</string>
+    <string name="nav_friends">Друзі</string>
+    <string name="nav_messages">Месенджер</string>
+    <string name="nav_groups">Групи</string>
+    <string name="nav_news">Новини</string>
+    <string name="nav_settings">Налаштуваня</string>
+    <string name="on_wall">%s на стiнi %s</string>
+    <string name="today">сьогодні</string>
+    <string name="yesterday">вчора</string>
+    <string name="today_at">сьогодні о</string>
+    <string name="yesterday_at">вчора о</string>
+    <string name="date_at">в</string>
+
+    <string name="online">Онлайн</string>
+    <string name="offline">Не в мережі</string>
+    <string name="last_seen_profile_m">був у мережі %s</string>
+    <string name="last_seen_profile_f">була у мережі %s</string>
+    <string name="date_just_now">щойно</string>
+    <string name="error_no_internet">Немає підключення до Інтернету</string>
+    <string name="error_instance_failure">Збій інстанції</string>
+    <string name="error_instance">Інстанція недоступна</string>
+    <string name="error_instance_nrps">Інстанція не відповідає</string>
+    <string name="error_parsing">Неможливо обробити відповідь</string>
+    <string name="error_subtitle">Перевірте підключення до мережі та повторіть спробу.</string>
+    <string name="error_subtitle_instance">Повторіть спробу пізніше або зверніться до системного адміністратора.</string>
+
+    <string name="my_news_item">Пiдписки</string>
+    <string name="all_news_item">Всi новини</string>
+
+    <string name="your_last_message">Ви: %s</string>
+
+    <string name="pref_application_category">Додаток</string>
+    <string name="pref_video">Відео</string>
+    <string name="pref_video_player">Відеоплеєр</string>
+    <string name="pref_interface_category">Інтерфейс</string>
+    <string name="pref_personalization">Персоналізація</string>
+    <string name="pref_language">Мова (Language)</string>
+    <string name="pref_others">Інше</string>
+    <string name="pref_about_app">Про додаток</string>
+    <string name="pref_more">Ще</string>
+    <string name="pref_appearance">Зовнішній вигляд</string>
+    <string name="pref_accentcolor">Основний колір</string>
+    <string name="pref_darktheme">Темна тема</string>
+    <string name="pref_darktheme_summary">Комфортно у темний час доби та для економії заряду</string>
+    <string name="pref_avatars_shape">Форма аватарів</string>
+    <string name="pref_font">Шрифт інтерфейсу</string>
+    <string name="pref_account">Акаунт</string>
+    <string name="pref_logout">Вийти</string>
+
+    <string name="loading">Завантаження…</string>
+    <string name="error">Ошибка</string>
+
+    <string name="log_out_warning">При виході з облікового запису з пристрою будуть видалені всі пов\'язані з ним дані. Продовжити?</string>
+    <string name="sett_app_restart_required">Це налаштування набуде чинності після перезапуску програми</string>
+
+    <string name="not_implemented">На даний момент така функція не реалізована. Стежте за оновленнями.</string>
+    <string name="not_supported">На даний момент така функція не підтримується. Стежте за оновленнями.</string>
+
+    <string name="version_subtitle"><![CDATA[
+    Версiя: %s<br>Комiт: %s
+    ]]></string>
+    <string name="app_license_text">Ця програма є вільним програмним забезпеченням: ви можете розповсюджувати та/або змінювати його відповідно до умов GNU (Affero) General Public License версии 3.0 (https://www.gnu.org/licenses/agpl.txt) або пізнішої версії, опублікованої Фондом вільного програмного забезпечення.\n\nБЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ, ВКЛЮЧАЮЧИ КОМЕРЦІЙНУ ЦІННІСТЬ АБО ПРИГОДНІ ДЛЯ КОНКРЕТНИХ ЦІЛІВ.</string>
+    <string name="source_code_btn">Вихідний код</string>
+
+    <string name="enter_msg">Повідомлення</string>
+
+    <string name="new_post_title">Новий запис</string>
+    <string name="whats_new_hint">Текст публікації</string>
+    <string name="send_item">Надіслати</string>
+    <string name="posting_error">При надсиланні запису сталася помилка. Повторіть спробу пізніше.</string>
+    <string name="posting_access_denied">Ви не маєте права публікувати запис на цій стіні.</string>
+    <string name="posted_successfully">Запись опублікована.</string>
+
+    <string name="video_err_decode">Сталася помилка, пов\'язана з підключенням до сервера. Перевірте з\'єднання і повторіть спробу або відтворити відео у сторонньому плеєрі.</string>
+
+    <string name="profile_title">Профiль</string>
+    <string name="community_title">Спільнота</string>
+    <string name="owner_wall_tab">Стіна</string>
+    <string name="info_tab">Інформація</string>
+
+    <string name="profile_info_contacts">Контактна інформація</string>
+    <string name="profile_telegram">Telegram</string>
+    <string name="profile_info_education">Освіта</string>
+    <string name="profile_school">Школа</string>
+    <string name="profile_info_personal">Особиста інформація</string>
+    <string name="profile_occupation">Діяльність</string>
+    <string name="profile_interests">Інтереси</string>
+    <string name="profile_music">Улюблена музика</string>
+    <string name="profile_movies">Улюблені фільми</string>
+    <string name="profile_tv">Улюблені телешоу</string>
+    <string name="profile_games">Улюблені ігри</string>
+    <string name="profile_books">Улюблені книги</string>
+    <string name="profile_quotations">Улюблені цитати</string>
+    <string name="profile_about">Про себе</string>
+
+    <string name="group_descr">Опис</string>
+    <string name="group_site">Веб-сайт</string>
+    <string name="privacy_link">Приватність</string>
+    <string name="rules_link">Правила</string>
+
+    <string name="pref_about_instance">Про iнстанцiю</string>
+    <string name="server_address">Сервер:</string>
+    <string name="connection_type">Тип з\'єднання:</string>
+    <string name="secured_connection">"Захищене (HTTPS)"</string>
+    <string name="default_connection">Звичайне (HTTP)</string>
+    <string name="instance_version">Версiя iнстанцiї:</string>
+    <string name="instance_statistics">Статистика:</string>
+    <string name="instance_users_count">%d користувачів</string>
+    <string name="instance_online_users_count">%d в мережі</string>
+    <string name="instance_active_users_count">%d активних</string>
+    <string name="instance_groups_count">%d груп</string>
+    <string name="instance_wall_posts_count">%d записів</string>
+    <string name="instance_admins_count">%d адмін-ів</string>
+    <string name="instance_links">Посилання:</string>
+    <string name="connection_error">Помилка пiдключення</string>
+    <string name="comments_label">Коментарі</string>
+    <string name="post_title">Запис</string>
+    <string name="reply_btn">Відповісти</string>
+    <string name="video_player">Відеозапис</string>
+    <string name="send_msg_btn">Повідомлення</string>
+    <string name="profile_status">Статус</string>
+
+    <string name="ovk_warning_title">Попередження</string>
+    <string name="ovk_warning"><![CDATA[Ви запустили вільний клієнт OpenVK Legacy, який працює ТІЛЬКИ з інстанціями <a href="https://github.com/openvk/openvk">OpenVK</a> - мережі з відкритим вихідним кодом, несумісною з ВКонтакте.<br><br>Будь ласка, авторизуйтеся ТІЛЬКИ до зареєстрованого облікового запису OpenVK в одній з існуючих інстанцій.]]></string>
+    <string name="dont_show_warn">Більше не показувати</string>
+
+    <string name="photo_title">Фотографія</string>
+    <string name="save">Зберегти</string>
+    <string name="download">Скачать</string>
+    <string name="copy_link">Копіювати посилання</string>
+    <string name="photo_save_ok">Фотографія збережена в пам\'ять пристрою</string>
+
+    <string name="global_search_hint">Глобальний пошук</string>
+
+    <string name="friends_tab">Друзі</string>
+    <string name="friend_requests_tab">Заявки</string>
+
+    <string name="add_friend_button">Додати</string>
+    <string name="retry_dialog_btn">Повтор</string>
+
+    <string name="people_section">Люди (%d)</string>
+    <string name="communities_section">Спільноти (%d)</string>
+</resources>

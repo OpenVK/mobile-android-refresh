@@ -101,8 +101,10 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
     }
 
     public void setFriendsCount(int count) {
-        ((Button) header.findViewById(R.id.show_friends_btn))
-                .setText(String.format(getResources().getStringArray(R.array.friends_count)[2], count));
+        if(view != null) {
+            ((Button) header.findViewById(R.id.show_friends_btn))
+                    .setText(String.format(getResources().getStringArray(R.array.friends_count)[2], count));
+        }
     }
 
     // Setting ViewPagers with embedded fragments: WallFragment and AboutFragment

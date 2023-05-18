@@ -24,8 +24,9 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/ApplicationTheme.SplashTheme"
-        tools:targetApi="m"
-        android:requestLegacyExternalStorage="true">
+        tools:targetApi="tiramisu"
+        android:requestLegacyExternalStorage="true"
+        android:localeConfig="@xml/locales">
         <receiver android:name=".longpoll_api.receivers.LongPollReceiver"
             android:exported="true"
             android:permission="GET_LONGPOLL_NOTIFICATIONS">
