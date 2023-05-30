@@ -211,7 +211,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                 .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openWebAddress(String.format("http://%s/about",
+                openWebAddress(String.format("http://%s/terms",
                         instance_prefs.getString("server", "")));
             }
         });
@@ -239,8 +239,6 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
             OvkAPIWrapper ovk_api = ((AppActivity) requireActivity()).ovk_api;
             ovk_api.checkHTTPS();
-            ovk.getVersion(ovk_api);
-            ovk.aboutInstance(ovk_api);
         }
     }
 

@@ -63,7 +63,8 @@ public class MainSettingsActivity extends MonetCompatActivity {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
+        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
+                getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.intent_view);
@@ -148,7 +149,8 @@ public class MainSettingsActivity extends MonetCompatActivity {
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("settings")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
-        if(selectedFragment == null) selectedFragment = getSupportFragmentManager().findFragmentByTag("settings");
+        if(selectedFragment == null) selectedFragment = getSupportFragmentManager()
+                .findFragmentByTag("settings");
         switch (tag) {
             case "settings":
                 ft.hide(selectedFragment);

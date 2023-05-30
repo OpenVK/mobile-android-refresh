@@ -74,6 +74,7 @@ import uk.openvk.android.refresh.api.Groups;
 import uk.openvk.android.refresh.api.Likes;
 import uk.openvk.android.refresh.api.Messages;
 import uk.openvk.android.refresh.api.Newsfeed;
+import uk.openvk.android.refresh.api.Ovk;
 import uk.openvk.android.refresh.api.Users;
 import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
@@ -834,6 +835,9 @@ public class AppActivity extends MonetCompatActivity {
                 mainSettingsFragment.getInstanceInfo("stats", data.getString("response"));
             } else if (message == HandlerMessages.OVKAPI_OVK_CHECK_HTTP || message == HandlerMessages.OVKAPI_OVK_CHECK_HTTPS) {
                 mainSettingsFragment.getInstanceInfo("checkHTTP", data.getString("response"));
+                Ovk ovk = new Ovk();
+                ovk.getVersion(ovk_api);
+                ovk.aboutInstance(ovk_api);
             } else if (message == HandlerMessages.OVKAPI_OVK_VERSION) {
                 mainSettingsFragment.getInstanceInfo("instanceVersion", data.getString("response"));
             } else if(message == HandlerMessages.DLM_CONVERSATIONS_AVATARS) {

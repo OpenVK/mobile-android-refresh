@@ -1219,6 +1219,8 @@ public class OvkAPIWrapper {
                     } else if(response_code == 301) {
                         sendMessage(HandlerMessages.OVKAPI_OVK_CHECK_HTTPS, response_body);
                     }
+                    httpClient = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
+                            .writeTimeout(15, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
                 } catch (SocketTimeoutException e) {
                     if(logging_enabled) Log.e("OpenVK API", String.format("Connection error: %s",
                             e.getMessage()));
