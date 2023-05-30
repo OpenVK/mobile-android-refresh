@@ -236,11 +236,11 @@ public class NewPostActivity extends MonetCompatActivity {
 
     private void receiveState(int message, Bundle data) {
         try {
-            if(message == HandlerMessages.WALL_POST) {
+            if(message == HandlerMessages.OVKAPI_WALL_POST) {
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.posted_successfully), Toast.LENGTH_LONG).show();
                 finish();
-            } else if(message == HandlerMessages.ACCESS_DENIED){
+            } else if(message == HandlerMessages.OVKAPI_ACCESS_DENIED){
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.posting_access_denied),
                         Toast.LENGTH_LONG).show();

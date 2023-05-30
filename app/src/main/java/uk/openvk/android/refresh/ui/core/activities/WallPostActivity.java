@@ -125,13 +125,13 @@ public class WallPostActivity extends MonetCompatActivity {
     }
 
     private void receiveState(int message, Bundle data) {
-        if(message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
+        if(message == HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO) {
             account.parse(data.getString("response"), ovk_api);
             setBottomPanel();
-        } else if (message == HandlerMessages.WALL_ALL_COMMENTS) {
+        } else if (message == HandlerMessages.OVKAPI_WALL_ALL_COMMENTS) {
             comments = wall.parseComments(this, downloadManager, data.getString("response"));
             createCommentsAdapter(comments);
-        } else if (message == HandlerMessages.COMMENT_AVATARS) {
+        } else if (message == HandlerMessages.DLM_COMMENT_AVATARS) {
             loadCommentatorAvatars();
         }
     }

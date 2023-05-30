@@ -205,7 +205,7 @@ public class AuthActivity extends MonetCompatActivity {
     }
 
     private void receiveState(int message, Bundle data) {
-        if (message == HandlerMessages.AUTHORIZED) {
+        if (message == HandlerMessages.OVKAPI_AUTHORIZED) {
             SharedPreferences.Editor editor = instance_prefs.edit();
             Authorization auth = new Authorization(data.getString("response"));
             if(auth.getAccessToken() != null && auth.getAccessToken().length() > 0) {
@@ -217,11 +217,11 @@ public class AuthActivity extends MonetCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        } else if (message == HandlerMessages.TWOFACTOR_CODE_REQUIRED) {
+        } else if (message == HandlerMessages.OVKAPI_TWOFACTOR_CODE_REQUIRED) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, new AuthTwoFactorFragment());
             ft.commit();
-        } else if (message == HandlerMessages.INVALID_USERNAME_OR_PASSWORD) {
+        } else if (message == HandlerMessages.OVKAPI_INVALID_USERNAME_OR_PASSWORD) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
@@ -257,7 +257,7 @@ public class AuthActivity extends MonetCompatActivity {
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
-        } else if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
+        } else if(message == HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
@@ -298,7 +298,7 @@ public class AuthActivity extends MonetCompatActivity {
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
-        } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
+        } else if(message == HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
@@ -334,7 +334,7 @@ public class AuthActivity extends MonetCompatActivity {
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
-        } else if(message == HandlerMessages.UNKNOWN_ERROR) {
+        } else if(message == HandlerMessages.OVKAPI_UNKNOWN_ERROR) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);

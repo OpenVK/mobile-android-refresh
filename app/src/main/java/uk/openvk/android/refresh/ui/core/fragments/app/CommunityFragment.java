@@ -204,17 +204,17 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
-            if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
+            if(message == HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_no_internet);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))
                         .setText(R.string.error_subtitle);
-            } else if(message == HandlerMessages.INTERNAL_ERROR || message == HandlerMessages.UNKNOWN_ERROR) {
+            } else if(message == HandlerMessages.OVKAPI_INTERNAL_ERROR || message == HandlerMessages.OVKAPI_UNKNOWN_ERROR) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_instance_failure);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle)).
                         setText(R.string.error_subtitle_instance);
-            } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
+            } else if(message == HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_instance);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))

@@ -166,7 +166,7 @@ public class GroupIntentActivity extends MonetCompatActivity {
 
     private void receiveState(int message, Bundle data) {
         try {
-            if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
+            if (message == HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO) {
                 if (args.startsWith("club")) {
                     try {
                         groups.getGroupByID(ovk_api, Integer.parseInt(args.substring(4)));
@@ -179,36 +179,36 @@ public class GroupIntentActivity extends MonetCompatActivity {
                 communityFragment.header.hideSendMessageButton();
                 communityFragment.header.setCountersVisibility(PublicPageCounters.FRIENDS, false);
                 communityFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, true);
-            } else if (message == HandlerMessages.GROUPS_GET) {
+            } else if (message == HandlerMessages.OVKAPI_GROUPS_GET) {
                 groups.parseSearch(data.getString("response"));
                 group = groups.getList().get(0);
                 communityFragment.setData(group, ovk_api);
                 group.downloadAvatar(downloadManager, "high");
                 wall.get(ovk_api, -group.id, 50);
-            } else if (message == HandlerMessages.GROUPS_GET_BY_ID) {
+            } else if (message == HandlerMessages.OVKAPI_GROUPS_GET_BY_ID) {
                 groups.parse(data.getString("response"));
                 group = groups.getList().get(0);
                 communityFragment.setData(group, ovk_api);
                 group.downloadAvatar(downloadManager, "high");
                 wall.get(ovk_api, -group.id, 50);
-            } else if(message == HandlerMessages.GROUPS_SEARCH) {
+            } else if(message == HandlerMessages.OVKAPI_GROUPS_SEARCH) {
                 groups.parseSearch(data.getString("response"));
                 groups.getGroups(ovk_api, groups.getList().get(0).id, 1);
-            } else if (message == HandlerMessages.WALL_GET) {
+            } else if (message == HandlerMessages.OVKAPI_WALL_GET) {
                 wall.parse(this, downloadManager, "high", data.getString("response"));
                 communityFragment.createWallAdapter(this, wall.getWallItems());
-            } else if(message == HandlerMessages.WALL_AVATARS
-                    || message == HandlerMessages.WALL_ATTACHMENTS) {
-                if(message == HandlerMessages.WALL_AVATARS) {
+            } else if(message == HandlerMessages.DLM_WALL_AVATARS
+                    || message == HandlerMessages.DLM_WALL_ATTACHMENTS) {
+                if(message == HandlerMessages.DLM_WALL_AVATARS) {
                     communityFragment.wallAdapter.setAvatarLoadState(true);
                 } else {
                     communityFragment.wallAdapter.setPhotoLoadState(true);
                 }
-            } else if(message == HandlerMessages.GROUP_AVATARS) {
+            } else if(message == HandlerMessages.DLM_GROUP_AVATARS) {
                 communityFragment.setData(group, ovk_api);
-            } else if (message == HandlerMessages.GROUPS_JOIN) {
+            } else if (message == HandlerMessages.OVKAPI_GROUPS_JOIN) {
                 communityFragment.setJoinStatus(group, 1);
-            } else if (message == HandlerMessages.GROUPS_LEAVE) {
+            } else if (message == HandlerMessages.OVKAPI_GROUPS_LEAVE) {
                 communityFragment.setJoinStatus(group, 0);
             }
         } catch (Exception ex) {

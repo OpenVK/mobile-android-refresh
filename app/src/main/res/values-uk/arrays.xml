@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="date_differences">
+        <item>щойно</item>
+        <item>сьогодні о %s</item>
+        <item>вчора о %s</item>
+        <item>%s о %s</item>
+    </string-array>
+    
+    <string-array name="theme_colors">
+        <item>Блакитний</item>
+        <item>Червоний</item>
+        <item>Зелений</item>
+        <item>Фіолетовий</item>
+        <item>Помаранчевий</item>
+        <item>Океанічний</item>
+        <item>Бірюзовий</item>
+        <item>ВКонтакте 5.x</item>
+        <item>У відтінках сірого</item>
+        <item>Monet (експериментальний)</item>
+    </string-array>
+
+    <string-array name="avatars_shape">
+        <item>Кругла</item>
+        <item>Заокруглена (32px)</item>
+        <item>Заокруглена (16px)</item>
+        <item>Прямокутна</item>
+    </string-array>
+
+    <string-array name="fonts">
+        <item>Системний</item>
+        <item>Inter</item>
+        <item>Open Sans</item>
+        <item>Raleway</item>
+        <item>Roboto</item>
+        <item>Rubik</item>
+    </string-array>
+
+    <string-array name="ui_languages" translatable="false">
+        <item>System</item>
+        <item>English</item>
+        <item>Русский</item>
+        <item>Українська</item>
+    </string-array>
+
+    <string-array name="video_player">
+        <item>Вбудований (libVLC)</item>
+        <item>Сторонній</item>
+    </string-array>
+
+    <string-array name="members_count">
+        <item>%s учасник</item>
+        <item>%s учасника</item>
+        <item>%s учасників</item>
+    </string-array>
+
+    <string-array name="friends_count">
+        <item>%s друг</item>
+        <item>%s друга</item>
+        <item>%s друзів</item>
+    </string-array>
+</resources>

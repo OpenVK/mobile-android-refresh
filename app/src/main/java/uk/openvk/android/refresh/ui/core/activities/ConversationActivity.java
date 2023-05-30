@@ -252,7 +252,7 @@ public class ConversationActivity extends MonetCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void receiveState(int message, Bundle data) {
-        if (message == HandlerMessages.MESSAGES_GET_HISTORY) {
+        if (message == HandlerMessages.OVKAPI_MESSAGES_GET_HISTORY) {
             messagesView = findViewById(R.id.messages_view);
             history = conversation.parseHistory(this, data.getString("response"));
             conversation_adapter = new MessagesAdapter(this, history, peer_id);
@@ -261,12 +261,12 @@ public class ConversationActivity extends MonetCompatActivity {
             llm.setStackFromEnd(true);
             messagesView.setLayoutManager(llm);
             messagesView.setAdapter(conversation_adapter);
-        } else if (message == HandlerMessages.CHAT_DISABLED) {
+        } else if (message == HandlerMessages.OVKAPI_CHAT_DISABLED) {
             last_sended_message.sending = false;
             last_sended_message.isError = true;
             history.set(history.size() - 1, last_sended_message);
             conversation_adapter.notifyDataSetChanged();
-        } else if(message == HandlerMessages.MESSAGES_SEND) {
+        } else if(message == HandlerMessages.OVKAPI_MESSAGES_SEND) {
             last_sended_message.sending = false;
             last_sended_message.getSendedId(data.getString("response"));
             history.set(history.size() - 1, last_sended_message);

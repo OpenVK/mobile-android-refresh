@@ -251,34 +251,34 @@ public class DownloadManager {
                 Log.v("DownloadManager", "Downloaded!");
                 switch (where) {
                     case "account_avatar":
-                        sendMessage(HandlerMessages.ACCOUNT_AVATAR, where);
+                        sendMessage(HandlerMessages.DLM_ACCOUNT_AVATAR, where);
                         break;
                     case "profile_avatars":
-                        sendMessage(HandlerMessages.PROFILE_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_PROFILE_AVATARS, where);
                         break;
                     case "newsfeed_avatars":
-                        sendMessage(HandlerMessages.NEWSFEED_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_NEWSFEED_AVATARS, where);
                         break;
                     case "group_avatars":
-                        sendMessage(HandlerMessages.GROUP_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_GROUP_AVATARS, where);
                         break;
                     case "newsfeed_photo_attachments":
-                        sendMessage(HandlerMessages.NEWSFEED_ATTACHMENTS, where);
+                        sendMessage(HandlerMessages.DLM_NEWSFEED_ATTACHMENTS, where);
                         break;
                     case "wall_photo_attachments":
-                        sendMessage(HandlerMessages.WALL_ATTACHMENTS, where);
+                        sendMessage(HandlerMessages.DLM_WALL_ATTACHMENTS, where);
                         break;
                     case "wall_avatars":
-                        sendMessage(HandlerMessages.WALL_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_WALL_AVATARS, where);
                         break;
                     case "friend_avatars":
-                        sendMessage(HandlerMessages.FRIEND_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_FRIEND_AVATARS, where);
                         break;
                     case "comment_avatars":
-                        sendMessage(HandlerMessages.COMMENT_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_COMMENT_AVATARS, where);
                         break;
                     case "conversations_avatars":
-                        sendMessage(HandlerMessages.CONVERSATIONS_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_CONVERSATIONS_AVATARS, where);
                         break;
                 }
             }
@@ -365,34 +365,34 @@ public class DownloadManager {
                 Log.v("DownloadManager", String.format("Downloaded!"));
                 switch (where) {
                     case "account_avatar":
-                        sendMessage(HandlerMessages.ACCOUNT_AVATAR, where);
+                        sendMessage(HandlerMessages.DLM_ACCOUNT_AVATAR, where);
                         break;
                     case "profile_avatars":
-                        sendMessage(HandlerMessages.PROFILE_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_PROFILE_AVATARS, where);
                         break;
                     case "newsfeed_avatars":
-                        sendMessage(HandlerMessages.NEWSFEED_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_NEWSFEED_AVATARS, where);
                         break;
                     case "newsfeed_photo_attachments":
-                        sendMessage(HandlerMessages.NEWSFEED_ATTACHMENTS, where);
+                        sendMessage(HandlerMessages.DLM_NEWSFEED_ATTACHMENTS, where);
                         break;
                     case "group_avatars":
-                        sendMessage(HandlerMessages.GROUP_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_GROUP_AVATARS, where);
                         break;
                     case "wall_photo_attachments":
-                        sendMessage(HandlerMessages.WALL_ATTACHMENTS, where);
+                        sendMessage(HandlerMessages.DLM_WALL_ATTACHMENTS, where);
                         break;
                     case "wall_avatars":
-                        sendMessage(HandlerMessages.WALL_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_WALL_AVATARS, where);
                         break;
                     case "friend_avatars":
-                        sendMessage(HandlerMessages.FRIEND_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_FRIEND_AVATARS, where);
                         break;
                     case "comment_avatars":
-                        sendMessage(HandlerMessages.COMMENT_AVATARS, where);
+                        sendMessage(HandlerMessages.DLM_COMMENT_AVATARS, where);
                         break;
                     case "original_photos":
-                        sendMessage(HandlerMessages.ORIGINAL_PHOTO, where);
+                        sendMessage(HandlerMessages.DLM_ORIGINAL_PHOTO, where);
                         break;
                 }
             }

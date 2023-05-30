@@ -152,10 +152,10 @@ public class QuickSearchActivity extends MonetCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void receiveState(int message, Bundle data) {
-        if(message == HandlerMessages.USERS_SEARCH) {
+        if(message == HandlerMessages.OVKAPI_USERS_SEARCH) {
             users.parseSearch(data.getString("response"));
             handler.sendEmptyMessage(UiMessages.UPTIME_QUICK_SEARCH);
-        } else if(message == HandlerMessages.GROUPS_SEARCH) {
+        } else if(message == HandlerMessages.OVKAPI_GROUPS_SEARCH) {
             groups.parseSearch(data.getString("response"));
             handler.sendEmptyMessage(UiMessages.UPTIME_QUICK_SEARCH);
         } else if(message == UiMessages.UPTIME_QUICK_SEARCH) {

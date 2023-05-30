@@ -173,7 +173,7 @@ public class ProfileIntentActivity extends MonetCompatActivity {
 
     private void receiveState(int message, Bundle data) {
         try {
-            if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
+            if (message == HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO) {
                 if (args.startsWith("id")) {
                     account.parse(data.getString("response"), ovk_api);
                     try {
@@ -186,29 +186,30 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 }
                 profileFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, false);
                 profileFragment.header.setCountersVisibility(PublicPageCounters.FRIENDS, true);
-            } else if (message == HandlerMessages.USERS_GET) {
+            } else if (message == HandlerMessages.OVKAPI_USERS_GET) {
                 users.parse(data.getString("response"));
                 user = users.getList().get(0);
                 profileFragment.setData(user, friends, account, ovk_api);
                 user.downloadAvatar(downloadManager, "high", "profile_avatars");
                 wall.get(ovk_api, user.id, 50);
                 friends.get(ovk_api, user.id, 25, "profile_counter");
-            } else if (message == HandlerMessages.FRIENDS_GET_ALT) {
+            } else if (message == HandlerMessages.OVKAPI_FRIENDS_GET_ALT) {
                 friends.parse(data.getString("response"), downloadManager,
                         false, true);
                 profileFragment.setFriendsCount(friends.count);
-            } else if(message == HandlerMessages.USERS_SEARCH) {
+            } else if(message == HandlerMessages.OVKAPI_USERS_SEARCH) {
                 users.parseSearch(data.getString("response"));
                 users.getUser(ovk_api, users.getList().get(0).id);
-            } else if (message == HandlerMessages.WALL_GET) {
+            } else if (message == HandlerMessages.OVKAPI_WALL_GET) {
                 wall.parse(this, downloadManager, "high", data.getString("response"));
                 profileFragment.createWallAdapter(this, wall.getWallItems());
-            } else if(message == HandlerMessages.WALL_AVATARS || message == HandlerMessages.WALL_ATTACHMENTS) {
+            } else if(message == HandlerMessages.DLM_WALL_AVATARS
+                    || message == HandlerMessages.DLM_WALL_ATTACHMENTS) {
                 if (profileFragment.getWallAdapter() == null) {
                     profileFragment.createWallAdapter(this, wall.getWallItems());
                 }
                 try {
-                    if (message == HandlerMessages.WALL_AVATARS) {
+                    if (message == HandlerMessages.DLM_WALL_AVATARS) {
                         profileFragment.getWallAdapter().setAvatarLoadState(true);
                     } else {
                         profileFragment.getWallAdapter().setPhotoLoadState(true);
@@ -216,19 +217,19 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 } catch (Exception ignored) {
                 }
                 profileFragment.refreshWallAdapter();
-            } else if(message == HandlerMessages.FRIENDS_ADD) {
+            } else if(message == HandlerMessages.OVKAPI_FRIENDS_ADD) {
                 JSONObject response = new JSONParser().parseJSON(data.getString("response"));
                 int status = response.getInt("response");
                 user.friends_status = status;
                 profileFragment.setFriendStatus(account.user, user.friends_status);
-            } else if(message == HandlerMessages.FRIENDS_DELETE) {
+            } else if(message == HandlerMessages.OVKAPI_FRIENDS_DELETE) {
                 JSONObject response = new JSONParser().parseJSON(data.getString("response"));
                 int status = response.getInt("response");
                 if(status == 1) {
                     user.friends_status = 0;
                 }
                 profileFragment.setFriendStatus(account.user, user.friends_status);
-            } else if(message == HandlerMessages.PROFILE_AVATARS) {
+            } else if(message == HandlerMessages.DLM_PROFILE_AVATARS) {
                 profileFragment.setData(user, friends, account, ovk_api);
             }
         } catch (Exception ex) {

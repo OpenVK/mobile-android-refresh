@@ -666,13 +666,13 @@ public class AppActivity extends MonetCompatActivity {
     private void receiveState(int message, Bundle data) {
         // Handling OpenVK API and UI messages
         try {
-            if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
+            if (message == HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO) {
                 account.parse(data.getString("response"), ovk_api);
                 newsfeed.get(ovk_api, 25);
                 users.getAccountUser(ovk_api, account.id);
                 messages.getLongPollServer(ovk_api);
                 messages.getConversations(ovk_api);
-            } else if (message == HandlerMessages.ACCOUNT_COUNTERS) {
+            } else if (message == HandlerMessages.OVKAPI_ACCOUNT_COUNTERS) {
                 account.parseCounters(data.getString("response"));
                 BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
                 int accentColor;
@@ -701,7 +701,7 @@ public class AppActivity extends MonetCompatActivity {
                     b_navView.getOrCreateBadge(R.id.messages)
                             .setBackgroundColor(accentColor);
                 }
-            } else if (message == HandlerMessages.NEWSFEED_GET) {
+            } else if (message == HandlerMessages.OVKAPI_NEWSFEED_GET) {
                 newsfeed.parse(this, downloadManager, data.getString("response"),
                         "high", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
@@ -710,23 +710,23 @@ public class AppActivity extends MonetCompatActivity {
                     findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
                 }
                 newsfeedFragment.setScrollingPositions(this, true);
-            } else if (message == HandlerMessages.NEWSFEED_GET_GLOBAL) {
+            } else if (message == HandlerMessages.OVKAPI_NEWSFEED_GET_GLOBAL) {
                 newsfeed.parse(this, downloadManager, data.getString("response"),
                         "high", true);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.setScrollingPositions(this, true);
                 newsfeedFragment.disableUpdateState();
-            } else if (message == HandlerMessages.NEWSFEED_GET_MORE) {
+            } else if (message == HandlerMessages.OVKAPI_NEWSFEED_GET_MORE) {
                 newsfeed.parse(this, downloadManager, data.getString("response"),
                         global_prefs.getString("photos_quality", ""), false);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.setScrollingPositions(this, true);
-            } else if (message == HandlerMessages.NEWSFEED_GET_MORE_GLOBAL) {
+            } else if (message == HandlerMessages.OVKAPI_NEWSFEED_GET_MORE_GLOBAL) {
                 newsfeed.parse(this, downloadManager, data.getString("response"),
                         global_prefs.getString("photos_quality", ""), false);
                 newsfeedFragment.createAdapter(this, newsfeed.getWallPosts());
                 newsfeedFragment.setScrollingPositions(this, true);
-            } else if(message == HandlerMessages.LIKES_ADD) {
+            } else if(message == HandlerMessages.OVKAPI_LIKES_ADD) {
                 likes.parse(data.getString("response"));
                 if (global_prefs.getString("current_screen", "").equals("newsfeed")) {
                     newsfeedFragment.select(likes.position, "likes", 1);
@@ -734,14 +734,14 @@ public class AppActivity extends MonetCompatActivity {
                     global_prefs.getString("current_screen", "");
                     //((WallLayout) profileLayout.findViewById(R.id.wall_layout)).select(likes.position, "likes", 1);
                 }
-            } else if(message == HandlerMessages.LIKES_DELETE) {
+            } else if(message == HandlerMessages.OVKAPI_LIKES_DELETE) {
                 likes.parse(data.getString("response"));
                 if (selectedFragment == newsfeedFragment) {
                     newsfeedFragment.select(likes.position, "likes", 0);
                 } else if (selectedFragment == profileFragment) {
                     newsfeedFragment.select(likes.position, "likes", 0);
                 }
-            } else if (message == HandlerMessages.USERS_GET_ALT) {
+            } else if (message == HandlerMessages.OVKAPI_USERS_GET_ALT) {
                 users.parse(data.getString("response"));
                 account.user = users.getList().get(0);
                 account.user.downloadAvatar(downloadManager, "high", "account_avatar");
@@ -762,12 +762,12 @@ public class AppActivity extends MonetCompatActivity {
                             .setVisibility(View.GONE);
                 }
                 friends.get(ovk_api, account.user.id, 25, "profile_counter");
-            } else if(message == HandlerMessages.MESSAGES_CONVERSATIONS) {
+            } else if(message == HandlerMessages.OVKAPI_MESSAGES_CONVERSATIONS) {
                 conversations = messages.parseConversationsList(data.getString("response"),
                         downloadManager);
                 messagesFragment.createAdapter(this, conversations, account);
                 messagesFragment.disableUpdateState();
-            } else if (message == HandlerMessages.MESSAGES_GET_LONGPOLL_SERVER) {
+            } else if (message == HandlerMessages.OVKAPI_MESSAGES_GET_LONGPOLL_SERVER) {
                 longPollServer = messages.parseLongPollServer(data.getString("response"));
                 AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 longPollIntent = new Intent(this, LongPollService.class);
@@ -776,7 +776,7 @@ public class AppActivity extends MonetCompatActivity {
                     pendingIntent = PendingIntent.getService(this, 0, longPollIntent,
                             PendingIntent.FLAG_MUTABLE);
                 } else {
-                    pendingIntent = PendingIntent.getService(this, 0, longPollIntent, 0);
+                    pendingIntent = PendingIntent.getService(this, 0, longPollIntent, PendingIntent.FLAG_IMMUTABLE);
                 }
                 longPollIntent.setPackage("uk.openvk.android.refresh.longpoll_api");
                 longPollIntent.putExtra("access_token", instance_prefs.getString("access_token", ""));
@@ -793,11 +793,11 @@ public class AppActivity extends MonetCompatActivity {
                 // Wake up service
                 mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                         System.currentTimeMillis(), 60 * 1000, pendingIntent);
-            } else if (message == HandlerMessages.FRIENDS_GET_ALT) {
+            } else if (message == HandlerMessages.OVKAPI_FRIENDS_GET_ALT) {
                 friends.parse(data.getString("response"), downloadManager, false,
                         true);
                 profileFragment.setFriendsCount(friends.count);
-            } else if (message == HandlerMessages.FRIENDS_GET) {
+            } else if (message == HandlerMessages.OVKAPI_FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager, true,
                         true);
                 ArrayList<Friend> friendsList = friends.getFriends();
@@ -805,7 +805,7 @@ public class AppActivity extends MonetCompatActivity {
                 friendsFragment.disableUpdateState();
                 friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
                 friends.getRequests(ovk_api);
-            } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
+            } else if (message == HandlerMessages.OVKAPI_FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager, true,
                         false);
@@ -813,38 +813,38 @@ public class AppActivity extends MonetCompatActivity {
                 friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.setScrollingPositions(this, old_friends_size !=
                         friends.getFriends().size());
-            } else if (message == HandlerMessages.FRIENDS_REQUESTS) {
+            } else if (message == HandlerMessages.OVKAPI_FRIENDS_REQUESTS) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parseRequests(data.getString("response"), downloadManager, true);
                 ArrayList<Friend> friendsList = friends.requests;
                 friendsFragment.createRequestsAdapter(this, friendsList);
                 friendsFragment.setScrollingPositions(this, old_friends_size !=
                         friends.getFriends().size());
-            } else if (message == HandlerMessages.GROUPS_GET) {
+            } else if (message == HandlerMessages.OVKAPI_GROUPS_GET) {
                 groups.parse(data.getString("response"), downloadManager,
                         global_prefs.getString("photos_quality", ""), true, true);
                 ArrayList<Group> groupsList = groups.getList();
                 if (selectedFragment == groupsFragment) {
                     groupsFragment.createAdapter(this, groups.getList(), "groups_list");
                 }
-            } else if (message == HandlerMessages.WALL_GET) {
+            } else if (message == HandlerMessages.OVKAPI_WALL_GET) {
                 wall.parse(this, downloadManager, "high", data.getString("response"));
                 profileFragment.createWallAdapter(this, wall.getWallItems());
-            } else if (message == HandlerMessages.OVK_ABOUTINSTANCE) {
+            } else if (message == HandlerMessages.OVKAPI_OVK_ABOUTINSTANCE) {
                 mainSettingsFragment.getInstanceInfo("stats", data.getString("response"));
-            } else if (message == HandlerMessages.OVK_CHECK_HTTP || message == HandlerMessages.OVK_CHECK_HTTPS) {
+            } else if (message == HandlerMessages.OVKAPI_OVK_CHECK_HTTP || message == HandlerMessages.OVKAPI_OVK_CHECK_HTTPS) {
                 mainSettingsFragment.getInstanceInfo("checkHTTP", data.getString("response"));
-            } else if (message == HandlerMessages.OVK_VERSION) {
+            } else if (message == HandlerMessages.OVKAPI_OVK_VERSION) {
                 mainSettingsFragment.getInstanceInfo("instanceVersion", data.getString("response"));
-            } else if(message == HandlerMessages.CONVERSATIONS_AVATARS) {
+            } else if(message == HandlerMessages.DLM_CONVERSATIONS_AVATARS) {
                 messagesFragment.loadAvatars(conversations);
-            } else if(message == HandlerMessages.NEWSFEED_AVATARS
-                    || message == HandlerMessages.NEWSFEED_ATTACHMENTS
-                    || message == HandlerMessages.WALL_AVATARS
-                    || message == HandlerMessages.WALL_ATTACHMENTS) {
+            } else if(message == HandlerMessages.DLM_NEWSFEED_AVATARS
+                    || message == HandlerMessages.DLM_NEWSFEED_ATTACHMENTS
+                    || message == HandlerMessages.DLM_WALL_AVATARS
+                    || message == HandlerMessages.DLM_WALL_ATTACHMENTS) {
                 if(selectedFragment == newsfeedFragment) {
                     if(newsfeedFragment.newsfeedAdapter != null) {
-                        if (message == HandlerMessages.NEWSFEED_AVATARS) {
+                        if (message == HandlerMessages.DLM_NEWSFEED_AVATARS) {
                             newsfeedFragment.newsfeedAdapter.setAvatarLoadState(true);
                         } else {
                             newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
@@ -856,25 +856,25 @@ public class AppActivity extends MonetCompatActivity {
                     if(profileFragment.getWallAdapter() == null) {
                         profileFragment.createWallAdapter(this, wall.getWallItems());
                     }
-                    if (message == HandlerMessages.WALL_AVATARS) {
+                    if (message == HandlerMessages.DLM_WALL_AVATARS) {
                         profileFragment.getWallAdapter().setAvatarLoadState(true);
                     } else {
                         profileFragment.getWallAdapter().setPhotoLoadState(true);
                     }
                     profileFragment.refreshWallAdapter();
                 }
-            } else if(message == HandlerMessages.ACCOUNT_AVATAR) {
+            } else if(message == HandlerMessages.DLM_ACCOUNT_AVATAR) {
                 Glide.with(this).load(
                                 String.format("%s/photos_cache/account_avatar/avatar_%s",
                                         getCacheDir().getAbsolutePath(), account.user.id))
                         .into((ImageView) ((NavigationView) findViewById(R.id.nav_view))
                                 .getHeaderView(0).findViewById(R.id.profile_avatar));
-            } else if (message == HandlerMessages.FRIEND_AVATARS) {
+            } else if (message == HandlerMessages.DLM_FRIEND_AVATARS) {
                 friendsFragment.refreshAdapter();
-            } else if (message == HandlerMessages.FRIENDS_ADD) {
+            } else if (message == HandlerMessages.OVKAPI_FRIENDS_ADD) {
                 friends.requests.remove(friendsFragment.requests_cursor_index);
                 friendsFragment.createRequestsAdapter(this, friends.requests);
-            } else if(message == HandlerMessages.FRIENDS_DELETE) {
+            } else if(message == HandlerMessages.OVKAPI_FRIENDS_DELETE) {
                 JSONObject response = new JSONParser().parseJSON(data.getString("response"));
                 int status = response.getInt("response");
                 if(status == 1) {

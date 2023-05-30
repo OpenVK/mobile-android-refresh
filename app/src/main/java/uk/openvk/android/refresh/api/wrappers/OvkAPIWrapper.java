@@ -143,38 +143,38 @@ public class OvkAPIWrapper {
                             if (logging_enabled)
                                 Log.v("OpenVK API", String.format("Connected (%d)", response_code));
                             if (response_code == 400) {
-                                sendMessage(HandlerMessages.INVALID_USERNAME_OR_PASSWORD, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_INVALID_USERNAME_OR_PASSWORD, response_body);
                             } else if (response_code == 401) {
-                                sendMessage(HandlerMessages.TWOFACTOR_CODE_REQUIRED, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_TWOFACTOR_CODE_REQUIRED, response_body);
                             } else if (response_code == 404) {
-                                sendMessage(HandlerMessages.NOT_OPENVK_INSTANCE, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_NOT_OPENVK_INSTANCE, response_body);
                             } else if (response_code == 200) {
-                                sendMessage(HandlerMessages.AUTHORIZED, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_AUTHORIZED, response_body);
                             } else if (response_code == 502) {
-                                sendMessage(HandlerMessages.INSTANCE_UNAVAILABLE, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE, response_body);
                             } else if (response_code == 503) {
-                                sendMessage(HandlerMessages.INSTANCE_UNAVAILABLE, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE, response_body);
                             } else {
-                                sendMessage(HandlerMessages.UNKNOWN_ERROR, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, response_body);
                             }
                         }
                     } catch (ProtocolException | UnknownHostException | ConnectException e) {
                         if (logging_enabled)
                             Log.e("OpenVK API", String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION, error.description);
                     } catch (SocketTimeoutException e) {
                         if (logging_enabled)
                             Log.e("OpenVK API", String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.CONNECTION_TIMEOUT, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, error.description);
                         e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
+                        sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, "");
                     }
                 } catch (Exception ex) {
-                    sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
+                    sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, "");
                     ex.printStackTrace();
                 }
             }
@@ -212,17 +212,17 @@ public class OvkAPIWrapper {
                             if (logging_enabled)
                                 Log.v("OpenVK API", String.format("Connected (%d)", response_code));
                             if (response_code == 400) {
-                                sendMessage(HandlerMessages.INVALID_USERNAME_OR_PASSWORD, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_INVALID_USERNAME_OR_PASSWORD, response_body);
                             } else if (response_code == 401) {
-                                sendMessage(HandlerMessages.TWOFACTOR_CODE_REQUIRED, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_TWOFACTOR_CODE_REQUIRED, response_body);
                             } else if (response_code == 404) {
-                                sendMessage(HandlerMessages.NOT_OPENVK_INSTANCE, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_NOT_OPENVK_INSTANCE, response_body);
                             } else if (response_code == 200) {
-                                sendMessage(HandlerMessages.AUTHORIZED, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_AUTHORIZED, response_body);
                             } else if (response_code == 503) {
-                                sendMessage(HandlerMessages.INSTANCE_UNAVAILABLE, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE, response_body);
                             } else {
-                                sendMessage(HandlerMessages.UNKNOWN_ERROR, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, response_body);
                             }
                         }
                     } catch (ProtocolException | ConnectException
@@ -231,23 +231,23 @@ public class OvkAPIWrapper {
                         if (logging_enabled)
                             Log.e("OpenVK API", String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION, error.description);
                     } catch (SocketTimeoutException e) {
                         if (logging_enabled)
                             Log.e("OpenVK API", String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.CONNECTION_TIMEOUT, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, error.description);
                     } catch (javax.net.ssl.SSLException | OutOfMemoryError e) {
                         if (logging_enabled)
                             Log.e("OpenVK API", String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.BROKEN_SSL_CONNECTION, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_BROKEN_SSL_CONNECTION, error.description);
                     } catch (Exception e) {
-                        sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
+                        sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, "");
                         e.printStackTrace();
                     }
                 } catch (Exception ex) {
-                    sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
+                    sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, "");
                     ex.printStackTrace();
                 }
             }
@@ -286,218 +286,218 @@ public class OvkAPIWrapper {
                                         response_body));
                                 switch (method) {
                                     case "Account.getProfileInfo":
-                                        sendMessage(HandlerMessages.ACCOUNT_PROFILE_INFO, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO, method,
                                                 args, response_body);
                                         break;
                                     case "Account.setOnline":
-                                        sendMessage(HandlerMessages.ACCOUNT_SET_TO_ONLINE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_SET_TO_ONLINE, method,
                                                 args, response_body);
                                         break;
                                     case "Account.setOffline":
-                                        sendMessage(HandlerMessages.ACCOUNT_SET_TO_OFFLINE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_SET_TO_OFFLINE, method,
                                                 args, response_body);
                                         break;
                                     case "Account.getCounters":
-                                        sendMessage(HandlerMessages.ACCOUNT_COUNTERS, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_COUNTERS, method,
                                                 args, response_body);
                                         break;
                                     case "Friends.get":
                                         switch (where) {
                                             case "friends_list":
-                                                sendMessage(HandlerMessages.FRIENDS_GET, method,
+                                                sendMessage(HandlerMessages.OVKAPI_FRIENDS_GET, method,
                                                         args, response_body);
                                                 break;
                                             case "profile_counter":
-                                                sendMessage(HandlerMessages.FRIENDS_GET_ALT, method,
+                                                sendMessage(HandlerMessages.OVKAPI_FRIENDS_GET_ALT, method,
                                                         args, response_body);
                                                 break;
                                             case "more_friends":
-                                                sendMessage(HandlerMessages.FRIENDS_GET_MORE, method,
+                                                sendMessage(HandlerMessages.OVKAPI_FRIENDS_GET_MORE, method,
                                                         args, response_body);
                                                 break;
                                         }
                                         break;
                                     case "Friends.add":
-                                        sendMessage(HandlerMessages.FRIENDS_ADD, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_ADD, method, args,
                                                 response_body);
                                         break;
                                     case "Friends.delete":
-                                        sendMessage(HandlerMessages.FRIENDS_DELETE, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_DELETE, method, args,
                                                 response_body);
                                         break;
                                     case "Friends.areFriends":
-                                        sendMessage(HandlerMessages.FRIENDS_CHECK, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_CHECK, method, args,
                                                 response_body);
                                         break;
                                     case "Friends.getRequests":
-                                        sendMessage(HandlerMessages.FRIENDS_REQUESTS, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_REQUESTS, method, args,
                                                 response_body);
                                         break;
                                     case "Groups.get":
                                         if (where.equals("more_groups")) {
-                                            sendMessage(HandlerMessages.GROUPS_GET_MORE, method, args,
+                                            sendMessage(HandlerMessages.OVKAPI_GROUPS_GET_MORE, method, args,
                                                     response_body);
                                         } else {
-                                            sendMessage(HandlerMessages.GROUPS_GET, method, args,
+                                            sendMessage(HandlerMessages.OVKAPI_GROUPS_GET, method, args,
                                                     response_body);
                                         }
                                         break;
                                     case "Groups.getById":
-                                        sendMessage(HandlerMessages.GROUPS_GET_BY_ID, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_GET_BY_ID, method, args,
                                                 response_body);
                                         break;
                                     case "Groups.search":
-                                        sendMessage(HandlerMessages.GROUPS_SEARCH, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_SEARCH, method,
                                                 response_body);
                                         break;
                                     case "Groups.join":
-                                        sendMessage(HandlerMessages.GROUPS_JOIN, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_JOIN, method,
                                                 response_body);
                                         break;
                                     case "Groups.leave":
-                                        sendMessage(HandlerMessages.GROUPS_LEAVE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_LEAVE, method,
                                                 response_body);
                                         break;
                                     case "Likes.add":
-                                        sendMessage(HandlerMessages.LIKES_ADD, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_ADD, method, args,
                                                 response_body);
                                         break;
                                     case "Likes.delete":
-                                        sendMessage(HandlerMessages.LIKES_DELETE, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_DELETE, method, args,
                                                 response_body);
                                         break;
                                     case "Likes.isLiked":
-                                        sendMessage(HandlerMessages.LIKES_CHECK, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_CHECK, method, args,
                                                 response_body);
                                         break;
                                     case "Messages.getById":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_BY_ID, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_BY_ID, method, args,
                                                 response_body);
                                         break;
                                     case "Messages.send":
-                                        sendMessage(HandlerMessages.MESSAGES_SEND, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_SEND, method, args,
                                                 response_body);
                                         break;
                                     case "Messages.delete":
-                                        sendMessage(HandlerMessages.MESSAGES_DELETE, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_DELETE, method, args,
                                                 response_body);
                                         break;
                                     case "Messages.restore":
-                                        sendMessage(HandlerMessages.MESSAGES_RESTORE, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_RESTORE, method, args,
                                                 response_body);
                                         break;
                                     case "Messages.getConverstaions":
-                                        sendMessage(HandlerMessages.MESSAGES_CONVERSATIONS, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_CONVERSATIONS, method, args,
                                                 response_body);
                                         break;
                                     case "Messages.getConverstaionsByID":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_CONVERSATIONS_BY_ID,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_CONVERSATIONS_BY_ID,
                                                 method, args, response_body);
                                         break;
                                     case "Messages.getHistory":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_HISTORY, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_HISTORY, method, args,
                                                 response_body);
                                         break;
                                     case "Messages.getLongPollHistory":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_LONGPOLL_HISTORY,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_LONGPOLL_HISTORY,
                                                 method, args, response_body);
                                         break;
                                     case "Messages.getLongPollServer":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_LONGPOLL_SERVER,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_LONGPOLL_SERVER,
                                                 method, args, response_body);
                                         break;
                                     case "Ovk.version":
-                                        sendMessage(HandlerMessages.OVK_VERSION, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_VERSION, method, args,
                                                 response_body);
                                         break;
                                     case "Ovk.test":
-                                        sendMessage(HandlerMessages.OVK_TEST, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_TEST, method, args,
                                                 response_body);
                                         break;
                                     case "Ovk.chickenWings":
-                                        sendMessage(HandlerMessages.OVK_CHICKEN_WINGS, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_CHICKEN_WINGS, method, args,
                                                 response_body);
                                         break;
                                     case "Ovk.aboutInstance":
-                                        sendMessage(HandlerMessages.OVK_ABOUTINSTANCE, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_ABOUTINSTANCE, method, args,
                                                 response_body);
                                         break;
                                     case "Users.getFollowers":
-                                        sendMessage(HandlerMessages.USERS_FOLLOWERS, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_USERS_FOLLOWERS, method, args,
                                                 response_body);
                                         break;
                                     case "Users.search":
-                                        sendMessage(HandlerMessages.USERS_SEARCH, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_USERS_SEARCH, method, args,
                                                 response_body);
                                         break;
                                     case "Users.get":
                                         switch (where) {
                                             case "profile":
-                                                sendMessage(HandlerMessages.USERS_GET, method, args,
+                                                sendMessage(HandlerMessages.OVKAPI_USERS_GET, method, args,
                                                         response_body);
                                                 break;
                                             case "account_user":
-                                                sendMessage(HandlerMessages.USERS_GET_ALT, method, args,
+                                                sendMessage(HandlerMessages.OVKAPI_USERS_GET_ALT, method, args,
                                                         response_body);
                                                 break;
                                             case "peers":
-                                                sendMessage(HandlerMessages.USERS_GET_ALT2, method, args,
+                                                sendMessage(HandlerMessages.OVKAPI_USERS_GET_ALT2, method, args,
                                                         response_body);
                                                 break;
                                         }
                                         break;
                                     case "Wall.get":
-                                        sendMessage(HandlerMessages.WALL_GET, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_GET, method, args,
                                                 response_body);
                                         break;
                                     case "Wall.getById":
-                                        sendMessage(HandlerMessages.WALL_GET_BY_ID, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_GET_BY_ID, method, args,
                                                 response_body);
                                         break;
                                     case "Wall.post":
-                                        sendMessage(HandlerMessages.WALL_POST, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_POST, method, args,
                                                 response_body);
                                         break;
                                     case "Wall.repost":
-                                        sendMessage(HandlerMessages.WALL_REPOST, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_REPOST, method, args,
                                                 response_body);
                                         break;
                                     case "Wall.createComment":
-                                        sendMessage(HandlerMessages.WALL_DELETE_COMMENT, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_DELETE_COMMENT, method, args,
                                                 response_body);
                                         break;
                                     case "Wall.getComment":
-                                        sendMessage(HandlerMessages.WALL_COMMENT, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_COMMENT, method, args,
                                                 response_body);
                                         break;
                                     case "Wall.getComments":
-                                        sendMessage(HandlerMessages.WALL_ALL_COMMENTS, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_ALL_COMMENTS, method, args,
                                                 response_body);
                                         break;
                                     case "Newsfeed.get":
                                         if (where.equals("more_news")) {
-                                            sendMessage(HandlerMessages.NEWSFEED_GET_MORE, method, args,
+                                            sendMessage(HandlerMessages.OVKAPI_NEWSFEED_GET_MORE, method, args,
                                                     response_body);
                                         } else {
-                                            sendMessage(HandlerMessages.NEWSFEED_GET, method, args,
+                                            sendMessage(HandlerMessages.OVKAPI_NEWSFEED_GET, method, args,
                                                     response_body);
                                         }
                                         break;
                                     case "Newsfeed.getGlobal":
                                         if (where.equals("more_news")) {
-                                            sendMessage(HandlerMessages.NEWSFEED_GET_MORE_GLOBAL,
+                                            sendMessage(HandlerMessages.OVKAPI_NEWSFEED_GET_MORE_GLOBAL,
                                                     method, args, response_body);
                                         } else {
-                                            sendMessage(HandlerMessages.NEWSFEED_GET_GLOBAL,
+                                            sendMessage(HandlerMessages.OVKAPI_NEWSFEED_GET_GLOBAL,
                                                     method, args, response_body);
                                         }
                                         break;
                                     case "Polls.addVote":
-                                        sendMessage(HandlerMessages.POLL_ADD_VOTE, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_POLL_ADD_VOTE, method, args,
                                                 response_body);
                                         break;
                                     case "Polls.deleteVote":
-                                        sendMessage(HandlerMessages.POLL_DELETE_VOTE, method, args,
+                                        sendMessage(HandlerMessages.OVKAPI_POLL_DELETE_VOTE, method, args,
                                                 response_body);
                                         break;
                                 }
@@ -508,62 +508,62 @@ public class OvkAPIWrapper {
                                         String.format("Getting response from %s (%s): [%s / Error code: %d]",
                                                 server, response_code, error.description, error.code));
                                 if (error.code == 3) {
-                                    sendMessage(HandlerMessages.METHOD_NOT_FOUND, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_METHOD_NOT_FOUND, method, args,
                                             error.description);
                                 } else if (error.code == 5) {
-                                    sendMessage(HandlerMessages.INVALID_TOKEN, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_INVALID_TOKEN, method, args,
                                             error.description);
                                 } else if (error.code == 15) {
-                                    sendMessage(HandlerMessages.ACCESS_DENIED, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_ACCESS_DENIED, method, args,
                                             error.description);
                                 } else if (error.code == 100) {
-                                    sendMessage(HandlerMessages.INVALID_USAGE, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_INVALID_USAGE, method, args,
                                             error.description);
                                 }
                             } else if (response_code == 503) {
-                                sendMessage(HandlerMessages.INSTANCE_UNAVAILABLE,
+                                sendMessage(HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE,
                                         method, args, response_body);
                             } else if (response_code >= 500 && response_code <= 526) {
                                 if(logging_enabled) Log.e("OpenVK API",
                                         String.format("Getting response from %s (%s)",
                                                 server, response_code));
-                                sendMessage(HandlerMessages.INTERNAL_ERROR, method, "");
+                                sendMessage(HandlerMessages.OVKAPI_INTERNAL_ERROR, method, "");
                             }
                         }
                     } catch (ConnectException | ProtocolException e) {
                         if(logging_enabled) Log.e("OpenVK API",
                                 String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION, error.description);
                     } catch (SocketException e) {
                         if(Objects.requireNonNull(e.getMessage()).contains("ETIMEDOUT")) {
                             if(logging_enabled) Log.e("OpenVK API",
                                     String.format("Connection error: %s", e.getMessage()));
                             error.description = e.getMessage();
                             sendMessage(
-                                    HandlerMessages.CONNECTION_TIMEOUT, method, args, error.description);
+                                    HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, method, args, error.description);
                         }
                     } catch (SocketTimeoutException e) {
                         if(logging_enabled) Log.e("OpenVK API",
                                 String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.CONNECTION_TIMEOUT, method, args, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, method, args, error.description);
                     } catch (UnknownHostException e) {
                         if(logging_enabled) Log.e("OpenVK API",
                                 String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, method, args, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION, method, args, error.description);
                     } catch(javax.net.ssl.SSLException e) {
                         if(logging_enabled) Log.e("OpenVK API",
                                 String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.BROKEN_SSL_CONNECTION, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_BROKEN_SSL_CONNECTION, error.description);
                     } catch (OutOfMemoryError | Exception e) {
-                        sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
+                        sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, "");
                         e.printStackTrace();
                     }
                 } catch (Exception ex) {
-                    sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
+                    sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, "");
                     ex.printStackTrace();
                 }
             }
@@ -603,179 +603,179 @@ public class OvkAPIWrapper {
                                                 server, response_code, response_body));
                                 switch (method) {
                                     case "Account.getProfileInfo":
-                                        sendMessage(HandlerMessages.ACCOUNT_PROFILE_INFO, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO, method,
                                                 args, response_body);
                                         break;
                                     case "Account.setOnline":
-                                        sendMessage(HandlerMessages.ACCOUNT_SET_TO_ONLINE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_SET_TO_ONLINE, method,
                                                 args, response_body);
                                         break;
                                     case "Account.setOffline":
-                                        sendMessage(HandlerMessages.ACCOUNT_SET_TO_OFFLINE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_SET_TO_OFFLINE, method,
                                                 args, response_body);
                                         break;
                                     case "Account.getCounters":
-                                        sendMessage(HandlerMessages.ACCOUNT_COUNTERS, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_COUNTERS, method,
                                                 args, response_body);
                                         break;
                                     case "Friends.get":
-                                        sendMessage(HandlerMessages.FRIENDS_GET, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_GET, method,
                                                 args, response_body);
                                         break;
                                     case "Friends.add":
-                                        sendMessage(HandlerMessages.FRIENDS_ADD, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_ADD, method,
                                                 args, response_body);
                                         break;
                                     case "Friends.delete":
-                                        sendMessage(HandlerMessages.FRIENDS_DELETE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_DELETE, method,
                                                 args, response_body);
                                         break;
                                     case "Friends.areFriends":
-                                        sendMessage(HandlerMessages.FRIENDS_CHECK, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_CHECK, method,
                                                 args, response_body);
                                         break;
                                     case "Groups.get":
-                                        sendMessage(HandlerMessages.GROUPS_GET, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_GET, method,
                                                 args, response_body);
                                         break;
                                     case "Groups.getById":
-                                        sendMessage(HandlerMessages.GROUPS_GET_BY_ID, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_GET_BY_ID, method,
                                                 args, response_body);
                                         break;
                                     case "Groups.search":
-                                        sendMessage(HandlerMessages.GROUPS_SEARCH, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_SEARCH, method,
                                                 args, response_body);
                                         break;
                                     case "Groups.join":
-                                        sendMessage(HandlerMessages.GROUPS_JOIN, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_JOIN, method,
                                                 args, response_body);
                                         break;
                                     case "Groups.leave":
-                                        sendMessage(HandlerMessages.GROUPS_LEAVE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_LEAVE, method,
                                                 args, response_body);
                                         break;
                                     case "Friends.getRequests":
-                                        sendMessage(HandlerMessages.FRIENDS_REQUESTS, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_REQUESTS, method,
                                                 args, response_body);
                                         break;
                                     case "Likes.add":
-                                        sendMessage(HandlerMessages.LIKES_ADD, method,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_ADD, method,
                                                 args, response_body);
                                         break;
                                     case "Likes.delete":
-                                        sendMessage(HandlerMessages.LIKES_DELETE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_DELETE, method,
                                                 args, response_body);
                                         break;
                                     case "Likes.isLiked":
-                                        sendMessage(HandlerMessages.LIKES_CHECK, method,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_CHECK, method,
                                                 args, response_body);
                                         break;
                                     case "Messages.getById":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_BY_ID, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_BY_ID, method,
                                                 args, response_body);
                                         break;
                                     case "Messages.send":
-                                        sendMessage(HandlerMessages.MESSAGES_SEND, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_SEND, method,
                                                 args, response_body);
                                         break;
                                     case "Messages.delete":
-                                        sendMessage(HandlerMessages.MESSAGES_DELETE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_DELETE, method,
                                                 args, response_body);
                                         break;
                                     case "Messages.restore":
-                                        sendMessage(HandlerMessages.MESSAGES_RESTORE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_RESTORE, method,
                                                 args, response_body);
                                         break;
                                     case "Messages.getConversations":
-                                        sendMessage(HandlerMessages.MESSAGES_CONVERSATIONS, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_CONVERSATIONS, method,
                                                 args, response_body);
                                         break;
                                     case "Messages.getConverstaionsByID":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_CONVERSATIONS_BY_ID,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_CONVERSATIONS_BY_ID,
                                                 method, args, response_body);
                                         break;
                                     case "Messages.getHistory":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_HISTORY,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_HISTORY,
                                                 method, args, response_body);
                                         break;
                                     case "Messages.getLongPollHistory":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_LONGPOLL_HISTORY,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_LONGPOLL_HISTORY,
                                                 method, args, response_body);
                                         break;
                                     case "Messages.getLongPollServer":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_LONGPOLL_SERVER,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_LONGPOLL_SERVER,
                                                 method, args, response_body);
                                         break;
                                     case "Ovk.version":
-                                        sendMessage(HandlerMessages.OVK_VERSION,
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_VERSION,
                                                 method, args, response_body);
                                         break;
                                     case "Ovk.test":
-                                        sendMessage(HandlerMessages.OVK_TEST,
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_TEST,
                                                 method, args, response_body);
                                         break;
                                     case "Ovk.chickenWings":
-                                        sendMessage(HandlerMessages.OVK_CHICKEN_WINGS,
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_CHICKEN_WINGS,
                                                 method, args, response_body);
                                         break;
                                     case "Ovk.aboutInstance":
-                                        sendMessage(HandlerMessages.OVK_ABOUTINSTANCE,
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_ABOUTINSTANCE,
                                                 method, args, response_body);
                                         break;
                                     case "Users.getFollowers":
-                                        sendMessage(HandlerMessages.USERS_FOLLOWERS,
+                                        sendMessage(HandlerMessages.OVKAPI_USERS_FOLLOWERS,
                                                 method, args, response_body);
                                         break;
                                     case "Users.search":
-                                        sendMessage(HandlerMessages.USERS_SEARCH,
+                                        sendMessage(HandlerMessages.OVKAPI_USERS_SEARCH,
                                                 method, args, response_body);
                                         break;
                                     case "Users.get":
-                                        sendMessage(HandlerMessages.USERS_GET,
+                                        sendMessage(HandlerMessages.OVKAPI_USERS_GET,
                                                 method, args, response_body);
                                         break;
                                     case "Wall.get":
-                                        sendMessage(HandlerMessages.WALL_GET,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_GET,
                                                 method, args, response_body);
                                         break;
                                     case "Wall.getById":
-                                        sendMessage(HandlerMessages.WALL_GET_BY_ID,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_GET_BY_ID,
                                                 method, args, response_body);
                                         break;
                                     case "Wall.post":
-                                        sendMessage(HandlerMessages.WALL_POST,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_POST,
                                                 method, args, response_body);
                                         break;
                                     case "Wall.repost":
-                                        sendMessage(HandlerMessages.WALL_REPOST,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_REPOST,
                                                 method, args, response_body);
                                         break;
                                     case "Wall.createComment":
-                                        sendMessage(HandlerMessages.WALL_DELETE_COMMENT,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_DELETE_COMMENT,
                                                 method, args, response_body);
                                         break;
                                     case "Wall.getComment":
-                                        sendMessage(HandlerMessages.WALL_COMMENT,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_COMMENT,
                                                 method, args, response_body);
                                         break;
                                     case "Wall.getComments":
-                                        sendMessage(HandlerMessages.WALL_ALL_COMMENTS,
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_ALL_COMMENTS,
                                                 method, args, response_body);
                                         break;
                                     case "Newsfeed.get":
-                                        sendMessage(HandlerMessages.NEWSFEED_GET,
+                                        sendMessage(HandlerMessages.OVKAPI_NEWSFEED_GET,
                                                 method, args, response_body);
                                         break;
                                     case "Newsfeed.getGlobal":
-                                        sendMessage(HandlerMessages.NEWSFEED_GET_GLOBAL,
+                                        sendMessage(HandlerMessages.OVKAPI_NEWSFEED_GET_GLOBAL,
                                                 method, args, response_body);
                                         break;
                                     case "Polls.addVote":
-                                        sendMessage(HandlerMessages.POLL_ADD_VOTE,
+                                        sendMessage(HandlerMessages.OVKAPI_POLL_ADD_VOTE,
                                                 method, args, response_body);
                                         break;
                                     case "Polls.deleteVote":
-                                        sendMessage(HandlerMessages.POLL_DELETE_VOTE,
+                                        sendMessage(HandlerMessages.OVKAPI_POLL_DELETE_VOTE,
                                                 method, args, response_body);
                                         break;
                                 }
@@ -786,62 +786,62 @@ public class OvkAPIWrapper {
                                         String.format("Getting response from %s (%s): [%s / Error code: %d]",
                                                 server, response_code, error.description, error.code));
                                 if(error.code == 3) {
-                                    sendMessage(HandlerMessages.METHOD_NOT_FOUND, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_METHOD_NOT_FOUND, method, args,
                                             error.description);
                                 } else if(error.code == 5) {
-                                    sendMessage(HandlerMessages.INVALID_TOKEN, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_INVALID_TOKEN, method, args,
                                             error.description);
                                 } else if (error.code == 15) {
-                                    sendMessage(HandlerMessages.ACCESS_DENIED, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_ACCESS_DENIED, method, args,
                                             error.description);
                                 } else if(error.code == 100) {
-                                    sendMessage(HandlerMessages.INVALID_USAGE, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_INVALID_USAGE, method, args,
                                             error.description);
                                 } else if(error.code == 945) {
-                                    sendMessage(HandlerMessages.CHAT_DISABLED, method, args,
+                                    sendMessage(HandlerMessages.OVKAPI_CHAT_DISABLED, method, args,
                                             error.description);
                                 }
                             } else if (response_code == 503) {
-                                sendMessage(HandlerMessages.INSTANCE_UNAVAILABLE, method, args, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE, method, args, response_body);
                             }  else if (response_code >= 500 && response_code <= 526) {
                                 if(logging_enabled) Log.e("OpenVK API",
                                         String.format("Getting response from %s (%s)",
                                                 server, response_code));
-                                sendMessage(HandlerMessages.INTERNAL_ERROR, method, "");
+                                sendMessage(HandlerMessages.OVKAPI_INTERNAL_ERROR, method, "");
                             }
                         }
                     } catch (ConnectException | ProtocolException | UnknownHostException e) {
                         if(logging_enabled) Log.e("OpenVK API",
                                 String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, method, args,
+                        sendMessage(HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION, method, args,
                                 error.description);
                     } catch (SocketException e) {
                         if(Objects.requireNonNull(e.getMessage()).contains("ETIMEDOUT")) {
                             if(logging_enabled) Log.e("OpenVK API",
                                     String.format("Connection error: %s", e.getMessage()));
                             error.description = e.getMessage();
-                            sendMessage(HandlerMessages.CONNECTION_TIMEOUT, method, args,
+                            sendMessage(HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, method, args,
                                     error.description);
                         }
                     } catch (SocketTimeoutException e) {
                         if(logging_enabled) Log.e("OpenVK API",
                                 String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.CONNECTION_TIMEOUT, method, args,
+                        sendMessage(HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, method, args,
                                 error.description);
                     } catch(javax.net.ssl.SSLException e) {
                         if(logging_enabled) Log.e("OpenVK API",
                                 String.format("Connection error: %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.BROKEN_SSL_CONNECTION, method,
+                        sendMessage(HandlerMessages.OVKAPI_BROKEN_SSL_CONNECTION, method,
                                 args, error.description);
                     } catch (OutOfMemoryError | Exception e) {
-                        sendMessage(HandlerMessages.UNKNOWN_ERROR, method, args, "");
+                        sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, method, args, "");
                         e.printStackTrace();
                     }
                 } catch (Exception ex) {
-                    sendMessage(HandlerMessages.UNKNOWN_ERROR, method, args, "");
+                    sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, method, args, "");
                     ex.printStackTrace();
                 }
             }
@@ -879,162 +879,162 @@ public class OvkAPIWrapper {
                                         "response from %s (%s): [%s]", server, response_code, response_body));
                                 switch (method) {
                                     case "Account.getProfileInfo":
-                                        sendMessage(HandlerMessages.ACCOUNT_PROFILE_INFO, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO, method,
                                                 response_body);
                                         break;
                                     case "Account.setOnline":
-                                        sendMessage(HandlerMessages.ACCOUNT_SET_TO_ONLINE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_SET_TO_ONLINE, method,
                                                 response_body);
                                         break;
                                     case "Account.setOffline":
-                                        sendMessage(HandlerMessages.ACCOUNT_SET_TO_OFFLINE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_SET_TO_OFFLINE, method,
                                                 response_body);
                                         break;
                                     case "Account.getCounters":
-                                        sendMessage(HandlerMessages.ACCOUNT_COUNTERS, method,
+                                        sendMessage(HandlerMessages.OVKAPI_ACCOUNT_COUNTERS, method,
                                                 response_body);
                                         break;
                                     case "Friends.get":
-                                        sendMessage(HandlerMessages.FRIENDS_GET, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_GET, method,
                                                 response_body);
                                         break;
                                     case "Friends.add":
-                                        sendMessage(HandlerMessages.FRIENDS_ADD, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_ADD, method,
                                                 response_body);
                                         break;
                                     case "Friends.delete":
-                                        sendMessage(HandlerMessages.FRIENDS_DELETE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_DELETE, method,
                                                 response_body);
                                         break;
                                     case "Friends.areFriends":
-                                        sendMessage(HandlerMessages.FRIENDS_CHECK, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_CHECK, method,
                                                 response_body);
                                         break;
                                     case "Friends.getRequests":
-                                        sendMessage(HandlerMessages.FRIENDS_REQUESTS, method,
+                                        sendMessage(HandlerMessages.OVKAPI_FRIENDS_REQUESTS, method,
                                                 response_body);
                                         break;
                                     case "Groups.get":
-                                        sendMessage(HandlerMessages.GROUPS_GET, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_GET, method,
                                                 response_body);
                                         break;
                                     case "Groups.getById":
-                                        sendMessage(HandlerMessages.GROUPS_GET_BY_ID, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_GET_BY_ID, method,
                                                 response_body);
                                         break;
                                     case "Groups.search":
-                                        sendMessage(HandlerMessages.GROUPS_SEARCH, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_SEARCH, method,
                                                 response_body);
                                         break;
                                     case "Groups.join":
-                                        sendMessage(HandlerMessages.GROUPS_JOIN, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_JOIN, method,
                                                 response_body);
                                         break;
                                     case "Groups.leave":
-                                        sendMessage(HandlerMessages.GROUPS_LEAVE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_GROUPS_LEAVE, method,
                                                 response_body);
                                         break;
                                     case "Likes.add":
-                                        sendMessage(HandlerMessages.LIKES_ADD, method,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_ADD, method,
                                                 response_body);
                                         break;
                                     case "Likes.delete":
-                                        sendMessage(HandlerMessages.LIKES_DELETE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_DELETE, method,
                                                 response_body);
                                         break;
                                     case "Likes.isLiked":
-                                        sendMessage(HandlerMessages.LIKES_CHECK, method,
+                                        sendMessage(HandlerMessages.OVKAPI_LIKES_CHECK, method,
                                                 response_body);
                                         break;
                                     case "Messages.getById":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_BY_ID, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_BY_ID, method,
                                                 response_body);
                                         break;
                                     case "Messages.send":
-                                        sendMessage(HandlerMessages.MESSAGES_SEND, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_SEND, method,
                                                 response_body);
                                         break;
                                     case "Messages.delete":
-                                        sendMessage(HandlerMessages.MESSAGES_DELETE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_DELETE, method,
                                                 response_body);
                                         break;
                                     case "Messages.restore":
-                                        sendMessage(HandlerMessages.MESSAGES_RESTORE, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_RESTORE, method,
                                                 response_body);
                                         break;
                                     case "Messages.getConverstaions":
-                                        sendMessage(HandlerMessages.MESSAGES_CONVERSATIONS, method,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_CONVERSATIONS, method,
                                                 response_body);
                                         break;
                                     case "Messages.getConverstaionsByID":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_CONVERSATIONS_BY_ID,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_CONVERSATIONS_BY_ID,
                                                 method, response_body);
                                         break;
                                     case "Messages.getHistory":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_HISTORY,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_HISTORY,
                                                 method, response_body);
                                         break;
                                     case "Messages.getLongPollHistory":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_LONGPOLL_HISTORY,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_LONGPOLL_HISTORY,
                                                 method, response_body);
                                         break;
                                     case "Messages.getLongPollServer":
-                                        sendMessage(HandlerMessages.MESSAGES_GET_LONGPOLL_SERVER,
+                                        sendMessage(HandlerMessages.OVKAPI_MESSAGES_GET_LONGPOLL_SERVER,
                                                 method, response_body);
                                         break;
                                     case "Ovk.version":
-                                        sendMessage(HandlerMessages.OVK_VERSION, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_VERSION, method, response_body);
                                         break;
                                     case "Ovk.test":
-                                        sendMessage(HandlerMessages.OVK_TEST, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_TEST, method, response_body);
                                         break;
                                     case "Ovk.chickenWings":
-                                        sendMessage(HandlerMessages.OVK_CHICKEN_WINGS, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_CHICKEN_WINGS, method, response_body);
                                         break;
                                     case "Ovk.aboutInstance":
-                                        sendMessage(HandlerMessages.OVK_ABOUTINSTANCE, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_OVK_ABOUTINSTANCE, method, response_body);
                                         break;
                                     case "Users.getFollowers":
-                                        sendMessage(HandlerMessages.USERS_FOLLOWERS, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_USERS_FOLLOWERS, method, response_body);
                                         break;
                                     case "Users.search":
-                                        sendMessage(HandlerMessages.USERS_SEARCH, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_USERS_SEARCH, method, response_body);
                                         break;
                                     case "Users.get":
-                                        sendMessage(HandlerMessages.USERS_GET, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_USERS_GET, method, response_body);
                                         break;
                                     case "Wall.get":
-                                        sendMessage(HandlerMessages.WALL_GET, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_GET, method, response_body);
                                         break;
                                     case "Wall.getById":
-                                        sendMessage(HandlerMessages.WALL_GET_BY_ID, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_GET_BY_ID, method, response_body);
                                         break;
                                     case "Wall.post":
-                                        sendMessage(HandlerMessages.WALL_POST, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_POST, method, response_body);
                                         break;
                                     case "Wall.repost":
-                                        sendMessage(HandlerMessages.WALL_REPOST, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_REPOST, method, response_body);
                                         break;
                                     case "Wall.createComment":
-                                        sendMessage(HandlerMessages.WALL_DELETE_COMMENT, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_DELETE_COMMENT, method, response_body);
                                         break;
                                     case "Wall.getComment":
-                                        sendMessage(HandlerMessages.WALL_COMMENT, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_COMMENT, method, response_body);
                                         break;
                                     case "Wall.getComments":
-                                        sendMessage(HandlerMessages.WALL_ALL_COMMENTS, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_WALL_ALL_COMMENTS, method, response_body);
                                         break;
                                     case "Newsfeed.get":
-                                        sendMessage(HandlerMessages.NEWSFEED_GET, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_NEWSFEED_GET, method, response_body);
                                         break;
                                     case "Newsfeed.getGlobal":
-                                        sendMessage(HandlerMessages.NEWSFEED_GET_GLOBAL, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_NEWSFEED_GET_GLOBAL, method, response_body);
                                         break;
                                     case "Polls.addVote":
-                                        sendMessage(HandlerMessages.POLL_ADD_VOTE, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_POLL_ADD_VOTE, method, response_body);
                                         break;
                                     case "Polls.deleteVote":
-                                        sendMessage(HandlerMessages.POLL_DELETE_VOTE, method, response_body);
+                                        sendMessage(HandlerMessages.OVKAPI_POLL_DELETE_VOTE, method, response_body);
                                         break;
                                 }
                             } else if(response_code == 400) {
@@ -1044,57 +1044,57 @@ public class OvkAPIWrapper {
                                         String.format("Getting response from %s (%s): [%s / Error code: %d]",
                                                 server, response_code, error.description, error.code));
                                 if(error.code == 3) {
-                                    sendMessage(HandlerMessages.METHOD_NOT_FOUND, method, error.description);
+                                    sendMessage(HandlerMessages.OVKAPI_METHOD_NOT_FOUND, method, error.description);
                                 } else if(error.code == 5) {
-                                    sendMessage(HandlerMessages.INVALID_TOKEN, method, error.description);
+                                    sendMessage(HandlerMessages.OVKAPI_INVALID_TOKEN, method, error.description);
                                 } else if (error.code == 15) {
-                                    sendMessage(HandlerMessages.ACCESS_DENIED, method, error.description);
+                                    sendMessage(HandlerMessages.OVKAPI_ACCESS_DENIED, method, error.description);
                                 } else if(error.code == 100) {
-                                    sendMessage(HandlerMessages.INVALID_USAGE, method, error.description);
+                                    sendMessage(HandlerMessages.OVKAPI_INVALID_USAGE, method, error.description);
                                 } else if(error.code == 945) {
-                                    sendMessage(HandlerMessages.CHAT_DISABLED, method, error.description);
+                                    sendMessage(HandlerMessages.OVKAPI_CHAT_DISABLED, method, error.description);
                                 }
                             } else if (response_code == 503) {
-                                sendMessage(HandlerMessages.INSTANCE_UNAVAILABLE, method, response_body);
+                                sendMessage(HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE, method, response_body);
                             }  else if (response_code >= 500 && response_code <= 526) {
                                 Log.e("OpenVK API", String.format("Getting response from %s (%s)", server, response_code));
-                                sendMessage(HandlerMessages.INTERNAL_ERROR, method, "");
+                                sendMessage(HandlerMessages.OVKAPI_INTERNAL_ERROR, method, "");
                             }
                         }
                     } catch (ConnectException | ProtocolException e) {
                         if(logging_enabled) Log.e("OpenVK API", String.format("Connection error:" +
                                 " %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION, error.description);
                     } catch (SocketException e) {
                         if(Objects.requireNonNull(e.getMessage()).contains("ETIMEDOUT")) {
                             if(logging_enabled) Log.e("OpenVK API", String.format("Connection error:" +
                                     " %s", e.getMessage()));
                             error.description = e.getMessage();
-                            sendMessage(HandlerMessages.CONNECTION_TIMEOUT, method, error.description);
+                            sendMessage(HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, method, error.description);
                         }
                     } catch (SocketTimeoutException e) {
                         if(logging_enabled) Log.e("OpenVK API", String.format("Connection error:" +
                                 " %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.CONNECTION_TIMEOUT, method, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, method, error.description);
                     } catch (UnknownHostException e) {
                         if(logging_enabled) Log.e("OpenVK API", String.format("Connection error:" +
                                 " %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, method, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION, method, error.description);
                     } catch(javax.net.ssl.SSLException e) {
                         if(logging_enabled) Log.e("OpenVK API", String.format("Connection error:" +
                                 " %s", e.getMessage()));
                         error.description = e.getMessage();
-                        sendMessage(HandlerMessages.BROKEN_SSL_CONNECTION, error.description);
+                        sendMessage(HandlerMessages.OVKAPI_BROKEN_SSL_CONNECTION, error.description);
                     } catch (Exception e) {
-                        sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
+                        sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, "");
                         e.printStackTrace();
                         error.description = e.getMessage();
                     }
                 } catch (Exception ex) {
-                    sendMessage(HandlerMessages.UNKNOWN_ERROR, "");
+                    sendMessage(HandlerMessages.OVKAPI_UNKNOWN_ERROR, "");
                     ex.printStackTrace();
                 }
             }
@@ -1215,20 +1215,20 @@ public class OvkAPIWrapper {
                     response_body = Objects.requireNonNull(response.body()).string();
                     response_code = response.code();
                     if(response_code == 200) {
-                        sendMessage(HandlerMessages.OVK_CHECK_HTTP, response_body);
+                        sendMessage(HandlerMessages.OVKAPI_OVK_CHECK_HTTP, response_body);
                     } else if(response_code == 301) {
-                        sendMessage(HandlerMessages.OVK_CHECK_HTTPS, response_body);
+                        sendMessage(HandlerMessages.OVKAPI_OVK_CHECK_HTTPS, response_body);
                     }
                 } catch (SocketTimeoutException e) {
                     if(logging_enabled) Log.e("OpenVK API", String.format("Connection error: %s",
                             e.getMessage()));
                     error.description = e.getMessage();
-                    sendMessage(HandlerMessages.CONNECTION_TIMEOUT, error.description);
+                    sendMessage(HandlerMessages.OVKAPI_CONNECTION_TIMEOUT, error.description);
                 } catch (UnknownHostException e) {
                     if(logging_enabled) Log.e("OpenVK API", String.format("Connection error: %s",
                             e.getMessage()));
                     error.description = e.getMessage();
-                    sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, error.description);
+                    sendMessage(HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION, error.description);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

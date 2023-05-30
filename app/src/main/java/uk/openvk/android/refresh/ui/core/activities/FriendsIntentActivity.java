@@ -178,7 +178,7 @@ public class FriendsIntentActivity extends MonetCompatActivity {
 
     private void receiveState(int message, Bundle data) {
         try {
-            if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
+            if (message == HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO) {
                 account.parse(data.getString("response"), ovk_api);
                 if (args.startsWith("id")) {
                     try {
@@ -192,21 +192,21 @@ public class FriendsIntentActivity extends MonetCompatActivity {
                     users.search(ovk_api, args);
                 }
                 applyFragment();
-            } else if (message == HandlerMessages.FRIENDS_GET) {
+            } else if (message == HandlerMessages.OVKAPI_FRIENDS_GET) {
                 friends.parse(data.getString("response"), downloadManager,
                         true, true);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.disableUpdateState();
                 //friendsFragment.setScrollingPositions(this, friends.getFriends().size() > 0);
-            } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
+            } else if (message == HandlerMessages.OVKAPI_FRIENDS_GET_MORE) {
                 int old_friends_size = friends.getFriends().size();
                 friends.parse(data.getString("response"), downloadManager,
                         true, false);
                 ArrayList<Friend> friendsList = friends.getFriends();
                 friendsFragment.createFriendsAdapter(this, friendsList);
                 //friendsFragment.setScrollingPositions(this, old_friends_size != friends.getFriends().size());
-            } if (message == HandlerMessages.FRIEND_AVATARS) {
+            } if (message == HandlerMessages.DLM_FRIEND_AVATARS) {
                 //friendsFragment.refreshAdapter();
             }
         } catch (Exception ex) {

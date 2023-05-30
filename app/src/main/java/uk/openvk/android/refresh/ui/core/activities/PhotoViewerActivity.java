@@ -188,9 +188,9 @@ public class PhotoViewerActivity extends MonetCompatActivity {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void receiveState(int message, Bundle data) {
-        if(message == HandlerMessages.ACCESS_DENIED_MARSHMALLOW) {
+        if(message == HandlerMessages.OVKAPI_ACCESS_DENIED_MARSHMALLOW) {
             allowPermissionDialog();
-        } else if(message == HandlerMessages.ORIGINAL_PHOTO) {
+        } else if(message == HandlerMessages.DLM_ORIGINAL_PHOTO) {
             try {
                 findViewById(R.id.progress_layout).setVisibility(View.GONE);
                 findViewById(R.id.image_view).setVisibility(View.VISIBLE);
