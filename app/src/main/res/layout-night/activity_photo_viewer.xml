@@ -43,14 +43,15 @@
             android:id="@+id/app_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="?android:attr/colorBackground"
             app:contentInsetStartWithNavigation="0dp"
             app:layout_constraintBottom_toTopOf="@+id/fragment_screen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/photo_viewer"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="@string/photo_title"
-            app:menu="@menu/photo_viewer"/>
+            app:title="@string/photo_title" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
