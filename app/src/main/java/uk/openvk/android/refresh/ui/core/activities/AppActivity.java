@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -531,7 +532,7 @@ public class AppActivity extends MonetCompatActivity {
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
-                toolbar.setTitle("");
+                setToolbarTitle("", "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 b_navView.getMenu().getItem(0).setChecked(true);
                 navView.getMenu().getItem(1).setChecked(true);
@@ -544,7 +545,7 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
-                toolbar.setTitle("");
+                setToolbarTitle("", "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
                 b_navView.getMenu().getItem(0).setChecked(true);
@@ -559,7 +560,7 @@ public class AppActivity extends MonetCompatActivity {
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user, friends, account, ovk_api);
-                toolbar.setTitle(R.string.nav_friends);
+                setToolbarTitle(getResources().getString(R.string.nav_friends), "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (friendsFragment.getFriendsCount() == 0) {
                     friends.get(ovk_api, account.id, 25, "friends_list");
@@ -574,7 +575,7 @@ public class AppActivity extends MonetCompatActivity {
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user, friends, account, ovk_api);
-                toolbar.setTitle(R.string.nav_groups);
+                setToolbarTitle(getResources().getString(R.string.nav_groups), "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (groups.getList() == null || groups.getList().size() == 0) {
                     groups.getGroups(ovk_api, account.id, 25);
@@ -589,7 +590,7 @@ public class AppActivity extends MonetCompatActivity {
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user, friends, account, ovk_api);
-                toolbar.setTitle(R.string.nav_messages);
+                setToolbarTitle(getResources().getString(R.string.nav_messages), "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 if (conversations == null) {
                     messages.getConversations(ovk_api);
@@ -609,7 +610,7 @@ public class AppActivity extends MonetCompatActivity {
                 if (wall.getWallItems() == null) {
                     wall.get(ovk_api, account.user.id, 50);
                 }
-                toolbar.setTitle(R.string.nav_profile);
+                setToolbarTitle(getResources().getString(R.string.nav_profile), "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 b_navView.getMenu().getItem(4).setChecked(true);
                 navView.getMenu().getItem(0).setChecked(true);
@@ -621,7 +622,7 @@ public class AppActivity extends MonetCompatActivity {
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
-                toolbar.setTitle(R.string.nav_settings);
+                setToolbarTitle(getResources().getString(R.string.nav_settings), "");
                 toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
                 navView.getMenu().getItem(5).setChecked(true);
                 prevMenuItem = navView.getMenu().getItem(5);
@@ -1284,5 +1285,11 @@ public class AppActivity extends MonetCompatActivity {
         if(user_id != account.id) {
             friends.add(ovk_api, user_id);
         }
+    }
+
+    public void setToolbarTitle(String title, String subtitle) {
+        MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+        toolbar.setTitle(title);
+        toolbar.setSubtitle(subtitle);
     }
 }

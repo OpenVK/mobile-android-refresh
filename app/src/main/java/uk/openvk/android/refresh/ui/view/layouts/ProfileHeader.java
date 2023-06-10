@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +20,6 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import uk.openvk.android.refresh.Global;
@@ -32,6 +30,7 @@ public class ProfileHeader extends LinearLayoutCompat {
 
     private String name;
     private boolean online;
+    private String lastSeen;
 
     public ProfileHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,6 +46,7 @@ public class ProfileHeader extends LinearLayoutCompat {
                 Global.getFlexibleTypeface(context, 500));
         ((TextView) findViewById(R.id.profile_name)).setTypeface(
                 Global.getFlexibleTypeface(getContext(), 500));
+        lastSeen = "";
     }
 
     private void setTheme() {
@@ -79,6 +79,7 @@ public class ProfileHeader extends LinearLayoutCompat {
     public void setLastSeen(int sex, long date, int ls_platform) {
         if(online) {
             ((TextView) findViewById(R.id.last_seen)).setText(getResources().getString(R.string.online));
+            this.lastSeen = getResources().getString(R.string.online);
         } else if(date > 0){
             Date dt_midnight = new Date(System.currentTimeMillis() + 86400000);
             Calendar calendar = Calendar.getInstance();
@@ -91,52 +92,96 @@ public class ProfileHeader extends LinearLayoutCompat {
             if((calendar.getTimeInMillis() - dt_ms) < 60000) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_f, getResources().getString(R.string.date_just_now)));
+                            .setText(getResources().getString(R.string.last_seen_profile_f,
+                                    getResources().getString(R.string.date_just_now)));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_f,
+                            getResources().getString(R.string.date_just_now));
                 } else {
                     ((TextView) findViewById(R.id.last_seen))
                             .setText(getResources().getString(R.string.last_seen_profile_m, getResources().getString(R.string.date_just_now)));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_m,
+                            getResources().getString(R.string.date_just_now));
                 }
             } else if((calendar.getTimeInMillis() - dt_ms) < 86400000) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_f, new SimpleDateFormat("HH:mm").format(dt)));
+                            .setText(getResources().getString(R.string.last_seen_profile_f,
+                                    new SimpleDateFormat("HH:mm").format(dt)));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_f,
+                            new SimpleDateFormat("HH:mm").format(dt));
                 } else {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_m, new SimpleDateFormat("HH:mm").format(dt)));
+                            .setText(getResources().getString(R.string.last_seen_profile_m,
+                                    new SimpleDateFormat("HH:mm").format(dt)));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_m,
+                            new SimpleDateFormat("HH:mm").format(dt));
                 }
             } else if((calendar.getTimeInMillis() - dt_ms) < (86400000 * 2)) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s",
-                            getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt))));
+                            .setText(getResources().getString(R.string.last_seen_profile_f,
+                                    String.format("%s %s", getResources().getString(R.string.yesterday_at),
+                                            new SimpleDateFormat("HH:mm").format(dt))));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_f,
+                            String.format("%s %s", getResources().getString(R.string.yesterday_at),
+                                    new SimpleDateFormat("HH:mm").format(dt)));
                 } else {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s",
-                            getResources().getString(R.string.yesterday_at), new SimpleDateFormat("HH:mm").format(dt))));
+                            .setText(getResources().getString(R.string.last_seen_profile_m,
+                                    String.format("%s %s", getResources().getString(R.string.yesterday_at),
+                                            new SimpleDateFormat("HH:mm").format(dt))));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_m,
+                            String.format("%s %s", getResources().getString(R.string.yesterday_at),
+                                    new SimpleDateFormat("HH:mm").format(dt)));
                 }
             } else if((calendar.getTimeInMillis() - dt_ms) < 31536000000L) {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s %s",
-                            new SimpleDateFormat("d MMMM").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
+                            .setText(getResources().getString(R.string.last_seen_profile_f,
+                                    String.format("%s %s %s", new SimpleDateFormat("d MMMM")
+                                            .format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_f,
+                            String.format("%s %s %s", new SimpleDateFormat("d MMMM")
+                                    .format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt)));
                 } else {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s %s",
-                            new SimpleDateFormat("d MMMM").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
+                            .setText(getResources().getString(R.string.last_seen_profile_m,
+                                    String.format("%s %s %s", new SimpleDateFormat("d MMMM").format(dt),
+                                            getResources().getString(R.string.date_at),
+                                            new SimpleDateFormat("HH:mm").format(dt))));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_m,
+                            String.format("%s %s %s", new SimpleDateFormat("d MMMM").format(dt),
+                                    getResources().getString(R.string.date_at),
+                                    new SimpleDateFormat("HH:mm").format(dt)));
                 }
             } else {
                 if(sex == 1) {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_f, String.format("%s %s %s",
-                            new SimpleDateFormat("d MMMM yyyy").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
+                            .setText(getResources().getString(R.string.last_seen_profile_f,
+                                    String.format("%s %s %s", new SimpleDateFormat("d MMMM yyyy").format(dt),
+                                            getResources().getString(R.string.date_at),
+                                    new SimpleDateFormat("HH:mm").format(dt))));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_f,
+                            String.format("%s %s %s", new SimpleDateFormat("d MMMM yyyy").format(dt),
+                                    getResources().getString(R.string.date_at),
+                                    new SimpleDateFormat("HH:mm").format(dt)));
                 } else {
                     ((TextView) findViewById(R.id.last_seen))
-                            .setText(getResources().getString(R.string.last_seen_profile_m, String.format("%s %s %s",
-                            new SimpleDateFormat("d MMMM").format(dt), getResources().getString(R.string.date_at), new SimpleDateFormat("HH:mm").format(dt))));
+                            .setText(getResources().getString(R.string.last_seen_profile_m,
+                                    String.format("%s %s %s", new SimpleDateFormat("d MMMM")
+                                            .format(dt),
+                                            getResources().getString(R.string.date_at),
+                                            new SimpleDateFormat("HH:mm").format(dt))));
+                    this.lastSeen = getResources().getString(R.string.last_seen_profile_m,
+                            String.format("%s %s %s", new SimpleDateFormat("d MMMM")
+                                            .format(dt),
+                                    getResources().getString(R.string.date_at),
+                                    new SimpleDateFormat("HH:mm").format(dt)));
                 }
             }
         } else {
             ((TextView) findViewById(R.id.last_seen)).setText("");
+            this.lastSeen = "";
         }
 //        ((ImageView) findViewById(R.id.profile_api_indicator))
 //        .setVisibility(VISIBLE);
@@ -218,5 +263,9 @@ public class ProfileHeader extends LinearLayoutCompat {
 
     public void setJoinButtonOnClickListener(OnClickListener onClickListener) {
         findViewById(R.id.add_to_btn).setOnClickListener(onClickListener);
+    }
+
+    public String getOnline() {
+        return lastSeen;
     }
 }

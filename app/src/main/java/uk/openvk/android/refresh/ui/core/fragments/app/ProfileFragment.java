@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
@@ -52,6 +54,7 @@ import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.AboutFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.WallFragment;
+import uk.openvk.android.refresh.ui.core.listeners.AppBarStateChangeListener;
 import uk.openvk.android.refresh.ui.list.adapters.PublicPageAboutAdapter;
 import uk.openvk.android.refresh.ui.list.items.PublicPageAboutItem;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
@@ -280,6 +283,29 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                 }
             });
         }
+
+        AppBarLayout appBar = view.findViewById(R.id.app_bar);
+        appBar.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            int collapsedCount = 0;
+            @Override
+            public void onStateChanged(AppBarLayout layout, State state) {
+                if(requireActivity() instanceof AppActivity activity) {
+                    if(state == State.COLLAPSED) {
+                        String profile_name =
+                                String.format("%s %s", user.first_name, user.last_name);
+                        if(activity.getSelectedFragment() instanceof ProfileFragment) {
+                            activity.setToolbarTitle(profile_name,
+                                    header.getOnline());
+                        }
+                    } else if(state == State.EXPANDED) {
+                        if(activity.getSelectedFragment() instanceof ProfileFragment) {
+                            activity.setToolbarTitle(
+                                    getResources().getString(R.string.profile_title), "");
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public void setFriendStatus(User user, int status) {
