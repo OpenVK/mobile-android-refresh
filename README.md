@@ -1,4 +1,7 @@
 # OpenVK Refresh
+
+Author: [Dmitry Tretyakov](https://github.com/tretdm)
+
 Yet another mobile client in Material Design 2 with Monet theme support for Android 11-.\
 _Powered by OpenVK API. Android 5.0+ supported._
 
