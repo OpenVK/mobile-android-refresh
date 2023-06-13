@@ -155,9 +155,14 @@
     <string name="dont_show_warn">Больше не показывать</string>
 
     <string name="photo_title">Фотография</string>
+
     <string name="save">Сохранить</string>
     <string name="download">Скачать</string>
+    <string name="delete_friend">Удалить из друзей</string>
     <string name="copy_link">Скопировать ссылку</string>
+    <string name="open_in_browser">Открыть в браузере</string>
+    <string name="leave_group">Покинуть сообщество</string>
+
     <string name="photo_save_ok">Фотография сохранена в память устройства</string>
 
     <string name="global_search_hint">Глобальный поиск</string>

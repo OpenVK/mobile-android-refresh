@@ -144,6 +144,16 @@
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorOnSecondary">#86ffffff</item>
         <item name="titleTextStyle">?attr/textAppearanceHeadline3</item>
+        <item name="popupTheme">@style/ApplicationTheme.DarkPopupMenuOverlay</item>
+        <item name="actionOverflowMenuStyle">@style/ApplicationTheme.DarkPopupMenu</item>
+    </style>
+
+    <style name="ApplicationTheme.DarkPopupMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+    </style>
+
+    <style name="ApplicationTheme.DarkPopupMenuOverlay" parent="ThemeOverlay.MaterialComponents.Dark">
+        <item name="android:itemBackground">@drawable/item_background</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="ApplicationTheme.BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">

@@ -24,17 +24,18 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.os.LocaleListCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -90,6 +91,7 @@ import uk.openvk.android.refresh.api.wrappers.JSONParser;
 import uk.openvk.android.refresh.api.wrappers.NotificationManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.longpoll_api.LongPollService;
+import uk.openvk.android.refresh.ui.FragmentNavigator;
 import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 import uk.openvk.android.refresh.ui.core.fragments.app.AboutApplicationFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.FriendsFragment;
@@ -107,6 +109,7 @@ import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 public class AppActivity extends MonetCompatActivity {
     public Handler handler;
     public OvkAPIWrapper ovk_api;
+    public Menu activity_menu;
     private SharedPreferences instance_prefs;
     private SharedPreferences global_prefs;
     private DownloadManager downloadManager;
@@ -119,25 +122,25 @@ public class AppActivity extends MonetCompatActivity {
     private Friends friends;
     private Groups groups;
     private Wall wall;
-    private NewsfeedFragment newsfeedFragment;
+    public NewsfeedFragment newsfeedFragment;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
-    private ProfileFragment profileFragment;
-    private FragmentTransaction ft;
+    public ProfileFragment profileFragment;
+    public FragmentTransaction ft;
     private ArrayList<ToolbarSpinnerItem> tbSpinnerItems;
     private NewsfeedToolbarSpinnerAdapter tbSpinnerAdapter;
-    private MessagesFragment messagesFragment;
+    public MessagesFragment messagesFragment;
     private ArrayList<Conversation> conversations;
     private MenuItem prevMenuItem;
-    private MainSettingsFragment mainSettingsFragment;
+    public MainSettingsFragment mainSettingsFragment;
     private PersonalizationFragment personalizationFragment;
     private AboutApplicationFragment aboutAppFragment;
-    private Fragment selectedFragment;
+    public Fragment selectedFragment;
     private MenuItem prevBottomMenuItem;
-    private FriendsFragment friendsFragment;
+    public FriendsFragment friendsFragment;
     private String current_fragment;
     private boolean isDarkTheme;
-    private GroupsFragment groupsFragment;
+    public GroupsFragment groupsFragment;
 
     private boolean mShouldUnbind;
     private LongPollService longPollService;
@@ -147,6 +150,7 @@ public class AppActivity extends MonetCompatActivity {
     private NotificationManager notifMan;
     private int screenOrientation;
     private int navBarHeight;
+    public FragmentNavigator fn;
 
     @SuppressLint("ObsoleteSdkInt")
     @Override
@@ -196,6 +200,7 @@ public class AppActivity extends MonetCompatActivity {
         videoSettingsFragment = new VideoSettingsFragment();
         videoSettingsFragment.setGlobalPreferences(global_prefs);
         personalizationFragment.setGlobalPreferences(global_prefs);
+        fn = new FragmentNavigator(this);
         setNavView();
         setAPIWrapper();
         setNavDrawer();
@@ -243,6 +248,53 @@ public class AppActivity extends MonetCompatActivity {
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(selectedFragment != null) {
+            if(selectedFragment instanceof ProfileFragment) {
+                getMenuInflater().inflate(R.menu.profile, menu);
+            }
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        if(item.getItemId() == R.id.copy_link) {
+            if(selectedFragment instanceof ProfileFragment) {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
+                        getSystemService(Context.CLIPBOARD_SERVICE);
+                String url = "";
+                if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
+                    url = String.format("https://%s/%s",
+                            instance_prefs.getString("server", ""), account.user.screen_name);
+                } else {
+                    url = String.format("https://%s/id%s",
+                            instance_prefs.getString("server", ""), account.user.id);
+                }
+                android.content.ClipData clip =
+                        android.content.ClipData.newPlainText("Profile URL", url);
+                clipboard.setPrimaryClip(clip);
+            }
+        } else if(item.getItemId() == R.id.open_in_browser) {
+            String url = "";
+            if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
+                url = String.format("https://%s/%s",
+                        instance_prefs.getString("server", ""), account.user.screen_name);
+            } else {
+                url = String.format("https://%s/id%s",
+                        instance_prefs.getString("server", ""), account.user.id);
+            }
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // Restarting to restore activity to its normal state or to apply theme and font changes
@@ -329,15 +381,6 @@ public class AppActivity extends MonetCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressLint({"CutPasteId", "ObsoleteSdkInt"})
@@ -431,6 +474,13 @@ public class AppActivity extends MonetCompatActivity {
 
             }
         });
+        ((MaterialToolbar) findViewById(R.id.app_toolbar)).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                onOptionsItemSelected(item);
+                return true;
+            }
+        });
     }
 
     private void startQuickSearchActivity() {
@@ -514,10 +564,8 @@ public class AppActivity extends MonetCompatActivity {
             int itemId = item.getItemId();
             BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
             NavigationView navView = findViewById(R.id.nav_view);
-            FragmentManager fm = getSupportFragmentManager();
             MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
             ft = getSupportFragmentManager().beginTransaction();
-            ft.hide(selectedFragment);
             if (prevBottomMenuItem != null) prevBottomMenuItem.setChecked(false);
             else b_navView.getMenu().getItem(0).setChecked(false);
             if (prevMenuItem != null) {
@@ -528,7 +576,7 @@ public class AppActivity extends MonetCompatActivity {
             if (itemId == R.id.home) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(0);
                 prevMenuItem = navView.getMenu().getItem(1);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
+                fn.navigateTo(selectedFragment, "newsfeed");
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
@@ -542,7 +590,7 @@ public class AppActivity extends MonetCompatActivity {
             } else if (itemId == R.id.newsfeed) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(0);
                 prevMenuItem = navView.getMenu().getItem(1);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("newsfeed"));
+                fn.navigateTo(selectedFragment, "newsfeed");
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
                 setToolbarTitle("", "");
@@ -556,7 +604,7 @@ public class AppActivity extends MonetCompatActivity {
             } else if (itemId == R.id.friends) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(1);
                 prevMenuItem = navView.getMenu().getItem(2);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("friends"));
+                fn.navigateTo(selectedFragment, "friends");
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user, friends, account, ovk_api);
@@ -571,7 +619,7 @@ public class AppActivity extends MonetCompatActivity {
             } else if (itemId == R.id.groups) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(1);
                 prevMenuItem = navView.getMenu().getItem(3);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("groups"));
+                fn.navigateTo(selectedFragment, "groups");
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user, friends, account, ovk_api);
@@ -586,7 +634,7 @@ public class AppActivity extends MonetCompatActivity {
             } else if (itemId == R.id.messages) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(2);
                 prevMenuItem = navView.getMenu().getItem(4);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("messages"));
+                fn.navigateTo(selectedFragment, "messages");
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user, friends, account, ovk_api);
@@ -602,7 +650,7 @@ public class AppActivity extends MonetCompatActivity {
             } else if (itemId == R.id.profile) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(4);
                 prevMenuItem = navView.getMenu().getItem(0);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("profile"));
+                fn.navigateTo(selectedFragment, "profile");
                 ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.GONE);
                 profileFragment.setData(account.user,friends, account, ovk_api);
                 profileFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, false);
@@ -618,8 +666,7 @@ public class AppActivity extends MonetCompatActivity {
                 if(wall.getWallItems() != null) profileFragment.recreateWallAdapter();
                 if(profileFragment.aboutItems != null) profileFragment.recreateAboutAdapter();
             } else if (itemId == R.id.settings) {
-                ft.hide(selectedFragment);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
+                fn.navigateTo(selectedFragment, "settings");
                 ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
                         .findViewById(R.id.spinner)).setVisibility(View.GONE);
                 setToolbarTitle(getResources().getString(R.string.nav_settings), "");
@@ -628,8 +675,6 @@ public class AppActivity extends MonetCompatActivity {
                 prevMenuItem = navView.getMenu().getItem(5);
                 findViewById(R.id.fab_newpost).setVisibility(View.GONE);
             }
-            ft.show(selectedFragment);
-            ft.commit();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -778,7 +823,8 @@ public class AppActivity extends MonetCompatActivity {
                     pendingIntent = PendingIntent.getService(this, 0, longPollIntent,
                             PendingIntent.FLAG_MUTABLE);
                 } else {
-                    pendingIntent = PendingIntent.getService(this, 0, longPollIntent, PendingIntent.FLAG_IMMUTABLE);
+                    pendingIntent = PendingIntent.getService(this, 0, longPollIntent,
+                            PendingIntent.FLAG_IMMUTABLE);
                 }
                 longPollIntent.setPackage("uk.openvk.android.refresh.longpoll_api");
                 longPollIntent.putExtra("access_token", instance_prefs.getString("access_token", ""));
@@ -970,66 +1016,7 @@ public class AppActivity extends MonetCompatActivity {
         }
     }
 
-    public void switchFragment(String tag) {
-        FragmentManager fm = getSupportFragmentManager();
-        ft = getSupportFragmentManager().beginTransaction();
-        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("newsfeed")));
-        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("messages")));
-        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("profile")));
-        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("settings")));
-        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("video_settings")));
-        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("personalization")));
-        ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
-        BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
-        NavigationView navView = findViewById(R.id.nav_view);
-        switch (tag) {
-            case "newsfeed":
-                switchNavItem(b_navView.getMenu().getItem(0));
-                break;
-            case "settings":
-                switchNavItem(navView.getMenu().getItem(5));
-                ft.hide(selectedFragment);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
-                ft.show(selectedFragment);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .setNavigationIcon(R.drawable.ic_arrow_back);
-                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
-                break;
-            case "video_settings":
-                switchNavItem(navView.getMenu().getItem(5));
-                ft.hide(selectedFragment);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("video_settings"));
-                ft.show(selectedFragment);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_video);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .setNavigationIcon(R.drawable.ic_arrow_back);
-                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
-                break;
-            case "personalization":
-                switchNavItem(navView.getMenu().getItem(5));
-                ft.hide(selectedFragment);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("personalization"));
-                ft.show(selectedFragment);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .setNavigationIcon(R.drawable.ic_arrow_back);
-                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
-                break;
-            case "about_app":
-                switchNavItem(navView.getMenu().getItem(5));
-                ft.hide(selectedFragment);
-                selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("about_app"));
-                ft.show(selectedFragment);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_about_app);
-                ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .setNavigationIcon(R.drawable.ic_arrow_back);
-                findViewById(R.id.fab_newpost).setVisibility(View.GONE);
-                break;
-        }
-        ft = getSupportFragmentManager().beginTransaction();
-        ft.commit();
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -1037,12 +1024,12 @@ public class AppActivity extends MonetCompatActivity {
         if(selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("about_app"))
                 || selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("personalization"))
                 || selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("video_settings"))) {
-            switchFragment("settings");
+            fn.navigateTo("settings");
         } else if(selectedFragment == Objects.requireNonNull(fm.findFragmentByTag("newsfeed"))) {
             finishAffinity();
             System.exit(0);
         } else {
-            switchFragment("newsfeed");
+            fn.navigateTo("newsfeed");
         }
     }
 

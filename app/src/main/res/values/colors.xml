@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="item_selected">#e2e2e2</color>
+
     <!-- Default color attributes !-->
     <color name="navbarColor">#ffffff</color>
     <color name="newsfeedBackgroundColor">#dfdfdf</color>

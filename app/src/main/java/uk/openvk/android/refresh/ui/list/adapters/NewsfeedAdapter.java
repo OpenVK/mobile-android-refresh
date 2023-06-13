@@ -9,10 +9,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -99,6 +101,9 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         private final ImageView verified_icon;
         private boolean likeAdded = false;
         private boolean likeDeleted = false;
+        private int photoViewW;
+        private int photoViewH;
+        private int attachment_index;
 
         public Holder(View view) {
             super(view);
@@ -226,6 +231,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         if(attachment.type.equals("photo")) {
                             contains_photos = true;
                             photo_attachment = (PhotoAttachment) attachment.getContent();
+                            attachment_index = pos;
                         } if(attachment.type.equals("video")) {
                             contains_video = true;
                             video_attachment = (VideoAttachment) attachment.getContent();
@@ -253,12 +259,14 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                     local_photo_frm = "%s/photos_cache/wall_photo_attachments/" +
                             "wall_attachment_o%sp%s";
                 }
+
                 if(avatar_loaded)
                     Glide.with(ctx).load(String.format(local_avatar_frm, ctx.getCacheDir().
                                     getAbsolutePath(), item.author_id))
                             .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                             .dontAnimate().centerCrop().error(R.drawable.circular_avatar)
                             .into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
+
                 ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar))
                         .setImageTintList(null);
                 View.OnClickListener openProfileListener = new View.OnClickListener() {
@@ -273,20 +281,41 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         }
                     }
                 };
-                ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar))
+                (convertView.findViewById(R.id.profile_avatar))
                         .setOnClickListener(openProfileListener);
                 poster_name.setOnClickListener(openProfileListener);
                 if(contains_photos) {
                     if(photo_loaded) {
-                        (((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment))
-                                .getImageView()).setImageTintList(null);
+                        ImageView photoView = ((PhotoAttachmentLayout) convertView
+                                .findViewById(R.id.photo_attachment)).getImageView();
+                        photoView.setImageTintList(null);
                         Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir()
                                         .getAbsolutePath(), item.owner_id, item.post_id))
                                 .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                                 .placeholder(ctx.getDrawable(R.drawable.photo_placeholder))
                                 .dontAnimate().error(R.drawable.photo_loading_error)
-                                .into(((PhotoAttachmentLayout) convertView
-                                        .findViewById(R.id.photo_attachment)).getImageView());
+                                .into(photoView);
+                        ViewTreeObserver viewTreeObserver = photoView.getViewTreeObserver();
+                        if (viewTreeObserver.isAlive()) {
+                            PhotoAttachment fPhotoAttach = photo_attachment;
+                            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                @Override
+                                public void onGlobalLayout() {
+                                    photoView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                    if(fPhotoAttach.displayW == 0 && fPhotoAttach.displayH == 0) {
+                                        fPhotoAttach.displayW = photoView.getLayoutParams().width;
+                                        fPhotoAttach.displayH = photoView.getLayoutParams().height;
+                                        Attachment attachment = item.attachments.get(attachment_index);
+                                        attachment.setContent(fPhotoAttach);
+                                        item.attachments.set(attachment_index, attachment);
+                                        items.set(position, item);
+                                    } else {
+                                        photoView.getLayoutParams().width = fPhotoAttach.displayW;
+                                        photoView.getLayoutParams().height = fPhotoAttach.displayH;
+                                    }
+                                }
+                            });
+                        }
                         (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                         PhotoAttachment finalPhoto_attachment = photo_attachment;
                         (convertView.findViewById(R.id.photo_attachment))

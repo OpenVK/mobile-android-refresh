@@ -67,7 +67,7 @@ public class MainSettingsActivity extends MonetCompatActivity {
                 getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
-        setContentView(R.layout.intent_view);
+        setContentView(R.layout.activity_intent);
         setMonetTheme();
         setAppBar();
         createFragments();

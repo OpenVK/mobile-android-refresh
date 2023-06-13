@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
-                android:theme="@style/ApplicationTheme.Toolbar"
+                android:theme="@style/ApplicationTheme.Toolbar.Dark"
                 app:contentInsetStartWithNavigation="0dp"
                 app:menu="@menu/app_main"
                 app:navigationIcon="@drawable/ic_menu"

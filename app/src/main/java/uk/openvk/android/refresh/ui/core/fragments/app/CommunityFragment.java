@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -35,8 +37,10 @@ import uk.openvk.android.refresh.api.models.Group;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.AboutFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.WallFragment;
+import uk.openvk.android.refresh.ui.core.listeners.AppBarStateChangeListener;
 import uk.openvk.android.refresh.ui.list.adapters.PublicPageAboutAdapter;
 import uk.openvk.android.refresh.ui.list.items.PublicPageAboutItem;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
@@ -336,5 +340,23 @@ public class CommunityFragment extends Fragment  implements AppBarLayout.OnOffse
         this.group = group;
         this.group.is_member = status;
         header.setJoinButtonVisibility(group.is_member);
+    }
+
+    public void addGroupCollapseListener() {
+        AppBarLayout appBar = view.findViewById(R.id.app_bar);
+        appBar.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            int collapsedCount = 0;
+
+            @Override
+            public void onStateChanged(AppBarLayout layout, State state) {
+                if (requireActivity() instanceof GroupIntentActivity activity) {
+                    if (state == State.COLLAPSED) {
+                        activity.setToolbarTitle(group.name, "");
+                    } else if (state == State.EXPANDED) {
+                        activity.setToolbarTitle(getResources().getString(R.string.community_title), "");
+                    }
+                }
+            }
+        });
     }
 }

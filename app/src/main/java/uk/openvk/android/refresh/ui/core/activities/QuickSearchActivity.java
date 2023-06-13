@@ -86,7 +86,7 @@ public class QuickSearchActivity extends MonetCompatActivity {
                         public void run() {
                             finish();
                         }
-                    }, 200);
+                    }, 500);
                 }
             }
 

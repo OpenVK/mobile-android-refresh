@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="item_selected">#1f1f1f</color>
+
     <color name="primaryColor">#202020</color>
     <color name="primaryRippleColor">#12ffffff</color>
     <color name="primaryTextColor">#ffffff</color>

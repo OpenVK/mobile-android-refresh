@@ -64,7 +64,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(@NonNull Preference preference) {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).switchFragment("video_settings");
+                    ((AppActivity) requireActivity()).fn.navigateTo("video_settings");
                 }
                 return false;
             }
@@ -76,7 +76,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).switchFragment("personalization");
+                    ((AppActivity) requireActivity()).fn.navigateTo("personalization");
                 } else if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
                     ((MainSettingsActivity) requireActivity()).switchFragment("personalization");
                 }
@@ -127,7 +127,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(@NonNull Preference preference) {
                 if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).switchFragment("about_app");
+                    ((AppActivity) requireActivity()).fn.navigateTo("about_app");
                 } else if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
                     ((MainSettingsActivity) requireActivity()).switchFragment("about_app");
                 }

@@ -170,9 +170,14 @@
         <item name="colorOnSecondary">#86ffffff</item>
         <item name="titleTextStyle">?attr/textAppearanceHeadline3</item>
         <item name="popupTheme">@style/ApplicationTheme.LightPopupMenuOverlay</item>
+        <item name="actionOverflowMenuStyle">@style/ApplicationTheme.LightPopupMenu</item>
     </style>
 
-    <style name="ApplicationTheme.LightPopupMenuOverlay" parent="ThemeOverlay.AppCompat.Light">
+    <style name="ApplicationTheme.LightPopupMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+    </style>
+
+    <style name="ApplicationTheme.LightPopupMenuOverlay" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="android:itemBackground">@drawable/item_background</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 

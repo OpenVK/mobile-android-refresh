@@ -13,6 +13,8 @@ public class PhotoAttachment implements Parcelable {
     public boolean loaded;
     public String error;
     public Bitmap photo;
+    public int displayW;
+    public int displayH;
 
     public PhotoAttachment() {
     }

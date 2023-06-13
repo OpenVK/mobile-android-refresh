@@ -17,6 +17,7 @@
         android:id="@+id/app_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/ApplicationTheme.Toolbar"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/fragment_screen"
         app:layout_constraintEnd_toEndOf="parent"

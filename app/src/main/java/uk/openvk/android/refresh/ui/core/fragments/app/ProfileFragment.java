@@ -52,6 +52,8 @@ import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
+import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
+import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.AboutFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.WallFragment;
 import uk.openvk.android.refresh.ui.core.listeners.AppBarStateChangeListener;
@@ -303,6 +305,14 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
                                     getResources().getString(R.string.profile_title), "");
                         }
                     }
+                } else if(requireActivity() instanceof ProfileIntentActivity activity) {
+                    if(state == State.COLLAPSED) {
+                        String profile_name =
+                                String.format("%s %s", user.first_name, user.last_name);
+                        activity.setToolbarTitle(profile_name, header.getOnline());
+                    } else if(state == State.EXPANDED) {
+                        activity.setToolbarTitle(getResources().getString(R.string.profile_title), "");
+                    }
                 }
             }
         });
@@ -433,11 +443,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
     @SuppressLint("NotifyDataSetChanged")
     public void wallSelect(int position, String item, int value) {
         if(item.equals("likes")) {
-            if(value == 1) {
-                wallPosts.get(position).counters.isLiked = true;
-            } else {
-                wallPosts.get(position).counters.isLiked = false;
-            }
+            wallPosts.get(position).counters.isLiked = value == 1;
             wallAdapter.notifyDataSetChanged();
         }
     }
@@ -445,11 +451,7 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
     @SuppressLint("NotifyDataSetChanged")
     public void wallSelect(int position, String item, String value) {
         if(item.equals("likes")) {
-            if(value.equals("add")) {
-                wallPosts.get(position).counters.isLiked = true;
-            } else {
-                wallPosts.get(position).counters.isLiked = false;
-            }
+            wallPosts.get(position).counters.isLiked = value.equals("add");
             wallAdapter.notifyDataSetChanged();
         }
     }

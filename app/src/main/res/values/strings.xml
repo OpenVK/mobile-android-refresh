@@ -160,12 +160,16 @@
     an open source network that is not compatible with VKontakte / VK.<br><br>
     Please log in ONLY to the registered OpenVK account in one of the existing instances.]]></string>
     <string name="dont_show_warn">Don\'t show again</string>
+
     <string name="photo_title">Photo</string>
+
     <string name="save">Save</string>
     <string name="download">Download</string>
     <string name="copy_link">Copy link</string>
-    <string name="photo_save_ok">The photo has been saved to the Device Memory</string>
+    <string name="open_in_browser">Open in browser</string>
+    <string name="leave_group">Leave community</string>
 
+    <string name="photo_save_ok">The photo has been saved to the Device Memory</string>
     <string name="global_search_hint">Global search</string>
 
     <string name="friends_tab">Friends</string>
@@ -174,4 +178,5 @@
     <string name="retry_dialog_btn">Retry</string>
     <string name="people_section">People (%d)</string>
     <string name="communities_section">Communities (%d)</string>
+    <string name="delete_friend">Remove from friends</string>
 </resources>

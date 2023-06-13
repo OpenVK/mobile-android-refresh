@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,6 @@ import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.Locale;
-import java.util.Objects;
 
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
@@ -57,7 +57,7 @@ public class GroupIntentActivity extends MonetCompatActivity {
     private String args;
     private MaterialToolbar toolbar;
     private Groups groups;
-    private Group group;
+    public Group group;
     private boolean isDarkTheme;
 
     @Override
@@ -69,7 +69,7 @@ public class GroupIntentActivity extends MonetCompatActivity {
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         instance_prefs = getSharedPreferences("instance", 0);
-        setContentView(R.layout.intent_view);
+        setContentView(R.layout.activity_intent);
         final Uri uri = getIntent().getData();
         if (uri != null) {
             String path = uri.toString();
@@ -93,6 +93,44 @@ public class GroupIntentActivity extends MonetCompatActivity {
     protected void attachBaseContext(Context newBase) {
         Locale languageType = OvkApplication.getLocale(newBase);
         super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.leave_group) {
+            if(group.is_member > 0) {
+                group.leave(ovk_api);
+            } else {
+                group.join(ovk_api);
+            }
+        } else if(item.getItemId() == R.id.copy_link) {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
+                    getSystemService(Context.CLIPBOARD_SERVICE);
+            String url = "";
+            if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
+                url = String.format("https://%s/%s",
+                        instance_prefs.getString("server", ""), group.screen_name);
+            } else {
+                url = String.format("https://%s/club%s",
+                        instance_prefs.getString("server", ""), group.id);
+            }
+            android.content.ClipData clip =
+                    android.content.ClipData.newPlainText("Profile URL", url);
+            clipboard.setPrimaryClip(clip);
+        } else if(item.getItemId() == R.id.open_in_browser) {
+            String url = "";
+            if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
+                url = String.format("https://%s/%s",
+                        instance_prefs.getString("server", ""), group.screen_name);
+            } else {
+                url = String.format("https://%s/club%s",
+                        instance_prefs.getString("server", ""), group.id);
+            }
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setMonetTheme() {
@@ -179,15 +217,32 @@ public class GroupIntentActivity extends MonetCompatActivity {
                 communityFragment.header.hideSendMessageButton();
                 communityFragment.header.setCountersVisibility(PublicPageCounters.FRIENDS, false);
                 communityFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, true);
+                communityFragment.addGroupCollapseListener();
             } else if (message == HandlerMessages.OVKAPI_GROUPS_GET) {
                 groups.parseSearch(data.getString("response"));
                 group = groups.getList().get(0);
+                MaterialToolbar appBar = findViewById(R.id.app_toolbar);
+                appBar.getMenu().clear();
+                appBar.inflateMenu(R.menu.group);
+                if(group.is_member < 1) {
+                    if(appBar.getMenu().getItem(0).getItemId() == R.id.leave_group) {
+                        appBar.getMenu().removeItem(R.id.leave_group);
+                    }
+                }
                 communityFragment.setData(group, ovk_api);
                 group.downloadAvatar(downloadManager, "high");
                 wall.get(ovk_api, -group.id, 50);
             } else if (message == HandlerMessages.OVKAPI_GROUPS_GET_BY_ID) {
                 groups.parse(data.getString("response"));
                 group = groups.getList().get(0);
+                MaterialToolbar appBar = findViewById(R.id.app_toolbar);
+                appBar.getMenu().clear();
+                appBar.inflateMenu(R.menu.group);
+                if(group.is_member < 1) {
+                    if(appBar.getMenu().getItem(0).getItemId() == R.id.leave_group) {
+                        appBar.getMenu().removeItem(R.id.leave_group);
+                    }
+                }
                 communityFragment.setData(group, ovk_api);
                 group.downloadAvatar(downloadManager, "high");
                 wall.get(ovk_api, -group.id, 50);
@@ -245,5 +300,11 @@ public class GroupIntentActivity extends MonetCompatActivity {
         super.onMonetColorsChanged(monet, monetColors, isInitialChange);
         getMonet().updateMonetColors();
         setMonetTheme();
+    }
+
+    public void setToolbarTitle(String title, String subtitle) {
+        MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+        toolbar.setTitle(title);
+        toolbar.setSubtitle(subtitle);
     }
 }

@@ -34,6 +34,7 @@
     <string name="nav_groups">Групи</string>
     <string name="nav_news">Новини</string>
     <string name="nav_settings">Налаштуваня</string>
+
     <string name="on_wall">%s на стiнi %s</string>
     <string name="today">сьогодні</string>
     <string name="yesterday">вчора</string>
@@ -155,9 +156,14 @@
     <string name="dont_show_warn">Більше не показувати</string>
 
     <string name="photo_title">Фотографія</string>
+
     <string name="save">Зберегти</string>
     <string name="download">Скачать</string>
+    <string name="delete_friend">Видалити з друзів</string>
     <string name="copy_link">Копіювати посилання</string>
+    <string name="open_in_browser">Відкрити у браузері</string>
+    <string name="leave_group">Покинути спільноту</string>
+
     <string name="photo_save_ok">Фотографія збережена в пам\'ять пристрою</string>
 
     <string name="global_search_hint">Глобальний пошук</string>

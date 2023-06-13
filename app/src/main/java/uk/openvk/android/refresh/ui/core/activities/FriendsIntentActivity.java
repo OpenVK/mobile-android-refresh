@@ -29,7 +29,6 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
@@ -37,17 +36,11 @@ import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.Account;
 import uk.openvk.android.refresh.api.Friends;
-import uk.openvk.android.refresh.api.Groups;
-import uk.openvk.android.refresh.api.Likes;
 import uk.openvk.android.refresh.api.Users;
-import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.models.Friend;
-import uk.openvk.android.refresh.api.models.Group;
-import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
-import uk.openvk.android.refresh.ui.core.fragments.app.CommunityFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.FriendsFragment;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
@@ -76,7 +69,7 @@ public class FriendsIntentActivity extends MonetCompatActivity {
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         instance_prefs = getSharedPreferences("instance", 0);
-        setContentView(R.layout.intent_view);
+        setContentView(R.layout.activity_intent);
         final Uri uri = getIntent().getData();
         if (uri != null) {
             String path = uri.toString();

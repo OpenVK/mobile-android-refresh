@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -25,9 +26,7 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
@@ -39,7 +38,6 @@ import uk.openvk.android.refresh.api.Likes;
 import uk.openvk.android.refresh.api.Users;
 import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.api.models.Friend;
 import uk.openvk.android.refresh.api.models.User;
 import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
@@ -75,7 +73,7 @@ public class ProfileIntentActivity extends MonetCompatActivity {
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
-        setContentView(R.layout.intent_view);
+        setContentView(R.layout.activity_intent);
         setMonetTheme();
         final Uri uri = getIntent().getData();
         if (uri != null) {
@@ -99,6 +97,48 @@ public class ProfileIntentActivity extends MonetCompatActivity {
     protected void attachBaseContext(Context newBase) {
         Locale languageType = OvkApplication.getLocale(newBase);
         super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.delete_friend) {
+            if(user.friends_status > 1) {
+                deleteFromFriends(user.id);
+            }
+        } else if(item.getItemId() == R.id.copy_link) {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
+                    getSystemService(Context.CLIPBOARD_SERVICE);
+            String url = "";
+            if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
+                url = String.format("https://%s/%s",
+                        instance_prefs.getString("server", ""), user.screen_name);
+            } else {
+                url = String.format("https://%s/id%s",
+                        instance_prefs.getString("server", ""), user.id);
+            }
+            android.content.ClipData clip =
+                    android.content.ClipData.newPlainText("Profile URL", url);
+            clipboard.setPrimaryClip(clip);
+        } else if(item.getItemId() == R.id.open_in_browser) {
+            String url = "";
+            if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
+                url = String.format("https://%s/%s",
+                        instance_prefs.getString("server", ""), user.screen_name);
+            } else {
+                url = String.format("https://%s/id%s",
+                        instance_prefs.getString("server", ""), user.id);
+            }
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteFromFriends(long user_id) {
+        if(user_id != account.id) {
+            friends.delete(ovk_api, user_id);
+        }
     }
 
     private void setMonetTheme() {
@@ -176,6 +216,14 @@ public class ProfileIntentActivity extends MonetCompatActivity {
             if (message == HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO) {
                 if (args.startsWith("id")) {
                     account.parse(data.getString("response"), ovk_api);
+                    MaterialToolbar appBar = findViewById(R.id.app_toolbar);
+                    appBar.getMenu().clear();
+                    appBar.inflateMenu(R.menu.profile);
+                    if(appBar.getMenu().getItem(0).getItemId() == R.id.delete_friend) {
+                        if (Integer.parseInt(args.substring(2)) == account.id) {
+                            appBar.getMenu().removeItem(R.id.delete_friend);
+                        }
+                    }
                     try {
                         users.getUser(ovk_api, Integer.parseInt(args.substring(2)));
                     } catch (Exception ex) {
@@ -190,6 +238,14 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 users.parse(data.getString("response"));
                 user = users.getList().get(0);
                 profileFragment.setData(user, friends, account, ovk_api);
+                MaterialToolbar appBar = findViewById(R.id.app_toolbar);
+                if(appBar.getMenu().getItem(0).getItemId() == R.id.delete_friend) {
+                    if (user.id == account.id) {
+                        appBar.getMenu().removeItem(R.id.delete_friend);
+                    } else if (user.friends_status < 3) {
+                        appBar.getMenu().removeItem(R.id.delete_friend);
+                    }
+                }
                 user.downloadAvatar(downloadManager, "high", "profile_avatars");
                 wall.get(ovk_api, user.id, 50);
                 friends.get(ovk_api, user.id, 25, "profile_counter");
@@ -219,8 +275,7 @@ public class ProfileIntentActivity extends MonetCompatActivity {
                 profileFragment.refreshWallAdapter();
             } else if(message == HandlerMessages.OVKAPI_FRIENDS_ADD) {
                 JSONObject response = new JSONParser().parseJSON(data.getString("response"));
-                int status = response.getInt("response");
-                user.friends_status = status;
+                user.friends_status = response.getInt("response");
                 profileFragment.setFriendStatus(account.user, user.friends_status);
             } else if(message == HandlerMessages.OVKAPI_FRIENDS_DELETE) {
                 JSONObject response = new JSONParser().parseJSON(data.getString("response"));
@@ -261,5 +316,11 @@ public class ProfileIntentActivity extends MonetCompatActivity {
         super.onMonetColorsChanged(monet, monetColors, isInitialChange);
         getMonet().updateMonetColors();
         setMonetTheme();
+    }
+
+    public void setToolbarTitle(String title, String subtitle) {
+        MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
+        toolbar.setTitle(title);
+        toolbar.setSubtitle(subtitle);
     }
 }
