@@ -23,6 +23,7 @@ import uk.openvk.android.refresh.Global;
 public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
 
     private AlertDialog dialog;
+    private boolean cancelable;
 
     public OvkAlertDialogBuilder(@NonNull Context context, int themeResId) {
         super(context, themeResId);
@@ -37,6 +38,7 @@ public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
     @Override
     public AlertDialog create() {
         dialog = super.create();
+        dialog.setCancelable(cancelable);
         return dialog;
     }
 
@@ -124,7 +126,7 @@ public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
     @NonNull
     @Override
     public MaterialAlertDialogBuilder setCancelable(boolean cancelable) {
-        dialog.setCancelable(cancelable);
+        this.cancelable = cancelable;
         return super.setCancelable(cancelable);
     }
 }
