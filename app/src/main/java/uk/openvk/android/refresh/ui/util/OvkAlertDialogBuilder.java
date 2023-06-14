@@ -120,4 +120,11 @@ public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
         } catch (Exception ignored) {
         }
     }
+
+    @NonNull
+    @Override
+    public MaterialAlertDialogBuilder setCancelable(boolean cancelable) {
+        dialog.setCancelable(cancelable);
+        return super.setCancelable(cancelable);
+    }
 }

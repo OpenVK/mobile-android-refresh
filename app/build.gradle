@@ -36,8 +36,8 @@ android {
         applicationId "uk.openvk.android.refresh"
         minSdk 21
         targetSdk 33
-        versionCode 36
-        versionName "0.9.36.alpha"
+        versionCode 37
+        versionName "0.9.37.alpha"
     }
 
     buildTypes {

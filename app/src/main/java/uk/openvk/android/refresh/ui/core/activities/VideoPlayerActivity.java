@@ -242,6 +242,7 @@ public class VideoPlayerActivity extends MonetCompatActivity {
     private void showVideoPlayerErrorDialog() {
         OvkAlertDialogBuilder dialog = new OvkAlertDialogBuilder(this,
                 R.style.ApplicationTheme_AlertDialog);
+        dialog.setCancelable(false);
         dialog.setTitle(R.string.error);
         dialog.setMessage(R.string.video_err_decode);
         dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
