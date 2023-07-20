@@ -31,3 +31,7 @@ _OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.c
 ## Links
 [OpenVK API docs](https://docs.openvk.su/openvk_engine/api/description/)\
 [OpenVK Mobile](https://openvk.uk/app)
+
+<a href="https://codeberg.org/OpenVK/mobile-android-refresh">
+    <img alt="Get it on Codeberg" src="https://codeberg.org/Codeberg/GetItOnCodeberg/media/branch/main/get-it-on-blue-on-white.png" height="60">
+</a>
