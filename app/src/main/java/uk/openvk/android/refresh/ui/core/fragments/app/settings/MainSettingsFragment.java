@@ -15,26 +15,25 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-
-import java.util.Arrays;
-import java.util.Objects;
-
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Ovk;
-import uk.openvk.android.refresh.api.models.InstanceLink;
+import uk.openvk.android.refresh.api.entities.InstanceLink;
+import uk.openvk.android.refresh.api.entities.Ovk;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.MainActivity;
 import uk.openvk.android.refresh.ui.core.activities.MainSettingsActivity;
 import uk.openvk.android.refresh.ui.list.adapters.DialogSingleChoiceAdapter;
 import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
-import uk.openvk.android.refresh.ui.core.activities.AppActivity;
-import uk.openvk.android.refresh.ui.core.activities.MainActivity;
 
 public class MainSettingsFragment extends PreferenceFragmentCompat {
     private SharedPreferences global_prefs;
@@ -237,7 +236,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
 
         dialog.show();
         if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-            OvkAPIWrapper ovk_api = ((AppActivity) requireActivity()).ovk_api;
+            OvkAPIWrapper ovk_api = ((AppActivity) requireActivity()).ovk_api.wrapper;
             ovk_api.checkHTTPS();
         }
     }
