@@ -236,6 +236,16 @@ public class ConversationActivity extends NetworkActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     public void receiveState(int message, Bundle data) {
+        if(data.containsKey("address")) {
+            String activityName = data.getString("address");
+            if(activityName == null) {
+                return;
+            }
+            boolean isCurrentActivity = activityName.equals(getLocalClassName());
+            if(!isCurrentActivity) {
+                return;
+            }
+        }
         if (message == HandlerMessages.MESSAGES_GET_HISTORY) {
             messagesView = findViewById(R.id.messages_view);
             history = conversation.parseHistory(this, data.getString("response"));

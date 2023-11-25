@@ -92,6 +92,16 @@ public class WallPostActivity extends NetworkActivity {
     }
 
     public void receiveState(int message, Bundle data) {
+        if(data.containsKey("address")) {
+            String activityName = data.getString("address");
+            if(activityName == null) {
+                return;
+            }
+            boolean isCurrentActivity = activityName.equals(getLocalClassName());
+            if(!isCurrentActivity) {
+                return;
+            }
+        }
         if(message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
             ovk_api.account.parse(data.getString("response"), ovk_api.wrapper);
             setBottomPanel();

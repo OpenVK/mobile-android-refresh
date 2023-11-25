@@ -136,30 +136,30 @@ public class MainSettingsActivity extends NetworkActivity {
         if(selectedFragment == null) selectedFragment = getSupportFragmentManager()
                 .findFragmentByTag("settings");
         switch (tag) {
-            case "settings":
+            case "settings" -> {
                 ft.hide(selectedFragment);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("settings"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.nav_settings);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(
                         R.drawable.ic_arrow_back);
-                break;
-            case "personalization":
+            }
+            case "personalization" -> {
                 ft.hide(selectedFragment);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("personalization"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(
                         R.drawable.ic_arrow_back);
-                break;
-            case "about_app":
+            }
+            case "about_app" -> {
                 ft.hide(selectedFragment);
                 selectedFragment = Objects.requireNonNull(fm.findFragmentByTag("about_app"));
                 ft.show(selectedFragment);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_about_app);
                 ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(
                         R.drawable.ic_arrow_back);
-                break;
+            }
         }
         ft.commit();
     }

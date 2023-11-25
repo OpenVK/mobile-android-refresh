@@ -170,6 +170,16 @@ public class ProfileIntentActivity extends NetworkActivity {
 
     public void receiveState(int message, Bundle data) {
         try {
+            if(data.containsKey("address")) {
+                String activityName = data.getString("address");
+                if(activityName == null) {
+                    return;
+                }
+                boolean isCurrentActivity = activityName.equals(getLocalClassName());
+                if(!isCurrentActivity) {
+                    return;
+                }
+            }
             if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
                 if (args.startsWith("id")) {
                     MaterialToolbar appBar = findViewById(R.id.app_toolbar);

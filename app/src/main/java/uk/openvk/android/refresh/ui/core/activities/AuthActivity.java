@@ -179,6 +179,16 @@ public class AuthActivity extends NetworkActivity {
     }
 
     public void receiveState(int message, Bundle data) {
+        if(data.containsKey("address")) {
+            String activityName = data.getString("address");
+            if(activityName == null) {
+                return;
+            }
+            boolean isCurrentActivity = activityName.equals(getLocalClassName());
+            if(!isCurrentActivity) {
+                return;
+            }
+        }
         if (message == HandlerMessages.AUTHORIZED) {
             SharedPreferences.Editor editor = instance_prefs.edit();
             Authorization auth = new Authorization(data.getString("response"));

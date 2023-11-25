@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.ui.list.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +24,14 @@ import androidx.cardview.widget.CardView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
+import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.entities.Message;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder>  {
-    private Context ctx;
-    private ArrayList<Message> items;
+    private final Context ctx;
+    private final ArrayList<Message> items;
 
     public MessagesAdapter(Context context, ArrayList<Message> items, long peer_id) {
         this.ctx = context;
@@ -83,85 +85,109 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
         void bind(final int position) {
-            final Message item = getItem(position);
-            if(item.type < 2) {
-                if(item.text.length() < 20) {
-                    vertical_layout.setVisibility(View.GONE);
-                    horizontal_layout.setVisibility(View.VISIBLE);
-                    msg_text.setText(Global.formatLinksAsHtml(item.text));
-                    msg_text.setMovementMethod(LinkMovementMethod.getInstance());
-                } else {
-                    vertical_layout.setVisibility(View.VISIBLE);
-                    horizontal_layout.setVisibility(View.GONE);
-                    msg_text_2.setText(Global.formatLinksAsHtml(item.text));
-                    msg_text_2.setMovementMethod(LinkMovementMethod.getInstance());
-                }
-                msg_timestamp.setText(item.timestamp);
-                if(item.type == 1) {
-                    if(item.isError) {
-                        ((ImageView) convertView.findViewById(R.id.error_image))
-                                .setVisibility(View.VISIBLE);
+            try {
+                final Message item = getItem(position);
+                assert item != null;
+                if (item.type < 2) {
+                    if (item.text.length() < 20) {
+                        vertical_layout.setVisibility(View.GONE);
+                        horizontal_layout.setVisibility(View.VISIBLE);
+                        msg_text.setText(Global.formatLinksAsHtml(item.text));
+                        msg_text.setMovementMethod(LinkMovementMethod.getInstance());
                     } else {
-                        ((ImageView) convertView.findViewById(R.id.error_image))
-                                .setVisibility(View.GONE);
+                        vertical_layout.setVisibility(View.VISIBLE);
+                        horizontal_layout.setVisibility(View.GONE);
+                        msg_text_2.setText(Global.formatLinksAsHtml(item.text));
+                        msg_text_2.setMovementMethod(LinkMovementMethod.getInstance());
                     }
-                    if(item.sending) {
-                        ((ProgressBar) convertView.findViewById(R.id.sending_progress))
-                                .setVisibility(View.VISIBLE);
-                    } else {
-                        ((ProgressBar) convertView.findViewById(R.id.sending_progress))
-                                .setVisibility(View.GONE);
-                    }
-                } else {
-                    if(getItem(position - 1).type != item.type) {
-                        Global.setAvatarShape(ctx, convertView.findViewById(R.id.companion_avatar));
-                        ((ImageView) convertView.findViewById(R.id.companion_avatar)).setImageTintList(null);
-                        GlideApp.with(ctx)
-                                .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s",
-                                        ctx.getCacheDir().getAbsolutePath(), item.id))
-                                .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
-                                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                                .dontAnimate().centerCrop()
-                                .into((ImageView) convertView.findViewById(R.id.companion_avatar));
-                    } else {
-                        ((ImageView) convertView.findViewById(R.id.companion_avatar))
-                                .setVisibility(View.INVISIBLE);
-                    }
-                }
-                CardView cardView;
-                boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx)
-                        .getBoolean("dark_theme", false);
-                if(item.type == 0) {
-                    cardView = ((CardView) convertView.findViewById(R.id.incoming_msg_layout));
-                    if (Global.checkMonet(ctx)) {
-                        MonetCompat monet = MonetCompat.getInstance();
-                        cardView.setCardBackgroundColor(
-                                Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500))
-                                        .toLinearSrgb().toSrgb().quantize8());
-                    } else {
-                        if (isDarkTheme) {
-                            cardView.setCardBackgroundColor(
-                                    MaterialColors.getColor(convertView, androidx.appcompat.R.attr.colorPrimaryDark));
+                    msg_timestamp.setText(item.timestamp);
+                    if (item.type == 1) {
+                        if (item.isError) {
+                            ((ImageView) convertView.findViewById(R.id.error_image))
+                                    .setVisibility(View.VISIBLE);
                         } else {
-                            cardView.setCardBackgroundColor(
-                                    MaterialColors.getColor(convertView, androidx.appcompat.R.attr.colorAccent));
+                            ((ImageView) convertView.findViewById(R.id.error_image))
+                                    .setVisibility(View.GONE);
+                        }
+                        if (item.sending) {
+                            ((ProgressBar) convertView.findViewById(R.id.sending_progress))
+                                    .setVisibility(View.VISIBLE);
+                        } else {
+                            ((ProgressBar) convertView.findViewById(R.id.sending_progress))
+                                    .setVisibility(View.GONE);
+                        }
+                    } else {
+                        if (Objects.requireNonNull(getItem(position - 1)).type != item.type) {
+                            Global.setAvatarShape(ctx, convertView.findViewById(R.id.companion_avatar));
+                            ((ImageView) convertView.findViewById(R.id.companion_avatar)).setImageTintList(null);
+                            GlideApp.with(ctx)
+                                    .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s",
+                                            ctx.getCacheDir().getAbsolutePath(), item.id))
+                                    .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                                    .dontAnimate().centerCrop()
+                                    .into((ImageView) convertView.findViewById(R.id.companion_avatar));
+                        } else {
+                            ((ImageView) convertView.findViewById(R.id.companion_avatar))
+                                    .setVisibility(View.INVISIBLE);
                         }
                     }
+                    CardView cardView;
+                    boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx)
+                            .getBoolean("dark_theme", false);
+                    if (item.type == 0) {
+                        cardView = ((CardView) convertView.findViewById(R.id.incoming_msg_layout));
+                        if (Global.checkMonet(ctx)) {
+                            MonetCompat monet = MonetCompat.getInstance();
+                            cardView.setCardBackgroundColor(
+                                    Objects.requireNonNull(monet.getMonetColors().getAccent1().get(500))
+                                            .toLinearSrgb().toSrgb().quantize8());
+                        } else {
+                            if (isDarkTheme) {
+                                cardView.setCardBackgroundColor(
+                                        MaterialColors.getColor(convertView, androidx.appcompat.R.attr.colorPrimaryDark));
+                            } else {
+                                cardView.setCardBackgroundColor(
+                                        MaterialColors.getColor(convertView, androidx.appcompat.R.attr.colorAccent));
+                            }
+                        }
+                    }
+                } else {
+                    msg_text.setTypeface(Global.getFlexibleTypeface(ctx, 500));
+                    msg_text.setText(Global.formatLinksAsHtml(item.text));
+                    msg_text.setMovementMethod(LinkMovementMethod.getInstance());
                 }
-            } else {
-                msg_text.setTypeface(Global.getFlexibleTypeface(ctx, 500));
-                msg_text.setText(Global.formatLinksAsHtml(item.text));
-                msg_text.setMovementMethod(LinkMovementMethod.getInstance());
+            } catch (Exception | AssertionError ex) {
+                ex.printStackTrace();
             }
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return ((Message) getItem(position)).type;
+        try {
+            return ((Message) Objects.requireNonNull(getItem(position))).type;
+        } catch (Exception ex) {
+            return 0;
+        }
     }
 
     private Message getItem(int position) {
-        return items.get(position);
+        try {
+            if (position >= 0) {
+                return items.get(position);
+            } else {
+                Log.e(OvkApplication.APP_TAG,
+                        String.format(
+                                "[NewsfeedAdapter] Invalid position %s of %s",
+                                position,
+                                items.size()
+                        )
+                );
+                return null;
+            }
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }

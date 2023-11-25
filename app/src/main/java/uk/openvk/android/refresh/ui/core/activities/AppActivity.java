@@ -82,6 +82,7 @@ import uk.openvk.android.refresh.ui.core.fragments.app.settings.PersonalizationF
 import uk.openvk.android.refresh.ui.core.fragments.app.settings.VideoSettingsFragment;
 import uk.openvk.android.refresh.ui.list.adapters.NewsfeedToolbarSpinnerAdapter;
 import uk.openvk.android.refresh.ui.list.items.ToolbarSpinnerItem;
+import uk.openvk.android.refresh.ui.view.layouts.ProfileHeader;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
 public class AppActivity extends NetworkActivity {
@@ -427,11 +428,9 @@ public class AppActivity extends NetworkActivity {
                 startQuickSearchActivity();
             }
         });
-        if(ovk_api.account == null || ovk_api.account.user == null) {
-            String profile_name = getResources().getString(R.string.loading);
-            ((TextView) header.findViewById(R.id.profile_name)).setText(profile_name);
-            header.findViewById(R.id.screen_name).setVisibility(View.GONE);
-        }
+        String profile_name = getResources().getString(R.string.loading);
+        ((TextView) header.findViewById(R.id.profile_name)).setText(profile_name);
+        header.findViewById(R.id.screen_name).setVisibility(View.GONE);
         @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView)
                 ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
                         .findViewById(R.id.profile_avatar));
@@ -664,6 +663,16 @@ public class AppActivity extends NetworkActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     public void receiveState(int message, Bundle data) {
+        if(data.containsKey("address")) {
+            String activityName = data.getString("address");
+            if(activityName == null) {
+                return;
+            }
+            boolean isCurrentActivity = activityName.equals(getLocalClassName());
+            if(!isCurrentActivity) {
+                return;
+            }
+        }
         // Handling OpenVK API and UI messages
         try {
             if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
@@ -671,6 +680,11 @@ public class AppActivity extends NetworkActivity {
                 ovk_api.users.getAccountUser(ovk_api.wrapper, ovk_api.account.id);
                 ovk_api.messages.getLongPollServer(ovk_api.wrapper);
                 ovk_api.messages.getConversations(ovk_api.wrapper);
+                String profile_name = String.format("%s %s",
+                        ovk_api.account.first_name, ovk_api.account.last_name);
+                ConstraintLayout header = (ConstraintLayout)
+                        ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+                ((TextView) header.findViewById(R.id.profile_name)).setText(profile_name);
             } else if (message == HandlerMessages.ACCOUNT_COUNTERS) {
                 BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
                 int accentColor;
@@ -731,12 +745,11 @@ public class AppActivity extends NetworkActivity {
                 }
             } else if (message == HandlerMessages.USERS_GET_ALT) {
                 ovk_api.account.user = ovk_api.users.getList().get(0);
-                ovk_api.account.user.downloadAvatar(downloadManager, "high", "account_avatar");
+                ConstraintLayout header = (ConstraintLayout)
+                        ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0);
+                ovk_api.account.user.downloadAvatar(ovk_api.dlman, "high", "account_avatar");
                 String profile_name = String.format("%s %s", ovk_api.account.first_name,
                         ovk_api.account.last_name);
-                ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
-                        .findViewById(R.id.profile_name))
-                        .setText(profile_name);
                 if(ovk_api.account.user.screen_name != null &&
                         ovk_api.account.user.screen_name.length() > 0) {
                     ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)

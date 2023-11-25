@@ -202,6 +202,16 @@ public class NewPostActivity extends NetworkActivity {
 
     public void receiveState(int message, Bundle data) {
         try {
+            if(data.containsKey("address")) {
+                String activityName = data.getString("address");
+                if(activityName == null) {
+                    return;
+                }
+                boolean isCurrentActivity = activityName.equals(getLocalClassName());
+                if(!isCurrentActivity) {
+                    return;
+                }
+            }
             if(message == HandlerMessages.WALL_POST) {
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.posted_successfully), Toast.LENGTH_LONG).show();
@@ -210,7 +220,7 @@ public class NewPostActivity extends NetworkActivity {
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.posting_access_denied),
                         Toast.LENGTH_LONG).show();
-            } else {
+            } else if(message < 0){
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.posting_error),
                         Toast.LENGTH_LONG).show();
