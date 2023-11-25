@@ -876,7 +876,7 @@ public class AppActivity extends NetworkActivity {
         }
     }
 
-    private void retryConnection() {
+    public void retryConnection() {
         if(ovk_api.account != null) {
             newsfeedFragment.setError(false, 0, null);
             ovk_api.newsfeed.get(ovk_api.wrapper, 25);

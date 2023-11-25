@@ -114,7 +114,7 @@ public class Account implements Parcelable {
         }
         if(retryConnection) {
             if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                ((AppActivity) ctx).retryConnection(queue_method, queue_args);
+                ((AppActivity) ctx).retryConnection();
             }
         }
     }
