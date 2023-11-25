@@ -6,11 +6,17 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,28 +26,18 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
-
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-import com.kieronquinn.monetcompat.core.MonetCompat;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.Conversation;
-import uk.openvk.android.refresh.api.models.Friend;
+import uk.openvk.android.refresh.api.entities.Conversation;
+import uk.openvk.android.refresh.api.entities.Friend;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
 import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendRequestsFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.friends.FriendsListFragment;
-import uk.openvk.android.refresh.ui.core.listeners.OnRecyclerScrollListener;
 import uk.openvk.android.refresh.ui.list.adapters.FriendRequestsAdapter;
+import uk.openvk.android.refresh.ui.list.adapters.FriendsAdapter;
 import uk.openvk.android.refresh.ui.view.InfinityRecyclerView;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
-import uk.openvk.android.refresh.ui.list.adapters.FriendsAdapter;
 import uk.openvk.android.refresh.ui.view.pager.adapters.FriendsPagerAdapter;
 
 public class FriendsFragment extends Fragment {

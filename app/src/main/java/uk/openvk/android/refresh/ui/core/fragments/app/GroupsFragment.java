@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,21 +22,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.kieronquinn.monetcompat.core.MonetCompat;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.Conversation;
-import uk.openvk.android.refresh.api.models.Group;
+import uk.openvk.android.refresh.api.entities.Conversation;
+import uk.openvk.android.refresh.api.entities.Group;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.list.adapters.GroupsAdapter;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
-import uk.openvk.android.refresh.ui.list.adapters.GroupsAdapter;
 
 public class GroupsFragment extends Fragment {
     private View view;

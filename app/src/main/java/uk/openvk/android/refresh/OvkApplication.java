@@ -9,18 +9,22 @@ import android.os.Build;
 import android.os.LocaleList;
 import android.preference.PreferenceManager;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.os.LocaleListCompat;
-
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.Locale;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
-import uk.openvk.android.refresh.longpoll_api.LongPollService;
+import uk.openvk.android.refresh.services.LongPollService;
 
 public class OvkApplication extends Application {
+    public static final String API_TAG = "OVK-API";
+    public static final String LP_TAG = "OVK-LP";
+    public static final String DL_TAG = "OVK-DLM";
+    public static final String UL_TAG = "OVK-ULM";
+    public static final String APP_TAG = "OpenVK";
     public static boolean isTablet;
     public String version;
     public LongPollService longPollService;
@@ -141,6 +145,26 @@ public class OvkApplication extends Application {
             return LocaleListCompat.wrap(
                     new LocaleList(ctx.getResources().getConfiguration().locale));
         }
+    }
+
+    public SharedPreferences getAccountPreferences() {
+        SharedPreferences prefs = getSharedPreferences(
+                String.format("instance_a%s_%s", getCurrentUserId(), getCurrentInstance()), 0);
+        if(prefs != null && prefs.contains("server") &&
+                prefs.getString("server", "").equals(getCurrentInstance())) {
+            return prefs;
+        } else {
+            return getSharedPreferences("instance", 0);
+        }
+    }
+
+    private long getCurrentUserId() {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getLong("current_uid", 0);
+    }
+    public String getCurrentInstance() {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getString("current_instance", "");
     }
 
 }

@@ -1,0 +1,96 @@
+package uk.openvk.android.refresh.api;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import java.util.logging.Handler;
+
+import uk.openvk.android.refresh.api.entities.Account;
+import uk.openvk.android.refresh.api.entities.Ovk;
+import uk.openvk.android.refresh.api.entities.User;
+import uk.openvk.android.refresh.api.models.Friends;
+import uk.openvk.android.refresh.api.models.Groups;
+import uk.openvk.android.refresh.api.models.Likes;
+import uk.openvk.android.refresh.api.models.Messages;
+import uk.openvk.android.refresh.api.models.Newsfeed;
+import uk.openvk.android.refresh.api.models.Notes;
+import uk.openvk.android.refresh.api.models.Photos;
+import uk.openvk.android.refresh.api.models.Users;
+import uk.openvk.android.refresh.api.models.Wall;
+import uk.openvk.android.refresh.api.wrappers.DownloadManager;
+import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.api.wrappers.UploadManager;
+
+/**
+ * Copyleft © 2022, 2023 OpenVK Team
+ * Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along with this
+ * program. If not, see https://www.gnu.org/licenses/.
+ *
+ * Source code: https://github.com/openvk/mobile-android-refresh
+ */
+
+public class OpenVKAPI {
+    public Account account;
+    public Newsfeed newsfeed;
+    public Messages messages;
+    public Users users;
+    public Groups groups;
+    public Friends friends;
+    public Wall wall;
+    public User user;
+    public Likes likes;
+    public Notes notes;
+    public Photos photos;
+    public Ovk ovk;
+    public OvkAPIWrapper wrapper;
+    public DownloadManager dlman;
+    public UploadManager ulman;
+    public OpenVKAPI(Context ctx, SharedPreferences global_prefs, SharedPreferences instance_prefs,
+                     android.os.Handler handler) {
+        wrapper = new OvkAPIWrapper(ctx, global_prefs.getBoolean("useHTTPS", true), handler);
+        wrapper.setProxyConnection(global_prefs.getBoolean("useProxy", false),
+                global_prefs.getString("proxy_address", ""));
+        if(instance_prefs != null && instance_prefs.contains("server")) {
+            wrapper.setServer(instance_prefs.getString("server", ""));
+            wrapper.setAccessToken(instance_prefs.getString("access_token", ""));
+        }
+        dlman = new DownloadManager(ctx, global_prefs.getBoolean("useHTTPS", true), handler);
+        if(instance_prefs != null && instance_prefs.contains("server")) {
+            dlman.setInstance(instance_prefs.getString("server", ""));
+        }
+        dlman.setProxyConnection(global_prefs.getBoolean("useProxy", false),
+                global_prefs.getString("proxy_address", ""));
+        dlman.setForceCaching(global_prefs.getBoolean("forcedCaching", true));
+        ulman = new UploadManager(ctx, global_prefs.getBoolean("useHTTPS", true), handler);
+        ulman.setProxyConnection(global_prefs.getBoolean("useProxy", false),
+                global_prefs.getString("proxy_address", ""));
+        if(instance_prefs != null && instance_prefs.contains("server")) {
+            ulman.setInstance(instance_prefs.getString("server", ""));
+        }
+        ulman.setForceCaching(global_prefs.getBoolean("forcedCaching", true));
+        account = new Account(ctx);
+        if(instance_prefs != null && instance_prefs.contains("server")) {
+            account.getProfileInfo(wrapper);
+        }
+        newsfeed = new Newsfeed();
+        user = new User();
+        likes = new Likes();
+        messages = new Messages();
+        users = new Users();
+        friends = new Friends();
+        groups = new Groups();
+        wall = new Wall();
+        notes = new Notes();
+        photos = new Photos();
+        ovk = new Ovk();
+    }
+}

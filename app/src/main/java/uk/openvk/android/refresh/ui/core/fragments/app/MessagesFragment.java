@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.ArrayList;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
@@ -16,21 +20,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.kieronquinn.monetcompat.core.MonetCompat;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Account;
-import uk.openvk.android.refresh.api.models.Conversation;
+import uk.openvk.android.refresh.api.entities.Account;
+import uk.openvk.android.refresh.api.entities.Conversation;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.list.adapters.ConversationsAdapter;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
-import uk.openvk.android.refresh.ui.list.adapters.ConversationsAdapter;
 
 public class MessagesFragment extends Fragment {
     private View view;

@@ -11,11 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.color.MaterialColors;
 import com.kieronquinn.monetcompat.core.MonetCompat;
@@ -23,9 +18,13 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.Message;
+import uk.openvk.android.refresh.api.entities.Message;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder>  {

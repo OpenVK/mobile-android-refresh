@@ -2,25 +2,25 @@ package uk.openvk.android.refresh.ui.list.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Account;
-import uk.openvk.android.refresh.api.models.Conversation;
+import uk.openvk.android.refresh.api.entities.Account;
+import uk.openvk.android.refresh.api.entities.Conversation;
+import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
-import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 
 public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdapter.Holder>  {
     private final Account account;
@@ -78,7 +78,8 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             Global.setAvatarShape(ctx, convertView.findViewById(R.id.conv_avatar));
             ((ImageView) convertView.findViewById(R.id.conv_avatar)).setImageTintList(null);
             GlideApp.with(ctx)
-                    .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s", ctx.getCacheDir().getAbsolutePath(), item.peer_id))
+                    .load(String.format("%s/photos_cache/conversations_avatars/avatar_%s",
+                            ctx.getCacheDir().getAbsolutePath(), item.peer_id))
                     .error(ctx.getResources().getDrawable(R.drawable.circular_avatar))
                     .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                     .dontAnimate().centerCrop()
@@ -88,10 +89,22 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
                 @Override
                 public void onClick(View v) {
                     if(ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        ((AppActivity) ctx).openConversation(position);
+                        openConversation(item);
                     }
                 }
             });
+        }
+    }
+
+    public void openConversation(Conversation conv) {
+        Intent intent = new Intent(ctx, ConversationActivity.class);
+        try {
+            intent.putExtra("peer_id", conv.peer_id);
+            intent.putExtra("conv_title", conv.title);
+            intent.putExtra("online", conv.online);
+            ctx.startActivity(intent);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

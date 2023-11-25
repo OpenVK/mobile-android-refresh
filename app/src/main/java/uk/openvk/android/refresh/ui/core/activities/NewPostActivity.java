@@ -1,17 +1,12 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,38 +14,28 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Wall;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.api.wrappers.DownloadManager;
-import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class NewPostActivity extends MonetCompatActivity {
-    private SharedPreferences global_prefs;
-    private SharedPreferences instance_prefs;
-    private OvkAPIWrapper ovk_api;
-    private DownloadManager downloadManager;
-    private Wall wall;
-    public Handler handler;
+public class NewPostActivity extends NetworkActivity {
     private long owner_id;
     private long account_id;
     private String account_first_name;
@@ -67,7 +52,6 @@ public class NewPostActivity extends MonetCompatActivity {
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.activity_new_post);
-        setAPIWrapper();
         setAppBar();
 
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
@@ -83,7 +67,6 @@ public class NewPostActivity extends MonetCompatActivity {
                 account_id = extras.getLong("account_id");
                 account_first_name = extras.getString("account_first_name");
                 setAppBar();
-                setAPIWrapper();
                 if (owner_id == 0) {
                     finish();
                 }
@@ -96,12 +79,9 @@ public class NewPostActivity extends MonetCompatActivity {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         try {
-                            if (Objects.requireNonNull(statusEditText.getText())
-                                    .toString().length() > 0) {
-                                toolbar.getMenu().getItem(0).setEnabled(true);
-                            } else {
-                                toolbar.getMenu().getItem(0).setEnabled(false);
-                            }
+                            toolbar.getMenu().getItem(0)
+                                    .setEnabled(Objects.requireNonNull(statusEditText.getText())
+                                    .toString().length() > 0);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -212,35 +192,21 @@ public class NewPostActivity extends MonetCompatActivity {
     private void sendPost() {
         if (Objects.requireNonNull(statusEditText.getText()).toString().length() > 0) {
             try {
-                wall.post(ovk_api, owner_id, statusEditText.getText().toString());
+                ovk_api.wall.post(ovk_api.wrapper, owner_id, statusEditText.getText().toString(),
+                        false, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void setAPIWrapper() {
-        ovk_api = new OvkAPIWrapper(this);
-        downloadManager = new DownloadManager(this);
-        ovk_api.setServer(instance_prefs.getString("server", ""));
-        ovk_api.setAccessToken(instance_prefs.getString("access_token", ""));
-        wall = new Wall();
-        handler = new Handler(Looper.myLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                Log.d("OpenVK", String.format("Handling API message: %s", msg.what));
-                receiveState(msg.what, msg.getData());
-            }
-        };
-    }
-
-    private void receiveState(int message, Bundle data) {
+    public void receiveState(int message, Bundle data) {
         try {
-            if(message == HandlerMessages.OVKAPI_WALL_POST) {
+            if(message == HandlerMessages.WALL_POST) {
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.posted_successfully), Toast.LENGTH_LONG).show();
                 finish();
-            } else if(message == HandlerMessages.OVKAPI_ACCESS_DENIED){
+            } else if(message == HandlerMessages.ACCESS_DENIED){
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.posting_access_denied),
                         Toast.LENGTH_LONG).show();

@@ -2,7 +2,6 @@ package uk.openvk.android.refresh;
 
 import android.app.LocaleManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -12,15 +11,6 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.view.Window;
-
-import androidx.annotation.ColorInt;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.TypefaceCompat;
-import androidx.core.os.LocaleListCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -34,17 +24,20 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import uk.openvk.android.refresh.api.Account;
-import uk.openvk.android.refresh.api.models.OvkLink;
-import uk.openvk.android.refresh.api.models.WallPost;
-import uk.openvk.android.refresh.ui.core.activities.AppActivity;
-import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
+import androidx.annotation.ColorInt;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.TypefaceCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.preference.PreferenceManager;
+import uk.openvk.android.refresh.api.entities.OvkLink;
 
 public class Global {
     public static String bytesToHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++) {
-            String hex = Integer.toHexString(0xFF & bytes[i]);
+        for (byte aByte : bytes) {
+            String hex = Integer.toHexString(0xFF & aByte);
             if (hex.length() == 1) {
                 sb.append('0');
             }
@@ -68,37 +61,19 @@ public class Global {
 
     public static void setColorTheme(Context ctx, String value, Window window) {
         switch (value) {
-            case "blue":
-                ctx.setTheme(R.style.ApplicationTheme);
-                break;
-            case "red":
-                ctx.setTheme(R.style.ApplicationTheme_Color2);
-                break;
-            case "green":
-                ctx.setTheme(R.style.ApplicationTheme_Color3);
-                break;
-            case "violet":
-                ctx.setTheme(R.style.ApplicationTheme_Color4);
-                break;
-            case "orange":
-                ctx.setTheme(R.style.ApplicationTheme_Color5);
-                break;
-            case "teal":
-                ctx.setTheme(R.style.ApplicationTheme_Color6);
-                break;
-            case "ocean":
-                ctx.setTheme(R.style.ApplicationTheme_Color7);
-                break;
-            case "vk5x":
-                ctx.setTheme(R.style.ApplicationTheme_Color8);
-                break;
-            case "gray":
-                ctx.setTheme(R.style.ApplicationTheme_Color9);
-                break;
-            case "monet":
+            case "blue" -> ctx.setTheme(R.style.ApplicationTheme);
+            case "red" -> ctx.setTheme(R.style.ApplicationTheme_Color2);
+            case "green" -> ctx.setTheme(R.style.ApplicationTheme_Color3);
+            case "violet" -> ctx.setTheme(R.style.ApplicationTheme_Color4);
+            case "orange" -> ctx.setTheme(R.style.ApplicationTheme_Color5);
+            case "teal" -> ctx.setTheme(R.style.ApplicationTheme_Color6);
+            case "ocean" -> ctx.setTheme(R.style.ApplicationTheme_Color7);
+            case "vk5x" -> ctx.setTheme(R.style.ApplicationTheme_Color8);
+            case "gray" -> ctx.setTheme(R.style.ApplicationTheme_Color9);
+            case "monet" -> {
                 ctx.setTheme(R.style.ApplicationTheme_Monet);
                 MonetCompat.setup(ctx);
-                break;
+            }
         }
         WindowInsetsControllerCompat controllerCompat = new WindowInsetsControllerCompat(window, window.getDecorView());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -156,26 +131,23 @@ public class Global {
     public static void setInterfaceFont(AppCompatActivity activity) {
         SharedPreferences global_prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
         String value = global_prefs.getString("interface_font", "system");
-        if(value.equals("inter")) {
-            activity.getTheme().applyStyle(R.style.ApplicationFont_Inter, true);
-        } else if(value.equals("open_sans")) {
-            activity.getTheme().applyStyle(R.style.ApplicationFont_OpenSans, true);
-        } else if(value.equals("raleway")) {
-            activity.getTheme().applyStyle(R.style.ApplicationFont_Raleway, true);
-        } else if(value.equals("roboto")) {
-            activity.getTheme().applyStyle(R.style.ApplicationFont_Roboto, true);
-        } else if(value.equals("rubik")) {
-            activity.getTheme().applyStyle(R.style.ApplicationFont_Rubik, true);
+        switch (value) {
+            case "inter" ->
+                    activity.getTheme().applyStyle(R.style.ApplicationFont_Inter, true);
+            case "open_sans" ->
+                    activity.getTheme().applyStyle(R.style.ApplicationFont_OpenSans, true);
+            case "raleway" ->
+                    activity.getTheme().applyStyle(R.style.ApplicationFont_Raleway, true);
+            case "roboto" ->
+                    activity.getTheme().applyStyle(R.style.ApplicationFont_Roboto, true);
+            case "rubik" ->
+                    activity.getTheme().applyStyle(R.style.ApplicationFont_Rubik, true);
         }
     }
 
     public static boolean checkMonet(Context ctx) {
         String value = PreferenceManager.getDefaultSharedPreferences(ctx).getString("theme_color", "blue");
-        if(value.equals("monet")) {
-            return true;
-        } else {
-            return false;
-        }
+        return value.equals("monet");
     }
 
     @ColorInt
@@ -255,8 +227,9 @@ public class Global {
     public static Spanned formatLinksAsHtml(String original_text) {
         String[] lines = original_text.split("\r\n|\r|\n");
         StringBuilder text_llines = new StringBuilder();
-        Pattern pattern = Pattern.compile("\\[(.+?)\\]|" +
-                "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{1,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)");
+        Pattern pattern = Pattern.compile("\\[(.+?)]|" +
+                "((http|https)://)(www.)?[a-zA-Z0-9@:%._+~#?&/=]{1,256}\\.[a-z]{2,6}\\b" +
+                "([-a-zA-Z0-9@:%._+~#?&/=]*)");
         Matcher matcher = pattern.matcher(original_text);
         boolean regexp_search = matcher.find();
         String text = original_text.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
@@ -267,7 +240,8 @@ public class Global {
             String block = matcher.group();
             if(block.startsWith("[") && block.endsWith("]")) {
                 OvkLink link = new OvkLink();
-                String[] markup = block.replace("[", "").replace("]", "").split("\\|");
+                String[] markup = block.replace("[", "")
+                        .replace("]", "").split("\\|");
                 link.screen_name = markup[0];
                 if (markup.length == 2) {
                     if (markup[0].startsWith("id")) {
@@ -293,13 +267,6 @@ public class Global {
         } else {
             return Html.fromHtml(text);
         }
-    }
-
-    public static void openPostComments(Account account, WallPost post, Context ctx) {
-        Intent intent = new Intent(ctx, WallPostActivity.class);
-        intent.putExtra("post", post);
-        intent.putExtra("counters", post.counters);
-        ctx.startActivity(intent);
     }
 
     public static int getMonetIntColor(MonetCompat monet, String type, int brightness) {

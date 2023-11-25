@@ -1,12 +1,16 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.TypedValue;
 import android.view.View;
+
+import com.google.android.material.appbar.MaterialToolbar;
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.Locale;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,43 +18,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
-
-import com.google.android.material.appbar.MaterialToolbar;
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
-import com.kieronquinn.monetcompat.core.MonetCompat;
-
-import java.util.Locale;
-import java.util.Objects;
-
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Account;
-import uk.openvk.android.refresh.api.Likes;
-import uk.openvk.android.refresh.api.Users;
-import uk.openvk.android.refresh.api.Wall;
-import uk.openvk.android.refresh.api.models.User;
+import uk.openvk.android.refresh.api.entities.User;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
-import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
 import uk.openvk.android.refresh.ui.core.fragments.app.AboutApplicationFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.settings.MainSettingsFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.settings.PersonalizationFragment;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class MainSettingsActivity extends MonetCompatActivity {
-    private SharedPreferences global_prefs;
-    private SharedPreferences instance_prefs;
-    public Handler handler;
-    private OvkAPIWrapper ovk_api;
+public class MainSettingsActivity extends NetworkActivity {
     private DownloadManager downloadManager;
-    private Wall wall;
-    private Account account;
-    private Likes likes;
     private FragmentTransaction ft;
     private String args;
     private MaterialToolbar toolbar;
-    private Users users;
     private User user;
     private boolean isDarkTheme;
     private MainSettingsFragment mainSettingsFragment;

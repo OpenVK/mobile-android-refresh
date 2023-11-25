@@ -1,83 +1,63 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Account;
-import uk.openvk.android.refresh.api.Wall;
+import uk.openvk.android.refresh.api.entities.Comment;
+import uk.openvk.android.refresh.api.entities.WallPost;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.api.models.Comment;
-import uk.openvk.android.refresh.api.models.WallPost;
-import uk.openvk.android.refresh.api.wrappers.DownloadManager;
-import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
 import uk.openvk.android.refresh.ui.list.adapters.CommentsAdapter;
 import uk.openvk.android.refresh.ui.view.layouts.SendTextBottomPanel;
 
-public class WallPostActivity extends MonetCompatActivity {
-    private SharedPreferences global_prefs;
+public class WallPostActivity extends NetworkActivity {
     private boolean isDarkTheme;
-    private WallPost wallPost;
     private Toolbar toolbar;
-    private Wall wall;
-    private Account account;
-    private SharedPreferences instance_prefs;
-    private OvkAPIWrapper ovk_api;
-    private DownloadManager downloadManager;
-    public Handler handler;
-    private ArrayList<Comment> comments;
+    public ArrayList<Comment> comments;
     private CommentsAdapter commentsAdapter;
     private RecyclerView comments_rv;
     private LinearLayoutManager llm;
     private SendTextBottomPanel bottomPanel;
     private Comment last_sended_comment;
+    private WallPost wallPost;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         try {
             if (global_prefs.getBoolean("dark_theme", false)) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
-            instance_prefs = getSharedPreferences("instance", 0);
             Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
                     getWindow());
             Global.setInterfaceFont(this);
@@ -88,7 +68,7 @@ public class WallPostActivity extends MonetCompatActivity {
                 wallPost.counters = savedInstanceState.getParcelable("counters");
             } else {
                 if (getIntent().getExtras() != null) {
-                    account = getIntent().getExtras().getParcelable("account");
+                    ovk_api.account = getIntent().getExtras().getParcelable("account");
                     wallPost = getIntent().getExtras().getParcelable("post");
                     wallPost.counters = getIntent().getExtras().getParcelable("counters");
                 }
@@ -107,31 +87,17 @@ public class WallPostActivity extends MonetCompatActivity {
     }
 
     private void setAPIWrapper() {
-        ovk_api = new OvkAPIWrapper(this);
-        downloadManager = new DownloadManager(this);
-        ovk_api.setServer(instance_prefs.getString("server", ""));
-        ovk_api.setAccessToken(instance_prefs.getString("access_token", ""));
-        handler = new Handler(Looper.myLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                Log.d("OpenVK", String.format("Handling API message: %s", msg.what));
-                receiveState(msg.what, msg.getData());
-            }
-        };
-        account = new Account(this);
-        account.getProfileInfo(ovk_api);
-        wall = new Wall();
-        wall.getComments(ovk_api, wallPost.owner_id, wallPost.post_id);
+        ovk_api.account.getProfileInfo(ovk_api.wrapper);
+        ovk_api.wall.getComments(ovk_api.wrapper, wallPost.owner_id, wallPost.post_id);
     }
 
-    private void receiveState(int message, Bundle data) {
-        if(message == HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO) {
-            account.parse(data.getString("response"), ovk_api);
+    public void receiveState(int message, Bundle data) {
+        if(message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
+            ovk_api.account.parse(data.getString("response"), ovk_api.wrapper);
             setBottomPanel();
-        } else if (message == HandlerMessages.OVKAPI_WALL_ALL_COMMENTS) {
-            comments = wall.parseComments(this, downloadManager, data.getString("response"));
+        } else if (message == HandlerMessages.WALL_ALL_COMMENTS) {
             createCommentsAdapter(comments);
-        } else if (message == HandlerMessages.DLM_COMMENT_AVATARS) {
+        } else if (message == HandlerMessages.COMMENT_AVATARS) {
             loadCommentatorAvatars();
         }
     }
@@ -206,11 +172,8 @@ public class WallPostActivity extends MonetCompatActivity {
             public void onClick(View v) {
                 if(bottomPanel.getText().length() > 0) {
                     try {
-                        last_sended_comment = new Comment(0, account.id,
-                                String.format("%s %s", account.first_name, account.last_name),
-                                (int) (System.currentTimeMillis() / 1000),
-                                bottomPanel.getText());
-                        wall.createComment(ovk_api, wallPost.owner_id,
+                        last_sended_comment = new Comment();
+                        ovk_api.wall.createComment(ovk_api.wrapper, wallPost.owner_id,
                                 wallPost.post_id, bottomPanel.getText());
                         if(comments == null) {
                             comments = new ArrayList<>();
@@ -241,22 +204,18 @@ public class WallPostActivity extends MonetCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 AppCompatImageButton send_btn = bottomPanel.findViewById(R.id.send_btn);
-                if(bottomPanel.getText().length() > 0) {
-                    send_btn.setEnabled(true);
-                } else {
-                    send_btn.setEnabled(false);
-                }
+                send_btn.setEnabled(bottomPanel.getText().length() > 0);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).getLineCount() > 4) {
-                    ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(4);
-                } else {
-                    ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(
-                            ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).
-                                    getLineCount());
-                }
+                ((TextInputEditText) bottomPanel.findViewById(R.id.send_text))
+                        .setLines(
+                                Math.min(
+                                        ((TextInputEditText) bottomPanel.findViewById(R.id.send_text))
+                                                .getLineCount(), 4
+                                )
+                        );
             }
         });
     }

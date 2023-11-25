@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -19,6 +17,15 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.snackbar.Snackbar;
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.Locale;
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -26,44 +33,29 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.snackbar.Snackbar;
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
-import com.kieronquinn.monetcompat.core.MonetCompat;
-
-import java.util.Locale;
-import java.util.Objects;
-
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Authorization;
+import uk.openvk.android.refresh.api.entities.Authorization;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
 import uk.openvk.android.refresh.ui.core.enumerations.UiMessages;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthFragment;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthProgressFragment;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthTwoFactorFragment;
+import uk.openvk.android.refresh.ui.core.listeners.OnKeyboardStateListener;
 import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.ui.view.layouts.XConstraintLayout;
-import uk.openvk.android.refresh.ui.core.listeners.OnKeyboardStateListener;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class AuthActivity extends MonetCompatActivity {
-    public Handler handler;
-    public OvkAPIWrapper ovk_api;
+public class AuthActivity extends NetworkActivity {
     private FragmentTransaction ft;
     private XConstraintLayout auth_layout;
     private String instance;
     private String username;
     private String password;
     private AuthFragment authFragment;
-    private SharedPreferences instance_prefs;
-    private SharedPreferences global_prefs;
     private Snackbar snackbar;
 
     @SuppressLint("ObsoleteSdkInt")
@@ -97,7 +89,6 @@ public class AuthActivity extends MonetCompatActivity {
         ft.commit();
         global_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         instance_prefs = getSharedPreferences("instance", 0);
-        setAPIWrapper();
         showOvkWarning();
         if(getResources().getColor(R.color.navbarColor) == getResources().getColor(android.R.color.white)) {
             try {
@@ -156,17 +147,6 @@ public class AuthActivity extends MonetCompatActivity {
         super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
     }
 
-    private void setAPIWrapper() {
-        ovk_api = new OvkAPIWrapper(this);
-        handler = new Handler(Looper.myLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                receiveState(msg.what, msg.getData());
-            }
-        };
-    }
-
     public void signIn(String instance, String username, String password) {
         this.instance = instance;
         this.username = username;
@@ -174,9 +154,6 @@ public class AuthActivity extends MonetCompatActivity {
         ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.dynamic_fragment_layout, new AuthProgressFragment());
         ft.commit();
-        if(ovk_api == null) {
-            ovk_api = new OvkAPIWrapper(this);
-        }
         if(instance.equals("vk.com") || instance.equals("vk.ru") || instance.equals("vkontakte.ru")) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, new AuthFragment());
@@ -185,8 +162,8 @@ public class AuthActivity extends MonetCompatActivity {
             authFragment.setAuthorizationData(instance, username, password);
             showOvkWarning();
         } else {
-            ovk_api.setServer(instance);
-            ovk_api.authorize(username, password);
+            ovk_api.wrapper.setServer(instance);
+            ovk_api.wrapper.authorize(username, password);
         }
     }
 
@@ -197,15 +174,12 @@ public class AuthActivity extends MonetCompatActivity {
         if(snackbar != null) {
             snackbar.dismiss();
         }
-        if(ovk_api == null) {
-            ovk_api = new OvkAPIWrapper(this);
-            ovk_api.setServer(instance);
-        }
-        ovk_api.authorize(username, password, twofactor_code);
+        ovk_api.wrapper.setServer(instance);
+        ovk_api.wrapper.authorize(username, password, twofactor_code);
     }
 
-    private void receiveState(int message, Bundle data) {
-        if (message == HandlerMessages.OVKAPI_AUTHORIZED) {
+    public void receiveState(int message, Bundle data) {
+        if (message == HandlerMessages.AUTHORIZED) {
             SharedPreferences.Editor editor = instance_prefs.edit();
             Authorization auth = new Authorization(data.getString("response"));
             if(auth.getAccessToken() != null && auth.getAccessToken().length() > 0) {
@@ -217,11 +191,11 @@ public class AuthActivity extends MonetCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        } else if (message == HandlerMessages.OVKAPI_TWOFACTOR_CODE_REQUIRED) {
+        } else if (message == HandlerMessages.TWOFACTOR_CODE_REQUIRED) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, new AuthTwoFactorFragment());
             ft.commit();
-        } else if (message == HandlerMessages.OVKAPI_INVALID_USERNAME_OR_PASSWORD) {
+        } else if (message == HandlerMessages.INVALID_USERNAME_OR_PASSWORD) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
@@ -257,7 +231,7 @@ public class AuthActivity extends MonetCompatActivity {
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
-        } else if(message == HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION) {
+        } else if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
@@ -298,7 +272,7 @@ public class AuthActivity extends MonetCompatActivity {
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
-        } else if(message == HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE) {
+        } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);
@@ -334,7 +308,7 @@ public class AuthActivity extends MonetCompatActivity {
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
-        } else if(message == HandlerMessages.OVKAPI_UNKNOWN_ERROR) {
+        } else if(message == HandlerMessages.UNKNOWN_ERROR) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, authFragment);
             authFragment.setAuthorizationData(instance, username, password);

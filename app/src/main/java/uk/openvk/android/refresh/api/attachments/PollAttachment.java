@@ -2,8 +2,24 @@ package uk.openvk.android.refresh.api.attachments;
 
 import java.util.ArrayList;
 
-import uk.openvk.android.refresh.api.models.PollAnswer;
+import uk.openvk.android.refresh.api.entities.PollAnswer;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+
+/** Copyleft © 2022, 2023 OpenVK Team
+ *  Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ *
+ *  This program is free software: you can redistribute it and/or modify it under the terms of
+ *  the GNU Affero General Public License as published by the Free Software Foundation, either
+ *  version 3 of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License along with this
+ *  program. If not, see https://www.gnu.org/licenses/.
+ *
+ *  Source code: https://github.com/openvk/mobile-android-refresh
+ **/
 
 public class PollAttachment {
     public long id;
@@ -29,11 +45,11 @@ public class PollAttachment {
 
     }
 
-    public void vote(OvkAPIWrapper ovk, int answer_id) {
-        ovk.sendAPIMethod("Polls.addVote", String.format("poll_id=%s&answers_ids=%s", id, answer_id));
+    public void vote(OvkAPIWrapper wrapper, int answer_id) {
+        wrapper.sendAPIMethod("Polls.addVote", String.format("poll_id=%s&answers_ids=%s", id, answer_id));
     }
 
-    public void unvote(OvkAPIWrapper ovk) {
-        ovk.sendAPIMethod("Polls.deleteVote", String.format("poll_id=%s", id));
+    public void unvote(OvkAPIWrapper wrapper) {
+        wrapper.sendAPIMethod("Polls.deleteVote", String.format("poll_id=%s", id));
     }
 }

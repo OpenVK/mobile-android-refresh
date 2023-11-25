@@ -59,11 +59,12 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
+import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
 import uk.openvk.android.refresh.ui.core.enumerations.UiMessages;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
 import uk.openvk.android.refresh.ui.view.ZoomableImageView;
 
-public class PhotoViewerActivity extends MonetCompatActivity {
+public class PhotoViewerActivity extends NetworkActivity {
     private SharedPreferences global_prefs;
     private PhotoAttachment photo;
     private DownloadManager downloadManager;
@@ -159,7 +160,6 @@ public class PhotoViewerActivity extends MonetCompatActivity {
         findViewById(R.id.progress_layout).setVisibility(View.VISIBLE);
         Bundle data = getIntent().getExtras();
         if(data != null) {
-            createDownloadManager();
             cache_path = String.format("%s/photos_cache/original_photos/original_photo_a%s_%s",
                     getCacheDir().getAbsolutePath(), data.getLong("author_id"),
                     data.getLong("photo_id"));
@@ -173,24 +173,11 @@ public class PhotoViewerActivity extends MonetCompatActivity {
         }
     }
 
-    private void createDownloadManager() {
-        downloadManager = new DownloadManager(this);
-        handler = new Handler(Looper.myLooper()) {
-            @Override
-            public void handleMessage(Message message) {
-                Bundle data = message.getData();
-                if(!BuildConfig.BUILD_TYPE.equals("release")) Log.d("OpenVK",
-                        String.format("Handling API message: %s", message.what));
-                receiveState(message.what, data);
-            }
-        };
-    }
-
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void receiveState(int message, Bundle data) {
-        if(message == HandlerMessages.OVKAPI_ACCESS_DENIED_MARSHMALLOW) {
+    public void receiveState(int message, Bundle data) {
+        if(message == HandlerMessages.ACCESS_DENIED_MARSHMALLOW) {
             allowPermissionDialog();
-        } else if(message == HandlerMessages.DLM_ORIGINAL_PHOTO) {
+        } else if(message == HandlerMessages.ORIGINAL_PHOTO) {
             try {
                 findViewById(R.id.progress_layout).setVisibility(View.GONE);
                 findViewById(R.id.image_view).setVisibility(View.VISIBLE);

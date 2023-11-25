@@ -33,9 +33,10 @@ import org.videolan.libvlc.util.VLCVideoLayout;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.VideoAttachment;
+import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
 import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
 
-public class VideoPlayerActivity extends MonetCompatActivity {
+public class VideoPlayerActivity extends NetworkActivity {
     private VideoAttachment video;
     private String url;
     private LibVLC vlc;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -22,28 +23,34 @@ import javax.net.ssl.SSLProtocolException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.internal.http.StatusLine;
 import uk.openvk.android.refresh.OvkApplication;
-//import uk.openvk.android.refresh.user_interface.core.activities.ConversationActivity;
-//import uk.openvk.android.refresh.user_interface.core.activities.FriendsIntentActivity;
-//import uk.openvk.android.refresh.user_interface.core.activities.GroupIntentActivity;
-//import uk.openvk.android.refresh.user_interface.core.activities.MainSettingsActivity;
-//import uk.openvk.android.refresh.user_interface.core.activities.NewPostActivity;
-//import uk.openvk.android.refresh.user_interface.core.activities.ProfileIntentActivity;
-//import uk.openvk.android.refresh.user_interface.core.activities.QuickSearchActivity;
-//import uk.openvk.android.refresh.user_interface.core.activities.WallPostActivity;
+import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 
-/**
- * Created by Dmitry on 29.09.2022.
- */
+/** Copyleft © 2022, 2023 OpenVK Team
+ *  Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ *
+ *  This program is free software: you can redistribute it and/or modify it under the terms of
+ *  the GNU Affero General Public License as published by the Free Software Foundation, either
+ *  version 3 of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License along with this
+ *  program. If not, see https://www.gnu.org/licenses/.
+ *
+ *  Source code: https://github.com/openvk/mobile-android-legacy
+ **/
+
+@SuppressWarnings("BusyWait")
 public class LongPollWrapper {
 
     public String server;
     public boolean use_https;
     public boolean legacy_mode;
     private String status;
-    private uk.openvk.android.refresh.api.models.Error error;
+    private uk.openvk.android.refresh.api.entities.Error error;
     private Context ctx;
     private Handler handler;
     private String access_token;
@@ -56,25 +63,24 @@ public class LongPollWrapper {
 
     public LongPollWrapper(Context ctx, boolean use_https) {
         this.ctx = ctx;
-
         this.use_https = use_https;
-        httpClient = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+        httpClient = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS).build();
     }
 
     private String generateUserAgent(Context ctx) {
         String version_name = "";
         String user_agent = "";
         try {
-            PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(
-                    ctx.getApplicationContext().getPackageName(), 0);
+            PackageInfo packageInfo = ctx.getPackageManager().getPackageInfo(ctx.getApplicationContext().getPackageName(), 0);
             version_name = packageInfo.versionName;
         } catch (Exception e) {
             OvkApplication app = ((OvkApplication) ctx.getApplicationContext());
             version_name = app.version;
         } finally {
-            user_agent = String.format("OpenVK Refresh/%s (Android %s; SDK %s; %s; %s %s; %s)", version_name,
-                    Build.VERSION.RELEASE, Build.VERSION.SDK_INT, Build.SUPPORTED_ABIS[0],
-                    Build.MANUFACTURER, Build.MODEL, System.getProperty("user.language"));
+            user_agent = String.format("OpenVK Legacy/%s (Android %s; SDK %s; %s; %s %s; %s)", version_name,
+                    Build.VERSION.RELEASE, Build.VERSION.SDK_INT, Build.CPU_ABI, Build.MANUFACTURER,
+                    Build.MODEL, System.getProperty("user.language"));
         }
         return user_agent;
     }
@@ -95,13 +101,12 @@ public class LongPollWrapper {
         this.server = lp_server;
         String url = "";
         url = String.format("%s?act=a_check&key=%s&ts=%s&wait=15", lp_server, key, ts);
-        Log.v("OpenVK LPW", String.format("Activating LongPoll via %s...", lp_server));
+        Log.v(OvkApplication.LP_TAG, String.format("Activating LongPoll via %s...", lp_server));
         final String fUrl = url;
         isActivated = true;
         Thread thread = null;
         Runnable longPollRunnable = new Runnable() {
             private Request request = null;
-            StatusLine statusLine = null;
             int response_code = 0;
             private String response_body = "";
 
@@ -112,47 +117,66 @@ public class LongPollWrapper {
                         .build();
                 try {
                     if(isActivated) {
-                        Log.v("OpenVK LPW", String.format("LongPoll activated."));
+                        Log.v(OvkApplication.LP_TAG, "LongPoll activated.");
                     }
                     while(isActivated) {
                         Response response = httpClient.newCall(request).execute();
+                        assert response.body() != null;
                         response_body = response.body().string();
                         response_code = response.code();
                         if (response_code == 200) {
-                            if(logging_enabled) Log.v("OpenVK LPW",
-                                    String.format("Getting response from %s (%s): [%s]",
-                                            server, response_code, response_body));
-                            sendLongPollMessageToActivity(response_body);
+                            if(logging_enabled &&
+                                    ((response_body.startsWith("[") && response_body.endsWith("]"))
+                                    || (response_body.startsWith("{") && response_body.endsWith("}")))) {
+                                Log.v(OvkApplication.LP_TAG,
+                                        String.format("Getting response from %s (%s): [%s]", server,
+                                                response_code, response_body));
+                                sendLongPollMessageToActivity(response_body);
+                                Thread.sleep(5000);
+                            } else {
+                                Log.v(OvkApplication.LP_TAG,
+                                        String.format("Getting response from %s (%s): Invalid JSON data", server,
+                                                response_code));
+                                sendLongPollMessageToActivity(response_body);
+                                Thread.sleep(60000);
+                            }
+                        } else if(response_code >= 400 && response_code <= 528) {
+                            if(logging_enabled) Log.e(OvkApplication.LP_TAG,
+                                    String.format("Getting response from %s (%s)", server,
+                                            response_code));
+                            if(logging_enabled) Log.v(OvkApplication.LP_TAG, "Retrying in 60 seconds...");
+                            Thread.sleep(60000);
                         } else {
-                            if(logging_enabled) Log.v("OpenVK LPW",
-                                    String.format("Getting response from %s (%s)", server, response_code));
+                            if(logging_enabled) Log.e(OvkApplication.LP_TAG,
+                                    String.format("Getting response from %s (%s)", server,
+                                            response_code));
+                            Thread.sleep(5000);
                         }
-                        Thread.sleep(2000);
+
                     }
                 } catch(ConnectException | SocketTimeoutException | UnknownHostException ex) {
-                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s",
-                            ex.getMessage()));
+                    if(logging_enabled) Log.v(OvkApplication.LP_TAG, String.format("Connection error: %s", ex.getMessage()));
                     try {
-                        if(logging_enabled) Log.v("OpenVK LPW", "Retrying in 60 seconds...");
+                        if(logging_enabled) Log.v(OvkApplication.LP_TAG, "Retrying in 60 seconds...");
                         Thread.sleep(60000);
                         run();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 } catch(SSLProtocolException ex) {
-                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s",
+                    if(logging_enabled) Log.v(OvkApplication.LP_TAG, String.format("Connection error: %s",
                             ex.getMessage()));
                     isActivated = false;
-                    if(logging_enabled) Log.v("OpenVK LPW", "LongPoll service stopped.");
+                    if(logging_enabled) Log.v(OvkApplication.LP_TAG, "LongPoll service stopped.");
                 } catch(SSLHandshakeException ex) {
-                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s",
+                    if(logging_enabled) Log.v(OvkApplication.LP_TAG, String.format("Connection error: %s",
                             ex.getMessage()));
-                    if(logging_enabled) Log.v("OpenVK LPW", "LongPoll service stopped.");
+                    if(logging_enabled) Log.v(OvkApplication.LP_TAG, "LongPoll service stopped.");
                     isActivated = false;
                 } catch(SSLException ex) {
-                    if(logging_enabled) Log.v("OpenVK LPW", String.format("Connection error: %s",
+                    if(logging_enabled) Log.v(OvkApplication.LP_TAG, String.format("Connection error: %s",
                             ex.getMessage()));
-                    Log.v("OpenVK LPW", "LongPoll service stopped.");
+                    Log.v(OvkApplication.LP_TAG, "LongPoll service stopped.");
                     isActivated = false;
                 } catch (Exception ex) {
                     isActivated = false;
@@ -169,11 +193,10 @@ public class LongPollWrapper {
             if(useProxy) {
                 String[] address_array = address.split(":");
                 if (address_array.length == 2) {
-                    httpClient = new OkHttpClient.Builder().connectTimeout(30,
-                                    TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS)
-                            .readTimeout(30, TimeUnit.SECONDS)
-                            .retryOnConnectionFailure(false).proxy(new Proxy(Proxy.Type.HTTP,
-                                    new InetSocketAddress(address_array[0],
+                    httpClient = new OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).
+                            writeTimeout(15, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
+                            .retryOnConnectionFailure(false).proxy(new Proxy(Proxy.Type.HTTP, new
+                                    InetSocketAddress(address_array[0],
                                     Integer.parseInt(address_array[1])))).build();
                 }
             }
@@ -185,30 +208,36 @@ public class LongPollWrapper {
     private void sendLongPollMessageToActivity(final String response) {
         if(!looper_prepared) {
             Looper.prepare();
-            handler = new Handler();
             looper_prepared = true;
+            handler = new Handler(Looper.myLooper()) {
+                @Override
+                public void handleMessage(android.os.Message msg) {
+                    super.handleMessage(msg);
+                    if(msg.what == HandlerMessages.LONGPOLL) {
+                        Intent intent = new Intent();
+                        intent.setAction("uk.openvk.android.refresh.LONGPOLL_RECEIVE");
+                        intent.putExtra("response", response);
+                        ctx.sendBroadcast(intent);
+                    }
+                }
+            };
         }
-        Log.d("OK", "OK! LongPolling 1...");
-        Runnable sendLongPoll = new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent();
-                intent.setAction("uk.openvk.android.refresh.LONGPOLL_RECEIVE");
-                intent.putExtra("response", response);
-                ctx.sendBroadcast(intent);
-                Log.d("OK", "OK! LongPolling 2...");
-            }
-        };
-        handler.post(sendLongPoll);
+        Log.d(OvkApplication.LP_TAG, "OK! LongPolling 1...");
+        android.os.Message msg = new android.os.Message();
+        msg.what = HandlerMessages.LONGPOLL;
+        Bundle data = new Bundle();
+        data.putString("response", response);
+        msg.setData(data);
+        handler.sendMessage(msg);
     }
 
-    public void updateCounters(final OvkAPIWrapper ovk) {
+    public void updateCounters(final OvkAPIWrapper wrapper) {
         Thread thread = null;
-        final Handler handler = new Handler(Looper.myLooper());
+        final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                ovk.sendAPIMethod("Account.getCounters");
+                wrapper.sendAPIMethod("Account.getCounters");
                 try {
                     if(error != null && error.description.length() > 0) {
                         handler.postDelayed(this, 5000);
@@ -223,12 +252,12 @@ public class LongPollWrapper {
         handler.postDelayed(runnable, 5000);
     }
 
-    public void keepUptime(final OvkAPIWrapper ovk) {
+    public void keepUptime(final OvkAPIWrapper wrapper) {
         handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                ovk.sendAPIMethod("Account.setOnline");
+                wrapper.sendAPIMethod("Account.setOnline");
                 try {
                     if(error != null && error.description.length() > 0) {
                         handler.postDelayed(this, 60000);

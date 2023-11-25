@@ -1,10 +1,7 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
-import static java.security.AccessController.getContext;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -12,8 +9,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
+
+import com.mancj.materialsearchbar.MaterialSearchBar;
+
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.WindowCompat;
@@ -21,38 +20,19 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
-import com.mancj.materialsearchbar.MaterialSearchBar;
-
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Groups;
-import uk.openvk.android.refresh.api.Users;
+import uk.openvk.android.refresh.api.entities.Group;
+import uk.openvk.android.refresh.api.entities.User;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.api.models.Group;
-import uk.openvk.android.refresh.api.models.User;
-import uk.openvk.android.refresh.api.models.WallPost;
-import uk.openvk.android.refresh.api.wrappers.DownloadManager;
-import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
 import uk.openvk.android.refresh.ui.core.enumerations.UiMessages;
 import uk.openvk.android.refresh.ui.list.sections.CommunitiesSearchSection;
 import uk.openvk.android.refresh.ui.list.sections.PeopleSearchSection;
 
-public class QuickSearchActivity extends MonetCompatActivity {
-    private SharedPreferences global_prefs;
-    private SharedPreferences instance_prefs;
-    public Handler handler;
-    private OvkAPIWrapper ovk_api;
-    private DownloadManager downloadManager;
+public class QuickSearchActivity extends NetworkActivity {
     private boolean isDarkTheme;
-    private Users users;
-    private Groups groups;
     private MaterialSearchBar searchBar;
     private SectionedRecyclerViewAdapter sectionAdapter;
     private PeopleSearchSection peopleSection;
@@ -98,15 +78,14 @@ public class QuickSearchActivity extends MonetCompatActivity {
                     peopleSection = null;
                     commsSection = null;
                 }
-                groups.search(ovk_api, query);
-                users.search(ovk_api, query);
+                ovk_api.groups.search(ovk_api.wrapper, query);
+                ovk_api.users.search(ovk_api.wrapper, query);
             }
 
             @Override
             public void onButtonClicked(int buttonCode) {
             }
         });
-        setAPIWrapper();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -118,45 +97,27 @@ public class QuickSearchActivity extends MonetCompatActivity {
         }
         if(commsSection == null) {
             commsSection = new CommunitiesSearchSection(QuickSearchActivity.this,
-                    groups.getList());
+                    ovk_api.groups.getList());
             sectionAdapter.addSection(commsSection);
         } else {
             commsSection = new CommunitiesSearchSection(QuickSearchActivity.this,
-                    groups.getList());
+                    ovk_api.groups.getList());
         }
         if(peopleSection == null) {
             peopleSection = new PeopleSearchSection(QuickSearchActivity.this,
-                    users.getList());
+                    ovk_api.users.getList());
             sectionAdapter.addSection(peopleSection);
         } else {
             peopleSection = new PeopleSearchSection(QuickSearchActivity.this,
-                    users.getList());
+                    ovk_api.users.getList());
         }
     }
 
-    private void setAPIWrapper() {
-        ovk_api = new OvkAPIWrapper(this);
-        downloadManager = new DownloadManager(this);
-        ovk_api.setServer(instance_prefs.getString("server", ""));
-        ovk_api.setAccessToken(instance_prefs.getString("access_token", ""));
-        users = new Users();
-        groups = new Groups();
-        handler = new Handler(Looper.myLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                Log.d("OpenVK", String.format("Handling API message: %s", msg.what));
-                receiveState(msg.what, msg.getData());
-            }
-        };
-    }
-
     @SuppressLint("NotifyDataSetChanged")
-    private void receiveState(int message, Bundle data) {
-        if(message == HandlerMessages.OVKAPI_USERS_SEARCH) {
-            users.parseSearch(data.getString("response"));
+    public void receiveState(int message, Bundle data) {
+        if(message == HandlerMessages.USERS_SEARCH) {
             handler.sendEmptyMessage(UiMessages.UPTIME_QUICK_SEARCH);
-        } else if(message == HandlerMessages.OVKAPI_GROUPS_SEARCH) {
-            groups.parseSearch(data.getString("response"));
+        } else if(message == HandlerMessages.GROUPS_SEARCH) {
             handler.sendEmptyMessage(UiMessages.UPTIME_QUICK_SEARCH);
         } else if(message == UiMessages.UPTIME_QUICK_SEARCH) {
             final RecyclerView searchResultsView = findViewById(R.id.results_rv);
@@ -169,7 +130,7 @@ public class QuickSearchActivity extends MonetCompatActivity {
     }
 
     public void openProfile(int position) {
-        User user = users.getList().get(position);
+        User user = ovk_api.users.getList().get(position);
         String url = "";
         if(user.id > 0) {
             url = String.format("openvk://profile/id%s", user.id);
@@ -191,7 +152,7 @@ public class QuickSearchActivity extends MonetCompatActivity {
     }
 
     public void openGroup(int position) {
-        Group group = groups.getList().get(position);
+        Group group = ovk_api.groups.getList().get(position);
         String url = "";
         if(group.id > 0) {
             url = String.format("openvk://group/club%s", group.id);

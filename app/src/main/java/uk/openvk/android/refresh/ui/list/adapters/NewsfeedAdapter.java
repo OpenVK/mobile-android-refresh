@@ -3,13 +3,15 @@ package uk.openvk.android.refresh.ui.list.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,34 +20,30 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Account;
+import uk.openvk.android.refresh.api.OpenVKAPI;
 import uk.openvk.android.refresh.api.attachments.Attachment;
 import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.attachments.VideoAttachment;
-import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.api.entities.Account;
+import uk.openvk.android.refresh.api.entities.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
-import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.PhotoViewerActivity;
-import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.VideoPlayerActivity;
+import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
 import uk.openvk.android.refresh.ui.view.layouts.PhotoAttachmentLayout;
 import uk.openvk.android.refresh.ui.view.layouts.VideoAttachmentLayout;
 
@@ -121,31 +119,6 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         void bind(final int position) {
             final WallPost item = getItem(position);
             poster_name.setText(item.name);
-            Date dt = new Date(TimeUnit.SECONDS.toMillis(item.dt_sec));
-            Date dt_midnight = new Date(System.currentTimeMillis() + 86400000);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(dt_midnight);
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < 86400000) {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[1],
-                        new SimpleDateFormat("HH:mm").format(dt));
-            } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec))) < (86400000 * 2)) {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[2],
-                        new SimpleDateFormat("HH:mm").format(dt));
-            } else if((calendar.getTimeInMillis() - (TimeUnit.SECONDS.toMillis(item.dt_sec)))
-                    < 31536000000L) {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)[3],
-                        new SimpleDateFormat("d MMMM").format(dt),
-                        new SimpleDateFormat("HH:mm").format(dt));
-            } else {
-                item.info = String.format(ctx.getResources().getStringArray(R.array.date_differences)
-                                [3],
-                        new SimpleDateFormat("d MMMM yyyy").format(dt),
-                        new SimpleDateFormat("HH:mm").format(dt));
-            }
             post_info.setText(item.info);
 
             if(item.verified_author) {
@@ -196,7 +169,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         } else if (ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
                             //((GroupIntentActivity) ctx).deleteLike(position, "post", view);
                         } else if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                            ((AppActivity) ctx).deleteLike(position, "post", view);
+                            deleteLike(item, position, "post", view);
                         }
                     } else {
                         if(!likeDeleted) {
@@ -207,7 +180,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         } else if (ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
                             //((GroupIntentActivity) ctx).addLike(position, "post", view);
                         } else if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                            ((AppActivity) ctx).addLike(position, "post", view);
+                            addLike(item, position, "post", view);
                         }
                     }
                 }
@@ -216,7 +189,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             post_comments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Global.openPostComments(account, item, ctx);
+                    openPostComments(item, ctx);
                 }
             });
 
@@ -272,13 +245,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 View.OnClickListener openProfileListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(ctx.getClass().getSimpleName().equals("AppActivity")) {
-                            ((AppActivity) ctx).openProfileFromWall(position);
-                        } else if(ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
-                            ((ProfileIntentActivity) ctx).openProfileFromWall(position);
-                        } else if(ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
-                            ((GroupIntentActivity) ctx).openProfileFromWall(position);
-                        }
+                        openProfile(item);
                     }
                 };
                 (convertView.findViewById(R.id.profile_avatar))
@@ -396,12 +363,42 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         }
     }
 
+    public void openProfile(WallPost post) {
+        String url = "";
+        if(post.author_id > 0) {
+            url = String.format("openvk://profile/id%s", post.author_id);
+        } else if(post.author_id < 0) {
+            url = String.format("openvk://group/club%s", post.author_id);
+        }
+        if(url.length() > 0) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            final PackageManager pm = ctx.getPackageManager();
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo>
+                    activityList = pm.queryIntentActivities(i, 0);
+            for (int index = 0; index < activityList.size(); index++) {
+                ResolveInfo app = activityList.get(index);
+                if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                    i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                }
+            }
+            ctx.startActivity(i);
+        }
+    }
+
     private void setTextViewDrawableColor(TextView textView, int color) {
         for (Drawable drawable : textView.getCompoundDrawablesRelative()) {
             if (drawable != null) {
                 drawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
             }
         }
+    }
+
+    public void openPostComments(WallPost post, Context ctx) {
+        Intent intent = new Intent(ctx, WallPostActivity.class);
+        intent.putExtra("post", post);
+        intent.putExtra("counters", post.counters);
+        ctx.startActivity(intent);
     }
 
     @Override
@@ -419,5 +416,29 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     public void setAvatarLoadState(boolean value) {
         this.avatar_loaded = value;
         //notifyDataSetChanged();
+    }
+
+    public void addLike(WallPost item, int position, String post, View view) {
+        if(ctx instanceof AppActivity app_a) {
+            OpenVKAPI ovk_api = app_a.ovk_api;
+            if (app_a.selectedFragment == ((AppActivity) ctx).profileFragment) {
+                app_a.profileFragment.wallSelect(position, "likes", "add");
+            } else {
+                app_a.newsfeedFragment.select(position, "likes", "add");
+            }
+            ovk_api.likes.add(ovk_api.wrapper, item.owner_id, item.post_id, position);
+        }
+    }
+
+    public void deleteLike(WallPost item, int position, String post, View view) {
+        if(ctx instanceof AppActivity app_a) {
+            OpenVKAPI ovk_api = app_a.ovk_api;
+            if (app_a.selectedFragment == ((AppActivity) ctx).profileFragment) {
+                app_a.profileFragment.wallSelect(position, "likes", "delete");
+            } else {
+                app_a.newsfeedFragment.select(position, "likes", "delete");
+            }
+            ovk_api.likes.delete(ovk_api.wrapper, item.owner_id, item.post_id, position);
+        }
     }
 }

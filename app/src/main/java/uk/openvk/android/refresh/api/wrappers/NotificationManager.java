@@ -7,19 +7,34 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.core.app.NotificationCompat;
-
 import java.util.ArrayList;
 
+import androidx.core.app.NotificationCompat;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.Conversation;
+import uk.openvk.android.refresh.api.entities.Conversation;
 import uk.openvk.android.refresh.longpoll_api.MessageEvent;
-import uk.openvk.android.refresh.ui.core.activities.AppActivity;
-import uk.openvk.android.refresh.ui.core.activities.MainActivity;
+import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
+
+/** Copyleft © 2022, 2023 OpenVK Team
+ *  Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ *
+ *  This program is free software: you can redistribute it and/or modify it under the terms of
+ *  the GNU Affero General Public License as published by the Free Software Foundation, either
+ *  version 3 of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License along with this
+ *  program. If not, see https://www.gnu.org/licenses/.
+ *
+ *  Source code: https://github.com/openvk/mobile-android-refresh
+ **/
 
 public class NotificationManager {
 
@@ -31,13 +46,12 @@ public class NotificationManager {
     public boolean vibrate;
     public boolean playSound;
 
-    public NotificationManager(Context ctx, boolean ledIndicate, boolean vibrate, boolean playSound,
-                               String ringtone_url) {
+    public NotificationManager(Context ctx, boolean ledIndicate, boolean vibrate, boolean playSound, String ringtone_url) {
         this.ctx = ctx;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notifMan = ctx.getSystemService(android.app.NotificationManager.class);
             int importance = android.app.NotificationManager.IMPORTANCE_DEFAULT;
-            notifChannel = new NotificationChannel("direct_messages", ctx.getResources().getString(R.string.messages_notifch_title), importance);
+            notifChannel = new NotificationChannel("lp_updates", "LongPoll Updates", importance);
             notifChannel.enableLights(ledIndicate);
             notifChannel.enableVibration(vibrate);
             if(playSound) {
@@ -57,8 +71,8 @@ public class NotificationManager {
         }
     }
 
-    public void buildDirectMsgNotification(Context ctx, ArrayList<Conversation> conversations, Bundle data,
-                                           boolean notify, boolean is_repeat) {
+    public void buildDirectMsgNotification(Context ctx, ArrayList<Conversation> conversations,
+                                           Bundle data, boolean notify, boolean is_repeat) {
         int notification_id = 0;
         MessageEvent msg_event = new MessageEvent(data.getString("response"));
         if(msg_event.peer_id > 0 && notify) {
@@ -81,33 +95,9 @@ public class NotificationManager {
         }
     }
 
-    public Notification createServiceNotification(Context ctx) {
-        String CHANNEL_ID = "service_notifch";
-        NotificationChannel channel = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            channel = new NotificationChannel(CHANNEL_ID,
-                    ctx.getResources().getString(R.string.service_notifch_title),
-                    android.app.NotificationManager.IMPORTANCE_NONE);
-
-
-            ((android.app.NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE))
-                    .createNotificationChannel(channel);
-            return new NotificationCompat.Builder(ctx, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_ovk_notif)
-                    .setStyle(new NotificationCompat.BigTextStyle())
-                    .setContentTitle(ctx.getResources().getString(R.string.longpoll_notification_title))
-                    .setContentText(ctx.getResources().getString(R.string.longpoll_notification_subtitle)).build();
-        }
-        return null;
-    }
-
     public boolean isRepeat(String last_longpoll_response, String response) {
         try {
-            if (last_longpoll_response.equals(response)) {
-                return true;
-            } else {
-                return false;
-            }
+            return last_longpoll_response.equals(response);
         } catch (Exception ex) {
             return false;
         }
@@ -124,7 +114,7 @@ public class NotificationManager {
                             .setContentText(description)
                             .setChannelId("lp_updates");
             notification = builder.build();
-            Intent notificationIntent = new Intent(ctx, MainActivity.class);
+            Intent notificationIntent = new Intent(ctx, ConversationActivity.class);
             notification.contentIntent = PendingIntent.getActivity(ctx, 2, notificationIntent, 0);
         } else {
             NotificationCompat.Builder builder =
@@ -144,22 +134,24 @@ public class NotificationManager {
 
             if(playSound) {
                 notification.defaults = Notification.DEFAULT_SOUND;
+            /*  This code doesn't work yet
                 if(ringtone_url.equals("content://settings/system/notification_sound")) {
-//                    MediaPlayer mp = MediaPlayer.create(ctx, R.raw.notify);
-//                    mp.start();
+                    MediaPlayer mp = MediaPlayer.create(ctx, R.raw.notify);
+                    mp.start();
                 } else {
                     notification.sound = Uri.parse(ringtone_url);
                 }
+            */
             }
         }
         return notification;
     }
 
     public PendingIntent createConversationIntent(int peer_id, String title) {
-        Intent notificationIntent = new Intent(ctx, MainActivity.class);
+        Intent notificationIntent = new Intent(ctx, ConversationActivity.class);
         notificationIntent.putExtra("peer_id", peer_id);
         notificationIntent.putExtra("conv_title", title);
         notificationIntent.putExtra("online", 1);
-        return PendingIntent.getActivity(ctx, 0, notificationIntent, 0);
+        return PendingIntent.getActivity(ctx, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
     }
 }

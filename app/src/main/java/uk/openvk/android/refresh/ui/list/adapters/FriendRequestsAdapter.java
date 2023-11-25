@@ -2,26 +2,29 @@ package uk.openvk.android.refresh.ui.list.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.Friend;
+import uk.openvk.android.refresh.api.entities.Friend;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
-import uk.openvk.android.refresh.ui.core.activities.FriendsIntentActivity;
 import uk.openvk.android.refresh.ui.core.fragments.app.FriendsFragment;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
 
@@ -86,11 +89,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
             View.OnClickListener openProfileListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        ((AppActivity) ctx).openProfileFromFriends(position, true);
-                    } else if(ctx.getClass().getSimpleName().equals("FriendsIntentActivity")) {
-                        ((FriendsIntentActivity) ctx).openProfileFromFriends(position);
-                    }
+                    openProfile(item);
                 }
             };
             add_btn.setOnClickListener(new View.OnClickListener() {
@@ -117,5 +116,24 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
 
     private Friend getItem(int position) {
         return items.get(position);
+    }
+
+    public void openProfile(Friend friend) {
+        String url = "";
+        url = String.format("openvk://profile/id%s", friend.id);
+        if(url.length() > 0) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            final PackageManager pm = ctx.getPackageManager();
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> activityList =
+                    pm.queryIntentActivities(i, 0);
+            for (int index = 0; index < activityList.size(); index++) {
+                ResolveInfo app = activityList.get(index);
+                if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                    i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                }
+            }
+            ctx.startActivity(i);
+        }
     }
 }

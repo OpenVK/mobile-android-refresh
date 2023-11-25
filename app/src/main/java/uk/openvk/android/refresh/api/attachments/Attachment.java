@@ -1,12 +1,22 @@
 package uk.openvk.android.refresh.api.attachments;
 
+/** Copyleft © 2022, 2023 OpenVK Team
+ *  Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ *
+ *  This program is free software: you can redistribute it and/or modify it under the terms of
+ *  the GNU Affero General Public License as published by the Free Software Foundation, either
+ *  version 3 of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License along with this
+ *  program. If not, see https://www.gnu.org/licenses/.
+ *
+ *  Source code: https://github.com/openvk/mobile-android-refresh
+ **/
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-
-public class Attachment implements Parcelable {
+public class Attachment {
     public String type;
     public String status;
     private Object content;
@@ -16,31 +26,18 @@ public class Attachment implements Parcelable {
             case "photo":
                 content = new PhotoAttachment();
                 break;
+            case "video":
+                content = new VideoAttachment();
+                break;
             case "poll":
                 content = new PollAttachment();
                 break;
+            case "note":
+                content = new CommonAttachment();
             default:
-                content = null;
                 break;
         }
     }
-
-    protected Attachment(Parcel in) {
-        type = in.readString();
-        status = in.readString();
-    }
-
-    public static final Creator<Attachment> CREATOR = new Creator<Attachment>() {
-        @Override
-        public Attachment createFromParcel(Parcel in) {
-            return new Attachment(in);
-        }
-
-        @Override
-        public Attachment[] newArray(int size) {
-            return new Attachment[size];
-        }
-    };
 
     public Object getContent() {
         return content;
@@ -48,16 +45,5 @@ public class Attachment implements Parcelable {
 
     public void setContent(Object content) {
         this.content = content;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(type);
-        dest.writeString(status);
     }
 }

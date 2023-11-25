@@ -2,61 +2,39 @@ package uk.openvk.android.refresh.ui.core.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.material.appbar.MaterialToolbar;
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
-
-import com.google.android.material.appbar.MaterialToolbar;
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
-import com.kieronquinn.monetcompat.core.MonetCompat;
-
-import java.util.Locale;
-
 import dev.kdrag0n.monet.theme.ColorScheme;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Account;
-import uk.openvk.android.refresh.api.Groups;
-import uk.openvk.android.refresh.api.Likes;
-import uk.openvk.android.refresh.api.Wall;
+import uk.openvk.android.refresh.api.entities.Group;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.api.models.Group;
-import uk.openvk.android.refresh.api.models.WallPost;
-import uk.openvk.android.refresh.api.wrappers.DownloadManager;
-import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
+import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
 import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 import uk.openvk.android.refresh.ui.core.fragments.app.CommunityFragment;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class GroupIntentActivity extends MonetCompatActivity {
-    private SharedPreferences global_prefs;
-    private SharedPreferences instance_prefs;
-    public Handler handler;
-    private OvkAPIWrapper ovk_api;
-    private DownloadManager downloadManager;
-    private Wall wall;
-    public Account account;
-    private Likes likes;
+public class GroupIntentActivity extends NetworkActivity {
     private CommunityFragment communityFragment;
     private FragmentTransaction ft;
     private String args;
     private MaterialToolbar toolbar;
-    private Groups groups;
     public Group group;
     private boolean isDarkTheme;
 
@@ -99,15 +77,15 @@ public class GroupIntentActivity extends MonetCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.leave_group) {
             if(group.is_member > 0) {
-                group.leave(ovk_api);
+                group.leave(ovk_api.wrapper);
             } else {
-                group.join(ovk_api);
+                group.join(ovk_api.wrapper);
             }
         } else if(item.getItemId() == R.id.copy_link) {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
                     getSystemService(Context.CLIPBOARD_SERVICE);
             String url = "";
-            if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
+            if(ovk_api.account.user.screen_name != null && ovk_api.account.user.screen_name.length() > 0) {
                 url = String.format("https://%s/%s",
                         instance_prefs.getString("server", ""), group.screen_name);
             } else {
@@ -119,7 +97,7 @@ public class GroupIntentActivity extends MonetCompatActivity {
             clipboard.setPrimaryClip(clip);
         } else if(item.getItemId() == R.id.open_in_browser) {
             String url = "";
-            if(account.user.screen_name != null && account.user.screen_name.length() > 0) {
+            if(ovk_api.account.user.screen_name != null && ovk_api.account.user.screen_name.length() > 0) {
                 url = String.format("https://%s/%s",
                         instance_prefs.getString("server", ""), group.screen_name);
             } else {
@@ -146,22 +124,7 @@ public class GroupIntentActivity extends MonetCompatActivity {
     }
 
     private void setAPIWrapper() {
-        ovk_api = new OvkAPIWrapper(this);
-        downloadManager = new DownloadManager(this);
-        ovk_api.setServer(instance_prefs.getString("server", ""));
-        ovk_api.setAccessToken(instance_prefs.getString("access_token", ""));
-        groups = new Groups();
-        wall = new Wall();
-        account = new Account(this);
-        likes = new Likes();
-        handler = new Handler(Looper.myLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                Log.d("OpenVK", String.format("Handling API message: %s", msg.what));
-                receiveState(msg.what, msg.getData());
-            }
-        };
-        account.getProfileInfo(ovk_api);
+        ovk_api.account.getProfileInfo(ovk_api.wrapper);
     }
 
     private void createFragments() {
@@ -202,25 +165,27 @@ public class GroupIntentActivity extends MonetCompatActivity {
         }
     }
 
-    private void receiveState(int message, Bundle data) {
+    public void receiveState(int message, Bundle data) {
         try {
-            if (message == HandlerMessages.OVKAPI_ACCOUNT_PROFILE_INFO) {
+            if (message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
                 if (args.startsWith("club")) {
                     try {
-                        groups.getGroupByID(ovk_api, Integer.parseInt(args.substring(4)));
+                        ovk_api.groups.getGroupByID(
+                                ovk_api.wrapper,
+                                Integer.parseInt(args.substring(4))
+                        );
                     } catch (Exception ex) {
-                        groups.search(ovk_api, args);
+                        ovk_api.groups.search(ovk_api.wrapper, args);
                     }
                 } else {
-                    groups.search(ovk_api, args);
+                    ovk_api.groups.search(ovk_api.wrapper, args);
                 }
                 communityFragment.header.hideSendMessageButton();
                 communityFragment.header.setCountersVisibility(PublicPageCounters.FRIENDS, false);
                 communityFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, true);
                 communityFragment.addGroupCollapseListener();
-            } else if (message == HandlerMessages.OVKAPI_GROUPS_GET) {
-                groups.parseSearch(data.getString("response"));
-                group = groups.getList().get(0);
+            } else if (message == HandlerMessages.GROUPS_GET) {
+                group = ovk_api.groups.getList().get(0);
                 MaterialToolbar appBar = findViewById(R.id.app_toolbar);
                 appBar.getMenu().clear();
                 appBar.inflateMenu(R.menu.group);
@@ -229,12 +194,11 @@ public class GroupIntentActivity extends MonetCompatActivity {
                         appBar.getMenu().removeItem(R.id.leave_group);
                     }
                 }
-                communityFragment.setData(group, ovk_api);
-                group.downloadAvatar(downloadManager, "high");
-                wall.get(ovk_api, -group.id, 50);
-            } else if (message == HandlerMessages.OVKAPI_GROUPS_GET_BY_ID) {
-                groups.parse(data.getString("response"));
-                group = groups.getList().get(0);
+                communityFragment.setData(group, ovk_api.wrapper);
+                group.downloadAvatar(ovk_api.dlman, "high");
+                ovk_api.wall.get(ovk_api.wrapper, -group.id, 50);
+            } else if (message == HandlerMessages.GROUPS_GET_BY_ID) {
+                group = ovk_api.groups.getList().get(0);
                 MaterialToolbar appBar = findViewById(R.id.app_toolbar);
                 appBar.getMenu().clear();
                 appBar.inflateMenu(R.menu.group);
@@ -243,49 +207,29 @@ public class GroupIntentActivity extends MonetCompatActivity {
                         appBar.getMenu().removeItem(R.id.leave_group);
                     }
                 }
-                communityFragment.setData(group, ovk_api);
-                group.downloadAvatar(downloadManager, "high");
-                wall.get(ovk_api, -group.id, 50);
-            } else if(message == HandlerMessages.OVKAPI_GROUPS_SEARCH) {
-                groups.parseSearch(data.getString("response"));
-                groups.getGroups(ovk_api, groups.getList().get(0).id, 1);
-            } else if (message == HandlerMessages.OVKAPI_WALL_GET) {
-                wall.parse(this, downloadManager, "high", data.getString("response"));
-                communityFragment.createWallAdapter(this, wall.getWallItems());
-            } else if(message == HandlerMessages.DLM_WALL_AVATARS
-                    || message == HandlerMessages.DLM_WALL_ATTACHMENTS) {
-                if(message == HandlerMessages.DLM_WALL_AVATARS) {
+                communityFragment.setData(group, ovk_api.wrapper);
+                group.downloadAvatar(ovk_api.dlman, "high");
+                ovk_api.wall.get(ovk_api.wrapper, -group.id, 50);
+            } else if(message == HandlerMessages.GROUPS_SEARCH) {
+                ovk_api.groups.getGroups(ovk_api.wrapper, ovk_api.groups.getList().get(0).id, 1);
+            } else if (message == HandlerMessages.WALL_GET) {
+                communityFragment.createWallAdapter(this, ovk_api.wall.getWallItems());
+            } else if(message == HandlerMessages.WALL_AVATARS
+                    || message == HandlerMessages.WALL_ATTACHMENTS) {
+                if(message == HandlerMessages.WALL_AVATARS) {
                     communityFragment.wallAdapter.setAvatarLoadState(true);
                 } else {
                     communityFragment.wallAdapter.setPhotoLoadState(true);
                 }
-            } else if(message == HandlerMessages.DLM_GROUP_AVATARS) {
-                communityFragment.setData(group, ovk_api);
-            } else if (message == HandlerMessages.OVKAPI_GROUPS_JOIN) {
+            } else if(message == HandlerMessages.GROUP_AVATARS) {
+                communityFragment.setData(group, ovk_api.wrapper);
+            } else if (message == HandlerMessages.GROUPS_JOIN) {
                 communityFragment.setJoinStatus(group, 1);
-            } else if (message == HandlerMessages.OVKAPI_GROUPS_LEAVE) {
+            } else if (message == HandlerMessages.GROUPS_LEAVE) {
                 communityFragment.setJoinStatus(group, 0);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-    }
-
-    public void openProfileFromWall(int position) {
-        WallPost post = wall.getWallItems().get(position);
-        String url = "";
-        if(post.author_id != group.id) {
-            if (post.author_id > 0) {
-                url = String.format("openvk://profile/id%s", post.author_id);
-            } else if (post.author_id < 0) {
-                url = String.format("openvk://group/club%s", post.author_id);
-            }
-
-            if (url.length() > 0) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
         }
     }
 

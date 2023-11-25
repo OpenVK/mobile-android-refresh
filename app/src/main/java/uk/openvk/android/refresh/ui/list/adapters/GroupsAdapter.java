@@ -2,24 +2,27 @@ package uk.openvk.android.refresh.ui.list.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.Group;
+import uk.openvk.android.refresh.api.entities.Group;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
-import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.Holder>  {
     private Context ctx;
@@ -84,9 +87,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.Holder>  {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        ((AppActivity) ctx).openCommunityPage(position);
-                    }
+                    openCommunityPage(item);
                 }
             });
         }
@@ -99,5 +100,24 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.Holder>  {
 
     private Group getItem(int position) {
         return items.get(position);
+    }
+
+    public void openCommunityPage(Group group) {
+        String url = "";
+        url = String.format("openvk://group/club%s", group.id);
+        if(url.length() > 0) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            final PackageManager pm = ctx.getPackageManager();
+            @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo>
+                    activityList = pm.queryIntentActivities(i, 0);
+            for (int index = 0; index < activityList.size(); index++) {
+                ResolveInfo app = activityList.get(index);
+                if (app.activityInfo.name.contains("uk.openvk.android.refresh")) {
+                    i.setClassName(app.activityInfo.packageName, app.activityInfo.name);
+                }
+            }
+            ctx.startActivity(i);
+        }
     }
 }

@@ -9,16 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.api.entities.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
@@ -69,13 +68,13 @@ public class WallFragment extends Fragment {
             wallView.setLayoutManager(llm);
             if(ctx instanceof AppActivity) {
                 wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts,
-                        ((AppActivity) ctx).account);
+                        ((AppActivity) ctx).ovk_api.account);
             } else if(ctx instanceof ProfileIntentActivity) {
                 wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts,
-                        ((ProfileIntentActivity) ctx).account);
+                        ((ProfileIntentActivity) ctx).ovk_api.account);
             } else if(ctx instanceof GroupIntentActivity) {
                 wallAdapter = new NewsfeedAdapter(ctx, this.wallPosts,
-                        ((GroupIntentActivity) ctx).account);
+                        ((GroupIntentActivity) ctx).ovk_api.account);
             }
             wallView.setAdapter(wallAdapter);
         } else {

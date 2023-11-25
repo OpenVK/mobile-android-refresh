@@ -4,16 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.Group;
-import uk.openvk.android.refresh.api.models.User;
+import uk.openvk.android.refresh.api.entities.Group;
 import uk.openvk.android.refresh.ui.core.activities.QuickSearchActivity;
 
 public class CommunitiesSearchSection extends Section {

@@ -18,20 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
@@ -40,29 +30,34 @@ import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.Account;
-import uk.openvk.android.refresh.api.Friends;
+import uk.openvk.android.refresh.api.entities.Account;
+import uk.openvk.android.refresh.api.entities.User;
+import uk.openvk.android.refresh.api.entities.WallPost;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.api.models.User;
-import uk.openvk.android.refresh.api.models.WallPost;
+import uk.openvk.android.refresh.api.models.Friends;
 import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.ConversationActivity;
-import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.AboutFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.pub_pages.WallFragment;
 import uk.openvk.android.refresh.ui.core.listeners.AppBarStateChangeListener;
+import uk.openvk.android.refresh.ui.list.adapters.NewsfeedAdapter;
 import uk.openvk.android.refresh.ui.list.adapters.PublicPageAboutAdapter;
 import uk.openvk.android.refresh.ui.list.items.PublicPageAboutItem;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProfileHeader;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
-import uk.openvk.android.refresh.ui.list.adapters.NewsfeedAdapter;
 import uk.openvk.android.refresh.ui.view.pager.adapters.PublicPagerAdapter;
 
 public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
@@ -369,17 +364,17 @@ public class ProfileFragment extends Fragment implements AppBarLayout.OnOffsetCh
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
-            if(message == HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION) {
+            if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_no_internet);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))
                         .setText(R.string.error_subtitle);
-            } else if(message == HandlerMessages.OVKAPI_INTERNAL_ERROR || message == HandlerMessages.OVKAPI_UNKNOWN_ERROR) {
+            } else if(message == HandlerMessages.INTERNAL_ERROR || message == HandlerMessages.UNKNOWN_ERROR) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_instance_failure);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))
                         .setText(R.string.error_subtitle_instance);
-            } else if(message == HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE) {
+            } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_instance);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))

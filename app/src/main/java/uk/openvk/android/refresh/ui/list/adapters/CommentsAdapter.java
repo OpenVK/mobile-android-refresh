@@ -10,17 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.collection.LruCache;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import androidx.collection.LruCache;
+import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
-import uk.openvk.android.refresh.api.models.Comment;
+import uk.openvk.android.refresh.api.entities.Comment;
 
 public class CommentsAdapter  extends RecyclerView.Adapter<CommentsAdapter.Holder> {
 

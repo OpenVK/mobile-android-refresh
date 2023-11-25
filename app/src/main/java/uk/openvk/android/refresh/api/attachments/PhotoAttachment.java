@@ -4,15 +4,30 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/** Copyleft © 2022, 2023 OpenVK Team
+ *  Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ *
+ *  This program is free software: you can redistribute it and/or modify it under the terms of
+ *  the GNU Affero General Public License as published by the Free Software Foundation, either
+ *  version 3 of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License along with this
+ *  program. If not, see https://www.gnu.org/licenses/.
+ *
+ *  Source code: https://github.com/openvk/mobile-android-refresh
+ **/
 
 public class PhotoAttachment implements Parcelable {
     public long id;
     public String url;
     public String original_url;
     public String filename;
-    public boolean loaded;
-    public String error;
+    public int[] size;
     public Bitmap photo;
+    public String error;
     public int displayW;
     public int displayH;
 
@@ -22,7 +37,6 @@ public class PhotoAttachment implements Parcelable {
     protected PhotoAttachment(Parcel in) {
         url = in.readString();
         filename = in.readString();
-        original_url = in.readString();
     }
 
     public static final Creator<PhotoAttachment> CREATOR = new Creator<PhotoAttachment>() {
@@ -46,6 +60,5 @@ public class PhotoAttachment implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(url);
         parcel.writeString(filename);
-        parcel.writeString(original_url);
     }
 }

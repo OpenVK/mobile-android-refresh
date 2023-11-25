@@ -3,7 +3,6 @@ package uk.openvk.android.refresh.ui.core.fragments.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,8 +10,11 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.kieronquinn.monetcompat.core.MonetCompat;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,25 +22,18 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.google.android.material.button.MaterialButton;
-import com.kieronquinn.monetcompat.core.MonetCompat;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
+import uk.openvk.android.refresh.api.entities.WallPost;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.api.models.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
+import uk.openvk.android.refresh.ui.list.adapters.NewsfeedAdapter;
 import uk.openvk.android.refresh.ui.view.InfinityRecyclerView;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
-import uk.openvk.android.refresh.ui.list.adapters.NewsfeedAdapter;
 
 public class NewsfeedFragment extends Fragment {
     private LinearLayoutManager layoutManager;
@@ -116,13 +111,13 @@ public class NewsfeedFragment extends Fragment {
         if(newsfeedAdapter == null) {
             if(ctx instanceof AppActivity) {
                 newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts,
-                        ((AppActivity) ctx).account);
+                        ((AppActivity) ctx).ovk_api.account);
             } else if(ctx instanceof ProfileIntentActivity) {
                 newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts,
-                        ((ProfileIntentActivity) ctx).account);
+                        ((ProfileIntentActivity) ctx).ovk_api.account);
             } else if(ctx instanceof GroupIntentActivity) {
                 newsfeedAdapter = new NewsfeedAdapter(getActivity(), this.wallPosts,
-                        ((GroupIntentActivity) ctx).account);
+                        ((GroupIntentActivity) ctx).ovk_api.account);
             }
             llm = new LinearLayoutManager(ctx);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -161,23 +156,23 @@ public class NewsfeedFragment extends Fragment {
             ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
-            if(message == HandlerMessages.OVKAPI_NO_INTERNET_CONNECTION) {
+            if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_no_internet);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))
                         .setText(R.string.error_subtitle);
-            } else if(message == HandlerMessages.OVKAPI_CONNECTION_TIMEOUT) {
+            } else if(message == HandlerMessages.CONNECTION_TIMEOUT) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_instance_nrps);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))
                         .setText(R.string.error_subtitle_instance);
-            } else if(message == HandlerMessages.OVKAPI_INTERNAL_ERROR
-                    || message == HandlerMessages.OVKAPI_UNKNOWN_ERROR) {
+            } else if(message == HandlerMessages.INTERNAL_ERROR
+                    || message == HandlerMessages.UNKNOWN_ERROR) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_instance_failure);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))
                         .setText(R.string.error_subtitle_instance);
-            } else if(message == HandlerMessages.OVKAPI_INSTANCE_UNAVAILABLE) {
+            } else if(message == HandlerMessages.INSTANCE_UNAVAILABLE) {
                 ((TextView) errorLayout.findViewById(R.id.error_title))
                         .setText(R.string.error_instance);
                 ((TextView) errorLayout.findViewById(R.id.error_subtitle))

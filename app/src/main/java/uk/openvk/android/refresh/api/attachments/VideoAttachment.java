@@ -1,13 +1,26 @@
 package uk.openvk.android.refresh.api.attachments;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import uk.openvk.android.refresh.api.models.VideoFiles;
+import uk.openvk.android.refresh.api.entities.VideoFiles;
 
-/**
- * File created by Dmitry on 14.02.2023.
- */
+/** Copyleft © 2022, 2023 OpenVK Team
+ *  Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ *
+ *  This program is free software: you can redistribute it and/or modify it under the terms of
+ *  the GNU Affero General Public License as published by the Free Software Foundation, either
+ *  version 3 of the License, or (at your option) any later version.
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ *  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *  See the GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License along with this
+ *  program. If not, see https://www.gnu.org/licenses/.
+ *
+ *  Source code: https://github.com/openvk/mobile-android-refresh
+ **/
 
 public class VideoAttachment implements Parcelable {
     public VideoFiles files;
@@ -22,8 +35,7 @@ public class VideoAttachment implements Parcelable {
 
     }
 
-    public VideoAttachment(long id, String title, VideoFiles files, String url_thumb, int duration,
-                           String filename) {
+    public VideoAttachment(long id, String title, VideoFiles files, String url_thumb, int duration, String filename) {
         this.id = id;
         this.title = title;
         this.files = files;
