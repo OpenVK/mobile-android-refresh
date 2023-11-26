@@ -27,11 +27,20 @@
         tools:targetApi="tiramisu"
         android:requestLegacyExternalStorage="true"
         android:localeConfig="@xml/locales">
-        <receiver android:name=".longpoll_api.receivers.LongPollReceiver"
+        <receiver android:name=".receivers.LongPollReceiver"
             android:exported="true"
             android:permission="GET_LONGPOLL_NOTIFICATIONS">
             <intent-filter>
-                <action android:name="uk.openvk.android.legacy.LONGPOLL_RECEIVE" />
+                <action android:name="uk.openvk.android.refresh.LONGPOLL_RECEIVE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receivers.OvkAPIReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="RECEIVE_NETWORK_API_DATA">
+            <intent-filter>
+                <action android:name="uk.openvk.android.refresh.API_DATA_RECEIVE" />
             </intent-filter>
         </receiver>
         <activity
@@ -166,7 +175,6 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:enabled="true" android:name=".longpoll_api.LongPollService"/>
     </application>
 
 </manifest>

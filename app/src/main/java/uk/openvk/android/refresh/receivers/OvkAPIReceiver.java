@@ -46,16 +46,16 @@ public class OvkAPIReceiver extends BroadcastReceiver {
         if(activity instanceof final NetworkActivity netActivity) {
             OpenVKAPI ovk_api = netActivity.ovk_api;
             final Bundle data = intent.getExtras();
-            final Message msg = parseJSONData(ovk_api.wrapper, netActivity.handler, data);
-            ovk_api.wrapper.handler.post(new Runnable() {
-                @Override
-                public void run() {
+            if(data.getString("address").equals(activity.getLocalClassName())) {
+                final Message msg = parseJSONData(ovk_api.wrapper, netActivity.handler, data);
+                ovk_api.wrapper.handler.post(() -> {
                     Log.d(OvkApplication.API_TAG,
-                            String.format("Handling message %s in %s", msg.what, activity.getLocalClassName())
+                            String.format("Handling message %s in %s (%s)", msg.what, activity.getLocalClassName(),
+                                    data.getString("address"))
                     );
                     netActivity.receiveState(msg.what, data);
-                }
-            });
+                });
+            }
         }
     }
 

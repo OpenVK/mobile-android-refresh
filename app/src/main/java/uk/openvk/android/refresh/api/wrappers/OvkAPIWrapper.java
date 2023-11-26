@@ -62,7 +62,7 @@ public class OvkAPIWrapper {
 
     private OkHttpClient httpClient = null;
     private boolean logging_enabled = true; // default for beta releases
-    private String client_name = "openvk_legacy_android";
+    private String client_name = "openvk_refresh_android";
     public Handler handler;
     OvkAPIListeners apiListeners;
 
@@ -786,7 +786,7 @@ public class OvkAPIWrapper {
                         error.description = e.getMessage();
                         sendMessage(HandlerMessages.NO_INTERNET_CONNECTION, method, error.description);
                     } catch (SocketException e) {
-                        if(e.getMessage().contains("ETIMEDOUT")) {
+                        if(Objects.requireNonNull(e.getMessage()).contains("ETIMEDOUT")) {
                             if(logging_enabled) Log.e(OvkApplication.API_TAG,
                                     String.format("Connection error: %s", e.getMessage()));
                             error.description = e.getMessage();
@@ -863,8 +863,8 @@ public class OvkAPIWrapper {
             msg.what = message;
             final Bundle bundle = new Bundle();
             bundle.putString("response", response);
+            bundle.putString("address", apiListeners.from);
             msg.setData(bundle);
-
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -887,6 +887,7 @@ public class OvkAPIWrapper {
             final Bundle bundle = new Bundle();
             bundle.putString("response", response);
             bundle.putString("method", method);
+            bundle.putString("address", apiListeners.from);
             msg.setData(bundle);
             handler.post(new Runnable() {
                 @Override
@@ -916,6 +917,7 @@ public class OvkAPIWrapper {
             bundle.putString("response", response);
             bundle.putString("method", method);
             bundle.putString("args", args);
+            bundle.putString("address", apiListeners.from);
             msg.setData(bundle);
             handler.post(new Runnable() {
                 @Override
@@ -941,6 +943,7 @@ public class OvkAPIWrapper {
             bundle.putString("method", method);
             bundle.putString("args", args);
             bundle.putString("where", where);
+            bundle.putString("address", apiListeners.from);
             msg.setData(bundle);
             handler.post(new Runnable() {
                 @Override

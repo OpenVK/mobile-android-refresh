@@ -488,6 +488,7 @@ public class DownloadManager {
         msg.what = message;
         final Bundle bundle = new Bundle();
         bundle.putString("response", response);
+        bundle.putString("address", apiListeners.from);
         msg.setData(bundle);
         handler.post(new Runnable() {
             @Override
@@ -507,6 +508,7 @@ public class DownloadManager {
         final Bundle bundle = new Bundle();
         bundle.putString("response", response);
         bundle.putInt("id", id);
+        bundle.putString("address", apiListeners.from);
         msg.setData(bundle);
         handler.post(new Runnable() {
             @Override

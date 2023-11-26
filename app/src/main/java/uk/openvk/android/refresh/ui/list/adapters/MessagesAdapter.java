@@ -3,7 +3,6 @@ package uk.openvk.android.refresh.ui.list.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import androidx.cardview.widget.CardView;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import uk.openvk.android.refresh.Global;
-import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.entities.Message;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
@@ -68,7 +66,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
         private final TextView msg_text;
         private final TextView msg_text_2;
         private final TextView msg_timestamp;
-        private final TextView msg_timestamp_2;
         private final LinearLayout horizontal_layout;
         private final LinearLayout vertical_layout;
 
@@ -80,7 +77,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
             this.msg_text = (TextView) view.findViewById(R.id.msg_text);
             this.msg_timestamp = (TextView) view.findViewById(R.id.timestamp);
             this.msg_text_2 = (TextView) view.findViewById(R.id.msg_text_2);
-            this.msg_timestamp_2 = (TextView) view.findViewById(R.id.timestamp_vertical);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -177,13 +173,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
             if (position >= 0) {
                 return items.get(position);
             } else {
-                Log.e(OvkApplication.APP_TAG,
-                        String.format(
-                                "[NewsfeedAdapter] Invalid position %s of %s",
-                                position,
-                                items.size()
-                        )
-                );
                 return null;
             }
         } catch (Exception ex) {
