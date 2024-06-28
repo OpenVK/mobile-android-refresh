@@ -29,8 +29,8 @@ _OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.c
 [GNU (Affero) GPL v3.0](https://github.com/openvk/mobile-android-refresh/blob/main/COPYING) or later version.
 
 ## Links
-[OpenVK API docs](https://docs.openvk.su/openvk_engine/api/description/)\
-[OpenVK Mobile](https://openvk.uk/app)
+[OpenVK API docs](https://docs.ovk.to/openvk_engine/en/api/description/)\
+[OpenVK Mobile](https://ovk.to/app)
 
 <a href="https://codeberg.org/OpenVK/mobile-android-refresh">
     <img alt="Get it on Codeberg" src="https://codeberg.org/Codeberg/GetItOnCodeberg/media/branch/main/get-it-on-blue-on-white.png" height="60">

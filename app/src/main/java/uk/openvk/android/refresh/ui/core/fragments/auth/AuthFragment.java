@@ -40,7 +40,7 @@ public class AuthFragment extends Fragment {
         TextInputLayout password_layout = view.findViewById(R.id.password_layout);
         TextInputEditText username_edit = view.findViewById(R.id.username_edit);
         TextInputEditText password_edit = view.findViewById(R.id.password_edit);
-        instance_edit.setText("openvk.uk");
+        instance_edit.setText("ovk.to");
         sign_in_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
