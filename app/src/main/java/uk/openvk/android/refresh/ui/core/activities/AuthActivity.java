@@ -157,7 +157,7 @@ public class AuthActivity extends NetworkActivity {
         if(instance.equals("vk.com") || instance.equals("vk.ru") || instance.equals("vkontakte.ru")) {
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.dynamic_fragment_layout, new AuthFragment());
-            instance = "openvk.uk";
+            instance = "ovk.to";
             ft.commit();
             authFragment.setAuthorizationData(instance, username, password);
             showOvkWarning();
