@@ -26,7 +26,7 @@ _OpenVK API client and some UI layouts based on [OpenVK Legacy](https://github.c
 8. [SectionedRecyclerViewAdapter](https://github.com/luizgrp/SectionedRecyclerViewAdapter) (X11 License)
 
 ## OpenVK Refresh License
-[GNU (Affero) GPL v3.0](https://github.com/openvk/mobile-android-refresh/blob/main/COPYING) or later version.
+[GNU (Affero) GPL v3.0](COPYING) or later version.
 
 ## Links
 [OpenVK API docs](https://docs.ovk.to/openvk_engine/en/api/description/)\
