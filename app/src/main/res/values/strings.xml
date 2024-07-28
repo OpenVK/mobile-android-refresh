@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">OpenVK</string>
+    <string name="app_name" translatable="false">OpenVK</string>
     <string name="title_activity_auth">Authorization screen</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
