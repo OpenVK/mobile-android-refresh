@@ -23,8 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.core.view.WindowCompat;
 import androidx.preference.PreferenceManager;
 
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
-
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
@@ -33,10 +31,10 @@ import org.videolan.libvlc.util.VLCVideoLayout;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.VideoAttachment;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
 
-public class VideoPlayerActivity extends NetworkActivity {
+public class VideoPlayerActivity extends BaseNetworkActivity {
     private VideoAttachment video;
     private String url;
     private LibVLC vlc;

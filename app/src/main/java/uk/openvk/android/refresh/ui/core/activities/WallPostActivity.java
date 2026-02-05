@@ -34,11 +34,11 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.entities.Comment;
 import uk.openvk.android.refresh.api.entities.WallPost;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.list.adapters.CommentsAdapter;
 import uk.openvk.android.refresh.ui.view.layouts.SendTextBottomPanel;
 
-public class WallPostActivity extends NetworkActivity {
+public class WallPostActivity extends BaseNetworkActivity {
     private boolean isDarkTheme;
     private Toolbar toolbar;
     public ArrayList<Comment> comments;

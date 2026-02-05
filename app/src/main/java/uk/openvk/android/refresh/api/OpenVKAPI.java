@@ -63,13 +63,16 @@ public class OpenVKAPI {
             wrapper.setServer(instance_prefs.getString("server", ""));
             wrapper.setAccessToken(instance_prefs.getString("access_token", ""));
         }
+
         dlman = new DownloadManager(ctx, global_prefs.getBoolean("useHTTPS", true), handler);
         if(instance_prefs != null && instance_prefs.contains("server")) {
             dlman.setInstance(instance_prefs.getString("server", ""));
         }
+
         dlman.setProxyConnection(global_prefs.getBoolean("useProxy", false),
                 global_prefs.getString("proxy_address", ""));
         dlman.setForceCaching(global_prefs.getBoolean("forcedCaching", true));
+
         ulman = new UploadManager(ctx, global_prefs.getBoolean("useHTTPS", true), handler);
         ulman.setProxyConnection(global_prefs.getBoolean("useProxy", false),
                 global_prefs.getString("proxy_address", ""));
@@ -77,10 +80,12 @@ public class OpenVKAPI {
             ulman.setInstance(instance_prefs.getString("server", ""));
         }
         ulman.setForceCaching(global_prefs.getBoolean("forcedCaching", true));
+
         account = new Account(ctx);
         if(instance_prefs != null && instance_prefs.contains("server")) {
             account.getProfileInfo(wrapper);
         }
+
         newsfeed = new Newsfeed();
         user = new User();
         likes = new Likes();

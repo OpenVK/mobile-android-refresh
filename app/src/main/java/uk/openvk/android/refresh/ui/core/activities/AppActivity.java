@@ -69,7 +69,7 @@ import uk.openvk.android.refresh.api.wrappers.JSONParser;
 import uk.openvk.android.refresh.api.wrappers.NotificationManager;
 import uk.openvk.android.refresh.services.LongPollService;
 import uk.openvk.android.refresh.ui.FragmentNavigator;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 import uk.openvk.android.refresh.ui.core.fragments.app.AboutApplicationFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.FriendsFragment;
@@ -82,10 +82,9 @@ import uk.openvk.android.refresh.ui.core.fragments.app.settings.PersonalizationF
 import uk.openvk.android.refresh.ui.core.fragments.app.settings.VideoSettingsFragment;
 import uk.openvk.android.refresh.ui.list.adapters.NewsfeedToolbarSpinnerAdapter;
 import uk.openvk.android.refresh.ui.list.items.ToolbarSpinnerItem;
-import uk.openvk.android.refresh.ui.view.layouts.ProfileHeader;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class AppActivity extends NetworkActivity {
+public class AppActivity extends BaseNetworkActivity {
     public Handler handler;
     public Menu activity_menu;
     public int old_friends_size;

@@ -32,10 +32,10 @@ import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class NewPostActivity extends NetworkActivity {
+public class NewPostActivity extends BaseNetworkActivity {
     private long owner_id;
     private long account_id;
     private String account_first_name;

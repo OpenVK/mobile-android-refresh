@@ -29,7 +29,7 @@ import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.api.entities.Error;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.interfaces.OvkAPIListeners;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 
 /** Copyleft © 2022, 2023, 2026 OpenVK Team
  *  Copyleft © 2022, 2023, 2026 Dmitry Tretyakov (aka. Tinelix)
@@ -125,7 +125,7 @@ public class OvkAPIWrapper {
     }
 
     private void searchHandler() {
-        this.handler = ((NetworkActivity) ctx).handler;
+        this.handler = ((BaseNetworkActivity) ctx).handler;
     }
 
     public String getStatus() {

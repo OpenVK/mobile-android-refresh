@@ -2,16 +2,11 @@ package uk.openvk.android.refresh.ui.core.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
@@ -39,13 +34,12 @@ import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.entities.Conversation;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
-import uk.openvk.android.refresh.api.wrappers.OvkAPIWrapper;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.list.adapters.MessagesAdapter;
 import uk.openvk.android.refresh.ui.view.layouts.SendTextBottomPanel;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class ConversationActivity extends NetworkActivity {
+public class ConversationActivity extends BaseNetworkActivity {
     public Conversation conversation;
     public long peer_id;
     public String conv_title;

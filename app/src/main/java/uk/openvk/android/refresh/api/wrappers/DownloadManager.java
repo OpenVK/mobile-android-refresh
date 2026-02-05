@@ -31,7 +31,7 @@ import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.interfaces.OvkAPIListeners;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 
 /** Copyleft © 2022, 2023, 2026 OpenVK Team
  *  Copyleft © 2022, 2023, 2026 Dmitry Tretyakov (aka. Tinelix)
@@ -523,8 +523,8 @@ public class DownloadManager {
     }
 
     private void searchHandler() {
-        if(ctx instanceof NetworkActivity) {
-            this.handler = ((NetworkActivity) ctx).handler;
+        if(ctx instanceof BaseNetworkActivity) {
+            this.handler = ((BaseNetworkActivity) ctx).handler;
         }
     }
 

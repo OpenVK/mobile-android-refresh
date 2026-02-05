@@ -25,7 +25,7 @@ import uk.openvk.android.refresh.ui.core.activities.NewPostActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.QuickSearchActivity;
 import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 
 public class OvkAPIReceiver extends BroadcastReceiver {
     private Activity activity;
@@ -43,7 +43,7 @@ public class OvkAPIReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(activity instanceof final NetworkActivity netActivity) {
+        if(activity instanceof final BaseNetworkActivity netActivity) {
             OpenVKAPI ovk_api = netActivity.ovk_api;
             final Bundle data = intent.getExtras();
             if(data.getString("address").equals(activity.getLocalClassName())) {

@@ -5,7 +5,8 @@
 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
             android:theme="@style/ApplicationTheme.Toolbar.Dark"
             app:contentInsetStartWithNavigation="0dp"
             app:layout_constraintBottom_toTopOf="@+id/messages_view"
@@ -52,8 +54,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/photo_viewer"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="@string/app_name"
-            android:minHeight="?attr/actionBarSize"/>
+            app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
 
 

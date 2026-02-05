@@ -25,12 +25,12 @@ import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.entities.User;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.core.enumerations.PublicPageCounters;
 import uk.openvk.android.refresh.ui.core.fragments.app.ProfileFragment;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class ProfileIntentActivity extends NetworkActivity {
+public class ProfileIntentActivity extends BaseNetworkActivity {
     private ProfileFragment profileFragment;
     private FragmentTransaction ft;
     private String args;

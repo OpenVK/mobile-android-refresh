@@ -39,7 +39,7 @@ import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.entities.Authorization;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.core.enumerations.UiMessages;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthFragment;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthProgressFragment;
@@ -49,7 +49,7 @@ import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.ui.view.layouts.XConstraintLayout;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class AuthActivity extends NetworkActivity {
+public class AuthActivity extends BaseNetworkActivity {
     private FragmentTransaction ft;
     private XConstraintLayout auth_layout;
     private String instance;

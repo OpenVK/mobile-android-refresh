@@ -15,16 +15,12 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.provider.Settings;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +37,6 @@ import androidx.preference.PreferenceManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,21 +45,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
-import uk.openvk.android.refresh.BuildConfig;
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.PhotoAttachment;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.core.enumerations.UiMessages;
 import uk.openvk.android.refresh.ui.util.glide.GlideApp;
 import uk.openvk.android.refresh.ui.view.ZoomableImageView;
 
-public class PhotoViewerActivity extends NetworkActivity {
+public class PhotoViewerActivity extends BaseNetworkActivity {
     private SharedPreferences global_prefs;
     private PhotoAttachment photo;
     private DownloadManager downloadManager;

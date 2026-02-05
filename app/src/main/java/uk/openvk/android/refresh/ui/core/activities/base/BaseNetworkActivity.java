@@ -1,6 +1,5 @@
 package uk.openvk.android.refresh.ui.core.activities.base;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -21,7 +20,7 @@ import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.interfaces.OvkAPIListeners;
 import uk.openvk.android.refresh.receivers.OvkAPIReceiver;
 
-public class NetworkActivity extends MonetCompatActivity {
+public class BaseNetworkActivity extends MonetCompatActivity {
    public OpenVKAPI ovk_api;
    public SharedPreferences global_prefs;
    public SharedPreferences instance_prefs;

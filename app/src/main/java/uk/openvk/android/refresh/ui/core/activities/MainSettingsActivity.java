@@ -24,13 +24,13 @@ import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.entities.User;
 import uk.openvk.android.refresh.api.wrappers.DownloadManager;
-import uk.openvk.android.refresh.ui.core.activities.base.NetworkActivity;
+import uk.openvk.android.refresh.ui.core.activities.base.BaseNetworkActivity;
 import uk.openvk.android.refresh.ui.core.fragments.app.AboutApplicationFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.settings.MainSettingsFragment;
 import uk.openvk.android.refresh.ui.core.fragments.app.settings.PersonalizationFragment;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
 
-public class MainSettingsActivity extends NetworkActivity {
+public class MainSettingsActivity extends BaseNetworkActivity {
     private DownloadManager downloadManager;
     private FragmentTransaction ft;
     private String args;
