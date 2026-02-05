@@ -1,11 +1,12 @@
 package uk.openvk.android.refresh.api;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 import java.io.IOException;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.internal.Util;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ForwardingSink;
@@ -14,8 +15,8 @@ import okio.Sink;
 import okio.Source;
 
 /**
- * Copyleft © 2022, 2023 OpenVK Team
- * Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ * Copyleft © 2022, 2023, 2026 OpenVK Team
+ * Copyleft © 2022, 2023, 2026 Dmitry Tretyakov (aka. Tinelix)
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, either
@@ -56,20 +57,21 @@ public class TrackingRequestBody extends RequestBody {
     }
 
     @Override
-    public void writeTo(BufferedSink sink) throws IOException {
+    public void writeTo(@NonNull BufferedSink bufferedSink) throws IOException {
+        Buffer buffer = bufferedSink.getBuffer();
         Source source = null;
         try {
             source = Okio.source(file);
             long total = 0;
             long read;
 
-            while ((read = source.read(sink.buffer(), SEGMENT_SIZE)) != -1) {
+            while ((read = buffer.read((Buffer) source, SEGMENT_SIZE)) != -1) {
                 total += read;
-                sink.flush();
+                buffer.flush();
                 this.mListener.onLoad(total, contentLength());
             }
-        } finally {
-            Util.closeQuietly(source);
+        } catch (Exception ignored) {
+
         }
     }
 
@@ -79,7 +81,7 @@ public class TrackingRequestBody extends RequestBody {
             super(delegate);
         }
         @Override
-        public void write(Buffer source, long byteCount) throws IOException {
+        public void write(@NonNull Buffer source, long byteCount) throws IOException {
             super.write(source, byteCount);
             bytesWritten += byteCount;
             mListener.onLoad(bytesWritten, byteCount);

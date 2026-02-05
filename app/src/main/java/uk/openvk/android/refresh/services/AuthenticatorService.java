@@ -8,8 +8,8 @@ import androidx.annotation.Nullable;
 import uk.openvk.android.refresh.utils.AccountAuthentificator;
 
 /**
- * Copyleft © 2022, 2023 OpenVK Team
- * Copyleft © 2022, 2023 Dmitry Tretyakov (aka. Tinelix)
+ * Copyleft © 2022, 2023, 2026 OpenVK Team
+ * Copyleft © 2022, 2023, 2026 Dmitry Tretyakov (aka. Tinelix)
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of
  * the GNU Affero General Public License as published by the Free Software Foundation, either
