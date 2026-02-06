@@ -42,14 +42,14 @@ public class Friends implements Parcelable {
 
     public Friends() {
         jsonParser = new JSONParser();
-        friends = new ArrayList<Friend>();
-        requests = new ArrayList<Friend>();
+        friends = new ArrayList<>();
+        requests = new ArrayList<>();
     }
 
     public Friends(String response, DownloadManager downloadManager, boolean downloadPhoto) {
         jsonParser = new JSONParser();
-        friends = new ArrayList<Friend>();
-        requests = new ArrayList<Friend>();
+        friends = new ArrayList<>();
+        requests = new ArrayList<>();
         parse(response, downloadManager, downloadPhoto, true);
     }
 
@@ -106,7 +106,7 @@ public class Friends implements Parcelable {
             count = json.getInt("count");
             JSONArray users = json.getJSONArray("items");
             ArrayList<PhotoAttachment> avatars;
-            avatars = new ArrayList<PhotoAttachment>();
+            avatars = new ArrayList<>();
             for (int i = 0; i < users.length(); i++) {
                 Friend friend = new Friend(users.getJSONObject(i));
                 PhotoAttachment photoAttachment = new PhotoAttachment();

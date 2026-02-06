@@ -46,6 +46,7 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:fitsSystemWindows="true"
             app:defaultNavHost="true"
             app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,11 +92,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         android:theme="@style/ApplicationTheme.Navigation"
-        app:menu="@menu/app_nav_drawer"
         app:headerLayout="@layout/drawer_header"
         app:itemIconTint="@color/nv_items"
-        app:itemTextColor="@color/nv_items" />
+        app:itemTextColor="@color/nv_items"
+        app:menu="@menu/app_nav_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
