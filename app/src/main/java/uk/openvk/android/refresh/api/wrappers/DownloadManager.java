@@ -73,10 +73,11 @@ public class DownloadManager {
         }
         this.ctx = ctx;
         this.use_https = use_https;
-        this.legacy_mode = legacy_mode;
+
         if(BuildConfig.BUILD_TYPE.equals("release")) {
             logging_enabled = false;
         }
+
         try {
             Log.v(OvkApplication.DL_TAG, "Starting DownloadManager...");
             SSLContext sslContext = null;
@@ -184,6 +185,7 @@ public class DownloadManager {
 
             @Override
             public void run() {
+
                 try {
                     File directory = new File(String.format("%s/%s/photos_cache",
                             ctx.getCacheDir().getAbsolutePath(), instance), where);
@@ -193,31 +195,41 @@ public class DownloadManager {
                 } catch(Exception ex) {
                     ex.printStackTrace();
                 }
+
                 for (int i = 0; i < photoAttachments.size(); i++) {
                     filesize = 0;
                     filename = photoAttachments.get(i).filename;
+
                     File downloadedFile = new File(String.format("%s/%s/photos_cache/%s",
                             ctx.getCacheDir().getAbsolutePath(), instance, where), filename);
+
                     PhotoAttachment photoAttachment = photoAttachments.get(i);
+
                     if(photoAttachment.url == null) {
                         photoAttachment.url = "";
                     }
+
                     Date lastModDate;
+
                     if(downloadedFile.exists()) {
                         lastModDate = new Date(downloadedFile.lastModified());
                     } else {
                         lastModDate = new Date(0);
                     }
+
                     long time_diff = System.currentTimeMillis() - lastModDate.getTime();
                     TimeUnit timeUnit = TimeUnit.MILLISECONDS;
+
                     // photo autocaching
                     if(forceCaching && downloadedFile.exists() && downloadedFile.length() >= 5120 &&
                             timeUnit.convert(time_diff,TimeUnit.MILLISECONDS) >= 360000L &&
                             timeUnit.convert(time_diff,TimeUnit.MILLISECONDS) < 259200000L) {
-                        if(logging_enabled) Log.e(OvkApplication.DL_TAG, "Duplicated filename. Skipping..." +
-                                "\r\nTimeDiff: " + timeUnit.convert(time_diff,TimeUnit.MILLISECONDS)
+                        if(logging_enabled)
+                            Log.w(OvkApplication.DL_TAG, "Duplicated filename: "  + filename + ". Skipping..." +
+                                "\r\nTimeDiff: " + timeUnit.convert(time_diff, TimeUnit.MILLISECONDS)
                                 + " ms | Filesize: " + downloadedFile.length() + " bytes");
-                    } else if (photoAttachment.url.length() == 0) {
+
+                    } else if (photoAttachment.url.isEmpty()) {
                         filename = photoAttachment.filename;
                         if(logging_enabled) Log.e(OvkApplication.DL_TAG,
                                 "Invalid or empty URL. Skipping...");
@@ -232,15 +244,12 @@ public class DownloadManager {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                     } else {
                         try {
                             filename = photoAttachment.filename;
-                            String short_address = "";
-                            if(photoAttachments.get(i).url.length() > 40) {
-                                short_address = photoAttachments.get(i).url.substring(0, 39);
-                            } else {
-                                short_address = photoAttachments.get(i).url;
-                            }
+                            String short_address = url.length() > 60 ? url.substring(0, 60) : url;
+
                             //Log.v("DownloadManager", String.format("Downloading %s (%d/%d)...",
                             // short_address, i + 1, photoAttachments.size()));
                             url = photoAttachments.get(i).url;
@@ -260,6 +269,7 @@ public class DownloadManager {
                             content_length = response.body().contentLength();
                             downloadedFile = new File(String.format("%s/%s/photos_cache/%s",
                                     ctx.getCacheDir().getAbsolutePath(), instance, where), filename);
+
                             if(!downloadedFile.exists() || content_length != downloadedFile.length()) {
                                 FileOutputStream fos = new FileOutputStream(downloadedFile);
                                 int inByte;
@@ -271,15 +281,19 @@ public class DownloadManager {
                             } else {
                                 if(logging_enabled) Log.w("DownloadManager", "Filesizes match, skipping...");
                             }
+
                             response.body().byteStream().close();
+
                             if(logging_enabled) Log.d(OvkApplication.DL_TAG,
                                     String.format("Downloaded from %s (%s): %d kB (%d/%d)",
                                             short_address, response_code, (int) (filesize / 1024), i + 1,
                                             photoAttachments.size()));
+
                         } catch (IOException | OutOfMemoryError ex) {
                             if(logging_enabled) Log.e(OvkApplication.DL_TAG,
                                     String.format("Download error: %s (%d/%d)", ex.getMessage(), i + 1,
                                             photoAttachments.size()));
+
                             if(ex.getMessage() != null) {
                                 if (ex.getMessage().startsWith("Authorization required")) {
                                     response_code = 401;
@@ -289,6 +303,7 @@ public class DownloadManager {
                                     response_code = Integer.parseInt(code_str);
                                 }
                             }
+
                         } catch (Exception e) {
                             photoAttachment.error = e.getClass().getSimpleName();
                             if(logging_enabled) Log.e(OvkApplication.DL_TAG,
@@ -296,6 +311,7 @@ public class DownloadManager {
                                             photoAttachments.size()));
                         }
                     }
+
                     if(i % 15 == 0 || i == photoAttachments.size() - 1) {
                         switch (where) {
                             case "account_avatar" ->
@@ -343,7 +359,10 @@ public class DownloadManager {
             return;
         }
         if(!url.startsWith("http://") && !url.startsWith("https://")) {
-            Log.e(OvkApplication.DL_TAG, String.format("Invalid URL: %s. Download canceled.", url));
+            Log.e(
+                    OvkApplication.DL_TAG,
+                    String.format("Invalid URL: %s. Download canceled.", url)
+            );
             return;
         }
         Runnable httpRunnable = new Runnable() {
@@ -368,22 +387,29 @@ public class DownloadManager {
                 filesize = 0;
                 File downloadedFile = new File(String.format("%s/%s/photos_cache/%s",
                         ctx.getCacheDir().getAbsolutePath(), instance, where), filename);
+
                 Date lastModDate;
                 if(downloadedFile.exists()) {
                     lastModDate = new Date(downloadedFile.lastModified());
                 } else {
                     lastModDate = new Date(0);
                 }
+
                 long time_diff = System.currentTimeMillis() - lastModDate.getTime();
                 TimeUnit timeUnit = TimeUnit.MILLISECONDS;
+
                 if(forceCaching && downloadedFile.exists() && downloadedFile.length() >= 5120 &&
                         timeUnit.convert(time_diff,TimeUnit.MILLISECONDS) >= 360000L &&
                         timeUnit.convert(time_diff,TimeUnit.MILLISECONDS) < 259200000L) {
-                    if(logging_enabled) Log.e(OvkApplication.DL_TAG, "Duplicated filename. Skipping..." +
+                    if(logging_enabled)
+                        Log.w(OvkApplication.DL_TAG, "Duplicated filename: " + filename + ". Skipping..." +
                             "\r\nTimeDiff: " + timeUnit.convert(time_diff,TimeUnit.MILLISECONDS)
                             + " ms | Filesize: " + downloadedFile.length() + " bytes");
-                } else if (url.length() == 0) {
+
+                } else if (url.isEmpty()) {
+
                     if(logging_enabled) Log.e(OvkApplication.DL_TAG, "Invalid address. Skipping...");
+
                     try {
                         if(downloadedFile.exists()) {
                             FileOutputStream fos = new FileOutputStream(downloadedFile);
@@ -396,19 +422,16 @@ public class DownloadManager {
                         e.printStackTrace();
                     }
                 } else {
-                    String short_address = "";
-                    if(url.length() > 40) {
-                        short_address = url.substring(0, 39);
-                    } else {
-                        short_address = url;
-                    }
+                    String short_address = url.length() > 60 ? url.substring(0, 60) : url;
 
                     if(logging_enabled) Log.v("DownloadManager",
                             String.format("Downloading %s...", short_address));
+
                     request = new Request.Builder()
                             .url(url)
                             .addHeader("User-Agent", generateUserAgent(ctx))
                             .build();
+
                     try {
                         Response response = httpClient.newCall(request).execute();
                         response_code = response.code();
@@ -420,9 +443,11 @@ public class DownloadManager {
                         }
                         fos.close();
                         response.body().byteStream().close();
+
                         if (response != null){
                             response.close();
                         }
+
                         if(response_code == 200) {
                             if (logging_enabled) Log.v("DownloadManager",
                                     String.format("Downloaded from %s (%s): %d kB", short_address,
@@ -489,14 +514,11 @@ public class DownloadManager {
         bundle.putString("response", response);
         bundle.putString("address", apiListeners.from);
         msg.setData(bundle);
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if(message < 0) {
-                    apiListeners.failListener.onAPIFailed(ctx, message, bundle);
-                } else {
-                    apiListeners.successListener.onAPISuccess(ctx, message, bundle);
-                }
+        handler.post(() -> {
+            if(message < 0) {
+                apiListeners.failListener.onAPIFailed(ctx, message, bundle);
+            } else {
+                apiListeners.successListener.onAPISuccess(ctx, message, bundle);
             }
         });
     }
@@ -509,14 +531,11 @@ public class DownloadManager {
         bundle.putInt("id", id);
         bundle.putString("address", apiListeners.from);
         msg.setData(bundle);
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if(message < 0) {
-                    apiListeners.failListener.onAPIFailed(ctx, message, bundle);
-                } else {
-                    apiListeners.successListener.onAPISuccess(ctx, message, bundle);
-                }
+        handler.post(() -> {
+            if(message < 0) {
+                apiListeners.failListener.onAPIFailed(ctx, message, bundle);
+            } else {
+                apiListeners.successListener.onAPISuccess(ctx, message, bundle);
             }
         });
     }
@@ -556,23 +575,20 @@ public class DownloadManager {
 
     public long getCacheSize() {
         final long[] size = {0};
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                long foldersize = 0;
-                File[] filelist = new File(ctx.getCacheDir().getAbsolutePath()).listFiles();
-                for (File aFilelist : filelist) {
-                    if (aFilelist.isDirectory()) {
-                        File[] filelist2 = new File(aFilelist.getAbsolutePath()).listFiles();
-                        for (File aFilelist2 : filelist2) {
-                            foldersize += aFilelist2.length();
-                        }
-                    } else {
-                        foldersize += aFilelist.length();
+        Runnable runnable = () -> {
+            long foldersize = 0;
+            File[] filelist = new File(ctx.getCacheDir().getAbsolutePath()).listFiles();
+            for (File aFilelist : filelist) {
+                if (aFilelist.isDirectory()) {
+                    File[] filelist2 = new File(aFilelist.getAbsolutePath()).listFiles();
+                    for (File aFilelist2 : filelist2) {
+                        foldersize += aFilelist2.length();
                     }
+                } else {
+                    foldersize += aFilelist.length();
                 }
-                size[0] = foldersize;
             }
+            size[0] = foldersize;
         };
         new Thread(runnable).run();
         return size[0];

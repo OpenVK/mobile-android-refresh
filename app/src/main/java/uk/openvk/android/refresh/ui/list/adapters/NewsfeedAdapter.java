@@ -93,6 +93,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     public class Holder extends RecyclerView.ViewHolder {
         private final View convertView;
         private final TextView poster_name;
+        private final ShapeableImageView poster_avatar;
         private final TextView post_info;
         private final TextView post_text;
         private final TextView post_likes;
@@ -108,6 +109,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         public Holder(View view) {
             super(view);
             this.convertView = view;
+            this.poster_avatar = view.findViewById(R.id.profile_avatar);
             this.poster_name = view.findViewById(R.id.post_author_label);
             this.post_info = view.findViewById(R.id.post_info);
             this.post_text = view.findViewById(R.id.post_text);
@@ -145,7 +147,9 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
             post_likes.setText(String.format("%s", item.counters.likes));
             post_comments.setText(String.format("%s", item.counters.comments));
             post_repost.setText(String.format("%s", item.counters.reposts));
+
             setTheme(item);
+
             if(item.counters.enabled) {
                 post_likes.setEnabled(true);
                 if(item.counters.isLiked && likeAdded) {
@@ -205,52 +209,27 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         }
                     }
                 }
+
                 Global.setAvatarShape(ctx, convertView
                         .findViewById(R.id.profile_avatar));
-                String local_avatar_frm;
-                String local_photo_frm;
-                if(ctx.getClass().getSimpleName().equals("AppActivity")) {
-                    if(((AppActivity) ctx).getSelectedFragment() != null &&
-                            ((AppActivity) ctx).getSelectedFragment().getClass()
-                                    .getSimpleName().equals("NewsfeedFragment")) {
-                        local_avatar_frm = "%s/photos_cache/newsfeed_avatars/avatar_%s";
-                        local_photo_frm = "%s/photos_cache/newsfeed_photo_attachments/" +
-                                "newsfeed_attachment_o%sp%s";
-                    } else {
-                        local_avatar_frm = "%s/photos_cache/wall_avatars/avatar_%s";
-                        local_photo_frm = "%s/photos_cache/wall_photo_attachments/" +
-                                "wall_attachment_o%sp%s";
-                    }
-                } else {
-                    local_avatar_frm = "%s/photos_cache/wall_avatars/avatar_%s";
-                    local_photo_frm = "%s/photos_cache/wall_photo_attachments/" +
-                            "wall_attachment_o%sp%s";
-                }
-
-                if(avatar_loaded)
-                    Glide.with(ctx).load(String.format(local_avatar_frm, ctx.getCacheDir().
-                                    getAbsolutePath(), item.author_id))
-                            .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                            .dontAnimate().centerCrop().error(R.drawable.circular_avatar)
-                            .into((ShapeableImageView) convertView.findViewById(R.id.profile_avatar));
-
                 ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar))
                         .setImageTintList(null);
+
+                if(item.avatar != null)
+                    poster_avatar.setImageBitmap(item.avatar);
+
+                String local_avatar_frm;
+                String local_photo_frm;
+
                 View.OnClickListener openProfileListener = v -> openProfile(item);
-                (convertView.findViewById(R.id.profile_avatar))
-                        .setOnClickListener(openProfileListener);
+                poster_avatar.setOnClickListener(openProfileListener);
                 poster_name.setOnClickListener(openProfileListener);
+
                 if(contains_photos) {
                     if(photo_loaded) {
                         ImageView photoView = ((PhotoAttachmentLayout) convertView
                                 .findViewById(R.id.photo_attachment)).getImageView();
                         photoView.setImageTintList(null);
-                        Glide.with(ctx).load(String.format(local_photo_frm, ctx.getCacheDir()
-                                        .getAbsolutePath(), item.owner_id, item.post_id))
-                                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                                .placeholder(ctx.getDrawable(R.drawable.photo_placeholder))
-                                .dontAnimate().error(R.drawable.photo_loading_error)
-                                .into(photoView);
                         ViewTreeObserver viewTreeObserver = photoView.getViewTreeObserver();
                         if (viewTreeObserver.isAlive()) {
                             PhotoAttachment fPhotoAttach = photo_attachment;
@@ -288,6 +267,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 } else {
                     (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.GONE);
                 }
+
                 if(contains_video) {
                     String video_player = PreferenceManager.getDefaultSharedPreferences(ctx)
                             .getString("video_player", "built_in");
@@ -353,7 +333,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         } else if(post.author_id < 0) {
             url = String.format("openvk://group/club%s", post.author_id);
         }
-        if(url.length() > 0) {
+        if(!url.isEmpty()) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = ctx.getPackageManager();
@@ -387,18 +367,6 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     @Override
     public int getItemViewType(int position) {
         return position;
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void setPhotoLoadState(boolean value) {
-        this.photo_loaded = value;
-        //notifyDataSetChanged();
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void setAvatarLoadState(boolean value) {
-        this.avatar_loaded = value;
-        //notifyDataSetChanged();
     }
 
     public void addLike(WallPost item, int position, String post, View view) {

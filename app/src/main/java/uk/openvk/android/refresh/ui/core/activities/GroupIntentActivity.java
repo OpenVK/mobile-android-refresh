@@ -208,9 +208,9 @@ public class GroupIntentActivity extends BaseNetworkActivity {
             } else if(message == HandlerMessages.WALL_AVATARS
                     || message == HandlerMessages.WALL_ATTACHMENTS) {
                 if(message == HandlerMessages.WALL_AVATARS) {
-                    communityFragment.wallAdapter.setAvatarLoadState(true);
+                    //communityFragment.wallAdapter.setAvatarLoadState(true);
                 } else {
-                    communityFragment.wallAdapter.setPhotoLoadState(true);
+                    //communityFragment.wallAdapter.setPhotoLoadState(true);
                 }
             } else if(message == HandlerMessages.GROUP_AVATARS) {
                 communityFragment.setData(group, ovk_api.wrapper);

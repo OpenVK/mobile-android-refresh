@@ -3,6 +3,7 @@ package uk.openvk.android.refresh.ui.core.fragments.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,9 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +36,7 @@ import uk.openvk.android.refresh.ui.core.activities.AppActivity;
 import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.list.adapters.NewsfeedAdapter;
+import uk.openvk.android.refresh.ui.util.glide.GlideApp;
 import uk.openvk.android.refresh.ui.view.InfinityRecyclerView;
 import uk.openvk.android.refresh.ui.view.layouts.ErrorLayout;
 import uk.openvk.android.refresh.ui.view.layouts.ProgressLayout;
@@ -44,6 +50,7 @@ public class NewsfeedFragment extends Fragment {
     private LinearLayoutManager llm;
     private SharedPreferences global_prefs;
     public boolean loading_more_posts;
+    private String instance;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -51,7 +58,9 @@ public class NewsfeedFragment extends Fragment {
         Global.setInterfaceFont((AppCompatActivity) requireActivity());
         view = inflater.inflate(R.layout.fragment_newsfeed, container, false);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
+        instance = ((OvkApplication) requireContext().getApplicationContext()).getCurrentInstance();
+
+        view.findViewById(R.id.newsfeed_swipe_layout).setVisibility(View.GONE);
         try {
             if (OvkApplication.isTablet) {
                 view.findViewById(R.id.newsfeed_layout).setVisibility(View.GONE);
@@ -61,15 +70,12 @@ public class NewsfeedFragment extends Fragment {
         }
         setTheme();
         ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
-                .setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).refreshNewsfeed(false);
-                }
-            }
-        });
-        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
+                .setOnRefreshListener(() -> {
+                    if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                        ((AppActivity) requireActivity()).refreshNewsfeed(false);
+                    }
+                });
+        view.findViewById(R.id.progress_layout).setVisibility(View.VISIBLE);
         return view;
     }
 
@@ -133,15 +139,12 @@ public class NewsfeedFragment extends Fragment {
     }
 
     public void disableLoadState() {
-        new Handler(Looper.myLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
-                if(OvkApplication.isTablet) {
-                    view.findViewById(R.id.newsfeed_layout).setVisibility(View.VISIBLE);
-                }
-                ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.VISIBLE);
+        new Handler(Objects.requireNonNull(Looper.myLooper())).postDelayed(() -> {
+            view.findViewById(R.id.progress_layout).setVisibility(View.GONE);
+            if(OvkApplication.isTablet) {
+                view.findViewById(R.id.newsfeed_layout).setVisibility(View.VISIBLE);
             }
+            view.findViewById(R.id.newsfeed_swipe_layout).setVisibility(View.VISIBLE);
         }, 200);
 
     }
@@ -149,11 +152,11 @@ public class NewsfeedFragment extends Fragment {
     public void setError(boolean visible, int message, View.OnClickListener listener) {
         ErrorLayout errorLayout = view.findViewById(R.id.error_layout);
         if(visible) {
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+            view.findViewById(R.id.newsfeed_swipe_layout)
                     .setVisibility(View.GONE);
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+            view.findViewById(R.id.newsfeed_swipe_layout)
                     .setVisibility(View.GONE);
-            ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.GONE);
+            view.findViewById(R.id.progress_layout).setVisibility(View.GONE);
             errorLayout.setVisibility(View.VISIBLE);
             errorLayout.setRetryButtonClickListener(listener);
             if(message == HandlerMessages.NO_INTERNET_CONNECTION) {
@@ -179,10 +182,10 @@ public class NewsfeedFragment extends Fragment {
                         .setText(R.string.error_subtitle_instance);
             }
         } else {
-            ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout))
+            view.findViewById(R.id.newsfeed_swipe_layout)
                     .setVisibility(View.GONE);
             errorLayout.setVisibility(View.GONE);
-            ((ProgressLayout) view.findViewById(R.id.progress_layout))
+            view.findViewById(R.id.progress_layout)
                     .setVisibility(View.VISIBLE);
         }
     }
@@ -196,9 +199,9 @@ public class NewsfeedFragment extends Fragment {
     }
 
     public void showProgress() {
-        ((ErrorLayout) view.findViewById(R.id.error_layout)).setVisibility(View.GONE);
-        ((SwipeRefreshLayout) view.findViewById(R.id.newsfeed_swipe_layout)).setVisibility(View.GONE);
-        ((ProgressLayout) view.findViewById(R.id.progress_layout)).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.error_layout).setVisibility(View.GONE);
+        view.findViewById(R.id.newsfeed_swipe_layout).setVisibility(View.GONE);
+        view.findViewById(R.id.progress_layout).setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -212,11 +215,7 @@ public class NewsfeedFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public void select(int position, String item, String value) {
         if(item.equals("likes")) {
-            if(value.equals("add")) {
-                wallPosts.get(position).counters.isLiked = true;
-            } else {
-                wallPosts.get(position).counters.isLiked = false;
-            }
+            wallPosts.get(position).counters.isLiked = value.equals("add");
             newsfeedAdapter.notifyItemChanged(position, false);
         }
     }
@@ -237,5 +236,39 @@ public class NewsfeedFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void loadAvatars() {
+        if(newsfeedAdapter != null) {
+                new Thread(() -> {
+                    try {
+                        for (int i = 0; i < newsfeedAdapter.getItemCount(); i++) {
+                            WallPost item = wallPosts.get(i);
+                            Bitmap bitmap = Glide
+                                    .with(requireContext().getApplicationContext())
+                                    .asBitmap()
+                                    .load(
+                                            String.format(
+                                                    "%s/%s/photos_cache/newsfeed_avatars/avatar_%s",
+                                                    requireContext().getCacheDir(), instance, item.author_id)
+                                    )
+                                    .submit()
+                                    .get();
+                            if(bitmap != null) {
+                                item.avatar = bitmap;
+                                wallPosts.set(i, item);
+                            }
+                        }
+
+                        newsfeedAdapter.notifyDataSetChanged();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+        }
+    }
+
+    public void loadPhotos() {
     }
 }

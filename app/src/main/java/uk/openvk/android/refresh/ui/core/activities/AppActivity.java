@@ -1,5 +1,7 @@
 package uk.openvk.android.refresh.ui.core.activities;
 
+import static android.view.View.VISIBLE;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -149,7 +151,9 @@ public class AppActivity extends BaseNetworkActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         Locale languageType = OvkApplication.getLocale(newBase);
-        super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
+        }
         Global.setPerAppLanguage(this);
     }
 
@@ -292,7 +296,7 @@ public class AppActivity extends BaseNetworkActivity {
                 getResources().getString(R.string.all_news_item), 61));
         tbSpinnerAdapter = new NewsfeedToolbarSpinnerAdapter(this, tbSpinnerItems);
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setAdapter(tbSpinnerAdapter);
-        toolbar.findViewById(R.id.spinner).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.spinner).setVisibility(VISIBLE);
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -318,10 +322,10 @@ public class AppActivity extends BaseNetworkActivity {
                         && screenOrientation == Configuration.ORIENTATION_LANDSCAPE){
                     try {
                         NavigationView navView = findViewById(R.id.nav_view);
-                        if (navView.getVisibility() == View.VISIBLE) {
+                        if (navView.getVisibility() == VISIBLE) {
                             navView.setVisibility(View.GONE);
                         } else {
-                            navView.setVisibility(View.VISIBLE);
+                            navView.setVisibility(VISIBLE);
                         }
                     } catch (Exception ignored) {
 
@@ -390,64 +394,36 @@ public class AppActivity extends BaseNetworkActivity {
     public void setNavView() {
         NavigationView navView = findViewById(R.id.nav_view);
         BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
-        b_navView.setOnItemSelectedListener(
-                new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return true;
-            }
-        });
+        b_navView.setOnItemSelectedListener(item -> true);
         for(int i = 0; i < b_navView.getMenu().size(); i++) {
-            b_navView.getMenu().getItem(i).setOnMenuItemClickListener(
-                    new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(@NonNull MenuItem item) {
-                    switchNavItem(item);
-                    return false;
-                }
-            });
+            b_navView.getMenu().getItem(i).setOnMenuItemClickListener(item -> {
+                        switchNavItem(item);
+                        return false;
+                    });
         }
         for(int i = 0; i < navView.getMenu().size(); i++) {
-            navView.getMenu().getItem(i).setOnMenuItemClickListener(
-                    new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(@NonNull MenuItem item) {
-                    try {
-                        drawer.closeDrawers();
-                        switchNavItem(item);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    return false;
-                }
-            });
+            navView.getMenu().getItem(i).setOnMenuItemClickListener(item -> {
+                        try {
+                            drawer.closeDrawers();
+                            switchNavItem(item);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        return false;
+                    });
         }
         ConstraintLayout header = (ConstraintLayout) navView.getHeaderView(0);
-        header.findViewById(R.id.search_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startQuickSearchActivity();
-            }
-        });
+        header.findViewById(R.id.search_btn).setOnClickListener(v -> startQuickSearchActivity());
         String profile_name = getResources().getString(R.string.loading);
         ((TextView) header.findViewById(R.id.profile_name)).setText(profile_name);
         header.findViewById(R.id.screen_name).setVisibility(View.GONE);
         @SuppressLint("CutPasteId") ShapeableImageView avatar = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
                 .findViewById(R.id.profile_avatar);
         Global.setAvatarShape(this, avatar);
-        findViewById(R.id.fab_newpost).setOnClickListener(
-                new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        ((MaterialToolbar) findViewById(R.id.app_toolbar)).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                onOptionsItemSelected(item);
-                return true;
-            }
+        findViewById(R.id.fab_newpost).setOnClickListener(v -> {});
+        ((MaterialToolbar) findViewById(R.id.app_toolbar)).setOnMenuItemClickListener(item -> {
+            onOptionsItemSelected(item);
+            return true;
         });
     }
 
@@ -479,28 +455,28 @@ public class AppActivity extends BaseNetworkActivity {
                 prevMenuItem = navView.getMenu().getItem(1);
                 fn.navigateTo(selectedFragment, "newsfeed");
                 findViewById(R.id.app_toolbar)
-                        .findViewById(R.id.spinner).setVisibility(View.VISIBLE);
+                        .findViewById(R.id.spinner).setVisibility(VISIBLE);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
                 setToolbarTitle("", "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 b_navView.getMenu().getItem(0).setChecked(true);
                 navView.getMenu().getItem(1).setChecked(true);
                 if (ovk_api.newsfeed.getWallPosts() != null) {
-                    findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
+                    findViewById(R.id.fab_newpost).setVisibility(VISIBLE);
                 }
             } else if (itemId == R.id.newsfeed) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(0);
                 prevMenuItem = navView.getMenu().getItem(1);
                 fn.navigateTo(selectedFragment, "newsfeed");
                 findViewById(R.id.app_toolbar)
-                        .findViewById(R.id.spinner).setVisibility(View.VISIBLE);
+                        .findViewById(R.id.spinner).setVisibility(VISIBLE);
                 setToolbarTitle("", "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
                 b_navView.getMenu().getItem(0).setChecked(true);
                 navView.getMenu().getItem(1).setChecked(true);
                 if (ovk_api.newsfeed.getWallPosts() != null) {
-                    findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
+                    findViewById(R.id.fab_newpost).setVisibility(VISIBLE);
                 }
             } else if (itemId == R.id.friends) {
                 prevBottomMenuItem = b_navView.getMenu().getItem(1);
@@ -646,17 +622,12 @@ public class AppActivity extends BaseNetworkActivity {
                     b_navView.getOrCreateBadge(R.id.messages)
                             .setBackgroundColor(accentColor);
                 }
-            } else if (message == HandlerMessages.NEWSFEED_GET) {
-                newsfeedFragment.createAdapter(this, ovk_api.newsfeed.getWallPosts());
-                newsfeedFragment.disableUpdateState();
-                if(selectedFragment == newsfeedFragment) {
-                    findViewById(R.id.fab_newpost).setVisibility(View.VISIBLE);
-                }
-                newsfeedFragment.setScrollingPositions(this, true);
-            } else if (message == HandlerMessages.NEWSFEED_GET_GLOBAL) {
+            } else if (message == HandlerMessages.NEWSFEED_GET || message == HandlerMessages.NEWSFEED_GET_GLOBAL) {
                 newsfeedFragment.createAdapter(this, ovk_api.newsfeed.getWallPosts());
                 newsfeedFragment.setScrollingPositions(this, true);
                 newsfeedFragment.disableUpdateState();
+                findViewById(R.id.fab_newpost).setVisibility(VISIBLE);
+                newsfeedFragment.disableLoadState();
             } else if (message == HandlerMessages.NEWSFEED_GET_MORE) {
                 newsfeedFragment.createAdapter(this, ovk_api.newsfeed.getWallPosts());
                 newsfeedFragment.setScrollingPositions(this, true);
@@ -690,7 +661,7 @@ public class AppActivity extends BaseNetworkActivity {
                             .setText(String.format("@%s", ovk_api.account.user.screen_name));
                     ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
                             .findViewById(R.id.screen_name)
-                            .setVisibility(View.VISIBLE);
+                            .setVisibility(VISIBLE);
                 } else {
                     ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
                             .findViewById(R.id.screen_name)
@@ -733,7 +704,7 @@ public class AppActivity extends BaseNetworkActivity {
                 friendsFragment.createFriendsAdapter(this, friendsList);
                 friendsFragment.disableUpdateState();
                 friendsFragment.setScrollingPositions(this,
-                        ovk_api.friends.getFriends().size() > 0);
+                        !ovk_api.friends.getFriends().isEmpty());
                 ovk_api.friends.getRequests(ovk_api.wrapper);
             } else if (message == HandlerMessages.FRIENDS_GET_MORE) {
                 int old_friends_size = ovk_api.friends.getFriends().size();
@@ -748,7 +719,6 @@ public class AppActivity extends BaseNetworkActivity {
                 friendsFragment.setScrollingPositions(this, old_friends_size !=
                         ovk_api.friends.getFriends().size());
             } else if (message == HandlerMessages.GROUPS_GET) {
-                ArrayList<Group> groupsList = ovk_api.groups.getList();
                 if (selectedFragment == groupsFragment) {
                     groupsFragment.createAdapter(this, ovk_api.groups.getList(),
                             "groups_list");
@@ -773,21 +743,19 @@ public class AppActivity extends BaseNetworkActivity {
                 if(selectedFragment == newsfeedFragment) {
                     if(newsfeedFragment.newsfeedAdapter != null) {
                         if (message == HandlerMessages.NEWSFEED_AVATARS) {
-                            newsfeedFragment.newsfeedAdapter.setAvatarLoadState(true);
+                            newsfeedFragment.loadAvatars();
                         } else {
-                            newsfeedFragment.newsfeedAdapter.setPhotoLoadState(true);
-                            newsfeedFragment.disableLoadState();
+                            newsfeedFragment.loadPhotos();
                         }
-                        newsfeedFragment.refreshAdapter();
                     }
                 } else if(selectedFragment == profileFragment) {
                     if(profileFragment.getWallAdapter() == null) {
                         profileFragment.createWallAdapter(this, ovk_api.wall.getWallItems());
                     }
                     if (message == HandlerMessages.WALL_AVATARS) {
-                        profileFragment.getWallAdapter().setAvatarLoadState(true);
+                        //profileFragment.getWallAdapter().setAvatarLoadState(true);
                     } else {
-                        profileFragment.getWallAdapter().setPhotoLoadState(true);
+                        //profileFragment.getWallAdapter().setPhotoLoadState(true);
                     }
                     profileFragment.refreshWallAdapter();
                 }

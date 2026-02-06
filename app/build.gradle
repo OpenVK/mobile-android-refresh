@@ -7,16 +7,19 @@ def getGitHubCommit = {
     try {
         def hashOutput = new ByteArrayOutputStream()
         def changeOutput = new ByteArrayOutputStream()
-        def gitVersionName
-        tasks.register('getHashOutput', Exec) {
+        def gitVersionName = ""
+
+        providers.exec {
             commandLine 'git', 'rev-list', '--max-count=1', 'HEAD'
             standardOutput = hashOutput
         }
-        tasks.register('getChangeOutput', Exec) {
+
+        providers.exec {
             commandLine 'git', 'diff-index', '--shortstat', 'HEAD'
             standardOutput = changeOutput
         }
-        gitVersionName = hashOutput.toString().trim().substring(0, 7);
+
+        tasks.gitVersionName = hashOutput.toString().trim().substring(0, 7);
         if (!changeOutput.toString().trim().empty) {
             def pattern = Pattern.compile("\\d+");
             def matcher = pattern.matcher(changeOutput.toString().trim())

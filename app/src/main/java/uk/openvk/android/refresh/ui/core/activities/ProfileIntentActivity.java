@@ -218,9 +218,9 @@ public class ProfileIntentActivity extends BaseNetworkActivity {
                 }
                 try {
                     if (message == HandlerMessages.WALL_AVATARS) {
-                        profileFragment.getWallAdapter().setAvatarLoadState(true);
+                        //profileFragment.getWallAdapter().setAvatarLoadState(true);
                     } else {
-                        profileFragment.getWallAdapter().setPhotoLoadState(true);
+                        //profileFragment.getWallAdapter().setPhotoLoadState(true);
                     }
                 } catch (Exception ignored) {
                 }
