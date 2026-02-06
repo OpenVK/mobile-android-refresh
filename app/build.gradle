@@ -9,20 +9,18 @@ def getGitHubCommit = {
         def changeOutput = new ByteArrayOutputStream()
         def gitVersionName = ""
 
-        execOperations.exec {
-            it.commandLine 'git', 'rev-list', '--max-count=1', 'HEAD'
-            it.standardOutput = hashOutput
-        }
+        hashOutput = providers.exec {
+            commandLine('git', 'rev-list', '--max-count=1', 'HEAD')
+        }.standardOutput
 
-        execOperations.exec {
-            it.commandLine 'git', 'diff-index', '--shortstat', 'HEAD'
-            it.standardOutput = changeOutput
-        }
+        changeOutput = providers.exec {
+            commandLine('git', 'diff-index', '--shortstat', 'HEAD')
+        }.standardOutput
 
-        gitVersionName = hashOutput.asText.get().trim().substring(0, 7)
-        if (!changeOutput.asText.get().trim().empty) {
+        gitVersionName = hashOutput.asText().get().trim().substring(0, 7)
+        if (!changeOutput.asText().get().trim().empty) {
             def pattern = Pattern.compile("\\d+");
-            def matcher = pattern.matcher(changeOutput.asText.get().trim())
+            def matcher = pattern.matcher(changeOutput.asText().get().trim())
             if (matcher.find()) {
                 gitVersionName += "-" + matcher.group()
             }
