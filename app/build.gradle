@@ -20,7 +20,7 @@ def getGitHubCommit = {
         }
 
         gitVersionName = hashOutput.asText.get().trim().substring(0, 7)
-        if (!changeOutput.toString().trim().empty) {
+        if (!changeOutput.asText.get().trim().empty) {
             def pattern = Pattern.compile("\\d+");
             def matcher = pattern.matcher(changeOutput.asText.get().trim())
             if (matcher.find()) {
