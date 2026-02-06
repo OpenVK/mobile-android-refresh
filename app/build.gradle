@@ -19,10 +19,10 @@ def getGitHubCommit = {
             it.standardOutput = changeOutput
         }
 
-        gitVersionName = hashOutput.toString().trim().substring(0, 7);
+        gitVersionName = hashOutput.asText.get().trim().substring(0, 7)
         if (!changeOutput.toString().trim().empty) {
             def pattern = Pattern.compile("\\d+");
-            def matcher = pattern.matcher(changeOutput.toString().trim())
+            def matcher = pattern.matcher(changeOutput.asText.get().trim())
             if (matcher.find()) {
                 gitVersionName += "-" + matcher.group()
             }
