@@ -28,6 +28,8 @@ import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 import org.videolan.libvlc.util.VLCVideoLayout;
 
+import java.util.Objects;
+
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.attachments.VideoAttachment;
@@ -68,12 +70,7 @@ public class VideoPlayerActivity extends BaseNetworkActivity {
     private void loadVideo() {
         Bundle data = getIntent().getExtras();
         showPlayControls();
-        findViewById(R.id.view_vlc_layout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPlayControls();
-            }
-        });
+        findViewById(R.id.view_vlc_layout).setOnClickListener(v -> showPlayControls());
         if(data != null) {
             if(data.containsKey("attachment")) {
                 video = data.getParcelable("attachment");
@@ -81,19 +78,19 @@ public class VideoPlayerActivity extends BaseNetworkActivity {
             } if(data.containsKey("files")) {
                 video.files = data.getParcelable("files");
                 assert video.files != null;
-                if(video.files.ogv_480 != null && video.files.ogv_480.length() > 0) {
+                if(video.files.ogv_480 != null && !video.files.ogv_480.isEmpty()) {
                     url = video.files.ogv_480;
-                } if(video.files.mp4_144 != null && video.files.mp4_144.length() > 0) {
+                } if(video.files.mp4_144 != null && !video.files.mp4_144.isEmpty()) {
                     url = video.files.mp4_144;
-                } if(video.files.mp4_240 != null && video.files.mp4_240.length() > 0) {
+                } if(video.files.mp4_240 != null && !video.files.mp4_240.isEmpty()) {
                     url = video.files.mp4_240;
-                } if(video.files.mp4_360 != null && video.files.mp4_360.length() > 0) {
+                } if(video.files.mp4_360 != null && !video.files.mp4_360.isEmpty()) {
                     url = video.files.mp4_360;
-                } if(video.files.mp4_480 != null && video.files.mp4_480.length() > 0) {
+                } if(video.files.mp4_480 != null && !video.files.mp4_480.isEmpty()) {
                     url = video.files.mp4_480;
-                } if(video.files.mp4_720 != null && video.files.mp4_720.length() > 0) {
+                } if(video.files.mp4_720 != null && !video.files.mp4_720.isEmpty()) {
                     url = video.files.mp4_720;
-                } if(video.files.mp4_1080 != null && video.files.mp4_1080.length() > 0) {
+                } if(video.files.mp4_1080 != null && !video.files.mp4_1080.isEmpty()) {
                     url = video.files.mp4_1080;
                 }
 
@@ -106,13 +103,9 @@ public class VideoPlayerActivity extends BaseNetworkActivity {
                 if(global_prefs.getString("video_player", "built_in")
                         .equals("built_in")) {
                     createMediaPlayer(uri);
-                    ((ImageButton) findViewById(R.id.play_btn)).setOnClickListener(
-                            new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            playVideo();
-                        }
-                    });
+                    findViewById(R.id.play_btn).setOnClickListener(
+                            v -> playVideo()
+                    );
                 } else {
                     Intent openVideo = new Intent(Intent.ACTION_VIEW);
                     openVideo.setDataAndType(Uri.parse(url), "video/*");
@@ -214,7 +207,7 @@ public class VideoPlayerActivity extends BaseNetworkActivity {
                     seekPressed = false;
                 }
             });
-            new Handler(Looper.myLooper()).post(new Runnable() {
+            new Handler(Objects.requireNonNull(Looper.myLooper())).post(new Runnable() {
                 @SuppressLint("DefaultLocale")
                 @Override
                 public void run() {
@@ -228,7 +221,7 @@ public class VideoPlayerActivity extends BaseNetworkActivity {
                                     String.format("%d:%02d / %d:%02d", pos / 60,
                                             pos % 60, duration / 60, duration % 60));
                         }
-                        new Handler(Looper.myLooper()).postDelayed(this, 200);
+                        new Handler(Objects.requireNonNull(Looper.myLooper())).postDelayed(this, 200);
                     } catch (Exception ignored) {
                     }
                 }
@@ -243,21 +236,15 @@ public class VideoPlayerActivity extends BaseNetworkActivity {
                 R.style.ApplicationTheme_AlertDialog);
         dialog.setTitle(R.string.error);
         dialog.setMessage(R.string.video_err_decode);
-        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
+        dialog.setPositiveButton(android.R.string.ok, (dialog1, which) -> {
+            dialog1.dismiss();
+            finish();
         });
-        dialog.setNeutralButton(R.string.retry_dialog_btn, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent openVideo = new Intent(Intent.ACTION_VIEW);
-                openVideo.setDataAndType(Uri.parse(url), "video/*");
-                startActivity(openVideo);
-                finish();
-            }
+        dialog.setNeutralButton(R.string.retry_dialog_btn, (dialog2, which) -> {
+            Intent openVideo = new Intent(Intent.ACTION_VIEW);
+            openVideo.setDataAndType(Uri.parse(url), "video/*");
+            startActivity(openVideo);
+            finish();
         });
         dialog.setCancelable(false);
         dialog.show();
@@ -267,20 +254,15 @@ public class VideoPlayerActivity extends BaseNetworkActivity {
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
         if(findViewById(R.id.player_controls).getVisibility() == View.VISIBLE) {
             findViewById(R.id.player_controls).setVisibility(View.GONE);
-            View decorView = getWindow().getDecorView();
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            View decorView = getWindow().getDecorView();
             findViewById(R.id.player_controls).setVisibility(View.VISIBLE);
-            new Handler(Looper.myLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if(findViewById(R.id.player_controls).getVisibility() == View.VISIBLE) {
-                        findViewById(R.id.player_controls).setVisibility(View.GONE);
-                        View decorView = getWindow().getDecorView();
-                    }
+            new Handler(Objects.requireNonNull(Looper.myLooper())).postDelayed(() -> {
+                if(findViewById(R.id.player_controls).getVisibility() == View.VISIBLE) {
+                    findViewById(R.id.player_controls).setVisibility(View.GONE);
                 }
             }, 5000);
         }

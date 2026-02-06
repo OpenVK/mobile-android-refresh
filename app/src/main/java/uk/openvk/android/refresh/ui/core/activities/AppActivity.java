@@ -7,9 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,7 +52,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
-import dev.kdrag0n.monet.theme.ColorScheme;
+
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
@@ -168,14 +166,16 @@ public class AppActivity extends BaseNetworkActivity {
         videoSettingsFragment.setGlobalPreferences(global_prefs);
         personalizationFragment.setGlobalPreferences(global_prefs);
         fn = new FragmentNavigator(this);
+
         setNavView();
         setAPIWrapper();
         setNavDrawer();
         setAppBar();
-        setMonetTheme();
         setFloatingActionButton();
+
         if (newsfeedFragment != null) {
             FragmentManager fm = getSupportFragmentManager();
+
             ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_screen, newsfeedFragment, "newsfeed");
             ft.add(R.id.fragment_screen, friendsFragment, "friends");
@@ -187,7 +187,9 @@ public class AppActivity extends BaseNetworkActivity {
             ft.add(R.id.fragment_screen, personalizationFragment, "personalization");
             ft.add(R.id.fragment_screen, aboutAppFragment, "about_app");
             ft.commit();
+
             ft = getSupportFragmentManager().beginTransaction();
+
             ft.hide(friendsFragment);
             ft.hide(groupsFragment);
             ft.hide(messagesFragment);
@@ -204,8 +206,8 @@ public class AppActivity extends BaseNetworkActivity {
             ft.hide(selectedFragment);
             selectedFragment = personalizationFragment;
             ft.show(selectedFragment);
-            ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                    .findViewById(R.id.spinner)).setVisibility(View.GONE);
+            findViewById(R.id.app_toolbar)
+                    .findViewById(R.id.spinner).setVisibility(View.GONE);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setTitle(R.string.pref_personalization);
             ((MaterialToolbar) findViewById(R.id.app_toolbar)).setNavigationIcon(R.drawable.ic_arrow_back);
             NavigationView navView = findViewById(R.id.nav_view);
@@ -237,7 +239,7 @@ public class AppActivity extends BaseNetworkActivity {
                 android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
                         getSystemService(Context.CLIPBOARD_SERVICE);
                 String url = "";
-                if(ovk_api.account.user.screen_name != null && ovk_api.account.user.screen_name.length() > 0) {
+                if(ovk_api.account.user.screen_name != null && !ovk_api.account.user.screen_name.isEmpty()) {
                     url = String.format("https://%s/%s",
                             instance_prefs.getString("server", ""),
                             ovk_api.account.user.screen_name);
@@ -252,7 +254,7 @@ public class AppActivity extends BaseNetworkActivity {
             }
         } else if(item.getItemId() == R.id.open_in_browser) {
             String url = "";
-            if(ovk_api.account.user.screen_name != null && ovk_api.account.user.screen_name.length() > 0) {
+            if(ovk_api.account.user.screen_name != null && !ovk_api.account.user.screen_name.isEmpty()) {
                 url = String.format("https://%s/%s",
                         instance_prefs.getString("server", ""), ovk_api.account.user.screen_name);
             } else {
@@ -290,7 +292,7 @@ public class AppActivity extends BaseNetworkActivity {
                 getResources().getString(R.string.all_news_item), 61));
         tbSpinnerAdapter = new NewsfeedToolbarSpinnerAdapter(this, tbSpinnerItems);
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setAdapter(tbSpinnerAdapter);
-        ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.spinner).setVisibility(View.VISIBLE);
         ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -362,9 +364,9 @@ public class AppActivity extends BaseNetworkActivity {
                     .getNavController();
             @SuppressLint("CutPasteId") AppBarConfiguration appBarConfiguration =
                     new AppBarConfiguration.Builder(navController.getGraph()).setDrawerLayout(
-                    ((DrawerLayout) findViewById(R.id.drawer_layout))).build();
+                            findViewById(R.id.drawer_layout)).build();
             NavigationUI.setupWithNavController(navView, navController);
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer = findViewById(R.id.drawer_layout);
             toggle = new ActionBarDrawerToggle(this, drawer, android.R.string.ok,
                     android.R.string.cancel);
             drawer.addDrawerListener(toggle);
@@ -430,11 +432,10 @@ public class AppActivity extends BaseNetworkActivity {
         String profile_name = getResources().getString(R.string.loading);
         ((TextView) header.findViewById(R.id.profile_name)).setText(profile_name);
         header.findViewById(R.id.screen_name).setVisibility(View.GONE);
-        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((ShapeableImageView)
-                ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
-                        .findViewById(R.id.profile_avatar));
+        @SuppressLint("CutPasteId") ShapeableImageView avatar = ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
+                .findViewById(R.id.profile_avatar);
         Global.setAvatarShape(this, avatar);
-        ((FloatingActionButton) findViewById(R.id.fab_newpost)).setOnClickListener(
+        findViewById(R.id.fab_newpost).setOnClickListener(
                 new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -459,73 +460,6 @@ public class AppActivity extends BaseNetworkActivity {
         }
     }
 
-    /*
-        Setting Monet color scheme on unsupported views (in particular Material Design 2)
-        using MonetCompat library:
-        https://github.com/KieronQuinn/MonetCompat (X11 License)
-    */
-    private void setMonetTheme() {
-        try {
-            if (Global.checkMonet(this)) {
-                MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-                if (!isDarkTheme) {
-                    toolbar.setBackgroundColor(
-                            Global.getMonetIntColor(getMonet(), "accent", 600));
-                    drawer.setStatusBarBackgroundColor(
-                            Global.getMonetIntColor(getMonet(), "accent", 700));
-                }
-                int colorOnSurface = MaterialColors.getColor(this,
-                        com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
-                NavigationView navView = findViewById(R.id.nav_view);
-                int[][] states = new int[][]{
-                        new int[]{android.R.attr.state_checked}, new int[]{}
-                };
-                int[] colors;
-                if (isDarkTheme) {
-                    colors = new int[]{
-                            Global.getMonetIntColor(getMonet(), "accent", 100),
-                            Global.adjustAlpha(colorOnSurface, 0.6f)
-                    };
-                } else {
-                    colors = new int[]{
-                            Global.getMonetIntColor(getMonet(), "accent", 500),
-                            Global.adjustAlpha(colorOnSurface, 0.6f)
-                    };
-                }
-                ColorStateList csl = new ColorStateList(states, colors);
-                navView.setItemIconTintList(csl);
-                navView.setItemTextColor(csl);
-
-                BottomNavigationView b_navView = findViewById(R.id.bottom_nav_view);
-                if (isDarkTheme) {
-                    colors = new int[]{
-                            Global.getMonetIntColor(getMonet(), "accent", 200),
-                            Global.adjustAlpha(colorOnSurface, 0.6f)
-                    };
-                } else {
-                    colors = new int[]{
-                            Global.getMonetIntColor(getMonet(), "accent", 500),
-                            Global.adjustAlpha(colorOnSurface, 0.6f)
-                    };
-                }
-                csl = new ColorStateList(states, colors);
-                b_navView.setItemTextColor(csl);
-                b_navView.setItemIconTintList(csl);
-                b_navView.setItemRippleColor(ColorStateList.valueOf(
-                        getMonet().getPrimaryColor(this, isDarkTheme)));
-                FloatingActionButton fab = findViewById(R.id.fab_newpost);
-                fab.setBackgroundTintList(ColorStateList.valueOf(
-                        Global.getMonetIntColor(getMonet(), "accent", 700)));
-                fab.setImageTintList(ColorStateList.valueOf(
-                        Global.getMonetIntColor(getMonet(), "accent", 100)));
-                fab.setRippleColor(ColorStateList.valueOf(
-                        Global.getMonetIntColor(getMonet(), "accent", 400)));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public void switchNavItem(MenuItem item) {
         try {
             int itemId = item.getItemId();
@@ -544,8 +478,8 @@ public class AppActivity extends BaseNetworkActivity {
                 prevBottomMenuItem = b_navView.getMenu().getItem(0);
                 prevMenuItem = navView.getMenu().getItem(1);
                 fn.navigateTo(selectedFragment, "newsfeed");
-                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+                findViewById(R.id.app_toolbar)
+                        .findViewById(R.id.spinner).setVisibility(View.VISIBLE);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
                 setToolbarTitle("", "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
@@ -558,8 +492,8 @@ public class AppActivity extends BaseNetworkActivity {
                 prevBottomMenuItem = b_navView.getMenu().getItem(0);
                 prevMenuItem = navView.getMenu().getItem(1);
                 fn.navigateTo(selectedFragment, "newsfeed");
-                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .findViewById(R.id.spinner)).setVisibility(View.VISIBLE);
+                findViewById(R.id.app_toolbar)
+                        .findViewById(R.id.spinner).setVisibility(View.VISIBLE);
                 setToolbarTitle("", "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
                 ((NewsfeedFragment) selectedFragment).refreshAdapter();
@@ -572,8 +506,8 @@ public class AppActivity extends BaseNetworkActivity {
                 prevBottomMenuItem = b_navView.getMenu().getItem(1);
                 prevMenuItem = navView.getMenu().getItem(2);
                 fn.navigateTo(selectedFragment, "friends");
-                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                findViewById(R.id.app_toolbar)
+                        .findViewById(R.id.spinner).setVisibility(View.GONE);
                 profileFragment.setData(ovk_api.account.user, ovk_api.friends,
                         ovk_api.account, ovk_api.wrapper);
                 setToolbarTitle(getResources().getString(R.string.nav_friends), "");
@@ -589,13 +523,13 @@ public class AppActivity extends BaseNetworkActivity {
                 prevBottomMenuItem = b_navView.getMenu().getItem(1);
                 prevMenuItem = navView.getMenu().getItem(3);
                 fn.navigateTo(selectedFragment, "groups");
-                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                findViewById(R.id.app_toolbar)
+                        .findViewById(R.id.spinner).setVisibility(View.GONE);
                 profileFragment.setData(ovk_api.account.user,
                         ovk_api.friends, ovk_api.account, ovk_api.wrapper);
                 setToolbarTitle(getResources().getString(R.string.nav_groups), "");
                 toolbar.setNavigationIcon(R.drawable.ic_menu);
-                if (ovk_api.groups.getList() == null || ovk_api.groups.getList().size() == 0) {
+                if (ovk_api.groups.getList() == null || ovk_api.groups.getList().isEmpty()) {
                     ovk_api.groups.getGroups(ovk_api.wrapper, ovk_api.account.id, 25);
                 }
                 b_navView.getMenu().getItem(3).setChecked(true);
@@ -605,8 +539,8 @@ public class AppActivity extends BaseNetworkActivity {
                 prevBottomMenuItem = b_navView.getMenu().getItem(2);
                 prevMenuItem = navView.getMenu().getItem(4);
                 fn.navigateTo(selectedFragment, "messages");
-                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                findViewById(R.id.app_toolbar)
+                        .findViewById(R.id.spinner).setVisibility(View.GONE);
                 profileFragment.setData(ovk_api.account.user, ovk_api.friends,
                         ovk_api.account, ovk_api.wrapper);
                 setToolbarTitle(getResources().getString(R.string.nav_messages), "");
@@ -622,7 +556,7 @@ public class AppActivity extends BaseNetworkActivity {
                 prevBottomMenuItem = b_navView.getMenu().getItem(4);
                 prevMenuItem = navView.getMenu().getItem(0);
                 fn.navigateTo(selectedFragment, "profile");
-                ((AppCompatSpinner) toolbar.findViewById(R.id.spinner)).setVisibility(View.GONE);
+                toolbar.findViewById(R.id.spinner).setVisibility(View.GONE);
                 profileFragment.setData(ovk_api.account.user, ovk_api.friends,
                         ovk_api.account, ovk_api.wrapper);
                 profileFragment.header.setCountersVisibility(PublicPageCounters.MEMBERS, false);
@@ -639,8 +573,8 @@ public class AppActivity extends BaseNetworkActivity {
                 if(profileFragment.aboutItems != null) profileFragment.recreateAboutAdapter();
             } else if (itemId == R.id.settings) {
                 fn.navigateTo(selectedFragment, "settings");
-                ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
-                        .findViewById(R.id.spinner)).setVisibility(View.GONE);
+                findViewById(R.id.app_toolbar)
+                        .findViewById(R.id.spinner).setVisibility(View.GONE);
                 setToolbarTitle(getResources().getString(R.string.nav_settings), "");
                 toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
                 navView.getMenu().getItem(5).setChecked(true);
@@ -750,16 +684,16 @@ public class AppActivity extends BaseNetworkActivity {
                 String profile_name = String.format("%s %s", ovk_api.account.first_name,
                         ovk_api.account.last_name);
                 if(ovk_api.account.user.screen_name != null &&
-                        ovk_api.account.user.screen_name.length() > 0) {
+                        !ovk_api.account.user.screen_name.isEmpty()) {
                     ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
                             .findViewById(R.id.screen_name))
                             .setText(String.format("@%s", ovk_api.account.user.screen_name));
-                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
-                            .findViewById(R.id.screen_name))
+                    ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
+                            .findViewById(R.id.screen_name)
                             .setVisibility(View.VISIBLE);
                 } else {
-                    ((TextView) ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
-                            .findViewById(R.id.screen_name))
+                    ((NavigationView) findViewById(R.id.nav_view)).getHeaderView(0)
+                            .findViewById(R.id.screen_name)
                             .setVisibility(View.GONE);
                 }
                 ovk_api.friends.get(ovk_api.wrapper, ovk_api.account.user.id, 25, "profile_counter");
@@ -876,12 +810,7 @@ public class AppActivity extends BaseNetworkActivity {
                 }
                 profileFragment.setFriendStatus(ovk_api.account.user, user.friends_status);
             } else if(message < 0) {
-                newsfeedFragment.setError(true, message, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        retryConnection();
-                    }
-                });
+                newsfeedFragment.setError(true, message, v -> retryConnection());
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -898,7 +827,7 @@ public class AppActivity extends BaseNetworkActivity {
     @SuppressLint("NotifyDataSetChanged")
     public void refreshNewsfeed(boolean progress) {
         if(ovk_api.newsfeed.getWallPosts() != null) {
-            int pos = ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+            int pos = ((AppCompatSpinner) findViewById(R.id.app_toolbar)
                     .findViewById(R.id.spinner)).getSelectedItemPosition();
             if(ovk_api.newsfeed != null) {
                 ovk_api.newsfeed.getWallPosts().clear();
@@ -968,8 +897,8 @@ public class AppActivity extends BaseNetworkActivity {
 
     public void setAvatarShape() {
         @SuppressLint("CutPasteId") ShapeableImageView avatar =
-                ((ShapeableImageView) ((NavigationView) findViewById(R.id.nav_view))
-                        .getHeaderView(0).findViewById(R.id.profile_avatar));
+                ((NavigationView) findViewById(R.id.nav_view))
+                        .getHeaderView(0).findViewById(R.id.profile_avatar);
         Global.setAvatarShape(this, avatar);
     }
 
@@ -1017,27 +946,9 @@ public class AppActivity extends BaseNetworkActivity {
                 !OvkApplication.isTablet) {
             b_navView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_LABELED);
             b_navView.getLayoutParams().height = DrawerLayout.LayoutParams.WRAP_CONTENT;
-            b_navView.post(new Runnable() {
-                @Override
-                public void run() {
-                    navBarHeight = b_navView.getMeasuredHeight();
-                }
-            });
+            b_navView.post(() -> navBarHeight = b_navView.getMeasuredHeight());
         } else {
             restart();
-        }
-    }
-
-
-    @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
-                                     boolean isInitialChange) {
-        try {
-            super.onMonetColorsChanged(monet, monetColors, isInitialChange);
-            getMonet().updateMonetColors();
-            setMonetTheme();
-        } catch (Exception ex){
-            ex.printStackTrace();
         }
     }
 
@@ -1058,7 +969,7 @@ public class AppActivity extends BaseNetworkActivity {
 
     public void loadMoreNews() {
         if(ovk_api.newsfeed != null) {
-            int pos = ((AppCompatSpinner) ((MaterialToolbar) findViewById(R.id.app_toolbar))
+            int pos = ((AppCompatSpinner) findViewById(R.id.app_toolbar)
                     .findViewById(R.id.spinner)).getSelectedItemPosition();
             if(pos == 0) {
                 ovk_api.newsfeed.get(ovk_api.wrapper, 25, ovk_api.newsfeed.next_from);

@@ -24,8 +24,8 @@ import uk.openvk.android.refresh.ui.util.glide.GlideApp;
 
 public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdapter.Holder>  {
     private final Account account;
-    private Context ctx;
-    private ArrayList<Conversation> items;
+    private final Context ctx;
+    private final ArrayList<Conversation> items;
 
     public ConversationsAdapter(Context context, ArrayList<Conversation> items, Account account) {
         this.ctx = context;
@@ -59,9 +59,9 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.conversation_title = (TextView) view.findViewById(R.id.conversation_title);
-            this.conversation_time = (TextView) view.findViewById(R.id.conversation_time);
-            this.last_msg_text = (TextView) view.findViewById(R.id.last_message_text);
+            this.conversation_title = view.findViewById(R.id.conversation_title);
+            this.conversation_time = view.findViewById(R.id.conversation_time);
+            this.last_msg_text = view.findViewById(R.id.last_message_text);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -85,12 +85,9 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
                     .dontAnimate().centerCrop()
                     .into((ImageView) convertView.findViewById(R.id.conv_avatar));
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        openConversation(item);
-                    }
+            convertView.setOnClickListener(v -> {
+                if(ctx.getClass().getSimpleName().equals("AppActivity")) {
+                    openConversation(item);
                 }
             });
         }

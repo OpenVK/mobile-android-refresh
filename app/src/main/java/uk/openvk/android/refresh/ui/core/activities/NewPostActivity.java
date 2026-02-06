@@ -56,7 +56,6 @@ public class NewPostActivity extends BaseNetworkActivity {
 
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         statusEditText = findViewById(R.id.status_edit);
-        setMonetTheme();
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
@@ -80,8 +79,10 @@ public class NewPostActivity extends BaseNetworkActivity {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         try {
                             toolbar.getMenu().getItem(0)
-                                    .setEnabled(Objects.requireNonNull(statusEditText.getText())
-                                    .toString().length() > 0);
+                                    .setEnabled(
+                                            !Objects.requireNonNull(statusEditText.getText())
+                                                .toString().isEmpty()
+                                    );
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -100,56 +101,6 @@ public class NewPostActivity extends BaseNetworkActivity {
     protected void attachBaseContext(Context newBase) {
         Locale languageType = OvkApplication.getLocale(newBase);
         super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
-    }
-
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            int[][] states = new int[][] {
-                    new int[] { android.R.attr.state_selected}, new int[] { }
-            };
-            int[] colors;
-            int colorOnSurface = MaterialColors.getColor(this,
-                    com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
-            if (!isDarkTheme) {
-                toolbar.setBackgroundColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 600));
-                getWindow().setStatusBarColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 700));
-
-                colors = new int[]{
-                        Global.getMonetIntColor(getMonet(), "accent", 600),
-                        Global.adjustAlpha(colorOnSurface, 0.6f)
-                };
-                Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout))
-                                .getEditText()).setHighlightColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 200));
-            } else {
-                colors = new int[]{
-                        Global.getMonetIntColor(getMonet(), "accent", 200),
-                        Global.adjustAlpha(colorOnSurface, 0.6f)
-                };
-                Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)).getEditText())
-                        .setHighlightColor(
-                                Global.getMonetIntColor(getMonet(), "accent", 500));
-            }
-            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
-                    .setHintTextColor(ColorStateList.valueOf(colors[0]));
-            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
-                    .setBoxStrokeColor(colors[0]);
-        } else {
-            int rippleColor = MaterialColors.getColor(this,
-                    com.google.android.material.R.attr.rippleColor, Color.GRAY);
-            int accentColor = MaterialColors.getColor(this,
-                    com.google.android.material.R.attr.colorAccent, Color.BLACK);
-            Objects.requireNonNull(((TextInputLayout)
-                            findViewById(R.id.status_edit_layout)).getEditText())
-                    .setHighlightColor(rippleColor);
-            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
-                    .setHintTextColor(ColorStateList.valueOf(accentColor));
-            Objects.requireNonNull(((TextInputLayout) findViewById(R.id.status_edit_layout)))
-                    .setBoxStrokeColor(accentColor);
-        }
     }
 
     private void setAppBar() {
@@ -171,26 +122,10 @@ public class NewPostActivity extends BaseNetworkActivity {
                 return false;
             }
         });
-        if(!Global.checkMonet(this)) {
-            Window window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-            if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background,
-                        typedValue, true);
-            } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark,
-                        typedValue, true);
-            }
-            window.setStatusBarColor(typedValue.data);
-        }
     }
 
     private void sendPost() {
-        if (Objects.requireNonNull(statusEditText.getText()).toString().length() > 0) {
+        if (!Objects.requireNonNull(statusEditText.getText()).toString().isEmpty()) {
             try {
                 ovk_api.wall.post(ovk_api.wrapper, owner_id, statusEditText.getText().toString(),
                         false, false);
@@ -233,13 +168,5 @@ public class NewPostActivity extends BaseNetworkActivity {
     @Override
     public void recreate() {
 
-    }
-
-    @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
-                                     boolean isInitialChange) {
-        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
-        getMonet().updateMonetColors();
-        setMonetTheme();
     }
 }

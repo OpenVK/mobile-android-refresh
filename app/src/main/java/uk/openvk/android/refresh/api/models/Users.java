@@ -44,7 +44,6 @@ public class Users implements Parcelable {
         users = new ArrayList<User>();
     }
 
-
     public Users(String response) {
         jsonParser = new JSONParser();
         parse(response);
@@ -71,7 +70,7 @@ public class Users implements Parcelable {
         try {
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray users = json.getJSONArray("response");
-            if(this.users.size() > 0) {
+            if(!this.users.isEmpty()) {
                 this.users.clear();
             }
             for (int i = 0; i < users.length(); i++) {
@@ -93,10 +92,12 @@ public class Users implements Parcelable {
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray users = json.getJSONObject("response").getJSONArray("items");
             ArrayList<PhotoAttachment> avatars;
-            avatars = new ArrayList<PhotoAttachment>();
-            if(this.users.size() > 0) {
+            avatars = new ArrayList<>();
+
+            if(!this.users.isEmpty()) {
                 this.users.clear();
             }
+
             for (int i = 0; i < users.length(); i++) {
                 User user = new User(users.getJSONObject(i));
                 PhotoAttachment photoAttachment = new PhotoAttachment();
@@ -139,7 +140,9 @@ public class Users implements Parcelable {
         for(int i = 0; i < conversations.size(); i++) {
             user_ids.add(conversations.get(i).peer_id);
         }
+
         StringBuilder ids_list = new StringBuilder();
+
         for(int i = 0; i < user_ids.size(); i++) {
             if(i < user_ids.size() - 1) {
                 ids_list.append(String.format("%s,", user_ids.get(i)));
@@ -147,6 +150,7 @@ public class Users implements Parcelable {
                 ids_list.append(user_ids.get(i));
             }
         }
+
         wrapper.sendAPIMethod("Users.get",
                 String.format("user_ids=%s&fields=verified,sex,has_photo,photo_200," +
                 "photo_400,photo_max_orig,status,screen_name,friend_status,last_seen," +
@@ -156,6 +160,7 @@ public class Users implements Parcelable {
 
     public void get(OvkAPIWrapper wrapper, ArrayList<Integer> user_ids) {
         StringBuilder ids_list = new StringBuilder();
+
         for(int i = 0; i < user_ids.size(); i++) {
             if(i < user_ids.size() - 1) {
                 ids_list.append(String.format("%s,", user_ids.get(i)));
@@ -163,11 +168,12 @@ public class Users implements Parcelable {
                 ids_list.append(user_ids.get(i));
             }
         }
+
         wrapper.sendAPIMethod("Users.get",
                 String.format("user_ids=%s&fields=verified,sex,has_photo,photo_200," +
                 "photo_400,photo_max_orig,status,screen_name,friend_status,last_seen," +
                                 "interests,music,movies,tv,books,city",
-                ids_list.toString()));
+                        ids_list));
     }
 
     public ArrayList<User> getList() {

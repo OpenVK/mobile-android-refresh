@@ -131,31 +131,31 @@ public class User implements Parcelable {
                 avatar_msize_url = "";
                 avatar_hsize_url = "";
                 avatar_osize_url = "";
+
                 first_name = user.getString("first_name");
                 last_name = user.getString("last_name");
+
                 id = user.getInt("id");
                 if(user.has("last_seen") && !user.isNull("last_seen")) {
                     ls_date = user.getJSONObject("last_seen").getLong("time");
                     ls_platform = user.getJSONObject("last_seen").getInt("platform");
                 }
-                if(!user.isNull("status")) {
-                    status = user.getString("status");
-                } else {
-                    status = "";
-                }
+
+                status = !user.isNull("status") ? user.getString("status") : "";
+
                 //screen_name = user.getString("screen_name");
-                if (user.has("photo_50")) {
+                if (user.has("photo_50"))
                     avatar_msize_url = user.getString("photo_50");
-                } else if (user.has("photo_100")) {
+                else if (user.has("photo_100"))
                     avatar_msize_url = user.getString("photo_100");
-                } else if (user.has("photo_200")) {
+                else if (user.has("photo_200"))
                     avatar_msize_url = user.getString("photo_200");
-                } else if (user.has("photo_200_orig")) {
+                else if (user.has("photo_200_orig")) {
                     avatar_msize_url = user.getString("photo_200_orig");
                     avatar_url = avatar_msize_url;
-                } else if (user.has("photo_400")) {
+                } else if (user.has("photo_400"))
                     avatar_hsize_url = user.getString("photo_400");
-                } else if (user.has("photo_400_orig")) {
+                else if (user.has("photo_400_orig")) {
                     avatar_hsize_url = user.getString("photo_400_orig");
                     avatar_url = avatar_hsize_url;
                 } else if (user.has("photo_max")) {
@@ -164,55 +164,40 @@ public class User implements Parcelable {
                     avatar_osize_url = user.getString("photo_max_orig");
                     avatar_url = avatar_osize_url;
                 }
+
                 if(user.has("deactivated")) {
                     deactivated = user.getString("deactivated");
-                    if(deactivated.equals("banned") && user.isNull("ban_reason")) {
-                        ban_reason = user.getString("ban_reason");
-                    } else {
-                        ban_reason = "";
-                    }
+                    ban_reason = deactivated.equals("banned") && user.isNull("ban_reason") ?
+                                    user.getString("ban_reason") : "";
                 } else {
+
                     friends_status = user.getInt("friend_status");
-                    if (!user.isNull("interests")) {
-                        interests = user.getString("interests");
-                    } else {
-                        interests = "";
-                    }
-                    if (!user.isNull("movies")) {
-                        movies = user.getString("movies");
-                    } else {
-                        movies = "";
-                    }
-                    if (!user.isNull("music")) {
-                        music = user.getString("music");
-                    } else {
-                        music = "";
-                    }
-                    if (!user.isNull("tv")) {
-                        tv = user.getString("tv");
-                    } else {
-                        tv = "";
-                    }
-                    if (!user.isNull("books")) {
-                        books = user.getString("books");
-                    } else {
-                        books = "";
-                    }
+
+                    interests       = !user.isNull("interests") ?
+                                            user.getString("interests") : "";
+
+                    movies          = !user.isNull("movies") ?
+                                            user.getString("movies") : "";
+
+                    music           = !user.isNull("music") ?
+                                            user.getString("music") : "";
+
+                    tv              = !user.isNull("tv") ?
+                                            user.getString("tv") : "";
+
+                    books           = !user.isNull("books") ?
+                                            user.getString("books") : "";
+
                     //birthdate = user.getString("bdate");
-                    if (!user.isNull("city")) {
-                        city = user.getString("city");
-                    } else {
-                        city = "";
-                    }
+                    city            = !user.isNull("city") ?
+                                        user.getString("city") : "";
                     //birthdate = user.getString("bdate");
-                    if (!user.isNull("city")) {
-                        city = user.getString("city");
-                    }
-                    verified = user.getInt("verified") == 1;
-                    online = user.getInt("online") == 1;
-                    if(user.has("sex")) {
-                        sex = user.getInt("sex");
-                    }
+                    if (!user.isNull("city"))
+                        city        = user.getString("city");
+                    verified        = user.getInt("verified") == 1;
+                    online          = user.getInt("online") == 1;
+
+                    if(user.has("sex")) sex = user.getInt("sex");
                 }
             }
         } catch (JSONException e) {
@@ -225,79 +210,72 @@ public class User implements Parcelable {
         try {
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray users = json.getJSONArray("items");
-            if (users != null) {
-                for (int i = 0; i < users.length(); i++) {
-                    if (i == position) {
-                        JSONObject user = (JSONObject) users.get(i);
-                        first_name = user.getString("first_name");
-                        last_name = user.getString("last_name");
-                        id = user.getInt("id");
-                        status = user.getString("status");
-                        screen_name = user.getString("screen_name");
-                        if (user.has("photo_50")) {
-                            avatar_msize_url = user.getString("photo_50");
-                        } if (user.has("photo_100")) {
-                            avatar_msize_url = user.getString("photo_100");
-                        } if (user.has("photo_200_orig")) {
-                            avatar_msize_url = user.getString("photo_200_orig");
-                            avatar_url = avatar_msize_url;
-                        } if (user.has("photo_200")) {
-                            avatar_msize_url = user.getString("photo_200");
-                        } if (user.has("photo_400")) {
-                            avatar_hsize_url = user.getString("photo_400");
-                        } if (user.has("photo_400_orig")) {
-                            avatar_hsize_url = user.getString("photo_400_orig");
-                            avatar_url = avatar_hsize_url;
-                        } if (user.has("photo_max")) {
-                            avatar_osize_url = user.getString("photo_max");
-                        } if (user.has("photo_max_orig")) {
-                            avatar_osize_url = user.getString("photo_max_orig");
-                            avatar_url = avatar_osize_url;
-                        }
+            for (int i = 0; i < users.length(); i++) {
+                if (i == position) {
+                    JSONObject user = (JSONObject) users.get(i);
+                    first_name = user.getString("first_name");
+                    last_name = user.getString("last_name");
+                    id = user.getInt("id");
+                    status = user.getString("status");
+                    screen_name = user.getString("screen_name");
 
-                        friends_status = user.getInt("friend_status");
-                        if (!user.isNull("interests")) {
-                            interests = user.getString("interests");
-                        } else {
-                            interests = "";
-                        }
-                        if (!user.isNull("movies")) {
-                            movies = user.getString("movies");
-                        } else {
-                            movies = "";
-                        }
-                        if (!user.isNull("music")) {
-                            music = user.getString("music");
-                        } else {
-                            music = "";
-                        }
-                        if (!user.isNull("tv")) {
-                            tv = user.getString("tv");
-                        } else {
-                            tv = "";
-                        }
-                        if (!user.isNull("books")) {
-                            books = user.getString("books");
-                        } else {
-                            books = "";
-                        }
-                        //birthdate = user.getString("bdate");
-                        if (!user.isNull("city")) {
-                            city = user.getString("city");
-                        } else {
-                            city = "";
-                        }
-                        if (user.getInt("verified") == 1) {
-                            verified = true;
-                        } else {
-                            verified = false;
-                        }
-                        if (user.getInt("online") == 1) {
-                            online = true;
-                        } else {
-                            online = false;
-                        }
+                    if (user.has("photo_50"))
+                        avatar_msize_url = user.getString("photo_50");
+
+                    if (user.has("photo_100"))
+                        avatar_msize_url = user.getString("photo_100");
+
+                    if (user.has("photo_200_orig")) {
+                        avatar_msize_url = user.getString("photo_200_orig");
+                        avatar_url = avatar_msize_url;
                     }
+
+                    if (user.has("photo_200")) {
+                        avatar_msize_url = user.getString("photo_200");
+                    }
+
+                    if (user.has("photo_400")) {
+                        avatar_hsize_url = user.getString("photo_400");
+                    }
+
+                    if (user.has("photo_400_orig")) {
+                        avatar_hsize_url = user.getString("photo_400_orig");
+                        avatar_url = avatar_hsize_url;
+                    }
+
+                    if (user.has("photo_max")) {
+                        avatar_osize_url = user.getString("photo_max");
+                    }
+
+                    if (user.has("photo_max_orig")) {
+                        avatar_osize_url = user.getString("photo_max_orig");
+                        avatar_url = avatar_osize_url;
+                    }
+
+                    friends_status  = user.getInt("friend_status");
+
+                    interests       = !user.isNull("interests") ?
+                                            user.getString("interests") : "";
+
+                    movies          = !user.isNull("movies") ?
+                                            user.getString("movies") : "";
+
+                    music           = !user.isNull("music") ?
+                                            user.getString("music") : "";
+
+                    tv              = !user.isNull("tv") ?
+                                            user.getString("tv") : "";
+
+                    books           = !user.isNull("books") ?
+                                            user.getString("books") : "";
+
+                    //birthdate     = user.getString("bdate");
+
+                    city            = !user.isNull("city") ?
+                                            user.getString("city") : "";
+
+                    verified        = user.getInt("verified") == 1;
+                    online          = user.getInt("online") == 1;
                 }
             }
         } catch (JSONException e) {

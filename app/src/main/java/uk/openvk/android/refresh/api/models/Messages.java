@@ -50,8 +50,9 @@ public class Messages {
         if(json != null) {
             try {
                 JSONArray items = json.getJSONObject("response").getJSONArray("items");
-                conversations = new ArrayList<Conversation>();
+                conversations = new ArrayList<>();
                 ArrayList<PhotoAttachment> avatars = new ArrayList<>();
+
                 for(int i = 0; i < items.length(); i++) {
                     JSONObject conv = items.getJSONObject(i).getJSONObject("conversation");
                     JSONObject last_msg = items.getJSONObject(i).getJSONObject("last_message");
@@ -61,6 +62,7 @@ public class Messages {
                     PhotoAttachment photoAttachment = new PhotoAttachment();
                     photoAttachment.url = "";
                     photoAttachment.filename = "";
+
                     if(peer_id > 0 && conv.getJSONObject("peer").getString("type").equals("user")) {
                         if(json.getJSONObject("response").has("profiles")) {
                             JSONArray profiles = json.getJSONObject("response").getJSONArray("profiles");
@@ -94,6 +96,7 @@ public class Messages {
                             }
                         }
                     }
+
                     avatars.add(photoAttachment);
                     conversation.lastMsgTime = last_msg.getInt("date");
                     conversation.lastMsgText = last_msg.getString("text");

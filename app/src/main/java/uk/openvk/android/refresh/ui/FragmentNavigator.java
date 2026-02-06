@@ -109,12 +109,14 @@ public class FragmentNavigator {
                         activity.selectedFragment = activity.mainSettingsFragment;
                     }
                 }
+
                 if(where.equals("profile")) {
                     appBar.inflateMenu(R.menu.profile);
                     appBar.getMenu().removeItem(R.id.delete_friend);
                 } else {
                     appBar.getMenu().clear();
                 }
+
                 ft.commit();
             }
         }

@@ -50,8 +50,8 @@ public class PublicPageAboutAdapter extends RecyclerView.Adapter<PublicPageAbout
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.title = (TextView) view.findViewById(R.id.about_item_title);
-            this.subtitle = (TextView) view.findViewById(R.id.about_item_subtitle);
+            this.title = view.findViewById(R.id.about_item_title);
+            this.subtitle = view.findViewById(R.id.about_item_subtitle);
         }
 
         void bind(final int position) {

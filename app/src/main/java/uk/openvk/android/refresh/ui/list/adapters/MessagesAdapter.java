@@ -72,11 +72,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.horizontal_layout = (LinearLayout) view.findViewById(R.id.text_layout_horizontal);
-            this.vertical_layout = (LinearLayout) view.findViewById(R.id.text_layout_vertical);
-            this.msg_text = (TextView) view.findViewById(R.id.msg_text);
-            this.msg_timestamp = (TextView) view.findViewById(R.id.timestamp);
-            this.msg_text_2 = (TextView) view.findViewById(R.id.msg_text_2);
+            this.horizontal_layout = view.findViewById(R.id.text_layout_horizontal);
+            this.vertical_layout = view.findViewById(R.id.text_layout_vertical);
+            this.msg_text = view.findViewById(R.id.msg_text);
+            this.msg_timestamp = view.findViewById(R.id.timestamp);
+            this.msg_text_2 = view.findViewById(R.id.msg_text_2);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -99,17 +99,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
                     msg_timestamp.setText(item.timestamp);
                     if (item.type == 1) {
                         if (item.isError) {
-                            ((ImageView) convertView.findViewById(R.id.error_image))
+                            convertView.findViewById(R.id.error_image)
                                     .setVisibility(View.VISIBLE);
                         } else {
-                            ((ImageView) convertView.findViewById(R.id.error_image))
+                            convertView.findViewById(R.id.error_image)
                                     .setVisibility(View.GONE);
                         }
                         if (item.sending) {
-                            ((ProgressBar) convertView.findViewById(R.id.sending_progress))
+                            convertView.findViewById(R.id.sending_progress)
                                     .setVisibility(View.VISIBLE);
                         } else {
-                            ((ProgressBar) convertView.findViewById(R.id.sending_progress))
+                            convertView.findViewById(R.id.sending_progress)
                                     .setVisibility(View.GONE);
                         }
                     } else {
@@ -124,7 +124,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
                                     .dontAnimate().centerCrop()
                                     .into((ImageView) convertView.findViewById(R.id.companion_avatar));
                         } else {
-                            ((ImageView) convertView.findViewById(R.id.companion_avatar))
+                            convertView.findViewById(R.id.companion_avatar)
                                     .setVisibility(View.INVISIBLE);
                         }
                     }
@@ -132,7 +132,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
                     boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx)
                             .getBoolean("dark_theme", false);
                     if (item.type == 0) {
-                        cardView = ((CardView) convertView.findViewById(R.id.incoming_msg_layout));
+                        cardView = convertView.findViewById(R.id.incoming_msg_layout);
                         if (Global.checkMonet(ctx)) {
                             MonetCompat monet = MonetCompat.getInstance();
                             cardView.setCardBackgroundColor(
@@ -162,7 +162,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Holder
     @Override
     public int getItemViewType(int position) {
         try {
-            return ((Message) Objects.requireNonNull(getItem(position))).type;
+            return Objects.requireNonNull(getItem(position)).type;
         } catch (Exception ex) {
             return 0;
         }

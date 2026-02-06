@@ -70,7 +70,7 @@ public class Groups implements Parcelable {
             groups = new ArrayList<Group>();
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray groups = json.getJSONArray("response");
-            if(this.groups.size() > 0) {
+            if(!this.groups.isEmpty()) {
                 this.groups.clear();
             }
             for (int i = 0; i < groups.length(); i++) {
@@ -84,12 +84,12 @@ public class Groups implements Parcelable {
 
     public void parseSearch(String response, DownloadManager downloadManager) {
         try {
-            groups = new ArrayList<Group>();
+            groups = new ArrayList<>();
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray groups = json.getJSONObject("response").getJSONArray("items");
             ArrayList<PhotoAttachment> avatars;
-            avatars = new ArrayList<PhotoAttachment>();
-            if(this.groups.size() > 0) {
+            avatars = new ArrayList<>();
+            if(!this.groups.isEmpty()) {
                 this.groups.clear();
             }
             for (int i = 0; i < groups.length(); i++) {
@@ -173,7 +173,7 @@ public class Groups implements Parcelable {
                     photoAttachment.url = group.avatar_osize_url;
                 }
 
-                if(photoAttachment.url.length() == 0) {
+                if(photoAttachment.url.isEmpty()) {
                     photoAttachment.url = group.avatar_msize_url;
                 }
                 photoAttachment.filename = String.format("avatar_%s", group.id);

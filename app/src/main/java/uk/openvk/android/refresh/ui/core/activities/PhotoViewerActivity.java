@@ -86,7 +86,6 @@ public class PhotoViewerActivity extends BaseNetworkActivity {
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         setContentView(R.layout.activity_photo_viewer);
         setAppBar();
-        setMonetTheme();
         loadPhoto();
     }
 
@@ -95,56 +94,24 @@ public class PhotoViewerActivity extends BaseNetworkActivity {
         appbar = findViewById(R.id.app_bar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(getResources().getString(R.string.photo_title));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            if(item.getItemId() == R.id.download) {
+                savePhotoFromCache();
+            } else if(item.getItemId() == R.id.copy_link) {
+                android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
+                        getSystemService(Context.CLIPBOARD_SERVICE);
+                android.content.ClipData clip =
+                        android.content.ClipData.newPlainText("Photo URL", photo.original_url);
+                clipboard.setPrimaryClip(clip);
             }
+            return false;
         });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId() == R.id.download) {
-                    savePhotoFromCache();
-                } else if(item.getItemId() == R.id.copy_link) {
-                    android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
-                            getSystemService(Context.CLIPBOARD_SERVICE);
-                    android.content.ClipData clip =
-                            android.content.ClipData.newPlainText("Photo URL", photo.original_url);
-                    clipboard.setPrimaryClip(clip);
-                }
-                return false;
-            }
-        });
-        if(!Global.checkMonet(this)) {
-            TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-            if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background,
-                        typedValue, true);
-            } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark,
-                        typedValue, true);
-            }
-            getWindow().setStatusBarColor(typedValue.data);
-        }
+
         toolbar.getBackground().setAlpha(200);
         findViewById(R.id.app_bar).setBackgroundColor(Color.TRANSPARENT);
         findViewById(R.id.app_bar).setOutlineProvider(null);
-    }
-
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            if (!isDarkTheme) {
-                toolbar.setBackgroundColor
-                        (Global.getMonetIntColor(getMonet(), "accent", 600));
-                getWindow().setStatusBarColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 700));
-                toolbar.getBackground().setAlpha(200);
-            }
-        }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -189,7 +156,7 @@ public class PhotoViewerActivity extends BaseNetworkActivity {
                         .placeholder(getDrawable(R.drawable.photo_placeholder))
                         .dontAnimate().error(R.drawable.photo_loading_error)
                         .into((ZoomableImageView) findViewById(R.id.image_view));
-                ((ZoomableImageView) findViewById(R.id.image_view)).setOnClickListener(
+                findViewById(R.id.image_view).setOnClickListener(
                         new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -232,17 +199,14 @@ public class PhotoViewerActivity extends BaseNetworkActivity {
             bfOptions = new BitmapFactory.Options();
             bfOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
             try {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            savePhotoFromCache(GlideApp.with(PhotoViewerActivity.this).asBitmap()
-                                    .load(cache_path).diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .submit().get());
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                new Thread(() -> {
+                    try {
+                        savePhotoFromCache(GlideApp.with(PhotoViewerActivity.this).asBitmap()
+                                .load(cache_path).diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .submit().get());
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }).start();
             } catch (Exception e) {
@@ -264,6 +228,7 @@ public class PhotoViewerActivity extends BaseNetworkActivity {
         String dest_dir = String.format("%s/OpenVK", Environment.
                 getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath());
         String mime = "image/jpeg";
+
         if (bitmap != null) {
             FileChannel sourceChannel = null;
             FileChannel destChannel = null;
@@ -318,7 +283,7 @@ public class PhotoViewerActivity extends BaseNetworkActivity {
 
     private String checkFileType(StringBuilder sb) {
         if(sb != null) {
-            if(sb.length() > 0) {
+            if(!sb.toString().isEmpty()) {
                 if (sb.toString().startsWith("ÿØÿÛ")
                         || sb.toString().contains("JFIF")
                         || sb.toString().startsWith("ÿØÿî")

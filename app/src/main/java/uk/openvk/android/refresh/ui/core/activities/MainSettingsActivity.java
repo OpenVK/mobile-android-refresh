@@ -51,8 +51,9 @@ public class MainSettingsActivity extends BaseNetworkActivity {
                 getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
+
         setContentView(R.layout.activity_intent);
-        setMonetTheme();
+
         setAppBar();
         createFragments();
     }
@@ -61,18 +62,6 @@ public class MainSettingsActivity extends BaseNetworkActivity {
     protected void attachBaseContext(Context newBase) {
         Locale languageType = OvkApplication.getLocale(newBase);
         super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
-    }
-
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            if (!isDarkTheme) {
-                toolbar.setBackgroundColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 600));
-                getWindow().setStatusBarColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 700));
-            }
-        }
     }
 
     private void createFragments() {
@@ -119,14 +108,6 @@ public class MainSettingsActivity extends BaseNetworkActivity {
         }
     }
 
-    @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
-                                     boolean isInitialChange) {
-        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
-        getMonet().updateMonetColors();
-        setMonetTheme();
-    }
-
     public void switchFragment(String tag) {
         FragmentManager fm = getSupportFragmentManager();
         ft = getSupportFragmentManager().beginTransaction();
@@ -135,6 +116,7 @@ public class MainSettingsActivity extends BaseNetworkActivity {
         ft.hide(Objects.requireNonNull(fm.findFragmentByTag("about_app")));
         if(selectedFragment == null) selectedFragment = getSupportFragmentManager()
                 .findFragmentByTag("settings");
+        assert selectedFragment != null;
         switch (tag) {
             case "settings" -> {
                 ft.hide(selectedFragment);

@@ -9,11 +9,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLException;
@@ -57,7 +60,7 @@ public class LongPollWrapper {
     private boolean isActivated;
     private boolean logging_enabled = true;
 
-    private OkHttpClient httpClient = null;
+    private OkHttpClient httpClient;
     private boolean looper_prepared;
 
 
@@ -121,7 +124,6 @@ public class LongPollWrapper {
                     }
                     while(isActivated) {
                         Response response = httpClient.newCall(request).execute();
-                        assert response.body() != null;
                         response_body = response.body().string();
                         response_code = response.code();
                         if (response_code == 200) {
@@ -209,9 +211,9 @@ public class LongPollWrapper {
         if(!looper_prepared) {
             Looper.prepare();
             looper_prepared = true;
-            handler = new Handler(Looper.myLooper()) {
+            handler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
                 @Override
-                public void handleMessage(android.os.Message msg) {
+                public void handleMessage(@NonNull android.os.Message msg) {
                     super.handleMessage(msg);
                     if(msg.what == HandlerMessages.LONGPOLL) {
                         Intent intent = new Intent();
@@ -239,7 +241,7 @@ public class LongPollWrapper {
             public void run() {
                 wrapper.sendAPIMethod("Account.getCounters");
                 try {
-                    if(error != null && error.description.length() > 0) {
+                    if(error != null && !error.description.isEmpty()) {
                         handler.postDelayed(this, 5000);
                     } else {
                         handler.postDelayed(this, 60000);
@@ -259,7 +261,7 @@ public class LongPollWrapper {
             public void run() {
                 wrapper.sendAPIMethod("Account.setOnline");
                 try {
-                    if(error != null && error.description.length() > 0) {
+                    if(error != null && !error.description.isEmpty()) {
                         handler.postDelayed(this, 60000);
                     }
                 } catch (Exception e) {

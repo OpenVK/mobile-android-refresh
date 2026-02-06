@@ -43,7 +43,7 @@ public class OvkAlertDialogBuilder extends MaterialAlertDialogBuilder {
     }
 
     public void setFont() {
-        if(dialog.getWindow().findViewById(com.google.android.material.R.id.alertTitle) != null) {
+        if(Objects.requireNonNull(dialog.getWindow()).findViewById(com.google.android.material.R.id.alertTitle) != null) {
             ((TextView) dialog.getWindow().findViewById(com.google.android.material.R.id.alertTitle)).setTypeface(
                     Global.getFlexibleTypeface(getContext(), 500));
         }

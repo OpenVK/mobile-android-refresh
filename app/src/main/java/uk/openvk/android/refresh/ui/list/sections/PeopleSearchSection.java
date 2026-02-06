@@ -53,12 +53,9 @@ public class PeopleSearchSection extends Section {
         User item = items.get(position);
         itemHolder.title.setText(String.format("%s %s", item.first_name, item.last_name));
         itemHolder.title.setFocusable(false);
-        itemHolder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(ctx instanceof QuickSearchActivity) {
-                    ((QuickSearchActivity) ctx).openProfile(position);
-                }
+        itemHolder.view.setOnClickListener(v -> {
+            if(ctx instanceof QuickSearchActivity) {
+                ((QuickSearchActivity) ctx).openProfile(position);
             }
         });
     }

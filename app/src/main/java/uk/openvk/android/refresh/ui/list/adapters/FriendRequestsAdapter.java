@@ -64,8 +64,8 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.friend_title = (TextView) view.findViewById(R.id.friend_title);
-            this.add_btn = (MaterialButton) view.findViewById(R.id.add_button);
+            this.friend_title = view.findViewById(R.id.friend_title);
+            this.add_btn = view.findViewById(R.id.add_button);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -86,19 +86,11 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
             convertView.findViewById(R.id.friend_avatar).setFocusable(false);
             friend_title.setFocusable(false);
             convertView.findViewById(R.id.friend_avatar).setFocusable(false);
-            View.OnClickListener openProfileListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openProfile(item);
-                }
-            };
-            add_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(ctx.getClass().getSimpleName().equals("AppActivity")) {
-                        ((FriendsFragment) parent).requests_cursor_index = position;
-                        ((AppActivity) ctx).addToFriends(item.id);
-                    }
+            View.OnClickListener openProfileListener = v -> openProfile(item);
+            add_btn.setOnClickListener(v -> {
+                if(ctx.getClass().getSimpleName().equals("AppActivity")) {
+                    ((FriendsFragment) parent).requests_cursor_index = position;
+                    ((AppActivity) ctx).addToFriends(item.id);
                 }
             });
             setTheme(convertView);
@@ -121,7 +113,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
     public void openProfile(Friend friend) {
         String url = "";
         url = String.format("openvk://profile/id%s", friend.id);
-        if(url.length() > 0) {
+        if(!url.isEmpty()) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = ctx.getPackageManager();

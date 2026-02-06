@@ -157,7 +157,7 @@ public class QuickSearchActivity extends BaseNetworkActivity {
         if(group.id > 0) {
             url = String.format("openvk://group/club%s", group.id);
         }
-        if(url.length() > 0) {
+        if(!url.isEmpty()) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = getPackageManager();

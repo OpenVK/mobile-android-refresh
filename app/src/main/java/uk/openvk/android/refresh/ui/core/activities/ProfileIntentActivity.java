@@ -43,16 +43,18 @@ public class ProfileIntentActivity extends BaseNetworkActivity {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
+
         Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"), getWindow());
         Global.setInterfaceFont(this);
+
         instance_prefs = getSharedPreferences("instance", 0);
         setContentView(R.layout.activity_intent);
-        setMonetTheme();
+
         final Uri uri = getIntent().getData();
         if (uri != null) {
             String path = uri.toString();
             args = path.substring("openvk://profile/".length());
-            if (instance_prefs.getString("access_token", "").length() == 0) {
+            if (instance_prefs.getString("access_token", "").isEmpty()) {
                 finish();
                 return;
             }
@@ -74,6 +76,7 @@ public class ProfileIntentActivity extends BaseNetworkActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        String screen_name = ovk_api.account.user.screen_name;
         if(item.getItemId() == R.id.delete_friend) {
             if(user.friends_status > 1) {
                 deleteFromFriends(user.id);
@@ -82,7 +85,7 @@ public class ProfileIntentActivity extends BaseNetworkActivity {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
                     getSystemService(Context.CLIPBOARD_SERVICE);
             String url = "";
-            if(ovk_api.account.user.screen_name != null && ovk_api.account.user.screen_name.length() > 0) {
+            if(screen_name != null && screen_name.length() > 0) {
                 url = String.format("https://%s/%s",
                         instance_prefs.getString("server", ""), user.screen_name);
             } else {
@@ -94,7 +97,7 @@ public class ProfileIntentActivity extends BaseNetworkActivity {
             clipboard.setPrimaryClip(clip);
         } else if(item.getItemId() == R.id.open_in_browser) {
             String url = "";
-            if(ovk_api.account.user.screen_name != null && ovk_api.account.user.screen_name.length() > 0) {
+            if(screen_name != null && !screen_name.isEmpty()) {
                 url = String.format("https://%s/%s",
                         instance_prefs.getString("server", ""), user.screen_name);
             } else {
@@ -111,18 +114,6 @@ public class ProfileIntentActivity extends BaseNetworkActivity {
     private void deleteFromFriends(long user_id) {
         if(user_id != ovk_api.account.id) {
             ovk_api.friends.delete(ovk_api.wrapper, user_id);
-        }
-    }
-
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            if (!isDarkTheme) {
-                toolbar.setBackgroundColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 600));
-                getWindow().setStatusBarColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 700));
-            }
         }
     }
 
@@ -244,14 +235,6 @@ public class ProfileIntentActivity extends BaseNetworkActivity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
-                                     boolean isInitialChange) {
-        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
-        getMonet().updateMonetColors();
-        setMonetTheme();
     }
 
     public void setToolbarTitle(String title, String subtitle) {

@@ -27,7 +27,7 @@ public class TypefaceUtil {
         final Typeface customFontTypeface = ResourcesCompat.getFont(context, fontId);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Map<String, Typeface> newMap = new HashMap<String, Typeface>();
+            Map<String, Typeface> newMap = new HashMap<>();
             newMap.put("serif", customFontTypeface);
             try {
                 @SuppressLint("DiscouragedPrivateApi") final Field staticField = Typeface.class
@@ -43,7 +43,7 @@ public class TypefaceUtil {
                         getDeclaredField(defaultFontNameToOverride);
                 defaultFontTypefaceField.setAccessible(true);
                 defaultFontTypefaceField.set(null, customFontTypeface);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

@@ -103,8 +103,7 @@ public class DownloadManager {
                         }
                 };
                 sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-                javax.net.ssl.SSLSocketFactory ssf = (javax.net.ssl.SSLSocketFactory)
-                        sslContext.getSocketFactory();
+                javax.net.ssl.SSLSocketFactory ssf = sslContext.getSocketFactory();
                 httpClient = new OkHttpClient.Builder()
                         .sslSocketFactory(sslContext.getSocketFactory())
                         .connectTimeout(30, TimeUnit.SECONDS)
@@ -160,7 +159,7 @@ public class DownloadManager {
             OvkApplication app = ((OvkApplication) ctx.getApplicationContext());
             version_name = app.version;
         } finally {
-            user_agent = String.format("OpenVK Legacy/%s (Android %s; SDK %s; %s; %s %s; %s)", version_name,
+            user_agent = String.format("OpenVK Refresh/%s (Android %s; SDK %s; %s; %s %s; %s)", version_name,
                     Build.VERSION.RELEASE, Build.VERSION.SDK_INT, Build.CPU_ABI, Build.MANUFACTURER,
                     Build.MODEL, System.getProperty("user.language"));
         }

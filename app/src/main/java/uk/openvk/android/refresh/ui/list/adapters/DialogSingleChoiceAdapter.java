@@ -97,7 +97,7 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        CheckedTextView checkedTv = ((CheckedTextView) convertView.findViewById(android.R.id.text1));
+        CheckedTextView checkedTv = convertView.findViewById(android.R.id.text1);
         if(Global.checkMonet(ctx)) {
             MonetCompat monet = MonetCompat.getInstance();
             boolean isDarkTheme = PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -117,22 +117,19 @@ public class DialogSingleChoiceAdapter extends BaseAdapter {
         checkedTv.setChecked(viewHolder.isSelected);
         checkedTv.setText((CharSequence) getItem(position));
         View finalConvertView = convertView;
-        checkedTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(frg != null) {
-                    if(dlgBuilder != null) {
-                        dlgBuilder.clearCheck(checkedItem);
-                        checkedItem = position;
-                        checkedTv.setChecked(true);
-                    }
-                    if(frg.getClass().getSimpleName().equals("PersonalizationFragment")) {
-                        ((PersonalizationFragment) frg).onMenuItemClicked(list, position);
-                    } else if(frg.getClass().getSimpleName().equals("VideoSettingsFragment")) {
-                        ((VideoSettingsFragment) frg).onMenuItemClicked(list, position);
-                    } else {
-                        ((MainSettingsFragment) frg).onMenuItemClicked(list, position);
-                    }
+        checkedTv.setOnClickListener(v -> {
+            if(frg != null) {
+                if(dlgBuilder != null) {
+                    dlgBuilder.clearCheck(checkedItem);
+                    checkedItem = position;
+                    checkedTv.setChecked(true);
+                }
+                if(frg.getClass().getSimpleName().equals("PersonalizationFragment")) {
+                    ((PersonalizationFragment) frg).onMenuItemClicked(list, position);
+                } else if(frg.getClass().getSimpleName().equals("VideoSettingsFragment")) {
+                    ((VideoSettingsFragment) frg).onMenuItemClicked(list, position);
+                } else {
+                    ((MainSettingsFragment) frg).onMenuItemClicked(list, position);
                 }
             }
         });

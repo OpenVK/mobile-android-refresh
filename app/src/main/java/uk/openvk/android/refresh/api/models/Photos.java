@@ -57,6 +57,7 @@ public class Photos {
             list = new ArrayList<>();
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray photos = json.getJSONObject("response").getJSONArray("photos");
+
             for(int i = 0; i < photos.length(); i++) {
                 JSONObject item = photos.getJSONObject(i);
                 Photo photo = new Photo();
@@ -79,6 +80,7 @@ public class Photos {
             album.photos = new ArrayList<>();
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray photos = json.getJSONObject("response").getJSONArray("photos");
+
             for(int i = 0; i < photos.length(); i++) {
                 JSONObject item = photos.getJSONObject(i);
                 Photo photo = new Photo();
@@ -103,6 +105,7 @@ public class Photos {
             album.size = json.getJSONObject("response").getInt("count");
             JSONArray photos = json.getJSONObject("response").getJSONArray("items");
             ArrayList<PhotoAttachment> photoAttachs = new ArrayList<>();
+
             for(int i = 0; i < photos.length(); i++) {
                 JSONObject item = photos.getJSONObject(i);
                 Photo photo = new Photo();

@@ -8,11 +8,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.kieronquinn.monetcompat.app.MonetCompatActivity;
-
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
+
+import java.util.Objects;
+
 import uk.openvk.android.refresh.BuildConfig;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.api.OpenVKAPI;
@@ -20,7 +22,7 @@ import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.interfaces.OvkAPIListeners;
 import uk.openvk.android.refresh.receivers.OvkAPIReceiver;
 
-public class BaseNetworkActivity extends MonetCompatActivity {
+public class BaseNetworkActivity extends AppCompatActivity {
    public OpenVKAPI ovk_api;
    public SharedPreferences global_prefs;
    public SharedPreferences instance_prefs;
@@ -36,7 +38,7 @@ public class BaseNetworkActivity extends MonetCompatActivity {
       instance_prefs = ((OvkApplication) getApplicationContext()).getAccountPreferences();
       global_prefs_editor = global_prefs.edit();
       instance_prefs_editor = instance_prefs.edit();
-      handler = new Handler(Looper.myLooper());
+      handler = new Handler(Objects.requireNonNull(Looper.myLooper()));
       ovk_api = new OpenVKAPI(this, global_prefs, instance_prefs, handler);
       OvkAPIListeners apiListeners = new OvkAPIListeners();
       setAPIListeners(apiListeners);

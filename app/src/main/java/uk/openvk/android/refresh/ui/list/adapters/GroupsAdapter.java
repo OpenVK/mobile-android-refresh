@@ -57,8 +57,8 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.Holder>  {
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.group_title = (TextView) view.findViewById(R.id.group_title);
-            this.group_summary = (TextView) view.findViewById(R.id.group_summary);
+            this.group_title = view.findViewById(R.id.group_title);
+            this.group_summary = view.findViewById(R.id.group_summary);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -84,12 +84,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.Holder>  {
             group_title.setFocusable(false);
             group_summary.setFocusable(false);
 
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openCommunityPage(item);
-                }
-            });
+            convertView.setOnClickListener(v -> openCommunityPage(item));
         }
     }
 
@@ -105,7 +100,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.Holder>  {
     public void openCommunityPage(Group group) {
         String url = "";
         url = String.format("openvk://group/club%s", group.id);
-        if(url.length() > 0) {
+        if(!url.isEmpty()) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = ctx.getPackageManager();

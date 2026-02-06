@@ -53,12 +53,9 @@ public class CommunitiesSearchSection extends Section {
         Group item = items.get(position);
         itemHolder.title.setText(item.name);
         itemHolder.title.setFocusable(false);
-        itemHolder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(ctx instanceof QuickSearchActivity) {
-                    ((QuickSearchActivity) ctx).openGroup(position);
-                }
+        itemHolder.view.setOnClickListener(v -> {
+            if(ctx instanceof QuickSearchActivity) {
+                ((QuickSearchActivity) ctx).openGroup(position);
             }
         });
     }

@@ -56,7 +56,7 @@ public class Friends implements Parcelable {
     protected Friends(Parcel in) {
     }
 
-    public static final Creator<Friends> CREATOR = new Creator<Friends>() {
+    public static final Creator<Friends> CREATOR = new Creator<>() {
         @Override
         public Friends createFromParcel(Parcel in) {
             return new Friends(in);
@@ -74,27 +74,25 @@ public class Friends implements Parcelable {
                 this.friends.clear();
             }
             JSONObject json = jsonParser.parseJSON(response).getJSONObject("response");
-            if(json != null) {
-                count = json.getInt("count");
-                JSONArray users = json.getJSONArray("items");
-                ArrayList<PhotoAttachment> avatars;
-                avatars = new ArrayList<PhotoAttachment>();
-                for (int i = 0; i < users.length(); i++) {
-                    Friend friend = new Friend(users.getJSONObject(i));
-                    PhotoAttachment photoAttachment = new PhotoAttachment();
-                    photoAttachment.url = friend.avatar_url;
-                    photoAttachment.filename = String.format("avatar_%s", friend.id);
-                    avatars.add(photoAttachment);
-                    try { // handle floating crash
-                        this.friends.add(friend);
-                    } catch (ArrayIndexOutOfBoundsException ignored) {
-                        Log.e(OvkApplication.API_TAG, "WTF? The length itself in an array must not " +
-                                    "be overestimated.");
-                    }
+            count = json.getInt("count");
+            JSONArray users = json.getJSONArray("items");
+            ArrayList<PhotoAttachment> avatars;
+            avatars = new ArrayList<>();
+            for (int i = 0; i < users.length(); i++) {
+                Friend friend = new Friend(users.getJSONObject(i));
+                PhotoAttachment photoAttachment = new PhotoAttachment();
+                photoAttachment.url = friend.avatar_url;
+                photoAttachment.filename = String.format("avatar_%s", friend.id);
+                avatars.add(photoAttachment);
+                try { // handle floating crash
+                    this.friends.add(friend);
+                } catch (ArrayIndexOutOfBoundsException ignored) {
+                    Log.e(OvkApplication.API_TAG, "WTF? The length itself in an array must not " +
+                                "be overestimated.");
                 }
-                if (downloadPhoto) {
-                    downloadManager.downloadPhotosToCache(avatars, "friend_avatars");
-                }
+            }
+            if (downloadPhoto) {
+                downloadManager.downloadPhotosToCache(avatars, "friend_avatars");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,24 +103,22 @@ public class Friends implements Parcelable {
         try {
             this.requests.clear();
             JSONObject json = jsonParser.parseJSON(response).getJSONObject("response");
-            if(json != null) {
-                count = json.getInt("count");
-                JSONArray users = json.getJSONArray("items");
-                ArrayList<PhotoAttachment> avatars;
-                avatars = new ArrayList<PhotoAttachment>();
-                for (int i = 0; i < users.length(); i++) {
-                    Friend friend = new Friend(users.getJSONObject(i));
-                    PhotoAttachment photoAttachment = new PhotoAttachment();
-                    if(friend.avatar_url != null && friend.avatar_url.length() > 0) {
-                        photoAttachment.url = friend.avatar_url;
-                        photoAttachment.filename = String.format("avatar_%s", friend.id);
-                        avatars.add(photoAttachment);
-                    }
-                    this.requests.add(friend);
+            count = json.getInt("count");
+            JSONArray users = json.getJSONArray("items");
+            ArrayList<PhotoAttachment> avatars;
+            avatars = new ArrayList<PhotoAttachment>();
+            for (int i = 0; i < users.length(); i++) {
+                Friend friend = new Friend(users.getJSONObject(i));
+                PhotoAttachment photoAttachment = new PhotoAttachment();
+                if(friend.avatar_url != null && !friend.avatar_url.isEmpty()) {
+                    photoAttachment.url = friend.avatar_url;
+                    photoAttachment.filename = String.format("avatar_%s", friend.id);
+                    avatars.add(photoAttachment);
                 }
-                if (downloadPhoto) {
-                    downloadManager.downloadPhotosToCache(avatars, "friend_avatars");
-                }
+                this.requests.add(friend);
+            }
+            if (downloadPhoto) {
+                downloadManager.downloadPhotosToCache(avatars, "friend_avatars");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,6 +159,6 @@ public class Friends implements Parcelable {
     }
 
     public void getRequests(OvkAPIWrapper wrapper) {
-        wrapper.sendAPIMethod("Friends.getRequests", String.format("fields=verified,online,photo_100,photo_200_orig,photo_200"));
+        wrapper.sendAPIMethod("Friends.getRequests", "fields=verified,online,photo_100,photo_200_orig,photo_200");
     }
 }

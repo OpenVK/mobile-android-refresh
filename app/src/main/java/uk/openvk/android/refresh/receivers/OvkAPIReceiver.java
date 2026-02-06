@@ -11,6 +11,9 @@ import android.os.Message;
 import android.util.Log;
 
 import androidx.preference.PreferenceManager;
+
+import java.util.Objects;
+
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.api.OpenVKAPI;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
@@ -46,7 +49,8 @@ public class OvkAPIReceiver extends BroadcastReceiver {
         if(activity instanceof final BaseNetworkActivity netActivity) {
             OpenVKAPI ovk_api = netActivity.ovk_api;
             final Bundle data = intent.getExtras();
-            if(data.getString("address").equals(activity.getLocalClassName())) {
+            assert data != null;
+            if(Objects.equals(data.getString("address"), activity.getLocalClassName())) {
                 final Message msg = parseJSONData(ovk_api.wrapper, netActivity.handler, data);
                 ovk_api.wrapper.handler.post(() -> {
                     Log.d(OvkApplication.API_TAG,

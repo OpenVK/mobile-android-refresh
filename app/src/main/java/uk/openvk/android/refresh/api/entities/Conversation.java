@@ -58,16 +58,17 @@ public class Conversation {
         if(json != null) {
             try {
                 JSONArray items = json.getJSONObject("response").getJSONArray("items");
-                history = new ArrayList<Message>();
+                history = new ArrayList<>();
                 for(int i = 0; i < items.length(); i++) {
                     JSONObject item = items.getJSONObject(i);
-                    boolean incoming = false;
-                    if(item.getInt("out") == 1) {
-                        incoming = false;
-                    } else {
-                        incoming = true;
-                    }
-                    Message message = new Message(item.getLong("id"), incoming, false, item.getLong("date"), item.getString("text"), ctx);
+                    boolean incoming;
+                    incoming = item.getInt("out") != 1;
+                    Message message = new Message(
+                            item.getLong("id"),
+                            incoming, false,
+                            item.getLong("date"),
+                            item.getString("text"), ctx
+                    );
                     message.author_id = item.getLong("from_id");
                     history.add(message);
                 }

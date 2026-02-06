@@ -35,7 +35,7 @@ public class PollAttachment {
         this.question = question;
         this.id = id;
         this.end_date = end_date;
-        answers = new ArrayList<PollAnswer>();
+        answers = new ArrayList<>();
         this.multiple = multiple;
         this.can_vote = can_vote;
         this.anonymous = anonymous;

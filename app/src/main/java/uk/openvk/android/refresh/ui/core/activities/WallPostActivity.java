@@ -63,24 +63,23 @@ public class WallPostActivity extends BaseNetworkActivity {
             Global.setInterfaceFont(this);
             isDarkTheme = global_prefs.getBoolean("dark_theme", false);
             setContentView(R.layout.activity_wall_post_watch);
+
             if (savedInstanceState != null) {
                 wallPost = savedInstanceState.getParcelable("post");
+                assert wallPost != null;
                 wallPost.counters = savedInstanceState.getParcelable("counters");
-            } else {
-                if (getIntent().getExtras() != null) {
-                    ovk_api.account = getIntent().getExtras().getParcelable("account");
-                    wallPost = getIntent().getExtras().getParcelable("post");
-                    wallPost.counters = getIntent().getExtras().getParcelable("counters");
-                }
+            } else if (getIntent().getExtras() != null) {
+                ovk_api.account = getIntent().getExtras().getParcelable("account");
+                wallPost = getIntent().getExtras().getParcelable("post");
+                assert wallPost != null;
+                wallPost.counters = getIntent().getExtras().getParcelable("counters");
             }
-            setMonetTheme();
             setAPIWrapper();
             setAppBar();
-            if (wallPost != null) {
+            if (wallPost != null)
                 openPost(wallPost);
-            } else {
+            else
                 finish();
-            }
         } catch (Exception ignored) {
             finish();
         }
@@ -94,22 +93,19 @@ public class WallPostActivity extends BaseNetworkActivity {
     public void receiveState(int message, Bundle data) {
         if(data.containsKey("address")) {
             String activityName = data.getString("address");
-            if(activityName == null) {
+            if(activityName == null)
                 return;
-            }
             boolean isCurrentActivity = activityName.equals(getLocalClassName());
-            if(!isCurrentActivity) {
+            if(!isCurrentActivity)
                 return;
-            }
         }
         if(message == HandlerMessages.ACCOUNT_PROFILE_INFO) {
             ovk_api.account.parse(data.getString("response"), ovk_api.wrapper);
             setBottomPanel();
-        } else if (message == HandlerMessages.WALL_ALL_COMMENTS) {
+        } else if (message == HandlerMessages.WALL_ALL_COMMENTS)
             createCommentsAdapter(comments);
-        } else if (message == HandlerMessages.COMMENT_AVATARS) {
+        else if (message == HandlerMessages.COMMENT_AVATARS)
             loadCommentatorAvatars();
-        }
     }
 
     private void loadCommentatorAvatars() {
@@ -119,7 +115,7 @@ public class WallPostActivity extends BaseNetworkActivity {
         //TextView no_comments_text = findViewById(R.id.no_comments_text);
         this.comments = comments;
         commentsAdapter = new CommentsAdapter(this, comments);
-        comments_rv = (RecyclerView) findViewById(R.id.comments_rv);
+        comments_rv = findViewById(R.id.comments_rv);
         /* not working yet xdddd
                 if(comments.size() > 0) {
                     no_comments_text.setVisibility(GONE);
@@ -135,20 +131,6 @@ public class WallPostActivity extends BaseNetworkActivity {
         comments_rv.setAdapter(commentsAdapter);
     }
 
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            if (!isDarkTheme) {
-                toolbar.setBackgroundColor(Objects.requireNonNull(
-                        getMonet().getMonetColors().getAccent1().get(600))
-                        .toLinearSrgb().toSrgb().quantize8());
-                getWindow().setStatusBarColor(Objects.requireNonNull(
-                        getMonet().getMonetColors().getAccent1().get(700)
-                ).toLinearSrgb().toSrgb().quantize8());
-            }
-        }
-    }
-
     private void setAppBar() {
         toolbar = findViewById(R.id.app_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -159,28 +141,15 @@ public class WallPostActivity extends BaseNetworkActivity {
                 onBackPressed();
             }
         });
-        if(!Global.checkMonet(this)) {
-            TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-            if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue,
-                        true);
-            } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue,
-                        true);
-            }
-            getWindow().setStatusBarColor(typedValue.data);
-        }
     }
 
     private void setBottomPanel() {
-        bottomPanel = (SendTextBottomPanel) findViewById(R.id.sendTextBottomPanel);
+        bottomPanel = findViewById(R.id.sendTextBottomPanel);
         bottomPanel.setOnSendButtonClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
-                if(bottomPanel.getText().length() > 0) {
+                if(!bottomPanel.getText().isEmpty()) {
                     try {
                         last_sended_comment = new Comment();
                         ovk_api.wall.createComment(ovk_api.wrapper, wallPost.owner_id,
@@ -214,7 +183,7 @@ public class WallPostActivity extends BaseNetworkActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 AppCompatImageButton send_btn = bottomPanel.findViewById(R.id.send_btn);
-                send_btn.setEnabled(bottomPanel.getText().length() > 0);
+                send_btn.setEnabled(!bottomPanel.getText().isEmpty());
             }
 
             @Override
@@ -246,7 +215,8 @@ public class WallPostActivity extends BaseNetworkActivity {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         ((TextView) findViewById(R.id.post_info)).setText(post.info);
-        if(post.text.length() > 0) {
+
+        if(!post.text.isEmpty()) {
             post_text.setVisibility(View.VISIBLE);
             String text = post.text.replaceAll("&lt;", "<").replaceAll("&gt;", ">")
                     .replaceAll("&amp;", "&").replaceAll("&quot;", "\"");
@@ -283,8 +253,5 @@ public class WallPostActivity extends BaseNetworkActivity {
                 drawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
             }
         }
-    }
-
-    public void addAuthorMention(int position) {
     }
 }

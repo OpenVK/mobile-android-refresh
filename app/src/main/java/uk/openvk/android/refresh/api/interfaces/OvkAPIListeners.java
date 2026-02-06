@@ -39,23 +39,14 @@ public class OvkAPIListeners {
     public OnAPISuccessListener successListener;
 
     public OvkAPIListeners() {
-        processListener = new OnAPIProcessListener() {
-            @Override
-            public void onAPIProcess(Context ctx, Bundle data, long value, long length) {
+        processListener = (ctx, data, value, length) -> {
 
-            }
         };
-        failListener = new OnAPIFailListener() {
-            @Override
-            public void onAPIFailed(Context ctx, int http_code, Bundle data) {
+        failListener = (ctx, http_code, data) -> {
 
-            }
         };
-        successListener = new OnAPISuccessListener() {
-            @Override
-            public void onAPISuccess(Context ctx, int http_code, Bundle data) {
+        successListener = (ctx, http_code, data) -> {
 
-            }
         };
     }
 }

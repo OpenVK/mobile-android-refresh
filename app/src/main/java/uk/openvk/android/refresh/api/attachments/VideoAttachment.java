@@ -68,7 +68,7 @@ public class VideoAttachment implements Parcelable {
         return 0;
     }
 
-    public static final Creator<VideoAttachment> CREATOR = new Creator<VideoAttachment>() {
+    public static final Creator<VideoAttachment> CREATOR = new Creator<>() {
         @Override
         public VideoAttachment createFromParcel(Parcel in) {
             return new VideoAttachment(in);

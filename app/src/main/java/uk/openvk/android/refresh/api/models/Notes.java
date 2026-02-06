@@ -47,6 +47,7 @@ public class Notes {
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray notes = json.getJSONObject("response").getJSONArray("notes");
             list = new ArrayList<>();
+
             for(int i = 0; i < notes.length(); i++) {
                 JSONObject item = notes.getJSONObject(i);
                 Note note = new Note();

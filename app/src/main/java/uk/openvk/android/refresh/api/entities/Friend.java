@@ -123,33 +123,31 @@ public class Friend implements Parcelable {
         try {
             JSONObject json = jsonParser.parseJSON(response);
             JSONArray users = json.getJSONArray("items");
-            if(users != null) {
-                for (int i = 0; i < users.length(); i++) {
-                    if(i == position) {
-                        JSONObject user = (JSONObject) users.get(i);
-                        first_name = user.getString("first_name");
-                        last_name = user.getString("last_name");
-                        id = user.getInt("id");
-                        verified = user.getInt("verified") == 1;
-                        online = user.getInt("online") == 1;
-                        if (user.has("photo_50")) {
-                            avatar_url = user.getString("photo_50");
-                        } else if (user.has("photo_100")) {
-                            avatar_url = user.getString("photo_100");
-                        } else if (user.has("photo_200_orig")) {
-                            avatar_url = user.getString("photo_200_orig");
-                        } else if (user.has("photo_200")) {
-                            avatar_url = user.getString("photo_200");
-                        } else if (user.has("photo_400")) {
-                            avatar_url = user.getString("photo_400");
-                        } else if (user.has("photo_400_orig")) {
-                            avatar_url = user.getString("photo_400_orig");
-                        } else if (user.has("photo_max")) {
-                            avatar_url = user.getString("photo_max");
-                        } else if (user.has("photo_max_orig")) {
-                            avatar_url = user.getString("photo_max_orig");
-                        }
-                    }
+            for (int i = 0; i < users.length(); i++) {
+                if (i == position) {
+                    JSONObject user = (JSONObject) users.get(i);
+                    first_name = user.getString("first_name");
+                    last_name = user.getString("last_name");
+                    id = user.getInt("id");
+                    verified = user.getInt("verified") == 1;
+                    online = user.getInt("online") == 1;
+
+                    if (user.has("photo_50"))
+                        avatar_url = user.getString("photo_50");
+                    else if (user.has("photo_100"))
+                        avatar_url = user.getString("photo_100");
+                    else if (user.has("photo_200_orig"))
+                        avatar_url = user.getString("photo_200_orig");
+                    else if (user.has("photo_200"))
+                        avatar_url = user.getString("photo_200");
+                    else if (user.has("photo_400"))
+                        avatar_url = user.getString("photo_400");
+                    else if (user.has("photo_400_orig"))
+                        avatar_url = user.getString("photo_400_orig");
+                    else if (user.has("photo_max"))
+                        avatar_url = user.getString("photo_max");
+                    else if (user.has("photo_max_orig"))
+                        avatar_url = user.getString("photo_max_orig");
                 }
             }
         } catch (JSONException e) {

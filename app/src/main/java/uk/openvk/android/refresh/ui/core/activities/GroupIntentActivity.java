@@ -7,10 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.Locale;
 
@@ -19,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
-import dev.kdrag0n.monet.theme.ColorScheme;
+
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
@@ -52,7 +50,7 @@ public class GroupIntentActivity extends BaseNetworkActivity {
         if (uri != null) {
             String path = uri.toString();
             args = path.substring("openvk://group/".length());
-            if (instance_prefs.getString("access_token", "").length() == 0) {
+            if (instance_prefs.getString("access_token", "").isEmpty()) {
                 finish();
                 return;
             }
@@ -60,7 +58,6 @@ public class GroupIntentActivity extends BaseNetworkActivity {
                 setAPIWrapper();
                 createFragments();
                 setAppBar();
-                setMonetTheme();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -75,6 +72,7 @@ public class GroupIntentActivity extends BaseNetworkActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        String screenname = ovk_api.account.user.screen_name;
         if(item.getItemId() == R.id.leave_group) {
             if(group.is_member > 0) {
                 group.leave(ovk_api.wrapper);
@@ -85,7 +83,7 @@ public class GroupIntentActivity extends BaseNetworkActivity {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
                     getSystemService(Context.CLIPBOARD_SERVICE);
             String url = "";
-            if(ovk_api.account.user.screen_name != null && ovk_api.account.user.screen_name.length() > 0) {
+            if(screenname != null && !screenname.isEmpty()) {
                 url = String.format("https://%s/%s",
                         instance_prefs.getString("server", ""), group.screen_name);
             } else {
@@ -97,7 +95,7 @@ public class GroupIntentActivity extends BaseNetworkActivity {
             clipboard.setPrimaryClip(clip);
         } else if(item.getItemId() == R.id.open_in_browser) {
             String url = "";
-            if(ovk_api.account.user.screen_name != null && ovk_api.account.user.screen_name.length() > 0) {
+            if(screenname != null && !screenname.isEmpty()) {
                 url = String.format("https://%s/%s",
                         instance_prefs.getString("server", ""), group.screen_name);
             } else {
@@ -109,18 +107,6 @@ public class GroupIntentActivity extends BaseNetworkActivity {
             startActivity(i);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            if (!isDarkTheme) {
-                toolbar.setBackgroundColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 600));
-                getWindow().setStatusBarColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 700));
-            }
-        }
     }
 
     private void setAPIWrapper() {
@@ -144,12 +130,7 @@ public class GroupIntentActivity extends BaseNetworkActivity {
         toolbar = findViewById(R.id.app_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(getResources().getString(R.string.community_title));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
         if(!Global.checkMonet(this)) {
             TypedValue typedValue = new TypedValue();
             boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
@@ -246,14 +227,6 @@ public class GroupIntentActivity extends BaseNetworkActivity {
     @Override
     public void recreate() {
 
-    }
-
-    @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
-                                     boolean isInitialChange) {
-        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
-        getMonet().updateMonetColors();
-        setMonetTheme();
     }
 
     public void setToolbarTitle(String title, String subtitle) {

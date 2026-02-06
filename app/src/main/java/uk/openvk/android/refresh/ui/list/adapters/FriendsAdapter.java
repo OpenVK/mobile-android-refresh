@@ -63,8 +63,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.friend_title = (TextView) view.findViewById(R.id.friend_title);
-            this.verified_icon = (ImageView) view.findViewById(R.id.verified_icon);
+            this.friend_title = view.findViewById(R.id.friend_title);
+            this.verified_icon = view.findViewById(R.id.verified_icon);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -89,12 +89,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
             } else {
                 verified_icon.setVisibility(View.GONE);
             }
-            View.OnClickListener openProfileListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openProfile(item);
-                }
-            };
+            View.OnClickListener openProfileListener = v -> openProfile(item);
             setTheme(convertView);
             convertView.setOnClickListener(openProfileListener);
         }
@@ -133,7 +128,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.Holder> 
     public void openProfile(Friend friend) {
         String url = "";
         url = String.format("openvk://profile/id%s", friend.id);
-        if(url.length() > 0) {
+        if(!url.isEmpty()) {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             final PackageManager pm = ctx.getPackageManager();

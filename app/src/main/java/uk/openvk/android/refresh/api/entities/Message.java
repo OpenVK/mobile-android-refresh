@@ -49,9 +49,7 @@ public class Message {
         timestamp_int = _timestamp;
         Date dt = new Date(TimeUnit.SECONDS.toMillis(_timestamp));
         timestamp = new SimpleDateFormat("HH:mm").format(dt);
-        if(!incoming) {
-            type = 1;
-        }
+        if(!incoming) type = 1;
     }
 
     public void getSendedId(String response) {

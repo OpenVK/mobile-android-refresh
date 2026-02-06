@@ -3,7 +3,6 @@ package uk.openvk.android.refresh.ui.core.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,13 +12,10 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
-import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +23,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dev.kdrag0n.monet.theme.ColorScheme;
+
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
@@ -77,8 +73,9 @@ public class ConversationActivity extends BaseNetworkActivity {
             peer_online = savedInstanceState.getInt("online");
         }
         setContentView(R.layout.activity_conversation);
-        setMonetTheme();
-        history = new ArrayList<uk.openvk.android.refresh.api.entities.Message>();
+
+        history = new ArrayList<>();
+
         setAPIWrapper();
         setAppBar();
         setBottomPanel();
@@ -90,49 +87,13 @@ public class ConversationActivity extends BaseNetworkActivity {
         super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
     }
 
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            if (!isDarkTheme) {
-                toolbar.setBackgroundColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 600));
-                getWindow().setStatusBarColor(Global.getMonetIntColor(getMonet(), "accent",
-                        700));
-            }
-            int[] colors;
-            int colorOnSurface = MaterialColors.getColor(this,
-                    com.google.android.material.R.attr.colorOnSurface, Color.BLACK);
-            if(isDarkTheme) {
-                colors = new int[]{
-                        Objects.requireNonNull(getMonet()
-                                .getMonetColors().getAccent1().get(200))
-                                .toLinearSrgb().toSrgb().quantize8(),
-                        Global.adjustAlpha(colorOnSurface, 0.6f)
-                };
-                Objects.requireNonNull(((TextInputEditText) findViewById(R.id.sendTextBottomPanel).
-                                findViewById(R.id.send_text)))
-                        .setHighlightColor(
-                                Global.getMonetIntColor(getMonet(), "accent", 500));
-            } else {
-                colors = new int[]{
-                        Global.getMonetIntColor(getMonet(), "accent", 500),
-                        Global.adjustAlpha(colorOnSurface, 0.6f)
-                };
-                Objects.requireNonNull(((TextInputEditText) findViewById(R.id.sendTextBottomPanel)
-                                .findViewById(R.id.send_text)))
-                        .setHighlightColor(
-                                Global.getMonetIntColor(getMonet(), "accent", 200));
-            }
-        }
-    }
-
     private void setBottomPanel() {
         bottomPanel = (SendTextBottomPanel) findViewById(R.id.sendTextBottomPanel);
         bottomPanel.setOnSendButtonClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
-                if(bottomPanel.getText().length() > 0) {
+                if(!bottomPanel.getText().isEmpty()) {
                     try {
                         last_sended_message = new uk.openvk.android.refresh.api.entities
                                 .Message(1, false, false,
@@ -170,7 +131,7 @@ public class ConversationActivity extends BaseNetworkActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 AppCompatImageButton send_btn = bottomPanel.findViewById(R.id.send_btn);
-                if(bottomPanel.getText().length() > 0) {
+                if(!bottomPanel.getText().isEmpty()) {
                     send_btn.setEnabled(true);
                 } else {
                     send_btn.setEnabled(false);
@@ -179,13 +140,10 @@ public class ConversationActivity extends BaseNetworkActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).getLineCount() > 4) {
-                    ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(4);
-                } else {
-                    ((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).setLines(
-                            ((TextInputEditText) bottomPanel.findViewById(R.id.send_text))
-                                    .getLineCount());
-                }
+                ((TextInputEditText) bottomPanel.findViewById(R.id.send_text))
+                        .setLines(
+                                Math.min(((TextInputEditText) bottomPanel.findViewById(R.id.send_text)).getLineCount(), 4)
+                        );
             }
         });
     }
@@ -209,18 +167,24 @@ public class ConversationActivity extends BaseNetworkActivity {
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-            if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue,
-                        true);
-            } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue,
-                        true);
-            }
+            TypedValue typedValue = getTypedValue();
             window.setStatusBarColor(typedValue.data);
         }
+    }
+
+    @NonNull
+    private TypedValue getTypedValue() {
+        TypedValue typedValue = new TypedValue();
+        boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        if (isDarkThemeEnabled) {
+            getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue,
+                    true);
+        } else {
+            getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue,
+                    true);
+        }
+        return typedValue;
     }
 
     public void setAPIWrapper() {
@@ -265,13 +229,5 @@ public class ConversationActivity extends BaseNetworkActivity {
     @Override
     public void recreate() {
 
-    }
-
-    @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
-                                     boolean isInitialChange) {
-        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
-        getMonet().updateMonetColors();
-        setMonetTheme();
     }
 }

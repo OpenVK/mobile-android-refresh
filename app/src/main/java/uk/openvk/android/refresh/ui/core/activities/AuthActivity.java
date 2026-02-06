@@ -11,29 +11,23 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.snackbar.Snackbar;
-import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.Locale;
-import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentTransaction;
-import dev.kdrag0n.monet.theme.ColorScheme;
+
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
@@ -44,7 +38,6 @@ import uk.openvk.android.refresh.ui.core.enumerations.UiMessages;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthFragment;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthProgressFragment;
 import uk.openvk.android.refresh.ui.core.fragments.auth.AuthTwoFactorFragment;
-import uk.openvk.android.refresh.ui.core.listeners.OnKeyboardStateListener;
 import uk.openvk.android.refresh.ui.util.OvkAlertDialogBuilder;
 import uk.openvk.android.refresh.ui.view.layouts.XConstraintLayout;
 import uk.openvk.android.refresh.ui.wrappers.LocaleContextWrapper;
@@ -72,15 +65,12 @@ public class AuthActivity extends BaseNetworkActivity {
         }
         setContentView(R.layout.auth_screen);
         auth_layout = findViewById(R.id.auth_layout);
-        auth_layout.setOnKeyboardStateListener(new OnKeyboardStateListener() {
-            @Override
-            public void onKeyboardStateChanged(boolean state) {
-                AppBarLayout appBar = findViewById(R.id.appbar);
-                if (state) {
-                    appBar.setVisibility(View.GONE);
-                } else {
-                    appBar.setVisibility(View.VISIBLE);
-                }
+        auth_layout.setOnKeyboardStateListener(state -> {
+            AppBarLayout appBar = findViewById(R.id.appbar);
+            if (state) {
+                appBar.setVisibility(View.GONE);
+            } else {
+                appBar.setVisibility(View.VISIBLE);
             }
         });
         authFragment = new AuthFragment();
@@ -114,9 +104,9 @@ public class AuthActivity extends BaseNetworkActivity {
 
     private void showOvkWarning() {
         instance_prefs = getSharedPreferences("instance", 0);
-        if ((instance_prefs.getString("server", "").length() == 0
-                || instance_prefs.getString("access_token", "").length() == 0
-                || instance_prefs.getString("account_password_sha256", "").length() == 0)
+        if ((instance_prefs.getString("server", "").isEmpty()
+                || instance_prefs.getString("access_token", "").isEmpty()
+                || instance_prefs.getString("account_password_sha256", "").isEmpty())
                 && !global_prefs.getBoolean("hide_ovk_warn_for_beginners", false)) {
             Message msg = new Message();
             msg.what = UiMessages.SHOW_WARNING_DIALOG;
@@ -129,16 +119,13 @@ public class AuthActivity extends BaseNetworkActivity {
 
     private void setAppBar() {
         ((Toolbar) findViewById(R.id.app_toolbar)).setOnMenuItemClickListener(
-                new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId() == R.id.settings) {
-                    Intent intent = new Intent(getApplicationContext(), MainSettingsActivity.class);
-                    startActivity(intent);
-                }
-                return false;
-            }
-        });
+                item -> {
+                    if(item.getItemId() == R.id.settings) {
+                        Intent intent = new Intent(getApplicationContext(), MainSettingsActivity.class);
+                        startActivity(intent);
+                    }
+                    return false;
+                });
     }
 
     @Override
@@ -192,7 +179,7 @@ public class AuthActivity extends BaseNetworkActivity {
         if (message == HandlerMessages.AUTHORIZED) {
             SharedPreferences.Editor editor = instance_prefs.edit();
             Authorization auth = new Authorization(data.getString("response"));
-            if(auth.getAccessToken() != null && auth.getAccessToken().length() > 0) {
+            if(auth.getAccessToken() != null && !auth.getAccessToken().isEmpty()) {
                 editor.putString("server", instance);
                 editor.putString("access_token", auth.getAccessToken());
                 editor.putString("account_password_sha256", Global.generateSHA256Hash(password));
@@ -222,22 +209,7 @@ public class AuthActivity extends BaseNetworkActivity {
             } else {
                 snackbar.setBackgroundTint(Color.WHITE);
             }
-            if(Global.checkMonet(this)) {
-                if(global_prefs.getBoolean("dark_theme", false)) {
-                    snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100))
-                            .toLinearSrgb().toSrgb().quantize8());
-                } else {
-                    snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(500))
-                            .toLinearSrgb().toSrgb().quantize8());
-                }
-            } else {
-                snackbar.setActionTextColor(MaterialColors.getColor(this,
-                        androidx.appcompat.R.attr.colorAccent,
-                        getResources().getColor(R.color.accentColor)));
-            }
-            Button snackActionBtn = (Button) snackbarView.findViewById(
+            Button snackActionBtn = snackbarView.findViewById(
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
@@ -263,21 +235,6 @@ public class AuthActivity extends BaseNetworkActivity {
             } else {
                 snackbar.setBackgroundTint(Color.WHITE);
             }
-            if(Global.checkMonet(this)) {
-                if(global_prefs.getBoolean("dark_theme", false)) {
-                    snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100))
-                            .toLinearSrgb().toSrgb().quantize8());
-                } else {
-                    snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(500))
-                            .toLinearSrgb().toSrgb().quantize8());
-                }
-            } else {
-                snackbar.setActionTextColor(MaterialColors.getColor(this,
-                        androidx.appcompat.R.attr.colorAccent,
-                        getResources().getColor(R.color.accentColor)));
-            }
             Button snackActionBtn = (Button) snackbarView.findViewById(
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
@@ -299,22 +256,7 @@ public class AuthActivity extends BaseNetworkActivity {
             }
             snackTextView.setMaxLines(3);
             snackTextView.setTextColor(getResources().getColor(R.color.primaryTextColor));
-            if(Global.checkMonet(this)) {
-                if(global_prefs.getBoolean("dark_theme", false)) {
-                    snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100))
-                            .toLinearSrgb().toSrgb().quantize8());
-                } else {
-                    snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(500))
-                            .toLinearSrgb().toSrgb().quantize8());
-                }
-            } else {
-                snackbar.setActionTextColor(MaterialColors.getColor(this,
-                        androidx.appcompat.R.attr.colorAccent,
-                        getResources().getColor(R.color.accentColor)));
-            }
-            Button snackActionBtn = (Button) snackbarView.findViewById(
+            Button snackActionBtn = snackbarView.findViewById(
                     com.google.android.material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
@@ -335,22 +277,7 @@ public class AuthActivity extends BaseNetworkActivity {
                 snackbar.setBackgroundTint(Color.WHITE);
             }
             snackTextView.setTextColor(getResources().getColor(R.color.primaryTextColor));
-            if(Global.checkMonet(this)) {
-                if(global_prefs.getBoolean("dark_theme", false)) {
-                    snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(100))
-                            .toLinearSrgb().toSrgb().quantize8());
-                } else {
-                    snackbar.setActionTextColor(Objects.requireNonNull(
-                            getMonet().getMonetColors().getAccent1().get(500))
-                            .toLinearSrgb().toSrgb().quantize8());
-                }
-            } else {
-                snackbar.setActionTextColor(MaterialColors.getColor(this,
-                        androidx.appcompat.R.attr.colorAccent,
-                        getResources().getColor(R.color.accentColor)));
-            }
-            Button snackActionBtn = (Button) snackbarView.findViewById(com.google.android.
+            Button snackActionBtn = snackbarView.findViewById(com.google.android.
                     material.R.id.snackbar_action);
             snackActionBtn.setLetterSpacing(0);
             snackbar.show();
@@ -373,14 +300,11 @@ public class AuthActivity extends BaseNetworkActivity {
             ((TextView) warn_view.findViewById(R.id.warn_message_text)).setMovementMethod(
                     LinkMovementMethod.getInstance());
             ((MaterialCheckBox) warn_view.findViewById(R.id.do_not_show_messages))
-                    .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    SharedPreferences.Editor global_prefs_editor = global_prefs.edit();
-                    global_prefs_editor.putBoolean("hide_ovk_warn_for_beginners", b);
-                    global_prefs_editor.apply();
-                }
-            });
+                    .setOnCheckedChangeListener((compoundButton, b) -> {
+                        SharedPreferences.Editor global_prefs_editor = global_prefs.edit();
+                        global_prefs_editor.putBoolean("hide_ovk_warn_for_beginners", b);
+                        global_prefs_editor.apply();
+                    });
         }
     }
 
@@ -391,17 +315,5 @@ public class AuthActivity extends BaseNetworkActivity {
             authFragment.setAuthorizationData(instance, username, password);
             ft.commit();
         }
-    }
-
-    @Override
-    public void recreate() {
-
-    }
-
-    @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors,
-                                     boolean isInitialChange) {
-        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
-        getMonet().updateMonetColors();
     }
 }

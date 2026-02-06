@@ -62,21 +62,20 @@ public class Group implements Parcelable {
             if (group != null) {
                 name = group.getString("name");
                 id = group.getLong("id");
+
                 if(group.has("is_member")) {
                     is_member = group.getInt("is_member");
                 }
                 avatar_msize_url = "";
                 avatar_hsize_url = "";
                 avatar_osize_url = "";
+
                 if(group.has("screen_name") && !group.isNull("screen_name")) {
                     screen_name = group.getString("screen_name");
                 }
+
                 if(group.has("verified")) {
-                    if (group.getInt("verified") == 1) {
-                        verified = true;
-                    } else {
-                        verified = false;
-                    }
+                    verified = group.getInt("verified") == 1;
                 } else {
                     verified = false;
                 }
@@ -99,9 +98,9 @@ public class Group implements Parcelable {
                     avatar_osize_url = group.getString("photo_max");
                 } if (group.has("photo_max_orig")) {
                     avatar_osize_url = group.getString("photo_max_orig");
-                    // вова, жду фикса шакалистых авок в photo_max_orig хд
                     // avatar_url = avatar_osize_url;
                 }
+
                 if(group.has("members_count")) {
                     members_count = group.getLong("members_count");
                 }
@@ -162,13 +161,13 @@ public class Group implements Parcelable {
             downloadManager.downloadOnePhotoToCache(avatar_msize_url, String.format("avatar_%s", id),
                     "group_avatars");
         } else if(quality.equals("high")) {
-            if(avatar_hsize_url.length() == 0) {
+            if(avatar_hsize_url.isEmpty()) {
                 avatar_hsize_url = avatar_msize_url;
             }
             downloadManager.downloadOnePhotoToCache(avatar_hsize_url, String.format("avatar_%s", id),
                     "group_avatars");
         } else if(quality.equals("original")) {
-            if(avatar_osize_url.length() == 0) {
+            if(avatar_osize_url.isEmpty()) {
                 avatar_osize_url = avatar_msize_url;
             }
             downloadManager.downloadOnePhotoToCache(avatar_osize_url, String.format("avatar_%s", id),
@@ -194,11 +193,11 @@ public class Group implements Parcelable {
         try {
             this.members.clear();
             JSONObject json = jsonParser.parseJSON(response).getJSONObject("response");
-            if(json != null) {
+            {
                 members_count = json.getInt("count");
                 JSONArray members = json.getJSONArray("items");
                 ArrayList<PhotoAttachment> avatars;
-                avatars = new ArrayList<PhotoAttachment>();
+                avatars = new ArrayList<>();
                 for (int i = 0; i < members.length(); i++) {
                     User member = new User();
                     JSONObject user = members.getJSONObject(i);
@@ -222,7 +221,7 @@ public class Group implements Parcelable {
                     member.id = user.getLong("id");
                     member.avatar_url = user.getString("photo_100");
                     PhotoAttachment photoAttachment = new PhotoAttachment();
-                    if(member.avatar_url != null && member.avatar_url.length() > 0) {
+                    if(!member.avatar_url.isEmpty()) {
                         photoAttachment.url = member.avatar_url;
                         photoAttachment.filename = String.format("avatar_%s", member.id);
                         avatars.add(photoAttachment);

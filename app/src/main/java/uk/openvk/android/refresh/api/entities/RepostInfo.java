@@ -58,7 +58,7 @@ public class RepostInfo implements Parcelable {
         newsfeed_item = in.readParcelable(WallPost.class.getClassLoader());
     }
 
-    public static final Creator<RepostInfo> CREATOR = new Creator<RepostInfo>() {
+    public static final Creator<RepostInfo> CREATOR = new Creator<>() {
         @Override
         public RepostInfo createFromParcel(Parcel in) {
             return new RepostInfo(in);

@@ -41,7 +41,9 @@ import uk.openvk.android.refresh.api.attachments.VideoAttachment;
 import uk.openvk.android.refresh.api.entities.Account;
 import uk.openvk.android.refresh.api.entities.WallPost;
 import uk.openvk.android.refresh.ui.core.activities.AppActivity;
+import uk.openvk.android.refresh.ui.core.activities.GroupIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.PhotoViewerActivity;
+import uk.openvk.android.refresh.ui.core.activities.ProfileIntentActivity;
 import uk.openvk.android.refresh.ui.core.activities.VideoPlayerActivity;
 import uk.openvk.android.refresh.ui.core.activities.WallPostActivity;
 import uk.openvk.android.refresh.ui.view.layouts.PhotoAttachmentLayout;
@@ -53,7 +55,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     private FragmentManager fragman;
     private boolean photo_loaded = false;
     private boolean avatar_loaded = false;
-    private Account account;
+    private final Account account;
 
     public NewsfeedAdapter(Context context, ArrayList<WallPost> posts, Account account) {
         this.account = account;
@@ -106,13 +108,13 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
         public Holder(View view) {
             super(view);
             this.convertView = view;
-            this.poster_name = (TextView) view.findViewById(R.id.post_author_label);
-            this.post_info = (TextView) view.findViewById(R.id.post_info);
-            this.post_text = (TextView) view.findViewById(R.id.post_text);
-            this.post_likes = (TextView) view.findViewById(R.id.like_btn);
-            this.post_comments = (TextView) view.findViewById(R.id.comment_btn);
-            this.post_repost = (TextView) view.findViewById(R.id.repost_btn);
-            this.verified_icon = (ImageView) view.findViewById(R.id.verified_icon);
+            this.poster_name = view.findViewById(R.id.post_author_label);
+            this.post_info = view.findViewById(R.id.post_info);
+            this.post_text = view.findViewById(R.id.post_text);
+            this.post_likes = view.findViewById(R.id.like_btn);
+            this.post_comments = view.findViewById(R.id.comment_btn);
+            this.post_repost = view.findViewById(R.id.repost_btn);
+            this.verified_icon = view.findViewById(R.id.verified_icon);
         }
 
         @SuppressLint({"SimpleDateFormat", "UseCompatLoadingForDrawables"})
@@ -127,7 +129,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 verified_icon.setVisibility(View.GONE);
             }
 
-            if(item.text.length() > 0) {
+            if(!item.text.isEmpty()) {
                 post_text.setVisibility(View.VISIBLE);
                 String text = item.text.replaceAll("&lt;", "<")
                         .replaceAll("&gt;", ">")
@@ -157,48 +159,40 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                 post_likes.setEnabled(false);
             }
 
-            post_likes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (item.counters.isLiked) {
-                        if(!likeAdded) {
-                            likeDeleted = true;
-                        }
-                        if (ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
-                            //((ProfileIntentActivity) ctx).deleteLike(position, "post", view);
-                        } else if (ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
-                            //((GroupIntentActivity) ctx).deleteLike(position, "post", view);
-                        } else if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                            deleteLike(item, position, "post", view);
-                        }
-                    } else {
-                        if(!likeDeleted) {
-                            likeAdded = true;
-                        }
-                        if (ctx.getClass().getSimpleName().equals("ProfileIntentActivity")) {
-                            //((ProfileIntentActivity) ctx).addLike(position, "post", view);
-                        } else if (ctx.getClass().getSimpleName().equals("GroupIntentActivity")) {
-                            //((GroupIntentActivity) ctx).addLike(position, "post", view);
-                        } else if (ctx.getClass().getSimpleName().equals("AppActivity")) {
-                            addLike(item, position, "post", view);
-                        }
+            post_likes.setOnClickListener(view -> {
+                if (item.counters.isLiked) {
+                    if(!likeAdded) {
+                        likeDeleted = true;
+                    }
+                    if (ctx instanceof ProfileIntentActivity) {
+                        //((ProfileIntentActivity) ctx).deleteLike(position, "post", view);
+                    } else if (ctx instanceof GroupIntentActivity) {
+                        //((GroupIntentActivity) ctx).deleteLike(position, "post", view);
+                    } else if (ctx instanceof AppActivity) {
+                        deleteLike(item, position, "post", view);
+                    }
+                } else {
+                    if(!likeDeleted) {
+                        likeAdded = true;
+                    }
+                    if (ctx instanceof ProfileIntentActivity) {
+                        //((ProfileIntentActivity) ctx).addLike(position, "post", view);
+                    } else if (ctx instanceof GroupIntentActivity) {
+                        //((GroupIntentActivity) ctx).addLike(position, "post", view);
+                    } else if (ctx instanceof AppActivity) {
+                        addLike(item, position, "post", view);
                     }
                 }
             });
 
-            post_comments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openPostComments(item, ctx);
-                }
-            });
+            post_comments.setOnClickListener(v -> openPostComments(item, ctx));
 
             try {
                 boolean contains_photos = false;
                 boolean contains_video = false;
                 VideoAttachment video_attachment = null;
                 PhotoAttachment photo_attachment = null;
-                if(item.attachments != null && item.attachments.size() > 0) {
+                if(item.attachments != null && !item.attachments.isEmpty()) {
                     for(int pos = 0; pos < item.attachments.size(); pos++) {
                         Attachment attachment = item.attachments.get(pos);
                         if(attachment.type.equals("photo")) {
@@ -211,8 +205,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         }
                     }
                 }
-                Global.setAvatarShape(ctx, ((ShapeableImageView) convertView
-                        .findViewById(R.id.profile_avatar)));
+                Global.setAvatarShape(ctx, convertView
+                        .findViewById(R.id.profile_avatar));
                 String local_avatar_frm;
                 String local_photo_frm;
                 if(ctx.getClass().getSimpleName().equals("AppActivity")) {
@@ -242,12 +236,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
 
                 ((ShapeableImageView) convertView.findViewById(R.id.profile_avatar))
                         .setImageTintList(null);
-                View.OnClickListener openProfileListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openProfile(item);
-                    }
-                };
+                View.OnClickListener openProfileListener = v -> openProfile(item);
                 (convertView.findViewById(R.id.profile_avatar))
                         .setOnClickListener(openProfileListener);
                 poster_name.setOnClickListener(openProfileListener);
@@ -286,16 +275,13 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                         (convertView.findViewById(R.id.photo_attachment)).setVisibility(View.VISIBLE);
                         PhotoAttachment finalPhoto_attachment = photo_attachment;
                         (convertView.findViewById(R.id.photo_attachment))
-                                .setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(ctx, PhotoViewerActivity.class);
-                                intent.putExtra("attachment", finalPhoto_attachment);
-                                intent.putExtra("author_id", item.author_id);
-                                intent.putExtra("photo_id", finalPhoto_attachment.id);
-                                ctx.startActivity(intent);
-                            }
-                        });
+                                .setOnClickListener(view -> {
+                                    Intent intent = new Intent(ctx, PhotoViewerActivity.class);
+                                    intent.putExtra("attachment", finalPhoto_attachment);
+                                    intent.putExtra("author_id", item.author_id);
+                                    intent.putExtra("photo_id", finalPhoto_attachment.id);
+                                    ctx.startActivity(intent);
+                                });
                         ((PhotoAttachmentLayout) convertView.findViewById(R.id.photo_attachment))
                                 .getImageView().setAdjustViewBounds(true);
                     }
@@ -311,15 +297,12 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                     final int posFinal = position;
                     VideoAttachment finalVideo_attachment = video_attachment;
                     (convertView.findViewById(R.id.video_attachment))
-                            .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(ctx, VideoPlayerActivity.class);
-                            intent.putExtra("attachment", finalVideo_attachment);
-                            intent.putExtra("files", finalVideo_attachment.files);
-                            ctx.startActivity(intent);
-                        }
-                    });
+                            .setOnClickListener(v -> {
+                                Intent intent = new Intent(ctx, VideoPlayerActivity.class);
+                                intent.putExtra("attachment", finalVideo_attachment);
+                                intent.putExtra("files", finalVideo_attachment.files);
+                                ctx.startActivity(intent);
+                            });
                 } else {
                     (convertView.findViewById(R.id.video_attachment)).setVisibility(View.GONE);
                 }
@@ -350,11 +333,11 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
                     androidx.appcompat.R.attr.colorControlNormal, Color.BLACK));
             if(Global.checkMonet(ctx)) {
                 if (Global.checkDarkTheme(ctx)) {
-                    ((ImageView) verified_icon).setImageTintList(
+                    verified_icon.setImageTintList(
                             ColorStateList.valueOf(Global.getMonetIntColor(MonetCompat.getInstance(),
                                     "accent", 200)));
                 } else {
-                    ((ImageView) verified_icon).setImageTintList(
+                    verified_icon.setImageTintList(
                             ColorStateList.valueOf(Global.getMonetIntColor(MonetCompat.getInstance(),
                                     "accent", 500)));
                 }
@@ -421,7 +404,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     public void addLike(WallPost item, int position, String post, View view) {
         if(ctx instanceof AppActivity app_a) {
             OpenVKAPI ovk_api = app_a.ovk_api;
-            if (app_a.selectedFragment == ((AppActivity) ctx).profileFragment) {
+            if (app_a.selectedFragment == app_a.profileFragment) {
                 app_a.profileFragment.wallSelect(position, "likes", "add");
             } else {
                 app_a.newsfeedFragment.select(position, "likes", "add");
@@ -433,7 +416,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.Holder
     public void deleteLike(WallPost item, int position, String post, View view) {
         if(ctx instanceof AppActivity app_a) {
             OpenVKAPI ovk_api = app_a.ovk_api;
-            if (app_a.selectedFragment == ((AppActivity) ctx).profileFragment) {
+            if (app_a.selectedFragment == app_a.profileFragment) {
                 app_a.profileFragment.wallSelect(position, "likes", "delete");
             } else {
                 app_a.newsfeedFragment.select(position, "likes", "delete");

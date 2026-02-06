@@ -39,7 +39,7 @@ public class PhotoAttachment implements Parcelable {
         filename = in.readString();
     }
 
-    public static final Creator<PhotoAttachment> CREATOR = new Creator<PhotoAttachment>() {
+    public static final Creator<PhotoAttachment> CREATOR = new Creator<>() {
         @Override
         public PhotoAttachment createFromParcel(Parcel in) {
             return new PhotoAttachment(in);

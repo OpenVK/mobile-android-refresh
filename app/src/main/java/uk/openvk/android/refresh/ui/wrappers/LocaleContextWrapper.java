@@ -21,7 +21,7 @@ public class LocaleContextWrapper extends ContextWrapper {
     }
 
     @SuppressLint("ObsoleteSdkInt")
-    @TargetApi(Build.VERSION_CODES.N)
+    @androidx.annotation.RequiresApi(Build.VERSION_CODES.N)
     public static ContextWrapper wrap(Context context, Locale newLocale) {
         Resources res = context.getResources();
         Configuration configuration = res.getConfiguration();

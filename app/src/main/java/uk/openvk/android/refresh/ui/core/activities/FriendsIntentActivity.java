@@ -5,20 +5,17 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.View;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.kieronquinn.monetcompat.core.MonetCompat;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
-import dev.kdrag0n.monet.theme.ColorScheme;
+
 import uk.openvk.android.refresh.Global;
 import uk.openvk.android.refresh.OvkApplication;
 import uk.openvk.android.refresh.R;
@@ -40,17 +37,21 @@ public class FriendsIntentActivity extends BaseNetworkActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global_prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Global.setColorTheme(this, global_prefs.getString("theme_color", "blue"),
-                getWindow());
+        Global.setColorTheme(
+                this, global_prefs.getString("theme_color", "blue"), getWindow()
+        );
         Global.setInterfaceFont(this);
+
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         instance_prefs = getSharedPreferences("instance", 0);
+
         setContentView(R.layout.activity_intent);
+
         final Uri uri = getIntent().getData();
         if (uri != null) {
             String path = uri.toString();
             args = path.substring("openvk://friends/".length());
-            if (instance_prefs.getString("access_token", "").length() == 0) {
+            if (instance_prefs.getString("access_token", "").isEmpty()) {
                 finish();
                 return;
             }
@@ -58,7 +59,6 @@ public class FriendsIntentActivity extends BaseNetworkActivity {
                 setAPIWrapper();
                 setAppBar();
                 createFragment();
-                setMonetTheme();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -69,18 +69,6 @@ public class FriendsIntentActivity extends BaseNetworkActivity {
     protected void attachBaseContext(Context newBase) {
         Locale languageType = OvkApplication.getLocale(newBase);
         super.attachBaseContext(LocaleContextWrapper.wrap(newBase, languageType));
-    }
-
-    private void setMonetTheme() {
-        if(Global.checkMonet(this)) {
-            MaterialToolbar toolbar = findViewById(R.id.app_toolbar);
-            if (!isDarkTheme) {
-                toolbar.setBackgroundColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 600));
-                getWindow().setStatusBarColor(
-                        Global.getMonetIntColor(getMonet(), "accent", 700));
-            }
-        }
     }
 
     private void setAPIWrapper() {
@@ -108,12 +96,7 @@ public class FriendsIntentActivity extends BaseNetworkActivity {
         toolbar = findViewById(R.id.app_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(getResources().getString(R.string.nav_friends));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
         if(!Global.checkMonet(this)) {
             TypedValue typedValue = new TypedValue();
             boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
@@ -185,13 +168,6 @@ public class FriendsIntentActivity extends BaseNetworkActivity {
     @Override
     public void recreate() {
 
-    }
-
-    @Override
-    public void onMonetColorsChanged(@NonNull MonetCompat monet, @NonNull ColorScheme monetColors, boolean isInitialChange) {
-        super.onMonetColorsChanged(monet, monetColors, isInitialChange);
-        getMonet().updateMonetColors();
-        setMonetTheme();
     }
 
     public void loadMoreFriends() {

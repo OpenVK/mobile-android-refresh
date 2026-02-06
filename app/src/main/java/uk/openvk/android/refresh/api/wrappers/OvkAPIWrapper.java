@@ -168,7 +168,7 @@ public class OvkAPIWrapper {
             OvkApplication app = ((OvkApplication) ctx.getApplicationContext());
             version_name = app.version;
         } finally {
-            user_agent = String.format("OpenVK Legacy/%s (Android %s; SDK %s; %s; %s %s; %s)", version_name,
+            user_agent = String.format("OpenVK Refresh/%s (Android %s; SDK %s; %s; %s %s; %s)", version_name,
                     Build.VERSION.RELEASE, Build.VERSION.SDK_INT, Build.CPU_ABI, Build.MANUFACTURER,
                     Build.MODEL, System.getProperty("user.language"));
         }

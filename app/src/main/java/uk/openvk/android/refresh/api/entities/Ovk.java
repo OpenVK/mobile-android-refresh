@@ -84,35 +84,54 @@ public class Ovk implements Parcelable {
         try {
             JSONObject json = jsonParser.parseJSON(response);
             if(json != null) {
-                JSONObject statistics = json.getJSONObject("response").getJSONObject("statistics");
+                JSONObject jsonResponse = json.getJSONObject("response");
+                JSONObject statistics = jsonResponse.getJSONObject("statistics");
+
                 long users_count = 0;
                 long online_users_count = 0;
                 long active_users_count = 0;
                 long groups_count = 0;
                 long wall_posts_count = 0;
-                if(statistics.has("users_count")) users_count = statistics.getLong("users_count");
-                if(statistics.has("online_users_count")) online_users_count =
-                        statistics.getLong("online_users_count");
-                if(statistics.has("active_users_count")) active_users_count =
-                        statistics.getLong("active_users_count");
-                if(statistics.has("groups_count")) groups_count = statistics.getLong("groups_count");
-                if(statistics.has("wall_posts_count")) wall_posts_count = statistics.getLong("wall_posts_count");
-                instance_stats = new InstanceStatistics(users_count, online_users_count, active_users_count,
-                        groups_count, wall_posts_count);
-                JSONObject admins = json.getJSONObject("response").getJSONObject("administrators");
-                JSONArray admin_items = json.getJSONObject("response").getJSONObject("administrators").getJSONArray("items");
-                JSONArray links_items = json.getJSONObject("response").getJSONObject("links").getJSONArray("items");
-                instance_admins = new ArrayList<InstanceAdmin>();
+
+                if(statistics.has("users_count"))
+                    users_count = statistics.getLong("users_count");
+
+                if(statistics.has("online_users_count"))
+                    online_users_count = statistics.getLong("online_users_count");
+
+                if(statistics.has("active_users_count"))
+                    active_users_count = statistics.getLong("active_users_count");
+
+                if(statistics.has("groups_count"))
+                    groups_count = statistics.getLong("groups_count");
+
+                if(statistics.has("wall_posts_count")) wall_posts_count =
+                        statistics.getLong("wall_posts_count");
+
+                instance_stats = new InstanceStatistics(
+                        users_count, online_users_count, active_users_count,
+                        groups_count, wall_posts_count
+                );
+
+
+                JSONObject admins = jsonResponse.getJSONObject("administrators");
+                JSONArray admin_items = jsonResponse.getJSONObject("administrators").getJSONArray("items");
+                JSONArray links_items = jsonResponse.getJSONObject("links").getJSONArray("items");
+
+                instance_admins = new ArrayList<>();
+
                 for(int i = 0; i < admin_items.length(); i++) {
                     JSONObject admin = admin_items.getJSONObject(i);
                     instance_admins.add(new InstanceAdmin(admin.getString("first_name"), admin.getString("last_name"),
                             admin.getInt("id")));
                 }
+
                 instance_links = new ArrayList<InstanceLink>();
                 for(int i = 0; i < links_items.length(); i++) {
                     JSONObject link = links_items.getJSONObject(i);
                     instance_links.add(new InstanceLink(link.getString("name"), link.getString("url")));
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
