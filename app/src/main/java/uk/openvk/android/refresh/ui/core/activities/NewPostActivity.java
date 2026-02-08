@@ -56,6 +56,9 @@ public class NewPostActivity extends BaseNetworkActivity {
 
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         statusEditText = findViewById(R.id.status_edit);
+
+        setStatusBarColorAttribute(androidx.appcompat.R.attr.colorPrimaryDark);
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {

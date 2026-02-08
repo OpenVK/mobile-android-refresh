@@ -46,6 +46,7 @@ public class FriendsIntentActivity extends BaseNetworkActivity {
         instance_prefs = getSharedPreferences("instance", 0);
 
         setContentView(R.layout.activity_intent);
+        setStatusBarColorAttribute(androidx.appcompat.R.attr.colorPrimaryDark);
 
         final Uri uri = getIntent().getData();
         if (uri != null) {

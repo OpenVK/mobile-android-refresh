@@ -56,6 +56,7 @@ public class MainSettingsActivity extends BaseNetworkActivity {
         setContentView(R.layout.activity_intent);
 
         setAppBar();
+        setStatusBarColorAttribute(androidx.appcompat.R.attr.colorPrimaryDark);
         createFragments();
     }
 

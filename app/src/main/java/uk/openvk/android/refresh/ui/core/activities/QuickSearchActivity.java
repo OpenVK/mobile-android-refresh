@@ -47,14 +47,16 @@ public class QuickSearchActivity extends BaseNetworkActivity {
                 getWindow());
         Global.setInterfaceFont(this);
         instance_prefs = getSharedPreferences("instance", 0);
+
         setContentView(R.layout.activity_search);
-        setMonetTheme();
+        setStatusBarColor(R.color.backgroundColor);
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isDarkTheme) {
             WindowInsetsControllerCompat windowInsetsController =
                     WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
             windowInsetsController.setAppearanceLightStatusBars(true);
         }
-        searchBar = ((MaterialSearchBar) findViewById(R.id.search_bar));
+        searchBar = findViewById(R.id.search_bar);
         searchBar.openSearch();
         searchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override

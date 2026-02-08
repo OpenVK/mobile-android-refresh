@@ -3,11 +3,21 @@ package uk.openvk.android.refresh.ui.core.activities.base;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Insets;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.WindowInsets;
 
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -17,6 +27,7 @@ import java.util.Objects;
 
 import uk.openvk.android.refresh.BuildConfig;
 import uk.openvk.android.refresh.OvkApplication;
+import uk.openvk.android.refresh.R;
 import uk.openvk.android.refresh.api.OpenVKAPI;
 import uk.openvk.android.refresh.api.enumerations.HandlerMessages;
 import uk.openvk.android.refresh.api.interfaces.OvkAPIListeners;
@@ -44,6 +55,45 @@ public class BaseNetworkActivity extends AppCompatActivity {
       setAPIListeners(apiListeners);
       registerAPIDataReceiver();
    }
+
+   protected void setStatusBarColor(@ColorInt int color) {
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+           getWindow().getDecorView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+               @NonNull
+               @Override
+               public WindowInsets onApplyWindowInsets(@NonNull View view, @NonNull WindowInsets insets) {
+                   Insets statusBarInsets = insets.getInsets(WindowInsets.Type.statusBars());
+                   view.setBackgroundColor(getResources().getColor(color));
+                   view.setPadding(0, statusBarInsets.top, 0, 0);
+                   return insets;
+               }
+           });
+       } else {
+           getWindow().setStatusBarColor(getResources().getColor(color));
+       }
+   }
+
+    protected void setStatusBarColorAttribute(@AttrRes int attr) {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getTheme();
+        theme.resolveAttribute(attr, typedValue, true);
+        @ColorInt int color = typedValue.data;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            getWindow().getDecorView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+                @NonNull
+                @Override
+                public WindowInsets onApplyWindowInsets(@NonNull View view, @NonNull WindowInsets insets) {
+                    Insets statusBarInsets = insets.getInsets(WindowInsets.Type.statusBars());
+                    view.setBackgroundColor(color);
+                    view.setPadding(0, statusBarInsets.top, 0, 0);
+                    return insets;
+                }
+            });
+        } else {
+            getWindow().setStatusBarColor(color);
+        }
+    }
 
    public void registerAPIDataReceiver() {
       receiver = new OvkAPIReceiver(this);

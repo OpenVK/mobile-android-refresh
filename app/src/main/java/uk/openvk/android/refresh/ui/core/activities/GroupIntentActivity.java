@@ -45,7 +45,10 @@ public class GroupIntentActivity extends BaseNetworkActivity {
         Global.setInterfaceFont(this);
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         instance_prefs = getSharedPreferences("instance", 0);
+
         setContentView(R.layout.activity_intent);
+        setStatusBarColorAttribute(androidx.appcompat.R.attr.colorPrimaryDark);
+
         final Uri uri = getIntent().getData();
         if (uri != null) {
             String path = uri.toString();

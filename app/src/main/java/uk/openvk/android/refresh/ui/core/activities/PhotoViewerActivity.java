@@ -86,6 +86,8 @@ public class PhotoViewerActivity extends BaseNetworkActivity {
         isDarkTheme = global_prefs.getBoolean("dark_theme", false);
         setContentView(R.layout.activity_photo_viewer);
         setAppBar();
+        setStatusBarColorAttribute(androidx.appcompat.R.attr.colorPrimaryDark);
+
         loadPhoto();
     }
 

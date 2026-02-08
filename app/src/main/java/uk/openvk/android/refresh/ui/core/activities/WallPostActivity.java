@@ -76,6 +76,8 @@ public class WallPostActivity extends BaseNetworkActivity {
             }
             setAPIWrapper();
             setAppBar();
+            setStatusBarColorAttribute(androidx.appcompat.R.attr.colorPrimaryDark);
+
             if (wallPost != null)
                 openPost(wallPost);
             else

@@ -78,6 +78,7 @@ public class ConversationActivity extends BaseNetworkActivity {
 
         setAPIWrapper();
         setAppBar();
+        setStatusBarColorAttribute(androidx.appcompat.R.attr.colorPrimaryDark);
         setBottomPanel();
     }
 
@@ -88,7 +89,7 @@ public class ConversationActivity extends BaseNetworkActivity {
     }
 
     private void setBottomPanel() {
-        bottomPanel = (SendTextBottomPanel) findViewById(R.id.sendTextBottomPanel);
+        bottomPanel = findViewById(R.id.sendTextBottomPanel);
         bottomPanel.setOnSendButtonClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override

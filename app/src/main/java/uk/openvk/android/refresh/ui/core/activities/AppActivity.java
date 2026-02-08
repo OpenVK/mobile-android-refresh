@@ -146,6 +146,7 @@ public class AppActivity extends BaseNetworkActivity {
         setContentView(R.layout.activity_app);
         instance_prefs = getSharedPreferences("instance", 0);
         createFragments();
+        setStatusBarColorAttribute(androidx.appcompat.R.attr.colorPrimaryDark);
     }
 
     @Override

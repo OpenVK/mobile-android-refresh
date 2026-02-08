@@ -94,6 +94,7 @@ public class AuthActivity extends BaseNetworkActivity {
             }
         }
         setAppBar();
+        setStatusBarColor(R.color.backgroundColor);
     }
 
     public void restart() {

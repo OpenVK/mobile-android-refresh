@@ -11,16 +11,8 @@
     <ProgressBar
         android:id="@+id/auth_progress"
         style="?android:attr/progressBarStyle"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_gravity="center" />
 
-    <TextView
-        android:id="@+id/auth_progress_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:text="@string/auth_wait"
-        android:textSize="16sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

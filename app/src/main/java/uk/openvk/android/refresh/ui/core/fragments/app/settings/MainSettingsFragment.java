@@ -59,79 +59,61 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     public void setListeners() {
         Preference video_settings = findPreference("video_settings");
         assert video_settings != null;
-        video_settings.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {
-                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).fn.navigateTo("video_settings");
-                }
-                return false;
+        video_settings.setOnPreferenceClickListener(preference -> {
+            if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                ((AppActivity) requireActivity()).fn.navigateTo("video_settings");
             }
+            return false;
         });
 
         Preference person = findPreference("personalization");
         assert person != null;
-        person.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).fn.navigateTo("personalization");
-                } else if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
-                    ((MainSettingsActivity) requireActivity()).switchFragment("personalization");
-                }
-                return false;
+        person.setOnPreferenceClickListener(preference -> {
+            if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                ((AppActivity) requireActivity()).fn.navigateTo("personalization");
+            } else if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
+                ((MainSettingsActivity) requireActivity()).switchFragment("personalization");
             }
+            return false;
         });
 
         Preference ui_language = findPreference("ui_language");
         assert ui_language != null;
-        ui_language.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    Intent intent = new Intent(Settings.ACTION_APP_LOCALE_SETTINGS);
-                    Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
-                    intent.setData(uri);
-                    startActivity(intent);
-                } else {
-                    showUiLanguageSelectionDialog();
-                }
-                return false;
+        ui_language.setOnPreferenceClickListener(preference -> {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Intent intent = new Intent(Settings.ACTION_APP_LOCALE_SETTINGS);
+                Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            } else {
+                showUiLanguageSelectionDialog();
             }
+            return false;
         });
 
         Preference logout = findPreference("logout");
         assert logout != null;
-        logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {
-                showLogoutConfirmDialog();
-                return false;
-            }
+        logout.setOnPreferenceClickListener(preference -> {
+            showLogoutConfirmDialog();
+            return false;
         });
 
         Preference about_instance = findPreference("about_instance");
         assert about_instance != null;
-        about_instance.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {
-                showAboutInstanceDialog();
-                return false;
-            }
+        about_instance.setOnPreferenceClickListener(preference -> {
+            showAboutInstanceDialog();
+            return false;
         });
 
         Preference about_app = findPreference("about_app");
         assert about_app != null;
-        about_app.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {
-                if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
-                    ((AppActivity) requireActivity()).fn.navigateTo("about_app");
-                } else if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
-                    ((MainSettingsActivity) requireActivity()).switchFragment("about_app");
-                }
-                return false;
+        about_app.setOnPreferenceClickListener(preference -> {
+            if(requireActivity().getClass().getSimpleName().equals("AppActivity")) {
+                ((AppActivity) requireActivity()).fn.navigateTo("about_app");
+            } else if(requireActivity().getClass().getSimpleName().equals("MainSettingsActivity")) {
+                ((MainSettingsActivity) requireActivity()).switchFragment("about_app");
             }
+            return false;
         });
     }
 
