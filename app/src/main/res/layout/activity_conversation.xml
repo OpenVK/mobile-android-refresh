@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messages_view"
@@ -21,6 +22,7 @@
         android:id="@+id/sendTextBottomPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
         android:theme="@style/ApplicationTheme.Toolbar"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/messages_view"
@@ -39,7 +42,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/app_main"
         app:navigationIcon="@drawable/ic_menu"
-        app:title="@string/app_name"
-        android:minHeight="?attr/actionBarSize"/>
+        app:title="@string/app_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
