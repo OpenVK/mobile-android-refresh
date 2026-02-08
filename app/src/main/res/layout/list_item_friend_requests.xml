@@ -2,99 +2,73 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <!--suppress AndroidUnknownAttribute -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="2dp"
-        android:checkable="true"
-        android:clickable="true"
-        android:focusable="true"
-        app:cardCornerRadius="12dp"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/friend_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/friend_title_ll"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="@color/primaryRippleColor"
-        tools:ignore="MissingConstraints">
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
+        app:srcCompat="@drawable/circular_avatar" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/friend_title_ll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add_button"
+        app:layout_constraintStart_toEndOf="@+id/friend_avatar"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/friend_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints">
+            android:fontFamily="sans-serif-medium"
+            android:singleLine="true"
+            android:text="Friend title"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/friend_avatar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/friend_title_ll"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
-                app:srcCompat="@drawable/circular_avatar" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/friend_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-1dp"
+            android:letterSpacing="0.04"
+            android:singleLine="true"
+            android:text="Friend subtitle"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:ignore="HardcodedText,TextContrastCheck" />
+    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/friend_title_ll"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/friend_avatar"
-                app:layout_constraintEnd_toStartOf="@+id/add_button"
-                app:layout_constraintStart_toEndOf="@+id/friend_avatar"
-                app:layout_constraintTop_toTopOf="@+id/friend_avatar">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_button"
+        android:layout_width="38dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="12dp"
+        android:contentDescription="@string/add_friend_button"
+        android:paddingLeft="10dp"
+        android:paddingRight="12dp"
+        android:theme="@style/Widget.Material3.Button.IconButton"
+        app:backgroundTint="?attr/colorAccent"
+        app:icon="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/friend_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:singleLine="true"
-                    android:text="Friend title"
-                    android:textColor="@color/primaryTextColor"
-                    android:textSize="16sp"
-                    tools:ignore="HardcodedText" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/friend_subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-1dp"
-                    android:letterSpacing="0.04"
-                    android:singleLine="true"
-                    android:text="Friend subtitle"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    tools:ignore="HardcodedText,TextContrastCheck" />
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/add_button"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:contentDescription="@string/add_friend_button"
-                android:paddingLeft="10dp"
-                android:paddingRight="12dp"
-                android:theme="@style/Widget.Material3.Button.IconButton"
-                app:backgroundTint="?attr/colorAccent"
-                app:icon="@drawable/ic_add"
-                app:layout_constraintBottom_toBottomOf="@+id/friend_title_ll"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/friend_title_ll"
-                app:layout_constraintTop_toTopOf="@+id/friend_title_ll" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,18 +38,21 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp">
+            app:boxStrokeWidth="0dp"
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/status_edit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fontFamily="sans-serif-light"
                 android:gravity="start|top"
                 android:hint="@string/whats_new_hint"
                 android:inputType="textMultiLine|text"
                 android:maxLines="60"
                 android:minLines="2"
                 android:textColorHint="#616161"
+                android:textSize="20sp"
                 tools:ignore="TextContrastCheck" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

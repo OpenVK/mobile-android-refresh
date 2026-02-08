@@ -8,18 +8,17 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/app_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ApplicationTheme.Toolbar.Dark"
+        android:theme="?attr/actionBarTheme"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/fragment_screen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/app_main"
-        app:navigationIcon="@drawable/ic_menu"
+        app:titleTextColor="@android:color/white"
         app:title="@string/app_name" />
 
     <androidx.fragment.app.FragmentContainerView

@@ -8,26 +8,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/send_text"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:ems="10"
             android:gravity="start|top"
-            android:hint="@string/enter_msg"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
-            android:minHeight="48dp"
-            android:textColorHint="#757575"
-            tools:ignore="SpeakableTextPresentCheck" />
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/send_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/enter_msg"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:minHeight="24dp"
+                android:textColorHint="#757575"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/send_btn"

@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Toolbar;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.kieronquinn.monetcompat.core.MonetCompat;
@@ -87,25 +88,7 @@ public class MainSettingsActivity extends BaseNetworkActivity {
         toolbar = findViewById(R.id.app_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(getResources().getString(R.string.nav_settings));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-        if(!Global.checkMonet(this)) {
-            TypedValue typedValue = new TypedValue();
-            boolean isDarkThemeEnabled = (getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-            if (isDarkThemeEnabled) {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.background, typedValue,
-                        true);
-            } else {
-                getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue,
-                        true);
-            }
-            getWindow().setStatusBarColor(typedValue.data);
-        }
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 
     public void switchFragment(String tag) {

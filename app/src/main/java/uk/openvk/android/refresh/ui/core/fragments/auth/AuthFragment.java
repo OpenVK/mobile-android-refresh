@@ -40,26 +40,20 @@ public class AuthFragment extends Fragment {
         TextInputLayout password_layout = view.findViewById(R.id.password_layout);
         TextInputEditText username_edit = view.findViewById(R.id.username_edit);
         TextInputEditText password_edit = view.findViewById(R.id.password_edit);
-        instance_edit.setText("ovk.to");
-        sign_in_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(getActivity() != null) {
-                    if (getActivity().getClass().getSimpleName().equals("AuthActivity")) {
-                        ((AuthActivity) getActivity()).signIn(instance_edit.getText().toString(),
-                                Objects.requireNonNull(username_edit.getText()).toString(),
-                                Objects.requireNonNull(password_edit.getText()).toString());
-                    }
+        instance_edit.setText("openvk.su");
+        sign_in_btn.setOnClickListener(view -> {
+            if(getActivity() != null) {
+                if (getActivity().getClass().getSimpleName().equals("AuthActivity")) {
+                    ((AuthActivity) getActivity()).signIn(instance_edit.getText().toString(),
+                            Objects.requireNonNull(username_edit.getText()).toString(),
+                            Objects.requireNonNull(password_edit.getText()).toString());
                 }
             }
         });
 
-        register_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openWebAddress(String.format("http://%s/reg", instance_edit.getText().toString()));
-            }
-        });
+        register_btn.setOnClickListener(v ->
+                openWebAddress(String.format("http://%s/reg", instance_edit.getText().toString()))
+        );
 
         ((LinearLayoutCompat) view.findViewById(R.id.auth_layout)).setGravity(Gravity.CENTER);
         instance_edit.setAdapter(
@@ -68,12 +62,9 @@ public class AuthFragment extends Fragment {
                         getResources().getStringArray(R.array.avaliable_instances)));
         TextInputLayout instance_layout = (view.findViewById(R.id.instance_input_layout));
         instance_edit.setThreshold(25000000);
-        password_layout.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openWebAddress(String.format("http://%s/restore", instance_edit.getText().toString()));
-            }
-        });
+        password_layout.setEndIconOnClickListener(
+                v -> openWebAddress(String.format("http://%s/restore", instance_edit.getText().toString()))
+        );
         setMonetTheme();
         return view;
     }

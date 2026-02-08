@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="avaliable_instances" translatable="false">
-        <item>ovk.to</item>
+        <item>openvk.su</item>
         <item>openvk.xyz</item>
         <item>vepurovk.xyz</item>
     </string-array>
